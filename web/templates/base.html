@@ -1,0 +1,32 @@
+<!-- templates/base.html -->
+<html>
+ <head>
+ <title> Django HPS </title>
+ </head>
+ <body>
+    <div id="menu">
+    <ul>
+    <a href="{% url 'home' %}">Home</a> |<a href="{% url 'login' %}">log in</a> 
+    </ul>
+    {% comment %} {% if request.user.is_authenticated %}
+    <ul class="hide menu">
+    <li {% if section = "dashboard" %} class="selected"{% endif %}>
+        <a href="{% url 'cart' %}">cart</a>
+    </li>
+    <ul> {% endcomment %}
+
+
+    <span class="user">
+    {% if request.user.is_authenticated %}
+    <p>Hi {{ user.username }}!</p>
+    <form action="{% url 'logout' %}" method="post" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+    </form>
+    {% endif %}
+    </span>
+    </div>
+     {% block content %}
+     {% endblock content%}
+    </body>
+    </html>

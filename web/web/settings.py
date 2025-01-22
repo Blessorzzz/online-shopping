@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-hb(f$n4rukc90(&#%nxq8hkg&yrqg0-@6nj42#==h3xu97v*g(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,9 +37,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "accounts",
-    "order",
-    "shop",
+    "ecommerce",
+    "user",
 ]
 
 MIDDLEWARE = [
@@ -57,7 +56,7 @@ ROOT_URLCONF = "web.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        'DIRS': [BASE_DIR/'templates'], 
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -80,6 +79,10 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
+        # 'USER':'root',
+        # 'PASSWORD':'123456',
+        # 'HOST':'127.0.0.1',
+        # 'PORT':'3307',
     }
 }
 
@@ -124,3 +127,6 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
