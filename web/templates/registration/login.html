@@ -1,9 +1,14 @@
 <!-- templates/registration/login.html -->
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
-<h1>Login</h1>
-<form method ="post">{% csrf_token %}{{ form.as_p}}
-<button type="submit">Login</button>
-</form>
+<div class="container">
+    <div class="login-box">
+        <h1>Login</h1>
+        <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <form method ="post">{% csrf_token %}{{ form.as_p}}
+        <button type="submit">Login</button>
+    </form>
 <p> If you don't have an account <a href="{% url 'register' %}">Sign Up here.</a>
+</div>
 {% endblock content %}

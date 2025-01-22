@@ -1,9 +1,17 @@
 <!-- templates/signup.html -->
 {% extends 'base.html' %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/register.css' %}">
+{% endblock extra_css %}
 {% block content %}
-<h1> Sign up </h1>
-<form method ="post">{% csrf_token %}
-{{form.as_p}}
-<button type="submit">Sign up</button>
-</form>
+<div class="register-container">
+    <div class="register-box">
+        <h1> Sign up </h1>
+        <form method ="post">{% csrf_token %}
+            {{form.as_p}}
+            <button type="submit">Sign up</button>
+        </form>
+    </div>
+</div>
 {% endblock content %}

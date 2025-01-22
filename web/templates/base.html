@@ -1,12 +1,15 @@
 <!-- templates/base.html -->
+{% load static %}
 <html>
  <head>
  <title> Django HPS </title>
+ <link rel="stylesheet" href="{% static 'css/base.css' %}">
+ {% block extra_css %}{% endblock extra_css %}
  </head>
  <body>
     <div id="menu">
     <ul>
-    <a href="{% url 'home' %}">Home</a> |<a href="{% url 'login' %}">log in</a> 
+        <li><a href="{% url 'home' %}">Home</a></li> |<li><a href="{% url 'login' %}">log in</a> </li>
     </ul>
     {% comment %} {% if request.user.is_authenticated %}
     <ul class="hide menu">
@@ -16,7 +19,7 @@
     <ul> {% endcomment %}
 
 
-    <span class="user">
+    <div class="user">
     {% if request.user.is_authenticated %}
     <p>Hi {{ user.username }}!</p>
     <form action="{% url 'logout' %}" method="post" style="display: inline;">
@@ -24,7 +27,7 @@
         <button type="submit">Logout</button>
     </form>
     {% endif %}
-    </span>
+</div>
     </div>
      {% block content %}
      {% endblock content%}
