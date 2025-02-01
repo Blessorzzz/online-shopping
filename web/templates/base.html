@@ -1,35 +1,27 @@
 <!-- templates/base.html -->
 {% load static %}
 <html>
- <head>
- <title> Django HPS </title>
- <link rel="stylesheet" href="{% static 'css/base.css' %}">
- {% block extra_css %}{% endblock extra_css %}
- </head>
- <body>
+<head>
+    <title> Django HPS </title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    {% block extra_css %}{% endblock extra_css %}
+</head>
+<body>
     <div id="menu">
-    <ul>
-        <li><a href="{% url 'home' %}">Home</a></li> |<li><a href="{% url 'login' %}">log in</a> </li>
-    </ul>
-    {% comment %} {% if request.user.is_authenticated %}
-    <ul class="hide menu">
-    <li {% if section = "dashboard" %} class="selected"{% endif %}>
-        <a href="{% url 'cart' %}">cart</a>
-    </li>
-    <ul> {% endcomment %}
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li> |
+            {% if user.is_authenticated %}
+             <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <a href="javascript:void(0);" onclick="this.closest('form').submit();">Logout</a>
+             </form>
+            {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+            {% endif %}
+        </ul>
+    </div>    
 
-
-    <div class="user">
-    {% if request.user.is_authenticated %}
-    <p>Hi {{ user.username }}!</p>
-    <form action="{% url 'logout' %}" method="post" style="display: inline;">
-        {% csrf_token %}
-        <button type="submit">Logout</button>
-    </form>
-    {% endif %}
-</div>
-    </div>
-     {% block content %}
-     {% endblock content%}
-    </body>
-    </html>
+    {% block content %}
+    {% endblock content %}
+</body>
+</html>

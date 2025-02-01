@@ -1,5 +1,15 @@
+<!-- templates/home.html -->
 {% extends 'base.html' %}
 {% block content %}
-<h1> HPS homePage </h1>
+<h2>Welcome to Our Shop!</h2>
+<div class="product-list">
+    {% for product in products %}
+        <div class="product-item">
+            <h3><a href="{% url 'product_detail' product.product_id %}">{{ product.product_name }}</a></h3>
+            <img src="{{ product.thumbnail_image }}" alt="{{ product.product_name }}">
+            <p>Price: ${{ product.price }}</p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
 
-{% endblock content %}

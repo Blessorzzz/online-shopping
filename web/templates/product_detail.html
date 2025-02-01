@@ -1,0 +1,16 @@
+<!-- templates/product_detail.html -->
+
+<h2>{{ product.product_name }}</h2>
+<img src="{{ product.thumbnail_image.url }}" alt="{{ product.product_name }}">
+<p>{{ product.description }}</p>
+<p>Price: ${{ product.price }}</p>
+
+<!-- 如果有其他图片，可以在这里显示 -->
+{% if product.other_images.all %}
+    <h3>More Images</h3>
+    <div class="other-images">
+        {% for image in product.other_images.all %}
+            <img src="{{ image.url }}" alt="Product Image">
+        {% endfor %}
+    </div>
+{% endif %}
