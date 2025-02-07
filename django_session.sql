@@ -1,1 +1,0 @@
-INSERT INTO "django_session" ("session_key", "session_data", "expire_date") VALUES ('280pppcvmm2n8ibu2zmtasenz5u8w77s', '.eJxVjEEOwiAQRe_C2hCBgYJL9z0DGZipVA0kpV0Z765NutDtf-_9l4i4rSVunZc4k7gIJU6_W8L84LoDumO9NZlbXZc5yV2RB-1ybMTP6-H-HRTs5VtzMkGlwJOy7JgDekOZSHm2wG6wRGSz1gHOiRyEQYPHHDxoIJgQjHh_AAaJOEw:1tad3B:K0l85ImbKMO3_voV_h4tLZ3Meb3ZVZcrtVpPiN77anc', '2025-02-05 15:53:53.647514');
