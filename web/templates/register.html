@@ -7,10 +7,41 @@
 {% block content %}
 <div class="register-container">
     <div class="register-box">
-        <form method ="post">{% csrf_token %}
-            {{form.as_p}}
-            <button type="submit">Sign up</button>
-        </form>
+        <h2>Register</h2>
+        <form method ="post">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.username.label_tag }}
+            {{ form.username }}
+            {{ form.username.errors }}
+        </div>
+        <div class="form-group">
+            {{ form.full_name.label_tag }}
+            {{ form.full_name }}
+            {{ form.full_name.errors }}
+        </div>
+        <div class="form-group">
+            {{ form.email.label_tag }}
+            {{ form.email }}
+            {{ form.email.errors }}
+        </div>
+        <div class="form-group">
+            {{ form.shipping_address.label_tag }}
+            {{ form.shipping_address }}
+            {{ form.shipping_address.errors }}
+        </div>
+        <div class="form-group">
+            {{ form.password1.label_tag }}
+            {{ form.password1 }}
+            {{ form.password1.errors }}
+        </div>
+        <div class="form-group">
+            {{ form.password2.label_tag }}
+            {{ form.password2 }}
+            {{ form.password2.errors }}
+        </div>
+        <button type="submit" class="btn btn-primary">Sign up</button>
+    </form>
     </div>
 </div>
 {% endblock content %}
