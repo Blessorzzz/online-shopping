@@ -67,6 +67,16 @@ button:hover {
     display: flex; /* Use flexbox for layout */
 }
 
+#menu ul.nav-center {
+    flex: 2;
+    justify-content: center;
+}
+
+#menu ul.nav-center {
+    flex: 2;
+    justify-content: center;
+}
+
 #menu ul.nav-left {
     flex: 1; /* Allow the left navigation items to take up available space */
 }
@@ -88,36 +98,36 @@ button:hover {
     background-color: #0056b3; /* Change the background color when hovering over the links */
 }
 
-/* Center the search bar */
-form.nav-center {
-    flex: 2; /* Allow the search bar to take up available space */
-    display: flex; /* Use flexbox for layout */
-    justify-content: center; /* Center the search bar horizontally */
-    margin: 0 20px; /* Add space around the search bar */
+
+
+/* Search bar styles */
+form.nav-right {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
 }
 
-form.nav-center input[type="text"] {
-    width: 300px; /* Set the width of the search bar */
-    padding: 8px; /* Add padding inside the search bar */
-    border-radius: 5px 0 0 5px; /* Round the left corners of the search bar */
-    border: 1px solid #ccc; /* Add a border to the search bar */
-    font-size: 14px; /* Set the font size of the search bar */
+form.nav-right input[type="text"] {
+    width: 200px;
+    padding: 8px;
+    border-radius: 5px 0 0 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
 }
 
-form.nav-center button {
-    padding: 8px; /* Add padding inside the button */
-    border-radius: 0 5px 5px 0; /* Round the right corners of the button */
-    border: 1px solid #ccc; /* Add a border to the button */
-    background-color: #4da6ff; /* Set the background color of the button */
-    color: white; /* Set the text color of the button */
-    cursor: pointer; /* Change the cursor to a pointer when hovering over the button */
-    transition: background-color 0.3s ease; /* Add a transition effect to the background color */
+form.nav-right button {
+    padding: 8px;
+    border-radius: 0 5px 5px 0;
+    border: 1px solid #ccc;
+    background-color: #4da6ff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-form.nav-center button:hover {
-    background-color: #007bff; /* Change the background color when hovering over the button */
+form.nav-right button:hover {
+    background-color: #007bff;
 }
-
 /* User section styles */
 .user {
     color: white; /* Set the text color of the user section */

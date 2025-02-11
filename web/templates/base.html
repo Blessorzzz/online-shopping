@@ -11,10 +11,15 @@
     <div id="menu">
         <ul class="nav-left">
             <li><a href="{% url 'home' %}">Home</a></li> |
-            <li><a href="{% url 'login' %}">log in</a></li>
+            <li><a href="{% url 'login' %}">Log In</a></li> |
+            <li><a href="{% url 'register' %}">Register</a></li>
         </ul>
-        <form class="nav-center" method="get" action="{% url 'home' %}">
-            <input type="text" name="q" placeholder="Search products...">
+        <ul class="nav-center">
+            {% comment %} <li><a href="{% url 'purchased' %}">Purchased Items</a></li> | {% endcomment %}
+            {% comment %} <li><a href="{% url 'my_taobao' %}">My Account</a></li> {% endcomment %}
+        </ul>
+        <form class="nav-right" method="get" action="{% url 'home' %}">
+            <input type="text" name="q" placeholder="Search">
             <button type="submit">Search</button>
         </form>
         <div class="user nav-right">
