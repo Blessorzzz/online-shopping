@@ -1,35 +1,33 @@
-<!-- templates/base.html -->
-{% load static %}
-<html>
- <head>
- <title> Django HPS </title>
- <link rel="stylesheet" href="{% static 'css/base.css' %}">
- {% block extra_css %}{% endblock extra_css %}
- </head>
- <body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %} <!-- Load the static template tag library -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Online Shop{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+</head>
+<body>
     <div id="menu">
-    <ul>
-        <li><a href="{% url 'home' %}">Home</a></li> |<li><a href="{% url 'login' %}">log in</a> </li>
-    </ul>
-    {% comment %} {% if request.user.is_authenticated %}
-    <ul class="hide menu">
-    <li {% if section = "dashboard" %} class="selected"{% endif %}>
-        <a href="{% url 'cart' %}">cart</a>
-    </li>
-    <ul> {% endcomment %}
-
-
-    <div class="user">
-    {% if request.user.is_authenticated %}
-    <p>Hi {{ user.username }}!</p>
-    <form action="{% url 'logout' %}" method="post" style="display: inline;">
-        {% csrf_token %}
-        <button type="submit">Logout</button>
-    </form>
-    {% endif %}
-</div>
+        <ul class="nav-left">
+            <li><a href="{% url 'home' %}">Home</a></li> |
+            <li><a href="{% url 'login' %}">log in</a></li>
+        </ul>
+        <form class="nav-center" method="get" action="{% url 'home' %}">
+            <input type="text" name="q" placeholder="Search products...">
+            <button type="submit">Search</button>
+        </form>
+        <div class="user nav-right">
+            {% if request.user.is_authenticated %}
+            <p>Hi {{ user.username }}!</p>
+            <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit">Logout</button>
+            </form>
+            {% endif %}
+        </div>
     </div>
-     {% block content %}
-     {% endblock content%}
-    </body>
-    </html>
+    {% block content %}
+    {% endblock content %}
+</body>
+</html>

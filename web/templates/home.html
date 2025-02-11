@@ -1,5 +1,39 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1> HPS homePage </h1>
+<h2>Product List</h2>
+<div class="product-list">
+    {% for product in products %}
+    <div class="product-item">
+        <a href="{% url 'product_detail' product.product_id %}">
+            <img src="{{ product.thumbnail_image.url }}" alt="{{ product.product_name }}" class="product-image">
+            <div class="product-info">
+                <h2 class="product-name">{{ product.product_name }}</h2>
+                <p class="product-price">Price: ${{ product.price }}</p>
+            </div>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
 
+        {% for page in page_obj.paginator.page_range %}
+            {% if page == page_obj.number %}
+                <span class="current">{{ page }}</span>
+            {% else %}
+                <a href="?page={{ page }}">{{ page }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
 {% endblock content %}

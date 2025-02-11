@@ -1,18 +1,19 @@
 from django.db import models
 import uuid
+
 class Product(models.Model):
     STATUS_CHOICES = [
-        ('enabled', 'Enabled'),
-        ('disabled', 'Disabled'),
+        ('stock', 'Stock'),
+        ('out_of_stock', 'Out of Stock'),
     ]
 
     product_id = models.UUIDField(primary_key=True, default=uuid.uuid4,
-    help_text='Unique ID for this product across whole shopping mall')
+                                  help_text='Unique ID for this product across whole shopping mall')
     product_name = models.CharField(max_length=255, default="Unnamed Product")
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     description = models.TextField(default="No description available.")
-    thumbnail_image = models.URLField(default="https://via.placeholder.com/150")
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES,default='enabled')
+    thumbnail_image = models.ImageField(upload_to='product_thumbnails/', default="https://via.placeholder.com/150")
+    status = models.CharField(max_length=15, choices=STATUS_CHOICES, default='stock')  # Increased max_length to 15
 
     def __str__(self):
         return self.product_name
