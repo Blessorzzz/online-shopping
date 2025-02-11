@@ -7,8 +7,8 @@
 {% block content %}
 <div class="register-container">
     <div class="register-box">
-        <h2>Register</h2>
         <form method ="post">
+            <h2>register</h2>
         {% csrf_token %}
         <div class="form-group">
             {{ form.username.label_tag }}
