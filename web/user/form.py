@@ -14,6 +14,14 @@ class SignUpForm(UserCreationForm):
         help_text='Please enter your shipping address.',
         widget=forms.Textarea(attrs={'rows': 2})  # 让地址输入框稍大一点
     )
+    full_name = forms.CharField(
+        max_length=100,
+        help_text='Please enter your full name.'
+    )
+    shipping_address = forms.CharField(
+        max_length=255,
+        help_text='Please enter your shipping address.'
+    )
 
     class Meta:
         model = User

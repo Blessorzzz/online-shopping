@@ -8,7 +8,9 @@ def register(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-            user = form.save()  
+            user = form.save(commit=False)  
+            user.email = form.cleaned_data['email']
+            user.save()
             login(request, user)  
             return redirect('home')  
     else:
