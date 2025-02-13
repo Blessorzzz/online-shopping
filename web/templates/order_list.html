@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders</title>
+    <link rel="stylesheet" href="{% static 'css/order_list.css' %}">
+</head>
+<body>
+
+<h2>My Orders</h2>
+
+<table class="order-table">
+    <thead>
+        <tr>
+            <th>P.O. Number</th>
+            <th>Purchase Date</th>
+            <th>Total Amount</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+        <tr class="clickable-row" data-href="{% url 'order_detail' order.id %}">
+            <td>{{ order.po_number }}</td>
+            <td>{{ order.created_at|date:"F d, Y, g:i a" }}</td>
+            <td>${{ order.total_amount }}</td>
+            <td class="{% if order.status == 'pending' %}status-pending{% elif order.status == 'shipped' %}status-shipped{% elif order.status == 'cancelled' %}status-cancelled{% endif %}">
+                {{ order.status }}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    // 让整行变成可点击的链接
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll(".clickable-row").forEach(row => {
+            row.addEventListener("click", function() {
+                window.location.href = this.dataset.href;
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
+
+{% endblock %}

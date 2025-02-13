@@ -1,0 +1,56 @@
+/* 订单表格整体样式 */
+.order-table {
+    width: 100%;
+    border-collapse: collapse;  /* ✅ 确保边框合并 */
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    text-align: center;  /* ✅ 让表格内容居中 */
+    border: 1px solid #ddd;  /* ✅ 确保有边框 */
+}
+
+/* 表头样式 */
+.order-table th {
+    background-color: #007bff;
+    color: white;
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ddd;  /* ✅ 让表头有边框 */
+}
+
+/* 表格行样式 */
+.order-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.order-table tr:hover {
+    background-color: #e3f2fd;  /* ✅ 鼠标悬停高亮 */
+    cursor: pointer;  /* ✅ 鼠标变成手型 */
+}
+
+/* 单元格样式 */
+.order-table td {
+    padding: 12px;
+    border: 1px solid #ddd;  /* ✅ 确保每个单元格有边框 */
+    text-align: center;
+}
+
+/* 订单状态颜色 */
+.status-pending {
+    color: #ffc107;
+    font-weight: bold;
+}
+
+.status-shipped {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.status-cancelled {
+    color: #dc3545;
+    font-weight: bold;
+}
+

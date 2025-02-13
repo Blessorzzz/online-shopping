@@ -1,0 +1,64 @@
+<!-- templates/view_cart.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<head>
+    <link rel="stylesheet" href="{% static 'css/shoppingcart.css' %}">
+</head>
+
+<body>
+    <h2>Your Shopping Cart</h2>
+
+    {% if cart_items %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                    <tr>
+                        <td><a href="{% url 'product_detail' item.product.product_id %}">{{ item.product.product_name }}</a></td>
+                        <td>${{ item.product.price }}</td>
+                        <td>
+                            <form method="POST" action="{% url 'update_cart' item.id %}" class="quantity-form">
+                                {% csrf_token %}
+                                <button type="submit" name="action" value="decrease" class="quantity-button">-</button>
+                                <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="quantity-input" required>
+                                <button type="submit" name="action" value="increase" class="quantity-button">+</button>
+                            </form>
+                        </td>
+                        <td>${{ item.total_price }}</td>  <!-- 显示从视图传递的总金额 -->
+                        <td>
+                            <form method="POST" action="{% url 'remove_from_cart' item.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="remove-button">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if cart_items %}
+             <h3>Total: ${{ total_amount }}</h3>  <!-- 显示总金额 -->
+
+             <form action="{% url 'checkout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success">Checkout</button>
+            </form>            
+        {% else %}
+             <p>Your cart is empty.</p>
+        {% endif %}
+
+    {% else %}
+        <p>Your cart is empty.</p>
+    {% endif %}
+</body>
+{% endblock %}

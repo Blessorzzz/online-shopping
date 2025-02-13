@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+
 {% block content %}
 <div class="product-detail">
     <div class="product-image-container">
@@ -8,9 +9,19 @@
         <h1 class="product-name">{{ product.product_name }}</h1>
         <div class="product-price-status">
             <p class="product-price">Price: ${{ product.price }}</p>
-            <p class="product-status {% if product.status == 'stock' %}in-stock{% else %}out-of-stock{% endif %}">Status: {{ product.get_status_display }}</p>
+            <p class="product-status {% if product.status == 'stock' %}in-stock{% else %}out-of-stock{% endif %}">
+                Status: {{ product.get_status_display }}
+            </p>
         </div>
         <p class="product-description">{{ product.description|linebreaksbr }}</p>
+        
+        <!-- 添加到购物车按钮 -->
+        <form method="POST" action="{% url 'add_to_cart' product.product_id %}">
+            {% csrf_token %}
+            <button type="submit" class="add-to-cart-btn">
+                Add to Cart
+            </button>
+        </form>
     </div>
 </div>
 {% endblock %}
