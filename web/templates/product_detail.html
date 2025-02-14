@@ -15,7 +15,7 @@
         </div>
         <p class="product-description">{{ product.description|linebreaksbr }}</p>
         
-        <!-- 添加到购物车按钮 -->
+        <!-- shopping button -->
         <form method="POST" action="{% url 'add_to_cart' product.product_id %}">
             {% csrf_token %}
             <button type="submit" class="add-to-cart-btn">

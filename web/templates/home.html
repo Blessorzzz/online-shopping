@@ -7,7 +7,7 @@
             <img src="{{ product.thumbnail_image.url }}" alt="{{ product.product_name }}" class="product-image">
             <div class="product-info">
                 <h2 class="product-name">{{ product.product_name }}</h2>
-                <p class="product-price">Price: ${{ product.price }}</p>
+                <p class="product-price">${{ product.price }}</p>
             </div>
         </a>
     </div>
@@ -16,7 +16,7 @@
 <div class="pagination">
     <span class="step-links">
         {% if page_obj.has_previous %}
-            <a href="?page=1">&laquo; first</a>
+            <a href="?page=1">&laquo; ome</a>
             <a href="?page={{ page_obj.previous_page_number }}">previous</a>
         {% endif %}
 
