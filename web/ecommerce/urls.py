@@ -1,5 +1,4 @@
 from django.urls import path
-from . import views # the “.” means current directory
 from .views import HomePageView, ProductDetailView
 from django.conf import settings
 from django.conf.urls.static import static
