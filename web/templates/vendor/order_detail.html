@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Order Details - PO Number: {{ order.po_number }}</h2>
+
+<p><strong>Customer:</strong> {{ order.customer.username }}</p>
+<p><strong>Purchase Date:</strong> {{ order.purchase_date }}</p>
+<p><strong>Total Amount:</strong> ${{ order.total_amount }}</p>
+<p><strong>Status:</strong> {{ order.status }}</p>
+
+<h3>Order Items</h3>
+<table border="1">
+    <tr>
+        <th>Product Name</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Subtotal</th>
+    </tr>
+    {% for item in order_items %}
+    <tr>
+        <td>{{ item.product.product_name }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>${{ item.product.price }}</td>
+        <td>${{ item.subtotal }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="4">No items in this order.</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<a href="{% url 'vendor_orders' %}">Back to Orders</a>
+{% endblock %}

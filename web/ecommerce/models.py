@@ -1,5 +1,6 @@
 from django.db import models
 import uuid
+from vendor.models import Vendor
 
 class Product(models.Model):
     STATUS_CHOICES = [
@@ -11,10 +12,12 @@ class Product(models.Model):
                                   help_text='Unique ID for this product across whole shopping mall')
     product_name = models.CharField(max_length=255, default="Unnamed Product")
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    is_active = models.BooleanField(default=True)
     description = models.TextField(default="No description available.")
     thumbnail_image = models.ImageField(upload_to='product_thumbnails/', default="https://via.placeholder.com/150")
     status = models.CharField(max_length=15, choices=STATUS_CHOICES, default='stock')  # Increased max_length to 15
-
+    vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, related_name='products', default=1)
+    
     def __str__(self):
         return self.product_name
 

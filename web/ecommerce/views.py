@@ -1,6 +1,7 @@
 # ecommerce/views.py
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, DetailView, UpdateView
+from django.db.models import Q
 from .models import Product
 from shoppingcart.models import ShoppingCart  # 引用购物车模型
 
@@ -14,9 +15,12 @@ class HomePageView(ListView):
 
     def get_queryset(self):
         query = self.request.GET.get('q')
+        products = Product.objects.filter(is_active=True)  # Only show active products
+
         if query:
-            return Product.objects.filter(product_name__icontains=query).order_by('product_name')
-        return Product.objects.all().order_by('product_name')
+            products = products.filter(product_name__icontains=query)
+
+        return products.order_by('product_name')
 
 # 商品详情页视图
 class ProductDetailView(DetailView):
@@ -59,3 +63,17 @@ def remove_from_cart(request, cart_item_id):
     cart_item = get_object_or_404(ShoppingCart, id=cart_item_id, user=request.user)
     cart_item.delete()
     return redirect('view_cart')  # 删除后重定向到购物车页面
+
+# filter products by query
+def product_list(request):
+    query = request.GET.get('q', '')
+    
+    # Ensure the product query only includes active products
+    products = Product.objects.filter(is_active=True)
+    
+    if query:
+        products = products.filter(
+            Q(product_name__icontains=query) | Q(product_id__icontains=query)
+        )
+    
+    return render(request, 'product_list.html', {'products': products})

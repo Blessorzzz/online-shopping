@@ -3,6 +3,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from ecommerce.models import Product  # 引用 Product 模型
+from django.utils import timezone
 import uuid  # 生成唯一 P.O. 号
 
 class ShoppingCart(models.Model):
@@ -16,13 +17,21 @@ class ShoppingCart(models.Model):
 
 
 class Order(models.Model):
-    ORDER_STATUS_CHOICES = [
-        ('pending', 'Pending'),
-        ('shipped', 'Shipped'),
-        ('cancelled', 'Cancelled'),
+    STATUS_CHOICES = [
+        ('Pending', 'Pending'),
+        ('Shipped', 'Shipped'),
+        ('Delivered', 'Delivered'),
+        ('Cancelled', 'Cancelled'),
     ]
+
+    po_number = models.CharField(max_length=20, unique=True)
+    customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='customer_orders', default=1)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    purchase_date = models.DateTimeField(default=timezone.now)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES)
+
     
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_orders')
     po_number = models.CharField(
         max_length=20, 
         unique=True, 
@@ -33,7 +42,7 @@ class Order(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    status = models.CharField(max_length=20, choices=ORDER_STATUS_CHOICES, default='pending')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     shipping_address = models.TextField()
 
     def save(self, *args, **kwargs):

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Purchase Orders</h2>
+<table border="1">
+    <tr>
+        <th>P.O. Number</th>
+        <th>Purchase Date</th>
+        <th>Customer Name</th>
+        <th>Total Amount</th>
+        <th>Status</th>
+    </tr>
+    {% for order in orders %}
+    <tr>
+        <td>{{ order.po_number }}</td>
+        <td>{{ order.purchase_date }}</td>
+        <td>{{ order.customer.username }}</td>
+        <td>${{ order.total_amount }}</td>
+        <td>{{ order.status }}</td>
+        <td><a href="{% url 'order_detail' order.id %}">View Details</a></td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="5">No purchase orders available.</td>
+    </tr>
+    {% endfor %}
+</table>
+<a href="{% url 'vendor_dashboard' %}">Back to Dashboard</a>
+{% endblock %}

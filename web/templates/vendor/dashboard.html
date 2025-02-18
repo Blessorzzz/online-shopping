@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Vendor Dashboard</h2>
+<p>Welcome, {{ vendor.store_name }}</p>
+<a href="{% url 'add_product' %}">Add Product</a>
+<a href="{% url 'vendor_orders' %}">View Purchase Orders</a>
+<form method="GET">
+    <input type="text" name="q" value="{{ query }}" placeholder="Search products...">
+    <button type="submit">Search</button>
+    {% if query %}
+        <a href="{% url 'vendor_dashboard' %}" style="margin-left: 10px;">
+            <button type="button">Reset</button>
+        </a>
+    {% endif %}
+</form>
+<h3>Your Products</h3>
+<table border="1">
+    <tr>
+        <th>Product ID</th>
+        <th>Product Name</th>
+        <th>Price</th>
+        <th>Actions</th>
+    </tr>
+    {% for product in products %}
+    <tr>
+        <td>{{ product.product_id }}</td>
+        <td>{{ product.product_name }}</td>
+        <td>${{ product.price }}</td>
+        <td>
+            <a href="{% url 'edit_product' product.product_id %}">Edit</a>
+            <a href="{% url 'toggle_product_status' product.product_id %}">
+                {% if product.is_active %}Disable{% else %}Enable{% endif %}
+            </a>
+        </td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="3">No products found.</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
