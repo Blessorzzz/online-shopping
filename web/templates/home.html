@@ -1,3 +1,4 @@
+<!-- filepath: /c:/Users/Josh/django_projects/online-shopping-2/web/templates/home.html -->
 {% extends 'base.html' %}
 {% block content %}
 <div class="product-list">
@@ -6,8 +7,13 @@
         <a href="{% url 'product_detail' product.product_id %}">
             <img src="{{ product.thumbnail_image.url }}" alt="{{ product.product_name }}" class="product-image">
             <div class="product-info">
-                <h2 class="product-name">{{ product.product_name }}</h2>
+                <h2 class="product-name-homepage">{{ product.product_name }}</h2>
                 <p class="product-price">${{ product.price }}</p>
+                {% if product.stock_quantity > 0 %}
+                    <p class="product-stock">Stock: {{ product.stock_quantity }} Available</p>
+                {% else %}
+                    <p class="product-status out-of-stock">Status: Out of Stock</p>
+                {% endif %}
             </div>
         </a>
     </div>

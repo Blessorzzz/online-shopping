@@ -17,9 +17,13 @@ class Product(models.Model):
     thumbnail_image = models.ImageField(upload_to='product_thumbnails/', default="https://via.placeholder.com/150")
     status = models.CharField(max_length=15, choices=STATUS_CHOICES, default='stock')  # Increased max_length to 15
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, related_name='products', default=1)
-    
+    stock_quantity = models.PositiveIntegerField(default=0)
+
     def __str__(self):
         return self.product_name
+    
+    def stock_status(self):
+        return 'Stock' if self.stock_quantity > 0 else 'Out of Stock'
 
 class ProductPhoto(models.Model):
     photo_id = models.AutoField(primary_key=True)

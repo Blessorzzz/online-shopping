@@ -2,12 +2,12 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Vendor
 from shoppingcart.models import Order
 from ecommerce.models import Product
 from .forms import ProductForm
 from django.http import HttpResponseForbidden
-from django.shortcuts import HttpResponse
+from django.views.generic.edit import UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 def custom_login(request):
     if request.method == 'POST':
@@ -92,3 +92,13 @@ def order_detail(request, order_id):
     order_items = order.items.all()  # Assuming 'items' is a related field in Order
 
     return render(request, 'order_detail.html', {'order': order, 'order_items': order_items})
+
+class UpdateStockView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Product
+    fields = ['stock_quantity']
+    template_name = 'vendor/update_stock.html'
+    success_url = '/vendor/dashboard/'  # Redirect to the vendor's dashboard after updating
+
+    def test_func(self):
+        product = self.get_object()
+        return self.request.user == product.vendor.user  # Ensure the vendor owns the product
