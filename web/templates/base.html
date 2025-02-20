@@ -6,28 +6,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}My Online Shop{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <style>
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .nav-right form {
+            display: flex;
+            align-items: center;
+        }
+        .nav-right input[type="text"] {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .nav-right button {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    <div id="menu">
-        <ul class="nav-left">
-            <li><a href="{% url 'home' %}">Home</a></li> |
-            <li><a href="{% url 'shopping_cart' %}"> Cart</a></li> |
-            <li><a href="{% url 'order_list' %}"> Order</a></li> |
-            <li><a href="{% url 'login' %}"> LogIn</a></li> |
-            <li><a href="{% url 'register' %}"> Register</a></li>
+    <div id="menu" class="nav-container">
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+
+            {% if user.is_authenticated %}
+                {% if user.vendor %} 
+                    <!-- Vendor-specific navigation -->
+                    <li><a href="{% url 'vendor_dashboard' %}">Vendor Dashboard</a></li>
+                    <li><a href="{% url 'vendor_orders' %}">View Purchase Orders</a></li>
+                {% else %}
+                    <!-- Customer-specific navigation -->
+                    <li><a href="{% url 'shopping_cart' %}">Cart</a></li>
+                    <li><a href="{% url 'order_list' %}">My Orders</a></li>
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'register' %}">Register</a></li>
+                {% endif %}
+            {% else %}
+                <!-- Show login/register for guests (not logged in) -->
+                <li><a href="{% url 'shopping_cart' %}">Cart</a></li>
+                <li><a href="{% url 'order_list' %}">My Orders</a></li>
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'register' %}">Register</a></li>
+            {% endif %}
         </ul>
-        <ul class="nav-center">
-            {% comment %} <li><a href="{% url 'purchased' %}">Purchased Items</a></li> | {% endcomment %}
-            {% comment %} <li><a href="{% url 'my_taobao' %}">My Account</a></li> {% endcomment %}
-        </ul>
-        <form class="nav-right" method="get" action="{% url 'home' %}">
-            <input type="text" name="q" placeholder="Search">
-            <button type="submit">Search</button>
-        </form>
+        
         <div class="user nav-right">
+            <!-- Search bar appears to the left of the username -->
+            <form method="get" action="{% url 'home' %}">
+                <input type="text" name="q" placeholder="Search product">
+                <button type="submit">Search</button>
+            </form>
+            
             {% if request.user.is_authenticated %}
             <p>Hi {{ user.username }}!</p>
-            <form action="{% url 'logout' %}" method="post" style="display: inline;">
+            <form action="{% url 'logout' %}" method="post">
                 {% csrf_token %}
                 <button type="submit">Logout</button>
             </form>

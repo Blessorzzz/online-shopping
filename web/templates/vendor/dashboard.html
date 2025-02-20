@@ -1,18 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2>Vendor Dashboard</h2>
 <p>Welcome, {{ vendor.store_name }}</p>
-<a href="{% url 'add_product' %}">Add Product</a>
-<a href="{% url 'vendor_orders' %}">View Purchase Orders</a>
-<form method="GET">
-    <input type="text" name="q" value="{{ query }}" placeholder="Search products...">
-    <button type="submit">Search</button>
-    {% if query %}
-        <a href="{% url 'vendor_dashboard' %}" style="margin-left: 10px;">
-            <button type="button">Reset</button>
-        </a>
-    {% endif %}
-</form>
 <h3>Your Products</h3>
 <table border="1">
     <tr>
@@ -39,4 +27,10 @@
     </tr>
     {% endfor %}
 </table>
+
+<div style="text-align: right; margin-top: 20px;">
+    <a href="{% url 'add_product' %}" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;">
+        Add Product
+    </a>
+</div>
 {% endblock %}

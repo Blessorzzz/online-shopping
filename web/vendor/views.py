@@ -7,6 +7,7 @@ from shoppingcart.models import Order
 from ecommerce.models import Product
 from .forms import ProductForm
 from django.http import HttpResponseForbidden
+from django.shortcuts import HttpResponse
 
 def custom_login(request):
     if request.method == 'POST':
@@ -25,7 +26,11 @@ def custom_login(request):
 @login_required
 def vendor_dashboard(request):
     if not hasattr(request.user, 'vendor'):
-        return HttpResponseForbidden("You are not a vendor.")
+        return render(request, 'vendor/not_a_vendor.html')
+
+    vendor = request.user.vendor
+    products = Product.objects.filter(vendor=vendor)
+    return render(request, 'vendor/dashboard.html', {'vendor': vendor, 'products': products})
 
     vendor = request.user.vendor
     query = request.GET.get('q', '').strip()  # Get search query from URL
