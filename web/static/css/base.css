@@ -210,7 +210,14 @@ form.nav-right button:hover {
     font-weight: normal; /* Revert font weight for homepage */
     color: #333; /* Set the text color */
     line-height: 1.5;
-    overflow: visible; /* Ensure the text is fully visible */
+}
+
+.product-name-homepage.limited-lines {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
     text-overflow: ellipsis;
     white-space: normal; /* Allow the text to wrap to the next line */
 }

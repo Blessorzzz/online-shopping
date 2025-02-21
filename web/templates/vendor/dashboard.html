@@ -1,4 +1,4 @@
-<!-- filepath: /c:/Users/Josh/django_projects/online-shopping-2/web/templates/vendor/dashboard.html -->
+<!-- filepath: /c:/Users/Josh/ISI/django_projects/online-shopping/web/templates/vendor/dashboard.html -->
 {% extends 'base.html' %}
 {% block content %}
 <p>Welcome, {{ vendor.store_name }}</p>
@@ -22,7 +22,6 @@
             <a href="{% url 'toggle_product_status' product.product_id %}">
                 {% if product.is_active %}Disable{% else %}Enable{% endif %}
             </a>
-            <a href="{% url 'update_stock' product.pk %}">Update Stock</a> <!-- Add this link -->
         </td>
     </tr>
     {% empty %}

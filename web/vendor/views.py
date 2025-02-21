@@ -6,8 +6,7 @@ from shoppingcart.models import Order
 from ecommerce.models import Product
 from .forms import ProductForm
 from django.http import HttpResponseForbidden
-from django.views.generic.edit import UpdateView
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.db.models import Q
 
 def custom_login(request):
     if request.method == 'POST':
@@ -27,15 +26,6 @@ def custom_login(request):
 def vendor_dashboard(request):
     if not hasattr(request.user, 'vendor'):
         return render(request, 'vendor/not_a_vendor.html')
-
-    vendor = request.user.vendor
-    products = Product.objects.filter(vendor=vendor)
-    return render(request, 'vendor/dashboard.html', {'vendor': vendor, 'products': products})
-
-@login_required
-def vendor_dashboard(request):
-    if not hasattr(request.user, 'vendor'):
-        return render(request, 'vendor/not_a_vendor.html')
     
     vendor = request.user.vendor
     query = request.GET.get('q', '').strip()  # Get search query from URL
@@ -43,9 +33,8 @@ def vendor_dashboard(request):
 
     if query:
         products = products.filter(
-            product_name__icontains=query  # Search by product name (case-insensitive)
-        ) | products.filter(
-            product_id__icontains=query  # Search by product ID (case-insensitive)
+            Q(product_name__icontains=query) |  # Search by product name (case-insensitive)
+            Q(product_id__icontains=query)  # Search by product ID (case-insensitive)
         )
 
     return render(request, 'vendor/dashboard.html', {'vendor': vendor, 'products': products, 'query': query})
@@ -55,7 +44,7 @@ def vendor_orders(request):
     if not hasattr(request.user, 'vendor'):
         return HttpResponseForbidden("You are not a vendor.")
     vendor = request.user.vendor
-    orders = Order.objects.filter(user=request.user)
+    orders = Order.objects.filter(products__vendor=vendor).distinct()
     return render(request, 'vendor/vendor_orders.html', {'orders': orders})
 
 @login_required
@@ -71,6 +60,7 @@ def add_product(request):
         form = ProductForm()
     return render(request, 'vendor/add_product.html', {'form': form})
 
+@login_required
 def edit_product(request, product_id):
     product = get_object_or_404(Product, product_id=product_id)
 
@@ -97,13 +87,3 @@ def order_detail(request, order_id):
     order_items = order.items.all()  # Assuming 'items' is a related field in Order
 
     return render(request, 'order_detail.html', {'order': order, 'order_items': order_items})
-
-class UpdateStockView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = Product
-    fields = ['stock_quantity']
-    template_name = 'vendor/update_stock.html'
-    success_url = '/vendor/dashboard/'  # Redirect to the vendor's dashboard after updating
-
-    def test_func(self):
-        product = self.get_object()
-        return self.request.user == product.vendor.user  # Ensure the vendor owns the product
