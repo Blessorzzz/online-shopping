@@ -9,6 +9,3 @@ psw:123456bless
 the only vendor:
 vendor1
 Seller_01
-
-testing
-
