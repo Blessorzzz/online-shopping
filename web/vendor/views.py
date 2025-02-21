@@ -32,6 +32,11 @@ def vendor_dashboard(request):
     products = Product.objects.filter(vendor=vendor)
     return render(request, 'vendor/dashboard.html', {'vendor': vendor, 'products': products})
 
+@login_required
+def vendor_dashboard(request):
+    if not hasattr(request.user, 'vendor'):
+        return render(request, 'vendor/not_a_vendor.html')
+    
     vendor = request.user.vendor
     query = request.GET.get('q', '').strip()  # Get search query from URL
     products = Product.objects.filter(vendor=vendor)  # Get all products for this vendor

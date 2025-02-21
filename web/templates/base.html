@@ -65,11 +65,25 @@
         
         <div class="user nav-right">
             <!-- Search bar appears to the left of the username -->
-            <form method="get" action="{% url 'home' %}">
-                <input type="text" name="q" placeholder="Search product">
-                <button type="submit">Search</button>
-            </form>
-            
+            {% if user.is_authenticated %}
+                {% if user.vendor %} 
+                <form method="GET">
+                    <input type="text" name="q" value="{{ query }}" placeholder="Search product">
+                    <button type="submit">Search</button>
+                    {% if query %}
+                        <a href="{% url 'vendor_dashboard' %}" style="margin-left: 10px;">
+                            <button type="button">Reset</button>
+                        </a>
+                    {% endif %}
+                </form>
+                {% else %}
+                    <form method="get" action="{% url 'home' %}">
+                        <input type="text" name="q" placeholder="Search product">
+                        <button type="submit">Search</button>
+                    </form>
+                {% endif %}
+            {% endif %}
+
             {% if request.user.is_authenticated %}
             <p>Hi {{ user.username }}!</p>
             <form action="{% url 'logout' %}" method="post">
