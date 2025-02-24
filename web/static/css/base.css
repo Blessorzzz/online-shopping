@@ -316,6 +316,16 @@ form.nav-right button:hover {
     max-width: 45%; /* Set the maximum width of the product info */
 }
 
+.product-age-range {
+    font-size: 16px;
+    color: white;
+    background-color: #007bff;
+    padding: 5px 10px;
+    border-radius: 15px;
+    margin-top: 10px;
+    display: inline-block;
+}
+
 /* Responsive Fix for Smaller Screens */
 @media (max-width: 768px) {
     .product-detail {

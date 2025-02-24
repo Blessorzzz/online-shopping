@@ -1,4 +1,3 @@
-<!-- filepath: /c:/Users/Josh/django_projects/online-shopping-2/web/templates/product_detail.html -->
 {% extends 'base.html' %}
 
 {% block content %}
@@ -8,6 +7,9 @@
     </div>
     <div class="product-info">
         <h1 class="product-name-detail">{{ product.product_name }}</h1>
+        <p class="product-age-range">
+            Age Range: {{ product.age_range }}
+        </p>
         <div class="product-price-status">
             <p class="product-price">Price: ${{ product.price }}</p>
             {% if product.stock_quantity > 0 %}

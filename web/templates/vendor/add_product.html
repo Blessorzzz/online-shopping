@@ -1,4 +1,4 @@
-<!-- filepath: /Users/williamchan/Desktop/ISI/django_project/online-shopping/web/templates/vendor/add_product.html -->
+<!-- filepath: /c:/Users/Josh/ISI/django_projects/online-shopping/web/templates/vendor/add_product.html -->
 {% extends 'vendor/vendor_base.html' %}
 {% block content %}
 <div class="container" style="max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); text-align: center;">
@@ -37,18 +37,22 @@
             function validateForm() {
                 let fields = document.querySelectorAll("input, textarea, select");
                 let price = document.querySelector("input[name='price']");
-                let stock = document.querySelector("input[name='stock']");
-                let thumbnail = document.querySelector("input[name='thumbnail']");
+                let stock = document.querySelector("input[name='stock_quantity']");
+                let thumbnail = document.querySelector("input[name='thumbnail_image']");
+                let minAge = document.querySelector("input[name='min_age']");
+                let maxAge = document.querySelector("input[name='max_age']");
                 let priceError = document.getElementById("price-error");
                 let stockError = document.getElementById("stock-error");
                 let thumbnailError = document.getElementById("thumbnail-error");
                 let emptyError = document.getElementById("empty-error");
+                let ageError = document.getElementById("age-error");
                 let isValid = true;
                 
                 priceError.style.display = "none";
                 stockError.style.display = "none";
                 thumbnailError.style.display = "none";
                 emptyError.style.display = "none";
+                ageError.style.display = "none";
                 
                 fields.forEach(field => {
                     if (field.hasAttribute("required") && field.value.trim() === "") {
@@ -75,6 +79,11 @@
                     thumbnailError.style.display = "block";
                     return false;
                 }
+
+                if (parseInt(minAge.value) > parseInt(maxAge.value)) {
+                    ageError.style.display = "block";
+                    return false;
+                }
                 
                 return true;
             }
@@ -90,7 +99,7 @@
             }
 
             document.addEventListener('DOMContentLoaded', function() {
-                const thumbnailInput = document.querySelector("input[name='thumbnail']");
+                const thumbnailInput = document.querySelector("input[name='thumbnail_image']");
                 thumbnailInput.addEventListener('change', previewThumbnail);
             });
         </script>
@@ -99,6 +108,7 @@
             <span id="price-error" class="error-message">Price must be greater than zero.</span>
             <span id="stock-error" class="error-message">Stock quantity cannot be negative.</span>
             <span id="thumbnail-error" class="error-message">A thumbnail image must be selected.</span>
+            <span id="age-error" class="error-message">Minimum age cannot be greater than maximum age.</span>
         </div>
         <button type="submit" style="width: 100%; padding: 10px; background-color: #ED7014; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; transition: background 0.3s;">
             Add Product
