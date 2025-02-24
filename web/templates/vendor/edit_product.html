@@ -1,11 +1,80 @@
-<!-- filepath: /c:/Users/Josh/ISI/django_projects/online-shopping/web/templates/vendor/edit_product.html -->
-{% extends 'base.html' %}
+{% extends 'vendor/vendor_base.html' %}
 {% block content %}
-<h2>Edit Product</h2>
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Save Changes</button>
-</form>
-<a href="{% url 'vendor_dashboard' %}">Back to Dashboard</a>
+<div class="container" style="max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); text-align: center;">
+    <h2 style="color: #333; margin-bottom: 20px;">Edit Product</h2>
+    <form method="post" enctype="multipart/form-data" onsubmit="return validateForm()" style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+        {% csrf_token %}
+        <div style="width: 100%; text-align: left;">
+            {{ form.as_p }}
+        </div>
+        <div class="thumbnail-container">
+            <img src="{{ product.thumbnail_image.url }}">
+        </div>
+        <style>
+            textarea {
+                height: 150px;
+                resize: none;
+                display: block;
+                margin: auto;
+            }
+            input, select, textarea {
+                width: 100%;
+                padding: 8px;
+                margin-top: 5px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                text-align: center;
+            }
+            .error-message {
+                color: red;
+                font-size: 14px;
+                display: none;
+                margin-top: 5px;
+            }
+            .thumbnail-container {
+                text-align: center;
+                margin-top: 10px;
+            }
+            .thumbnail-container img {
+                max-width: 200px;
+                max-height: 200px;
+                border-radius: 5px;
+                border: 1px solid #ccc;
+                margin-top: 5px;
+            }
+        </style>
+        <script>
+            function validateForm() {
+                let price = document.querySelector("input[name='price']");
+                let stock = document.querySelector("input[name='stock']");
+                let priceError = document.getElementById("price-error");
+                let stockError = document.getElementById("stock-error");
+                
+                priceError.style.display = "none";
+                stockError.style.display = "none";
+                
+                if (price.value <= 0) {
+                    priceError.style.display = "block";
+                    return false;
+                }
+                if (stock.value < 0) {
+                    stockError.style.display = "block";
+                    return false;
+                }
+                return true;
+            }
+        </script>
+        
+        <div style="width: 100%; text-align: left;">
+            <span id="price-error" class="error-message">Price must be greater than zero.</span>
+            <span id="stock-error" class="error-message">Stock quantity cannot be negative.</span>
+        </div>
+        <button type="submit" style="width: 100%; padding: 10px; background-color: #ED7014; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; transition: background 0.3s;">
+            Save Changes
+        </button>
+    </form>
+    <div style="margin-top: 15px;">
+        <a href="{% url 'vendor_dashboard' %}" style="color: #ED7014; text-decoration: none; font-size: 14px;">Back to Dashboard</a>
+    </div>
+</div>
 {% endblock %}

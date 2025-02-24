@@ -17,7 +17,6 @@
             {% endif %}
         </div>
         <p class="product-description">{{ product.description|linebreaksbr }}</p>
-        
         <!-- shopping button -->
         <form method="POST" action="{% url 'add_to_cart' product.product_id %}">
             {% csrf_token %}

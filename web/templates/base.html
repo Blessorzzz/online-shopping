@@ -1,3 +1,4 @@
+<!-- filepath: /Users/williamchan/Desktop/ISI/django_project/online-shopping/web/templates/base.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,6 +36,20 @@
             border-radius: 5px;
             cursor: pointer;
         }
+        .vendor-login-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .vendor-login-button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -43,20 +58,14 @@
             <li><a href="{% url 'home' %}">Home</a></li>
 
             {% if user.is_authenticated %}
-                {% if user.vendor %} 
-                    <!-- Vendor-specific navigation -->
-                    <li><a href="{% url 'vendor_dashboard' %}">Vendor Dashboard</a></li>
-                    <li><a href="{% url 'vendor_orders' %}">View Purchase Orders</a></li>
-                {% else %}
-                    <!-- Customer-specific navigation -->
-                    <li><a href="{% url 'shopping_cart' %}">Cart</a></li>
-                    <li><a href="{% url 'order_list' %}">My Orders</a></li>
-                    <li><a href="{% url 'login' %}">Login</a></li>
-                    <li><a href="{% url 'register' %}">Register</a></li>
-                {% endif %}
+                <!-- Customer-specific navigation -->
+                <li><a href="{% url 'shopping_cart' %}">My Cart</a></li>
+                <li><a href="{% url 'order_list' %}">My Orders</a></li>
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'register' %}">Register</a></li>       
             {% else %}
                 <!-- Show login/register for guests (not logged in) -->
-                <li><a href="{% url 'shopping_cart' %}">Cart</a></li>
+                <li><a href="{% url 'shopping_cart' %}">My Cart</a></li>
                 <li><a href="{% url 'order_list' %}">My Orders</a></li>
                 <li><a href="{% url 'login' %}">Login</a></li>
                 <li><a href="{% url 'register' %}">Register</a></li>
@@ -65,24 +74,10 @@
         
         <div class="user nav-right">
             <!-- Search bar appears to the left of the username -->
-            {% if user.is_authenticated %}
-                {% if user.vendor %} 
-                <form method="GET">
-                    <input type="text" name="q" value="{{ query }}" placeholder="Search product">
-                    <button type="submit">Search</button>
-                    {% if query %}
-                        <a href="{% url 'vendor_dashboard' %}" style="margin-left: 10px;">
-                            <button type="button">Reset</button>
-                        </a>
-                    {% endif %}
-                </form>
-                {% else %}
-                    <form method="get" action="{% url 'home' %}">
-                        <input type="text" name="q" placeholder="Search product">
-                        <button type="submit">Search</button>
-                    </form>
-                {% endif %}
-            {% endif %}
+            <form method="get" action="{% url 'home' %}">
+                <input type="text" name="q" placeholder="Search product">
+                <button type="submit">Search</button>
+            </form>
 
             {% if request.user.is_authenticated %}
             <p>Hi {{ user.username }}!</p>
@@ -95,5 +90,8 @@
     </div>
     {% block content %}
     {% endblock content %}
+    {% if not request.user.is_authenticated and request.path != '/login/' %}
+        <a href="{% url 'login' %}" class="vendor-login-button">Log in as Vendor</a>
+    {% endif %}
 </body>
 </html>

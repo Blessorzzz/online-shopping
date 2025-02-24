@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'vendor/vendor_base.html' %}
 {% block content %}
 <h2>Purchase Orders</h2>
 <table border="1">
@@ -13,7 +13,7 @@
     <tr>
         <td>{{ order.po_number }}</td>
         <td>{{ order.purchase_date }}</td>
-        <td>{{ order.customer.username }}</td>
+        <td>{{ order.user.username }}</td>
         <td>${{ order.total_amount }}</td>
         <td>{{ order.status }}</td>
         <td><a href="{% url 'order_detail' order.id %}">View Details</a></td>
@@ -24,5 +24,7 @@
     </tr>
     {% endfor %}
 </table>
-<a href="{% url 'vendor_dashboard' %}">Back to Dashboard</a>
+<div style="margin-top: 15px;">
+    <a href="{% url 'vendor_dashboard' %}" style="color: #ED7014; text-decoration: none; font-size: 14px;">Back to Dashboard</a>
+</div>
 {% endblock %}

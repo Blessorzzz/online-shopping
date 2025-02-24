@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %} <!-- Load the static template tag library -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Online Shop{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/vendor_base.css' %}">
+</head>
+<body>
+    <div id="menu" class="nav-container">
+        <ul>
+            <li><a href="{% url 'customer_view' %}" class="btn btn-secondary">Customer View</a></li>
+            <li><a href="{% url 'vendor_dashboard' %}">Vendor Dashboard</a></li>
+            <li><a href="{% url 'vendor_orders' %}">View Purchase Orders</a></li>
+        </ul>
+        
+        <div class="user nav-right">
+            <!-- Search bar appears to the left of the username -->
+            <form method="GET">
+                <input type="text" name="q" value="{{ query }}" placeholder="Search product">
+                <button type="submit">Search</button>
+                {% if query %}
+                    <a href="{% url 'vendor_dashboard' %}" style="margin-left: 10px;">
+                        <button type="button">Reset</button>
+                    </a>
+                {% endif %}
+            </form>
+
+            {% if request.user.is_authenticated %}
+            <p>Hi {{ user.username }}!</p>
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="logout-button">Logout</button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+    {% block content %}
+    {% endblock content %}
+</body>
+</html>

@@ -1,0 +1,26 @@
+textarea {
+    height: 150px;
+    resize: none;
+    display: block;
+    margin: auto;
+    background-color: #444; /* Dark gray background for textarea */
+    color: white; /* White text color */
+    border: 1px solid #ccc; /* Border color */
+    border-radius: 5px; /* Border radius */
+}
+input, select, textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    background-color: #444; /* Dark gray background for inputs and selects */
+    color: white; /* White text color */
+    border: 1px solid #ccc; /* Border color */
+    border-radius: 5px; /* Border radius */
+    text-align: center;
+}
+.error-message {
+    color: red;
+    font-size: 14px;
+    display: none;
+    margin-top: 5px;
+}

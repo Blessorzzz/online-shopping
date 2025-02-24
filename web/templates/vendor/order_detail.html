@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'vendor/vendor_base.html' %}
 {% block content %}
 <h2>Order Details - PO Number: {{ order.po_number }}</h2>
 
@@ -28,6 +28,7 @@
     </tr>
     {% endfor %}
 </table>
-
-<a href="{% url 'vendor_orders' %}">Back to Orders</a>
+<div style="margin-top: 15px;">
+    <a href="{% url 'vendor_orders' %}" class="back-to-orders-button">Back to Orders</a>
+</div>
 {% endblock %}

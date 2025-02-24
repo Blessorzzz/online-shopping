@@ -1,10 +1,111 @@
-{% extends 'base.html' %}
+<!-- filepath: /Users/williamchan/Desktop/ISI/django_project/online-shopping/web/templates/vendor/add_product.html -->
+{% extends 'vendor/vendor_base.html' %}
 {% block content %}
-<h2>Add Product</h2>
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Add Product</button>
-</form>
-<a href="{% url 'vendor_dashboard' %}">Back to Dashboard</a>
+<div class="container" style="max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); text-align: center;">
+    <h2 style="color: #333; margin-bottom: 20px;">Add Product</h2>
+    <form method="post" enctype="multipart/form-data" onsubmit="return validateForm()" style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+        {% csrf_token %}
+        <div style="width: 100%; text-align: left;">
+            {{ form.as_p }}
+        </div>
+        <div class="thumbnail-container" style="margin-top: 10px;">
+            <img id="thumbnail-preview" src="#" alt="Thumbnail Preview" style="display: none; max-width: 100%; height: auto; border-radius: 5px; border: 1px solid #ccc;">
+        </div>
+        <style>
+            textarea {
+                height: 150px;
+                resize: none;
+                display: block;
+                margin: auto;
+            }
+            input, select, textarea {
+                width: 100%;
+                padding: 8px;
+                margin-top: 5px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                text-align: center;
+            }
+            .error-message {
+                color: red;
+                font-size: 14px;
+                display: none;
+                margin-top: 5px;
+            }
+        </style>
+        <script>
+            function validateForm() {
+                let fields = document.querySelectorAll("input, textarea, select");
+                let price = document.querySelector("input[name='price']");
+                let stock = document.querySelector("input[name='stock']");
+                let thumbnail = document.querySelector("input[name='thumbnail']");
+                let priceError = document.getElementById("price-error");
+                let stockError = document.getElementById("stock-error");
+                let thumbnailError = document.getElementById("thumbnail-error");
+                let emptyError = document.getElementById("empty-error");
+                let isValid = true;
+                
+                priceError.style.display = "none";
+                stockError.style.display = "none";
+                thumbnailError.style.display = "none";
+                emptyError.style.display = "none";
+                
+                fields.forEach(field => {
+                    if (field.hasAttribute("required") && field.value.trim() === "") {
+                        isValid = false;
+                    }
+                });
+                
+                if (!isValid) {
+                    emptyError.style.display = "block";
+                    return false;
+                }
+                
+                if (price.value <= 0) {
+                    priceError.style.display = "block";
+                    return false;
+                }
+                
+                if (stock.value < 0) {
+                    stockError.style.display = "block";
+                    return false;
+                }
+                
+                if (thumbnail.files.length === 0) {
+                    thumbnailError.style.display = "block";
+                    return false;
+                }
+                
+                return true;
+            }
+
+            function previewThumbnail(event) {
+                const reader = new FileReader();
+                reader.onload = function() {
+                    const preview = document.getElementById('thumbnail-preview');
+                    preview.src = reader.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(event.target.files[0]);
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const thumbnailInput = document.querySelector("input[name='thumbnail']");
+                thumbnailInput.addEventListener('change', previewThumbnail);
+            });
+        </script>
+        <div style="width: 100%; text-align: left;">
+            <span id="empty-error" class="error-message">All fields must be filled out.</span>
+            <span id="price-error" class="error-message">Price must be greater than zero.</span>
+            <span id="stock-error" class="error-message">Stock quantity cannot be negative.</span>
+            <span id="thumbnail-error" class="error-message">A thumbnail image must be selected.</span>
+        </div>
+        <button type="submit" style="width: 100%; padding: 10px; background-color: #ED7014; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; transition: background 0.3s;">
+            Add Product
+        </button>
+    </form>
+    <div style="margin-top: 15px;">
+        <a href="{% url 'vendor_dashboard' %}" style="color: #ED7014; text-decoration: none; font-size: 14px;">Back to Dashboard</a>
+    </div>
+</div>
 {% endblock %}

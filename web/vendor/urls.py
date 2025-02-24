@@ -9,4 +9,5 @@ urlpatterns = [
     path('products/toggle/<uuid:product_id>/', toggle_product_status, name='toggle_product_status'),
     path('vendor_orders/', views.vendor_orders, name='vendor_orders'),
     path('vendor/orders/<int:order_id>/', order_detail, name='order_detail'),
+    path('customer-view/', views.customer_view, name='customer_view'),
 ]

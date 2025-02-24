@@ -1,0 +1,407 @@
+/* General styles */
+body {
+    font-family: Arial, Helvetica, sans-serif; /* Set the font family for the entire page */
+    font-size: 16px; /* Set the base font size */
+    color: #000000; /* Set the base text color */
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+    box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: inherit; /* Inherit box-sizing from the body */
+}
+
+/* Form styles */
+form {
+    max-width: 400px; /* Set the maximum width of the form */
+    margin: 20px auto; /* Center the form horizontally and add vertical margin */
+    padding: auto; /* Add padding inside the form */
+    background-color:transparent; /* Set the background color of the form */
+    border-radius: 8px; /* Round the corners of the form */
+}
+
+input,
+button {
+    width: 100%; /* Make the input and button elements take up the full width of their container */
+    padding: 10px; /* Add padding inside the input and button elements */
+    margin-top:10px;
+    margin-bottom: 10px; /* Add margin below the input and button elements */
+    border: 1px solid #ccc; /* Add a border to the input and button elements */
+    border-radius: 5px; /* Round the corners of the input and button elements */
+    font-size: 14px; /* Set the font size of the input and button elements */
+}
+
+button {
+    color: white; /* Set the text color of the button */
+    border: none; /* Remove the default border of the button */
+    cursor: pointer; /* Change the cursor to a pointer when hovering over the button */
+    transition: background-color 0.3s ease; /* Add a transition effect to the background color */
+}
+
+button:hover {
+    background-color: #555; /* Change the background color when hovering over the button */
+}
+
+/* Navigation menu styles */
+#menu {
+    background-color: #333; /* Set the background color of the navigation menu */
+    overflow: hidden; /* Prevent content from overflowing */
+    padding: 0; /* Remove default padding */
+    margin: 0; /* Remove default margin */
+    display: flex; /* Use flexbox for layout */
+    justify-content: space-between; /* Distribute space between the items */
+    align-items: center; /* Align items vertically in the center */
+    padding: 0px 20px; /* Add padding inside the navigation menu */
+    height:50px;
+}
+
+#menu ul {
+    list-style: none; /* Remove default list styling */
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+    display: flex; /* Use flexbox for layout */
+    align-items: center;
+}
+
+#menu ul.nav-center {
+    flex: 2;
+    justify-content: center;
+}
+
+#menu ul.nav-center {
+    flex: 2;
+    justify-content: center;
+}
+
+#menu ul.nav-left {
+    flex: 1; /* Allow the left navigation items to take up available space */
+}
+
+#menu ul li {
+    display: inline; /* Display list items inline */
+    margin-right: 15px; /* Add margin to the right of each list item */
+}
+
+#menu ul a {
+    text-decoration: none; /* Remove default link underline */
+    color: #f5f5f5; /* Set the text color of the links */
+    height: 36px;
+    padding: 8px 16px; /* Add padding inside the links */
+    transition: background-color 0.3s ease; /* Add a transition effect to the background color */
+    border-radius: 5px; /* Round the corners of the links */
+}
+
+#menu ul a:hover {
+    background-color: #555; /* Change the background color when hovering over the links */
+}
+
+/* Search bar styles */
+form.nav-right {
+    margin:10px;
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+form.nav-right input[type="text"] {
+    width: 200px;
+    padding: 8px;
+    border-radius: 5px 0 0 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+form.nav-right button {
+    margin-top:10px;
+    margin-bottom: 10px;
+    padding: 8px; 
+    border-radius: 0 5px 5px 0; 
+    border: 1px solid #ccc;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form.nav-right button:hover {
+    background-color: #007bff;
+}
+
+/* User section styles */
+.user {
+    color: white; /* Set the text color of the user section */
+    font-size: 15px; /* Set the font size of the user section */
+    display: flex; /* Use flexbox for layout */
+    align-items: center; /* Align items vertically in the center */
+    gap: 10px;
+    height: 36px;
+    margin-left: 20px; /* Add space to the left of the user section */
+}
+
+.user p {
+    margin: 0 10px 0 0; /* Add margin to the right of the user name */
+    font-size: 14px; 
+    color: white;
+}
+
+.user button {
+    margin:10px;
+    padding: 8px 16px !important;
+    height: 36px;
+    align-items: center;
+    display: flex;
+    border: none; /* Remove the default border of the button */
+    color: white; /* Set the text color of the button */
+    border-radius: 5px; /* Round the corners of the button */
+    cursor: pointer; /* Change the cursor to a pointer when hovering over the button */
+}
+
+.user button:hover {
+    background-color: #4da6ff; /* Change the background color when hovering over the button */
+}
+
+/* Product list styles */
+.product-list {
+    display: flex; /* Use flexbox for layout */
+    flex-wrap: wrap; /* Allow items to wrap to the next line */
+    gap: 20px; /* Add space between the items */
+    justify-content: flex-start;  /* Ensure items are evenly spaced */
+}
+
+.product-item {
+    border: 1px solid #ddd; /* Add a border to the product item */
+    padding: 10px; /* Add padding inside the product item */
+    width: calc(20% - 20px); /* Adjust width to fit 5 items in one row, accounting for gap */
+    text-align: left; /* Center the text inside the product item */
+    box-sizing: border-box; /* Ensure padding and border are included in the width */
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Arrange items in a column */
+    align-items: flex-start; /* Center items horizontally */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add transition for hover effect */
+    border-radius: 8px; 
+    background-color: #fff;
+}
+
+.product-item:hover {
+    transform: scale(1.05); /* Slightly scale up the product item */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow effect */
+}
+
+.product-image {
+    width: 100%; /* Maximize the image size inside the box */
+    height: 200px; /* Maintain the aspect ratio of the image */
+    object-fit: cover; /* Ensure the entire image is visible without cropping */
+    border-radius: 8px;
+    background-color: #f9f9f9; /* Add a background color to fill the empty space */
+}
+
+.product-info {
+    margin-top: 10px; /* Add margin to the top of the product info */
+    width: 100%; /* Set the width of the product info */
+}
+
+.product-name-homepage {
+    font-size: 14px; /* Revert font size for homepage */
+    font-weight: normal; /* Revert font weight for homepage */
+    color: #333; /* Set the text color */
+    line-height: 1.5;
+}
+
+.product-name-homepage.limited-lines {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal; /* Allow the text to wrap to the next line */
+}
+
+.product-name-detail {
+    font-size: 22px; /* Font size for product detail page */
+    font-weight: bold; /* Make the product name bold */
+    color: #333; /* Set the text color */
+    line-height: 1.5;
+    overflow: visible; /* Ensure the text is fully visible */
+    text-overflow: ellipsis;
+    white-space: normal; /* Allow the text to wrap to the next line */
+}
+
+.product-price {
+    color: #ff5000; /* Set the text color of the product price */
+    font-size: 22px; /* Increase the font size to match the status */
+    font-weight: bold; /* Make the product price bold */
+    margin-top:8px;
+}
+
+.product-price-status {
+    display: flex; /* Use flexbox for layout */
+    gap: 20px; /* Add space between the price and status */
+    align-items: center; /* Align items vertically in the center */
+}
+
+.product-status {
+    font-size: 22px; /* Set the font size of the product status */
+    font-weight: bold; /* Make the product status bold */
+    padding: 8px 12px; /* Add padding inside the product status */
+    display: inline-block; /* Display the product status as an inline block */
+    border-radius: 5px; /* Round the corners of the product status */
+    margin-bottom: 15px; /* Add margin to the bottom of the product status */
+}
+
+.product-status.in-stock {
+    color: rgb(18, 226, 18); /* Set the text color for in-stock status */
+    background: #eaffea; /* Set the background color for in-stock status */
+}
+
+.product-status.out-of-stock {
+    color: red; /* Set the text color for out-of-stock status */
+    background: #ffecec; /* Set the background color for out-of-stock status */
+}
+
+/* Product detail styles */
+.product-detail {
+    display: flex; /* Use flexbox for layout */
+    flex-wrap: wrap; /* Allow items to wrap to the next line */
+    gap: 30px; /* Add space between the items */
+    margin: 40px 0; /* Add margin to the top and bottom of the product detail */
+    align-items: flex-start; /* Align items to the start of the flex container */
+}
+
+.product-stock {
+    font-size: 22px; /* Set the font size of the product stock */
+    font-weight: bold; /* Make the product stock bold */
+    padding: 8px 12px; /* Add padding inside the product stock */
+    display: inline-block; /* Display the product stock as an inline block */
+    border-radius: 5px; /* Round the corners of the product stock */
+    margin-bottom: 15px; /* Add margin to the bottom of the product stock */
+    color: rgb(18, 226, 18); /* Set the text color for in-stock */
+    background: #eaffea; /* Set the background color for in-stock */
+}
+
+/* Product Image Container */
+.product-detail .product-image-container {
+    flex: 1; /* Allow the image container to take up available space */
+    display: flex; /* Use flexbox for layout */
+    justify-content: center; /* Center the image horizontally */
+    align-items: center; /* Center the image vertically */
+    background-color: #f9f9f9; /* Optional: Add a background color to the image container */
+    border-radius: 5px; /* Round the corners of the image container */
+    padding: 5px; /* Add padding inside the image container */
+    max-width: 50%; /* Set the maximum width of the image container */
+}
+
+/* Product Image Styling */
+.product-detail .product-image {
+    max-width: 100%; /* Ensure the image fills the container */
+    height: auto; /* Maintain the aspect ratio of the image */
+    border: 1px solid #ddd; /* Add a border to the image */
+    padding: 5px; /* Add padding inside the image */
+    background-color: #fff; /* Set the background color of the image */
+    transition: transform 0.3s ease-in-out; /* Add a transition effect to the transform property */
+}
+
+.product-detail .product-image:hover {
+    transform: scale(1.03); /* Slight zoom effect when hovering over the image */
+}
+
+/* Product Info Section */
+.product-detail .product-info {
+    flex: 1; /* Allow the product info to take up available space */
+    max-width: 45%; /* Set the maximum width of the product info */
+}
+
+/* Responsive Fix for Smaller Screens */
+@media (max-width: 768px) {
+    .product-detail {
+        flex-direction: column; /* Stack items vertically on smaller screens */
+        align-items: center; /* Center items horizontally */
+    }
+    .product-detail .product-image-container,
+    .product-detail .product-info {
+        max-width: 100%; /* Set the maximum width to 100% on smaller screens */
+    }
+}
+
+/* Pagination styles */
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pagination a {
+    color: #007bff;
+    text-decoration: none;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin: 0 5px;
+}
+
+.pagination .current {
+    padding: 5px 10px;
+    border: 1px solid #007bff;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    margin: 0 5px;
+}
+
+.nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background-color: #333; 
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid white;
+}
+.nav-container ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 20px;
+}
+.nav-container ul li {
+    display: inline;
+}
+.nav-container ul li a {
+    text-decoration: none;
+    color: white; 
+    font-weight: bold;
+}
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.nav-right form {
+    display: flex;
+    align-items: center;
+}
+.nav-right input[type="text"] {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.nav-right button {
+    padding: 5px 10px;
+    background-color: #333; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.nav-right button:hover {
+    background-color: #555; 
+}
+.nav-right .logout-button {
+    background-color: #dc3545;
+}
+.nav-right .logout-button:hover {
+    background-color: #c82333;
+}

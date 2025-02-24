@@ -1,0 +1,17 @@
+{% extends 'vendor/vendor_base.html' %}
+
+{% block content %}
+<div class="product-list">
+    {% for product in products %}
+    <div class="product-item">
+        <a href="{% url 'product_detail' product.id %}">
+            <img src="{{ product.thumbnail.url }}" alt="{{ product.product_name }}" class="product-image">
+            <div class="product-info">
+                <h2 class="product-name">{{ product.product_name }}</h2>
+                <p class="product-price">${{ product.price }}</p>
+            </div>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
