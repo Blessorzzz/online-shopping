@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import edit_product, toggle_product_status, order_detail
+from .views import toggle_product_status, order_detail
 
 urlpatterns = [
     path('dashboard/', views.vendor_dashboard, name='vendor_dashboard'),

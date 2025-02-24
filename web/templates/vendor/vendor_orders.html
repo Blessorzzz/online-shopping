@@ -1,30 +1,100 @@
 {% extends 'vendor/vendor_base.html' %}
 {% block content %}
-<h2>Purchase Orders</h2>
-<table border="1">
-    <tr>
-        <th>P.O. Number</th>
-        <th>Purchase Date</th>
-        <th>Customer Name</th>
-        <th>Total Amount</th>
-        <th>Status</th>
-    </tr>
-    {% for order in orders %}
-    <tr>
-        <td>{{ order.po_number }}</td>
-        <td>{{ order.purchase_date }}</td>
-        <td>{{ order.user.username }}</td>
-        <td>${{ order.total_amount }}</td>
-        <td>{{ order.status }}</td>
-        <td><a href="{% url 'order_detail' order.id %}">View Details</a></td>
-    </tr>
-    {% empty %}
-    <tr>
-        <td colspan="5">No purchase orders available.</td>
-    </tr>
-    {% endfor %}
-</table>
-<div style="margin-top: 15px;">
-    <a href="{% url 'vendor_dashboard' %}" style="color: #ED7014; text-decoration: none; font-size: 14px;">Back to Dashboard</a>
+<div class="orders-container" style="max-width: 1000px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); text-align: center;">
+    <h2 style="color: #333; margin-bottom: 20px;">Purchase Orders</h2>
+    <table class="orders-table" style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+        <thead>
+            <tr>
+                <th style="border: 1px solid #ddd; padding: 12px 15px; background-color: #f4f4f4;">P.O. Number</th>
+                <th style="border: 1px solid #ddd; padding: 12px 15px; background-color: #f4f4f4;">Purchase Date</th>
+                <th style="border: 1px solid #ddd; padding: 12px 15px; background-color: #f4f4f4;">Customer Name</th>
+                <th style="border: 1px solid #ddd; padding: 12px 15px; background-color: #f4f4f4;">Total Amount</th>
+                <th style="border: 1px solid #ddd; padding: 12px 15px; background-color: #f4f4f4;">Status</th>
+                <th style="border: 1px solid #ddd; padding: 12px 15px; background-color: #f4f4f4;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td style="border: 1px solid #ddd; padding: 12px 15px;">{{ order.po_number }}</td>
+                <td style="border: 1px solid #ddd; padding: 12px 15px;">{{ order.purchase_date }}</td>
+                <td style="border: 1px solid #ddd; padding: 12px 15px;">{{ order.user.username }}</td>
+                <td style="border: 1px solid #ddd; padding: 12px 15px;">${{ order.total_amount }}</td>
+                <td style="border: 1px solid #ddd; padding: 12px 15px;">{{ order.status }}</td>
+                <td style="border: 1px solid #ddd; padding: 12px 15px;"><a href="{% url 'order_detail' order.id %}" class="view-details-button">View Details</a></td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" style="border: 1px solid #ddd; padding: 12px 15px; text-align: center;">No purchase orders available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'vendor_dashboard' %}" class="back-to-dashboard-button" style="display: inline-block; padding: 10px 20px; background-color: #ED7014; color: white; text-decoration: none; border-radius: 5px; transition: background 0.3s;">Back to Dashboard</a>
 </div>
 {% endblock %}
+
+<style>
+.orders-container {
+    max-width: 1000px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    text-align: center;
+}
+
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.orders-table th, .orders-table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.orders-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.orders-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.orders-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.view-details-button {
+    display: inline-block;
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.view-details-button:hover {
+    background-color: #0056b3;
+}
+
+.back-to-dashboard-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ED7014;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.back-to-dashboard-button:hover {
+    background-color: #d65c00;
+}
+</style>

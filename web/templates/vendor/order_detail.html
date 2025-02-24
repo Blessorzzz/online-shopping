@@ -1,34 +1,41 @@
+<!-- filepath: /Users/williamchan/Desktop/ISI/django_project/online-shopping/web/templates/vendor/order_detail.html -->
 {% extends 'vendor/vendor_base.html' %}
 {% block content %}
-<h2>Order Details - PO Number: {{ order.po_number }}</h2>
+<div class="order-detail-container" style="max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
+    <h2 style="color: #333; margin-bottom: 20px;">Order Details - PO Number: {{ order.po_number }}</h2>
 
-<p><strong>Customer:</strong> {{ order.customer.username }}</p>
-<p><strong>Purchase Date:</strong> {{ order.purchase_date }}</p>
-<p><strong>Total Amount:</strong> ${{ order.total_amount }}</p>
-<p><strong>Status:</strong> {{ order.status }}</p>
+    <p><strong>Customer:</strong> {{ order.user.username }}</p>
+    <p><strong>Purchase Date:</strong> {{ order.purchase_date }}</p>
+    <p><strong>Total Amount:</strong> ${{ order.total_amount }}</p>
+    <p><strong>Status:</strong> {{ order.status }}</p>
 
-<h3>Order Items</h3>
-<table border="1">
-    <tr>
-        <th>Product Name</th>
-        <th>Quantity</th>
-        <th>Price</th>
-        <th>Subtotal</th>
-    </tr>
-    {% for item in order_items %}
-    <tr>
-        <td>{{ item.product.product_name }}</td>
-        <td>{{ item.quantity }}</td>
-        <td>${{ item.product.price }}</td>
-        <td>${{ item.subtotal }}</td>
-    </tr>
-    {% empty %}
-    <tr>
-        <td colspan="4">No items in this order.</td>
-    </tr>
-    {% endfor %}
-</table>
-<div style="margin-top: 15px;">
-    <a href="{% url 'vendor_orders' %}" class="back-to-orders-button">Back to Orders</a>
+    <h3 style="margin-top: 20px;">Order Items</h3>
+    <table class="order-items-table" style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+        <thead>
+            <tr>
+                <th style="border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Product Name</th>
+                <th style="border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Quantity</th>
+                <th style="border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Price</th>
+                <th style="border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in order_items %}
+            <tr>
+                <td style="border: 1px solid #ddd; padding: 8px;">{{ item.product.product_name }}</td>
+                <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">{{ item.quantity }}</td>
+                <td style="border: 1px solid #ddd; padding: 8px; text-align: right;">${{ item.product.price }}</td>
+                <td style="border: 1px solid #ddd; padding: 8px; text-align: right;">${{ item.subtotal }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" style="border: 1px solid #ddd; padding: 8px; text-align: center;">No items in this order.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div style="margin-top: 20px; text-align: center;">
+        <a href="{% url 'vendor_orders' %}" class="back-to-orders-button" style="display: inline-block; padding: 10px 20px; background-color: #ED7014; color: white; text-decoration: none; border-radius: 5px; transition: background 0.3s;">Back to Orders</a>
+    </div>
 </div>
 {% endblock %}

@@ -2,12 +2,11 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from shoppingcart.models import Order, OrderItem
+from shoppingcart.models import Order
 from ecommerce.models import Product
 from .forms import ProductForm
 from django.http import HttpResponseForbidden
 from django.db.models import Q
-import uuid
 
 def custom_login(request):
     if request.method == 'POST':
@@ -23,6 +22,7 @@ def custom_login(request):
         form = AuthenticationForm()
     return render(request, 'registration/login.html', {'form': form})
 
+# vendor search function
 @login_required
 def vendor_dashboard(request):
     if not hasattr(request.user, 'vendor'):
