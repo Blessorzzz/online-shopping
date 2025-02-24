@@ -405,3 +405,13 @@ form.nav-right button:hover {
 .nav-right .logout-button:hover {
     background-color: #c82333;
 }
+
+.product-age-range {
+    font-size: 16px;
+    color: white;
+    background-color: #007bff;
+    padding: 5px 10px;
+    border-radius: 15px;
+    margin-top: 10px;
+    display: inline-block;
+}

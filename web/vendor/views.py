@@ -7,6 +7,7 @@ from ecommerce.models import Product
 from .forms import ProductForm
 from django.http import HttpResponseForbidden
 from django.db.models import Q
+import uuid
 
 def custom_login(request):
     if request.method == 'POST':
@@ -89,7 +90,8 @@ def order_detail(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     order_items = order.items.all()  # Assuming 'items' is a related field in Order
 
-    return render(request, 'order_detail.html', {'order': order, 'order_items': order_items})
+    return render(request, 'vendor/order_detail.html', {'order': order, 'order_items': order_items})
 
-def customer_view(request):
-    return render(request, "customer_view.html", {"is_vendor": request.user.groups.filter(name="vendors").exists()})
+def vendor_product_detail(request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
+    return render(request, 'vendor/vendor_product_detail.html', {'product': product})
