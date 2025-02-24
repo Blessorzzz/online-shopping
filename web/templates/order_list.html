@@ -14,6 +14,21 @@
 
 <h2>My Orders</h2>
 
+<form method="get" action=".">
+    <label for="status">Filter by status:</label>
+    <select name="status" id="status">
+        <option value="">All</option>
+        <option value="pending">Pending</option>
+        <option value="shipped">Shipped</option>
+        <option value="cancelled">Cancelled</option>
+        <option value="hold">Hold</option>
+        <option value="ticket-issued">Ticket Issued</option>
+        <option value="complete">Complete</option>
+        <option value="refunded">Refunded</option>
+    </select>
+    <button type="submit">Filter</button>
+</form>
+
 <table class="order-table">
     <thead>
         <tr>
@@ -29,7 +44,7 @@
             <td>{{ order.po_number }}</td>
             <td>{{ order.created_at|date:"F d, Y, g:i a" }}</td>
             <td>${{ order.total_amount }}</td>
-            <td class="{% if order.status == 'pending' %}status-pending{% elif order.status == 'shipped' %}status-shipped{% elif order.status == 'cancelled' %}status-cancelled{% endif %}">
+            <td class="{% if order.status == 'pending' %}status-pending{% elif order.status == 'shipped' %}status-shipped{% elif order.status == 'cancelled' %}status-cancelled{% elif order.status == 'hold' %}status-hold{% elif order.status == 'ticket-issued' %}status-ticket-issued{% elif order.status == 'complete' %}status-complete{% elif order.status == 'refunded' %}status-refunded{% endif %}">
                 {{ order.status }}
             </td>
         </tr>
@@ -38,7 +53,7 @@
 </table>
 
 <script>
-    // 让整行变成可点击的链接
+    // Make the entire row clickable
     document.addEventListener("DOMContentLoaded", function() {
         document.querySelectorAll(".clickable-row").forEach(row => {
             row.addEventListener("click", function() {

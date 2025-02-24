@@ -1,4 +1,3 @@
-# shoppingcart/views.py
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
@@ -10,7 +9,6 @@ from user.models import UserProfile
 import logging
 
 logger = logging.getLogger(__name__)
-
 
 @login_required  # 确保用户已经登录才能添加商品到购物车
 def add_to_cart(request, product_id):
@@ -86,7 +84,7 @@ def checkout(request):
 
     # **创建订单**
     order = Order.objects.create(
-        user=request.user,
+        customer=request.user,
         total_amount=total_amount,
         shipping_address=user_profile.address,
     )
@@ -110,10 +108,14 @@ def checkout(request):
 
 @login_required
 def order_list(request):
-    orders = Order.objects.filter(user=request.user).order_by('-created_at')
+    status_filter = request.GET.get('status')
+    if status_filter:
+        orders = Order.objects.filter(status=status_filter, customer=request.user)
+    else:
+        orders = Order.objects.filter(customer=request.user)
     return render(request, 'order_list.html', {'orders': orders})
 
 @login_required
 def order_detail(request, order_id):
-    order = get_object_or_404(Order, id=order_id, user=request.user)
+    order = get_object_or_404(Order, id=order_id, customer=request.user)
     return render(request, 'order_detail.html', {'order': order})

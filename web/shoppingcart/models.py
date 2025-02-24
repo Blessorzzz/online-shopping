@@ -1,5 +1,3 @@
-# shoppingcart/models.py
-
 from django.db import models
 from django.contrib.auth.models import User
 from ecommerce.models import Product  # 引用 Product 模型
@@ -15,33 +13,21 @@ class ShoppingCart(models.Model):
     def __str__(self):
         return f"{self.quantity} x {self.product.product_name} for {self.user.username}"
 
-
 class Order(models.Model):
     STATUS_CHOICES = [
-        ('Pending', 'Pending'),
-        ('Shipped', 'Shipped'),
-        ('Delivered', 'Delivered'),
-        ('Cancelled', 'Cancelled'),
+        ('pending', 'Pending'),
+        ('shipped', 'Shipped'),
+        ('cancelled', 'Cancelled'),
+        ('hold', 'Hold'),
+        ('ticket-issued', 'Ticket Issued'),
+        ('complete', 'Complete'),
+        ('refunded', 'Refunded'),
     ]
 
-    po_number = models.CharField(max_length=20, unique=True)
+    po_number = models.CharField(max_length=20, unique=True, editable=False, default='', null=True, blank=True)
     customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='customer_orders', default=1)
-    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
-    purchase_date = models.DateTimeField(default=timezone.now)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES)
-
-    
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_orders')
-    po_number = models.CharField(
-        max_length=20, 
-        unique=True, 
-        editable=False, 
-        default='',  # 先允许为空
-        null=True, 
-        blank=True
-    )
-    created_at = models.DateTimeField(auto_now_add=True)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    purchase_date = models.DateTimeField(default=timezone.now)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     shipping_address = models.TextField()
 
@@ -51,8 +37,7 @@ class Order(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"Order {self.po_number} - {self.user.username}"
-
+        return f"Order {self.po_number} - {self.customer.username}"
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')

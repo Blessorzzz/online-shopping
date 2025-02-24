@@ -10,5 +10,5 @@ urlpatterns = [
     path('cart/', views.view_cart, name='shopping_cart'),
     path('checkout/', views.checkout, name='checkout'),  # 结算 URL
     path('orders/', views.order_list, name='order_list'),  # 订单列表
-    path('order/<int:order_id>/', views.order_detail, name='order_detail'),
+    path('order/<int:order_id>/', views.order_detail, name='order_detail'),  # 订单详情
 ]

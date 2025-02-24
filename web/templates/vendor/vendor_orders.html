@@ -18,10 +18,10 @@
             <tr>
                 <td style="border: 1px solid #ddd; padding: 12px 15px;">{{ order.po_number }}</td>
                 <td style="border: 1px solid #ddd; padding: 12px 15px;">{{ order.purchase_date }}</td>
-                <td style="border: 1px solid #ddd; padding: 12px 15px;">{{ order.user.username }}</td>
+                <td style="border: 1px solid #ddd; padding: 12px 15px;">{{ order.customer.username }}</td>
                 <td style="border: 1px solid #ddd; padding: 12px 15px;">${{ order.total_amount }}</td>
                 <td style="border: 1px solid #ddd; padding: 12px 15px;">{{ order.status }}</td>
-                <td style="border: 1px solid #ddd; padding: 12px 15px;"><a href="{% url 'order_detail' order.id %}" class="view-details-button">View Details</a></td>
+                <td style="border: 1px solid #ddd; padding: 12px 15px;"><a href="{% url 'vendor_order_detail' order.id %}" class="view-details-button">View Details</a></td>
             </tr>
             {% empty %}
             <tr>

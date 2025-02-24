@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import toggle_product_status, order_detail
+from .views import toggle_product_status, vendor_order_detail
 
 urlpatterns = [
     path('dashboard/', views.vendor_dashboard, name='vendor_dashboard'),
@@ -8,6 +8,6 @@ urlpatterns = [
     path('products/edit/<uuid:product_id>/', views.edit_product, name='edit_product'),
     path('products/toggle/<uuid:product_id>/', toggle_product_status, name='toggle_product_status'),
     path('vendor_orders/', views.vendor_orders, name='vendor_orders'),
-    path('vendor/order_detail/<int:order_id>/', order_detail, name='order_detail'),
+    path('vendor/order_detail/<int:order_id>/', vendor_order_detail, name='vendor_order_detail'),
     path('vendor/product/<uuid:product_id>/', views.vendor_product_detail, name='vendor_product_detail'),
 ]

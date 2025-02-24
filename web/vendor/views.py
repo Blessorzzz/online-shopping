@@ -79,6 +79,7 @@ def edit_product(request, product_id):
     return render(request, 'vendor/edit_product.html', {'form': form, 'product': product})
 
 # Toggle the status of a product between active and inactive
+@login_required
 def toggle_product_status(request, product_id):
     product = get_object_or_404(Product, product_id=product_id)
     product.is_active = not product.is_active
@@ -86,12 +87,27 @@ def toggle_product_status(request, product_id):
     return redirect('vendor_dashboard')
 
 # Display the details of an order
-def order_detail(request, order_id):
+@login_required
+def vendor_order_detail(request, order_id):
+    if not hasattr(request.user, 'vendor'):
+        return HttpResponseForbidden("You are not a vendor.")
+    
     order = get_object_or_404(Order, id=order_id)
     order_items = order.items.all()  # Assuming 'items' is a related field in Order
 
-    return render(request, 'vendor/order_detail.html', {'order': order, 'order_items': order_items})
+    if request.method == 'POST':
+        new_status = request.POST.get('status')
+        if new_status in dict(Order.STATUS_CHOICES):
+            order.status = new_status
+            order.save()
+            return redirect('vendor_order_detail', order_id=order.id)
 
+    return render(request, 'vendor/vendor_order_detail.html', {'order': order, 'order_items': order_items})
+
+@login_required
 def vendor_product_detail(request, product_id):
+    if not hasattr(request.user, 'vendor'):
+        return HttpResponseForbidden("You are not a vendor.")
+    
     product = get_object_or_404(Product, pk=product_id)
     return render(request, 'vendor/vendor_product_detail.html', {'product': product})
