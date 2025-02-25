@@ -10,17 +10,20 @@ class HomePageView(ListView):
     model = Product
     template_name = 'home.html'
     context_object_name = 'products'
-    paginate_by = 5  # 每页显示的商品数
-    ordering = ['product_name']
+    paginate_by = 8  # 每页显示的商品数
+
 
     def get_queryset(self):
+        queryset = Product.objects.filter(is_active=True)
         query = self.request.GET.get('q')
-        products = Product.objects.filter(is_active=True)  # Only show active products
-
         if query:
-            products = products.filter(product_name__icontains=query)
-
-        return products.order_by('product_name')
+            queryset = queryset.filter(product_name__icontains=query)
+        return queryset
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        print(f"Total products: {self.get_queryset().count()}")
+        print(f"Number of pages: {context['paginator'].num_pages}")
+        return context
 
 # 商品详情页视图
 class ProductDetailView(DetailView):

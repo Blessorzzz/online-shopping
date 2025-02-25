@@ -2,24 +2,40 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% block content %}
+{# home.html 修改部分 #}
 <div class="product-list">
     {% for product in products %}
-    <div class="product-item">
-        <a href="{% url 'product_detail' product.product_id %}">
-            <img src="{{ product.thumbnail_image.url }}" alt="{{ product.product_name }}" class="product-image">
-            <div class="product-info">
-                <h2 class="product-name-homepage limited-lines">{{ product.product_name }}</h2>
-                <p class="product-price">${{ product.price }}</p>
-                {% if product.stock_quantity > 0 %}
-                    <p class="product-stock">{% trans "Stock" %}: {{ product.stock_quantity }} {% trans "Available" %}</p>
-                {% else %}
-                    <p class="product-status out-of-stock">{% trans "Status" %}: {% trans "Out of Stock" %}</p>
+    <div class="product-card">
+        <div class="image-wrapper">
+            <a href="{% url 'product_detail' product.product_id %}">
+                <img src="{{ product.thumbnail_image.url }}" 
+                     alt="{{ product.product_name }}" 
+                     class="product-thumb">
+                {% if product.stock_quantity == 0 %}
+                <div class="sold-out-tag">SOLD OUT</div>
                 {% endif %}
+            </a>
+        </div>
+        <div class="product-meta">
+            <h3 class="product-title">
+                <a href="{% url 'product_detail' product.product_id %}">
+                    {{ product.product_name }}
+                </a>
+            </h3>
+            <div class="price-section">
+                <span class="current-price">¥{{ product.price }}</span>
             </div>
-        </a>
+            <div class="sales-info">
+                <span class="sales-count">Sales: 999+</span>
+                <span class="stock-status {% if product.stock_quantity == 0 %}out-stock{% endif %}">
+                    {{ product.stock_quantity|default:"0" }} Left
+                </span>
+            </div>
+        </div>
     </div>
     {% endfor %}
 </div>
+
 <div class="pagination">
     <span class="step-links">
         {% if page_obj.has_previous %}
