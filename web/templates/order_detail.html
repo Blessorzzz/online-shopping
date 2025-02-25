@@ -17,7 +17,7 @@
 
     <div class="order-info">
         <p><strong>P.O. Number:</strong> {{ order.po_number }}</p>
-        <p><strong>Purchase Date:</strong> {{ order.created_at|date:"F d, Y, g:i a" }}</p>
+        <p><strong>Purchase Date:</strong> {{ order.purchase_date }}</p>
         <p><strong>Shipping Address:</strong> {{ order.shipping_address }}</p>
         <p><strong>Total Amount:</strong> <span class="total-amount">${{ order.total_amount }}</span></p>
         <p><strong>Status:</strong> <span class="status {{ order.status }}">{{ order.status }}</span></p>

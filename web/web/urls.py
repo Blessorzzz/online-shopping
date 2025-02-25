@@ -16,7 +16,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from vendor.views import custom_login
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -26,6 +25,5 @@ urlpatterns = [
     path('shoppingcart/', include('shoppingcart.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('vendor/', include('vendor.urls')),
-    path('login/', custom_login, name='login'),
 ]
 
