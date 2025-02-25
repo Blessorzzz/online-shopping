@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Access Denied</title>
+    <title>{% trans "Access Denied" %}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -47,9 +47,9 @@
 <body>
 
     <div class="popup-box">
-        <h2>You are not a vendor</h2>
-        <p>Please log in as a vendor to access this page.</p>
-        <a href="/accounts/login/">Back to Login</a>
+        <h2>{% trans "You are not a vendor" %}</h2>
+        <p>{% trans "Please log in as a vendor to access this page." %}</p>
+        <a href="/accounts/login/">{% trans "Back to Login" %}</a>
     </div>
 
 </body>

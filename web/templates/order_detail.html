@@ -1,6 +1,7 @@
 {% extends "base.html" %}
+{% load static i18n %}
 {% block content %}
-{% load static %}
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,26 +13,27 @@
 </head>
 <body>
 
+
 <div class="order-container">
-    <h2>Order Details</h2>
-
+    <h2>{% trans "Order Details" %}</h2>
+    
     <div class="order-info">
-        <p><strong>P.O. Number:</strong> {{ order.po_number }}</p>
-        <p><strong>Purchase Date:</strong> {{ order.created_at|date:"F d, Y, g:i a" }}</p>
-        <p><strong>Shipping Address:</strong> {{ order.shipping_address }}</p>
-        <p><strong>Total Amount:</strong> <span class="total-amount">${{ order.total_amount }}</span></p>
-        <p><strong>Status:</strong> <span class="status {{ order.status }}">{{ order.status }}</span></p>
+        <p><strong>{% trans "P.O. Number:" %}</strong> {{ order.po_number }}</p>
+        <p><strong>{% trans "Purchase Date:" %}</strong> {{ order.created_at|date:"F d, Y, g:i a" }}</p>
+        <p><strong>{% trans "Shipping Address:" %}</strong> {{ order.shipping_address }}</p>
+        <p><strong>{% trans "Total Amount:" %}</strong> <span class="total-amount">${{ order.total_amount }}</span></p>
+        <p><strong>{% trans "Status:" %}</strong> <span class="status {{ order.status }}">{{ order.status }}</span></p>
     </div>
-
-    <h3>Items in this order:</h3>
-
+    
+    <h3>{% trans "Items in this order:" %}</h3>
+    
     <table class="order-table">
         <thead>
             <tr>
-                <th>Product</th>
-                <th>Quantity</th>
-                <th>Unit Price</th>
-                <th>Subtotal</th>
+                <th>{% trans "Product" %}</th>
+                <th>{% trans "Quantity" %}</th>
+                <th>{% trans "Unit Price" %}</th>
+                <th>{% trans "Subtotal" %}</th>
             </tr>
         </thead>
         <tbody>
@@ -45,11 +47,8 @@
             {% endfor %}
         </tbody>
     </table>
-
-    <a href="{% url 'order_list' %}" class="back-button">Back to Orders</a>
+    
+    <a href="{% url 'order_list' %}" class="back-button">{% trans "Back to Orders" %}</a>
 </div>
-
-</body>
-</html>
-
 {% endblock %}
+    
