@@ -3,7 +3,17 @@
 {% block content %}
 <div class="product-detail">
     <div class="product-image-container">
+        <!-- 显示主图 -->
         <img src="{{ product.thumbnail_image.url }}" alt="{{ product.product_name }}" class="product-image">
+        <div class="product-thumbnail-container">
+            {% for photo in product.photos.all %}
+                <img src="{{ photo.photo.url }}" alt="{{ product.product_name }} thumbnail" class="product-thumbnail">
+            {% endfor %}
+        </div>
+        <!-- 可选：显示视频 -->
+        {% for video in product.videos.all %}
+            <video src="{{ video.video.url }}" controls class="product-video"></video>
+        {% endfor %}
     </div>
     <div class="product-info">
         <h1 class="product-name-detail">{{ product.product_name }}</h1>
