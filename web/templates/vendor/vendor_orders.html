@@ -1,16 +1,17 @@
 {% extends 'vendor/vendor_base.html' %}
+{% load i18n %}
 {% block content %}
 <div class="orders-container" style="max-width: 1000px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); text-align: center;">
-    <h2 style="color: #333; margin-bottom: 20px;">Purchase Orders</h2>
+    <h2 style="color: #333; margin-bottom: 20px;">{% trans "Purchase Orders" %}</h2>
     <table class="orders-table" style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
         <thead>
             <tr>
-                <th style="border: 1px solid #ddd; padding: 12px 15px; background-color: #f4f4f4;">P.O. Number</th>
-                <th style="border: 1px solid #ddd; padding: 12px 15px; background-color: #f4f4f4;">Purchase Date</th>
-                <th style="border: 1px solid #ddd; padding: 12px 15px; background-color: #f4f4f4;">Customer Name</th>
-                <th style="border: 1px solid #ddd; padding: 12px 15px; background-color: #f4f4f4;">Total Amount</th>
-                <th style="border: 1px solid #ddd; padding: 12px 15px; background-color: #f4f4f4;">Status</th>
-                <th style="border: 1px solid #ddd; padding: 12px 15px; background-color: #f4f4f4;">Actions</th>
+                <th style="border: 1px solid #ddd; padding: 12px 15px; background-color: #f4f4f4;">{% trans "P.O. Number" %}</th>
+                <th style="border: 1px solid #ddd; padding: 12px 15px; background-color: #f4f4f4;">{% trans "Purchase Date" %}</th>
+                <th style="border: 1px solid #ddd; padding: 12px 15px; background-color: #f4f4f4;">{% trans "Customer Name" %}</th>
+                <th style="border: 1px solid #ddd; padding: 12px 15px; background-color: #f4f4f4;">{% trans "Total Amount" %}</th>
+                <th style="border: 1px solid #ddd; padding: 12px 15px; background-color: #f4f4f4;">{% trans "Status" %}</th>
+                <th style="border: 1px solid #ddd; padding: 12px 15px; background-color: #f4f4f4;">{% trans "Actions" %}</th>
             </tr>
         </thead>
         <tbody>
@@ -21,16 +22,20 @@
                 <td style="border: 1px solid #ddd; padding: 12px 15px;">{{ order.customer.username }}</td>
                 <td style="border: 1px solid #ddd; padding: 12px 15px;">${{ order.total_amount }}</td>
                 <td style="border: 1px solid #ddd; padding: 12px 15px;">{{ order.status }}</td>
-                <td style="border: 1px solid #ddd; padding: 12px 15px;"><a href="{% url 'vendor_order_detail' order.id %}" class="view-details-button">View Details</a></td>
+                <td style="border: 1px solid #ddd; padding: 12px 15px;">
+                    <a href="{% url 'vendor_order_detail' order.id %}" class="view-details-button">{% trans "View Details" %}</a>
+                </td>
             </tr>
             {% empty %}
             <tr>
-                <td colspan="6" style="border: 1px solid #ddd; padding: 12px 15px; text-align: center;">No purchase orders available.</td>
+                <td colspan="6" style="border: 1px solid #ddd; padding: 12px 15px; text-align: center;">{% trans "No purchase orders available." %}</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    <a href="{% url 'vendor_dashboard' %}" class="back-to-dashboard-button" style="display: inline-block; padding: 10px 20px; background-color: #ED7014; color: white; text-decoration: none; border-radius: 5px; transition: background 0.3s;">Back to Dashboard</a>
+    <a href="{% url 'vendor_dashboard' %}" class="back-to-dashboard-button" style="display: inline-block; padding: 10px 20px; background-color: #ED7014; color: white; text-decoration: none; border-radius: 5px; transition: background-color 0.3s ease;">
+        {% trans "Back to Dashboard" %}
+    </a>
 </div>
 {% endblock %}
 

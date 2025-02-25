@@ -1,8 +1,9 @@
 <!-- filepath: /Users/williamchan/Desktop/ISI/django_project/online-shopping/web/templates/vendor/add_product.html -->
 {% extends 'vendor/vendor_base.html' %}
+{% load i18n %}
 {% block content %}
 <div class="container" style="max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); text-align: center;">
-    <h2 style="color: #333; margin-bottom: 20px;">Add Product</h2>
+    <h2 style="color: #333; margin-bottom: 20px;">{% trans "Add Product" %}</h2>
     <form method="post" enctype="multipart/form-data" onsubmit="return validateForm()" style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
         {% csrf_token %}
         <div style="width: 100%; text-align: left;">
@@ -165,18 +166,18 @@
             });
         </script>
         <div style="width: 100%; text-align: left;">
-            <span id="empty-error" class="error-message">All fields must be filled out.</span>
-            <span id="price-error" class="error-message">Price must be greater than zero.</span>
-            <span id="stock-error" class="error-message">Stock quantity cannot be negative.</span>
-            <span id="thumbnail-error" class="error-message">A thumbnail image must be selected.</span>
-            <span id="age-error" class="error-message">Minimum age cannot be greater than maximum age.</span>
-        </div>
+            <span id="empty-error" class="error-message">{% trans "All fields must be filled out." %}</span>
+            <span id="price-error" class="error-message">{% trans "Price must be greater than zero." %}</span>
+            <span id="stock-error" class="error-message">{% trans "Stock quantity cannot be negative." %}</span>
+            <span id="thumbnail-error" class="error-message">{% trans "A thumbnail image must be selected." %}</span>
+            <span id="age-error" class="error-message">{% trans "Minimum age cannot be greater than maximum age." %}</span>
+        </div>        
         <button type="submit" style="width: 100%; padding: 10px; background-color: #ED7014; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; transition: background 0.3s;">
-            Add Product
+            {% trans "Add Product" %}
         </button>
     </form>
     <div style="margin-top: 15px;">
-        <a href="{% url 'vendor_dashboard' %}" style="color: #ED7014; text-decoration: none; font-size: 14px;">Back to Dashboard</a>
+        <a href="{% url 'vendor_dashboard' %}" style="color: #ED7014; text-decoration: none; font-size: 14px;">{% trans "Back to Dashboard" %}</a>
     </div>
 </div>
 
