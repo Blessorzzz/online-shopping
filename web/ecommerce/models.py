@@ -32,7 +32,15 @@ class Product(models.Model):
 class ProductPhoto(models.Model):
     photo_id = models.AutoField(primary_key=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='photos')
-    photo_url = models.URLField(default="https://via.placeholder.com/150")
+    photo = models.ImageField(upload_to='product_photos/', default="https://via.placeholder.com/150")
 
     def __str__(self):
         return f"Photo for {self.product.product_name}"
+
+class ProductVideo(models.Model):
+    video_id = models.AutoField(primary_key=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='videos')
+    video = models.FileField(upload_to='product_videos/', null=True, blank=True)
+
+    def __str__(self):
+        return f"Video for {self.product.product_name}"
