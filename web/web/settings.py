@@ -34,13 +34,13 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    "modeltranslation",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "modeltranslation",
     "ecommerce",
     "user",
     "shoppingcart",
@@ -117,14 +117,14 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = "en"
+LANGUAGE_CODE = 'en'
 USE_L10N = True
 
 LANGUAGES = [
     ('en', _('English')),
     ('zh-hans', _('Chinese')),
     ('es', _('Spanish')),
-    ('ja', _('Japanese')),  # 添加日语支持
+    ('ja', _('Japanese')),  
 ]
 
 
