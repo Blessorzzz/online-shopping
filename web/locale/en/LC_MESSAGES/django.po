@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-25 15:10+0800\n"
+"POT-Creation-Date: 2025-02-26 00:38+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
+#: .\ecommerce\models.py:15 .\templates\vendor\dashboard.html:10
+#: .\templates\vendor\vendor_order_detail.html:15
+msgid "Product Name"
+msgstr ""
+
+#: .\ecommerce\models.py:18
+msgid "Description"
+msgstr ""
 
 #: .\templates\base.html:7 .\templates\vendor\vendor_base.html:7
 msgid "My Online Shop"
@@ -53,36 +62,35 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: .\templates\base.html:89 .\templates\vendor\vendor_base.html:30
+#: .\templates\base.html:91 .\templates\vendor\vendor_base.html:30
 msgid "Hi"
 msgstr ""
 
-#: .\templates\base.html:92 .\templates\vendor\vendor_base.html:33
+#: .\templates\base.html:94 .\templates\vendor\vendor_base.html:33
 msgid "Logout"
 msgstr ""
 
-#: .\templates\base.html:100
+#: .\templates\base.html:102
 msgid "Log in as Vendor"
 msgstr ""
 
-#: .\templates\home.html:14 .\templates\product_detail.html:14
+#: .\templates\home.html:14 .\templates\product_detail.html:48
 #: .\templates\vendor\vendor_product_detail.html:16
 msgid "Stock"
 msgstr ""
 
-#: .\templates\home.html:14 .\templates\product_detail.html:14
+#: .\templates\home.html:14 .\templates\product_detail.html:50
 #: .\templates\vendor\vendor_product_detail.html:16
 msgid "Available"
 msgstr ""
 
 #: .\templates\home.html:16 .\templates\order_list.html:38
-#: .\templates\product_detail.html:16 .\templates\vendor\vendor_orders.html:13
+#: .\templates\vendor\vendor_orders.html:13
 #: .\templates\vendor\vendor_product_detail.html:18
 msgid "Status"
 msgstr ""
 
-#: .\templates\home.html:16 .\templates\product_detail.html:16
-#: .\templates\vendor\vendor_product_detail.html:18
+#: .\templates\home.html:16 .\templates\vendor\vendor_product_detail.html:18
 msgid "Out of Stock"
 msgstr ""
 
@@ -208,20 +216,24 @@ msgstr ""
 msgid "Total Amount"
 msgstr ""
 
-#: .\templates\product_detail.html:10
-#: .\templates\vendor\vendor_product_detail.html:11
-msgid "Age Range"
-msgstr ""
-
-#: .\templates\product_detail.html:12 .\templates\vendor\dashboard.html:11
+#: .\templates\product_detail.html:38 .\templates\vendor\dashboard.html:11
 #: .\templates\vendor\vendor_order_detail.html:17
 #: .\templates\vendor\vendor_product_detail.html:14
 #: .\templates\view_cart.html:18
 msgid "Price"
 msgstr ""
 
-#: .\templates\product_detail.html:23
+#: .\templates\product_detail.html:44
+#: .\templates\vendor\vendor_product_detail.html:11
+msgid "Age Range"
+msgstr ""
+
+#: .\templates\product_detail.html:59
 msgid "Add to Cart"
+msgstr ""
+
+#: .\templates\product_detail.html:68
+msgid "Product Details"
 msgstr ""
 
 #: .\templates\register.html:43
@@ -285,11 +297,6 @@ msgstr ""
 
 #: .\templates\vendor\dashboard.html:9
 msgid "Product ID"
-msgstr ""
-
-#: .\templates\vendor\dashboard.html:10
-#: .\templates\vendor\vendor_order_detail.html:15
-msgid "Product Name"
 msgstr ""
 
 #: .\templates\vendor\dashboard.html:12
@@ -419,9 +426,8 @@ msgstr ""
 
 #: .\web\settings.py:125
 msgid "Spanish"
-msgstr "ス"
+msgstr ""
 
 #: .\web\settings.py:126
 msgid "Japanese"
 msgstr ""
-
