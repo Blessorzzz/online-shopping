@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load i18n %}
+
 {% block content %}
 <div class="product-detail-container">
     <!-- 主内容区 -->
@@ -34,19 +35,19 @@
         <div class="info-section">
             <h1 class="product-title">{{ product.product_name }}</h1>
             <div class="price-section">
-                <span class="price-label">Price</span>
+                <span class="price-label">{% trans "Price" %}</span>
                 <span class="price">¥{{ product.price }}</span>
             </div>
-            
+ 
             <div class="specs">
                 <div class="spec-item">
-                    <span class="spec-label">Age Range:</span>
+                    <span class="spec-label">{% trans "Age Range" %}:</span>
                     <span class="spec-value">{{ product.age_range }}</span>
                 </div>
                 <div class="spec-item">
-                    <span class="spec-label">Stock:</span>
+                    <span class="spec-label">{% trans "Stock" %}:</span>
                     <span class="spec-value {% if product.stock_quantity == 0 %}out-of-stock{% endif %}">
-                        {{ product.stock_quantity|default:"0" }} Available
+                        {{ product.stock_quantity|default:"0" }} {% trans "Available" %}
                     </span>
                 </div>
             </div>
@@ -55,7 +56,7 @@
                 <form method="POST" action="{% url 'add_to_cart' product.product_id %}">
                     {% csrf_token %}
                     <button type="submit" class="buy-btn" {% if product.stock_quantity == 0 %}disabled{% endif %}>
-                        🛒 Add to Cart
+                        🛒 {% trans "Add to Cart" %}
                     </button>
                 </form>
             </div>
@@ -64,7 +65,7 @@
 
     <!-- 商品描述区 -->
     <div class="description-section">
-        <h3>Product Details</h3>
+        <h3>{% trans "Product Details" %}</h3>
         <div class="description-content">
             {{ product.description|linebreaksbr }}
         </div>
@@ -79,5 +80,7 @@
         });
         element.parentElement.classList.add('active');
     }
-    </script>
+</script>
+
 {% endblock %}
+
