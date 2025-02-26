@@ -127,7 +127,41 @@ class Order(models.Model):
         
         # 最终保存更新
         super().save(*args, **kwargs)
+<<<<<<< HEAD
 >>>>>>> 80523284 (11)
+=======
+    hold_date = models.DateTimeField(null=True, blank=True)
+    complete_date = models.DateTimeField(null=True, blank=True)
+    pending_date = models.DateTimeField(null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        # 生成PO号（仅创建时）
+        if not self.po_number:
+            self.po_number = f'PO-{uuid.uuid4().hex[:10].upper()}'
+            # 首次保存生成 id 和 po_number
+            super().save(*args, **kwargs)
+        else:
+            # 后续更新时，仅在状态变更时更新时间字段
+            if self.pk:
+                original = Order.objects.get(pk=self.pk)
+                current_status = self.status
+                if original.status != current_status:
+                    now = timezone.now()
+                    status_date_map = {
+                        'pending': 'pending_date',
+                        'shipped': 'shipment_date',
+                        'cancelled': 'cancel_date',
+                        'hold': 'hold_date',
+                        'ticket-issued': 'ticket_issue_date',
+                        'complete': 'complete_date',
+                        'refunded': 'refund_date'
+                    }
+                    date_field = status_date_map.get(current_status)
+                    if date_field:
+                        setattr(self, date_field, now)
+            # 保存更新
+            super().save(*args, **kwargs)
+>>>>>>> 9fb70b71 (1)
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
