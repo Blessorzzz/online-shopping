@@ -60,6 +60,7 @@ class Order(models.Model):
     cancel_date = models.DateTimeField(null=True, blank=True)
     ticket_issue_date = models.DateTimeField(null=True, blank=True)
     refund_date = models.DateTimeField(null=True, blank=True)
+<<<<<<< HEAD
     hold_date = models.DateTimeField(null=True, blank=True)
     complete_date = models.DateTimeField(null=True, blank=True)
     pending_date = models.DateTimeField(null=True, blank=True)
@@ -91,6 +92,42 @@ class Order(models.Model):
                         setattr(self, date_field, now)
             # 保存更新
             super().save(*args, **kwargs)
+=======
+    hold_date = models.DateTimeField(null=True, blank=True)  # 新增hold状态对应的时间字段
+    complete_date = models.DateTimeField(null=True, blank=True)  # 新增complete状态对应的时间字段
+    pending_date = models.DateTimeField(null=True, blank=True)  # 新增pending状态对应的时间字段
+
+    # shoppingcart/models.py (Order类)
+    def save(self, *args, **kwargs):
+        # 生成PO号（仅创建时）
+        if not self.po_number:  
+            self.po_number = f'PO-{uuid.uuid4().hex[:10].upper()}'
+            super().save(*args, **kwargs) 
+        
+        # 获取原始状态（必须放在首次保存之后）
+        if self.pk:
+            original = Order.objects.get(pk=self.pk)
+            current_status = self.status
+            
+            # 仅在状态变更时记录时间
+            if original.status != current_status:
+                now = timezone.now()
+                status_date_map = {
+                    'pending': 'pending_date',
+                    'shipped': 'shipment_date',
+                    'cancelled': 'cancel_date',
+                    'hold': 'hold_date',
+                    'ticket-issued': 'ticket_issue_date',
+                    'complete': 'complete_date',
+                    'refunded': 'refund_date'
+                }
+                date_field = status_date_map.get(current_status)
+                if date_field:
+                    setattr(self, date_field, now)
+        
+        # 最终保存更新
+        super().save(*args, **kwargs)
+>>>>>>> 80523284 (11)
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
