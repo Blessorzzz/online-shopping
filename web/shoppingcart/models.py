@@ -60,15 +60,15 @@ class Order(models.Model):
     cancel_date = models.DateTimeField(null=True, blank=True)
     ticket_issue_date = models.DateTimeField(null=True, blank=True)
     refund_date = models.DateTimeField(null=True, blank=True)
-    hold_date = models.DateTimeField(null=True, blank=True)  # 新增hold状态对应的时间字段
-    complete_date = models.DateTimeField(null=True, blank=True)  # 新增complete状态对应的时间字段
-    pending_date = models.DateTimeField(null=True, blank=True)  # 新增pending状态对应的时间字段
+    hold_date = models.DateTimeField(null=True, blank=True)
+    complete_date = models.DateTimeField(null=True, blank=True)
+    pending_date = models.DateTimeField(null=True, blank=True)
 
-    # shoppingcart/models.py (Order类)
     def save(self, *args, **kwargs):
         # 生成PO号（仅创建时）
-        if not self.po_number:  
+        if not self.po_number:
             self.po_number = f'PO-{uuid.uuid4().hex[:10].upper()}'
+<<<<<<< HEAD
             super().save(*args, **kwargs) 
         
         # 获取原始状态（必须放在首次保存之后）
@@ -102,6 +102,8 @@ class Order(models.Model):
         # 生成PO号（仅创建时）
         if not self.po_number:
             self.po_number = f'PO-{uuid.uuid4().hex[:10].upper()}'
+=======
+>>>>>>> 20aec1b7 (perfect b4)
             # 首次保存生成 id 和 po_number
             super().save(*args, **kwargs)
         else:

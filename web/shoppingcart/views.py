@@ -1,3 +1,4 @@
+from django.db import transaction,IntegrityError
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
@@ -82,27 +83,32 @@ def checkout(request):
     # **计算订单总金额**
     total_amount = sum(item.product.price * item.quantity for item in cart_items)
 
-    # **创建订单**
-    order = Order.objects.create(
-        customer=request.user,
-        total_amount=total_amount,
-        shipping_address=user_profile.address,
-    )
+    try:
+        with transaction.atomic():
+            # 创建订单（自动生成 id）
+            order = Order.objects.create(
+                customer=request.user,
+                total_amount=total_amount,
+                shipping_address=user_profile.address,
+            )
 
-    # **创建订单项**
-    for item in cart_items:
-        OrderItem.objects.create(
-            order=order,
-            product=item.product,
-            quantity=item.quantity,
-            price=item.product.price
-        )
+            # 创建订单项
+            for item in cart_items:
+                OrderItem.objects.create(
+                    order=order,
+                    product=item.product,
+                    quantity=item.quantity,
+                    price=item.product.price
+                )
 
-    # **清空购物车**
-    cart_items.delete()
+            # 清空购物车
+            cart_items.delete()
+            messages.success(request, "Order placed successfully!")
 
-    messages.success(request, "Your order has been placed successfully!")
-    logger.info(f"✅ Checkout completed successfully for user {request.user.username}, order ID: {order.id}")
+    except IntegrityError as e:
+        logger.error(f"IntegrityError: {str(e)}")
+        messages.error(request, "Failed to create order. Please try again.")
+        return redirect('shopping_cart')
 
     return redirect('order_list')
 
