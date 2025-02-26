@@ -111,3 +111,38 @@ def vendor_product_detail(request, product_id):
     
     product = get_object_or_404(Product, pk=product_id)
     return render(request, 'vendor/vendor_product_detail.html', {'product': product})
+
+@login_required
+def vendor_order_detail(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    order_items = order.items.all()
+    
+    # 生成状态时间线数据
+    status_date_map = {
+        'pending': order.pending_date,
+        'shipped': order.shipment_date,
+        'cancelled': order.cancel_date,
+        'hold': order.hold_date,
+        'ticket-issued': order.ticket_issue_date,
+        'complete': order.complete_date,
+        'refunded': order.refund_date
+    }
+    
+    # 过滤空值并按时间排序
+    sorted_status_dates = sorted(
+        [(status, date) for status, date in status_date_map.items() if date],
+        key=lambda x: x[1]
+    )
+
+    if request.method == 'POST':
+        new_status = request.POST.get('status')
+        if new_status in dict(Order.STATUS_CHOICES):
+            order.status = new_status
+            order.save()
+            return redirect('vendor_order_detail', order_id=order.id)
+
+    return render(request, 'vendor/vendor_order_detail.html', {
+        'order': order,
+        'order_items': order_items,
+        'sorted_status_dates': sorted_status_dates
+    })

@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from ecommerce.models import Product  # 引用 Product 模型
 from django.utils import timezone
 import uuid  # 生成唯一 P.O. 号
+from django.shortcuts import render
 
 class ShoppingCart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # 关联到 User 模型
@@ -38,6 +39,7 @@ class Order(models.Model):
     complete_date = models.DateTimeField(null=True, blank=True)  # 新增complete状态对应的时间字段
     pending_date = models.DateTimeField(null=True, blank=True)  # 新增pending状态对应的时间字段
 
+    # shoppingcart/models.py (Order类)
     def save(self, *args, **kwargs):
         # 生成PO号（仅创建时）
         if not self.po_number:  
@@ -54,25 +56,19 @@ class Order(models.Model):
                 now = timezone.now()
                 status_date_map = {
                     'pending': 'pending_date',
-                    'shipped':'shipment_date',
+                    'shipped': 'shipment_date',
                     'cancelled': 'cancel_date',
                     'hold': 'hold_date',
                     'ticket-issued': 'ticket_issue_date',
                     'complete': 'complete_date',
-                    'refunded':'refund_date'
+                    'refunded': 'refund_date'
                 }
                 date_field = status_date_map.get(current_status)
                 if date_field:
                     setattr(self, date_field, now)
-                    print(f"状态变更: {original.status} -> {self.status}")
-                    print(f"设置字段 {date_field} 为 {now}")
         
         # 最终保存更新
         super().save(*args, **kwargs)
- 
-
-    def __str__(self):
-        return f"Order {self.po_number} - {self.customer.username}"
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
