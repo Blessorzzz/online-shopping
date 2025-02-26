@@ -41,18 +41,20 @@ class Order(models.Model):
 
     # shoppingcart/models.py (Order类)
     def save(self, *args, **kwargs):
-        # 生成PO号（仅创建时）
-        if not self.po_number:  
+        # 生成PO号（仅在创建时）
+        if not self.po_number:
             self.po_number = f'PO-{uuid.uuid4().hex[:10].upper()}'
-            super().save(*args, **kwargs)  # 首次保存生成ID
-        
-        # 获取原始状态（必须放在首次保存之后）
-        if self.pk:
+
+        # 检查是否为新对象
+        is_new = self._state.adding
+
+        # 首次保存（生成ID和PO号）
+        super().save(*args, **kwargs)
+
+        # 仅当不是新对象时检查状态变更
+        if not is_new:
             original = Order.objects.get(pk=self.pk)
-            current_status = self.status
-            
-            # 仅在状态变更时记录时间
-            if original.status != current_status:
+            if original.status != self.status:
                 now = timezone.now()
                 status_date_map = {
                     'pending': 'pending_date',
@@ -63,12 +65,11 @@ class Order(models.Model):
                     'complete': 'complete_date',
                     'refunded': 'refund_date'
                 }
-                date_field = status_date_map.get(current_status)
+                date_field = status_date_map.get(self.status)
                 if date_field:
                     setattr(self, date_field, now)
-        
-        # 最终保存更新
-        super().save(*args, **kwargs)
+                    # 仅更新变更字段
+                    super().save(update_fields=[date_field])
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
