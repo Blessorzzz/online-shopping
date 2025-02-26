@@ -30,11 +30,46 @@ class Order(models.Model):
     purchase_date = models.DateTimeField(default=timezone.now)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     shipping_address = models.TextField()
+    shipment_date = models.DateTimeField(null=True, blank=True)
+    cancel_date = models.DateTimeField(null=True, blank=True)
+    ticket_issue_date = models.DateTimeField(null=True, blank=True)
+    refund_date = models.DateTimeField(null=True, blank=True)
+    hold_date = models.DateTimeField(null=True, blank=True)  # 新增hold状态对应的时间字段
+    complete_date = models.DateTimeField(null=True, blank=True)  # 新增complete状态对应的时间字段
+    pending_date = models.DateTimeField(null=True, blank=True)  # 新增pending状态对应的时间字段
 
     def save(self, *args, **kwargs):
-        if not self.po_number:  # **确保 P.O. 号只在创建时生成**
+        # 生成PO号（仅创建时）
+        if not self.po_number:  
             self.po_number = f'PO-{uuid.uuid4().hex[:10].upper()}'
+            super().save(*args, **kwargs)  # 首次保存生成ID
+        
+        # 获取原始状态（必须放在首次保存之后）
+        if self.pk:
+            original = Order.objects.get(pk=self.pk)
+            current_status = self.status
+            
+            # 仅在状态变更时记录时间
+            if original.status != current_status:
+                now = timezone.now()
+                status_date_map = {
+                    'pending': 'pending_date',
+                    'shipped':'shipment_date',
+                    'cancelled': 'cancel_date',
+                    'hold': 'hold_date',
+                    'ticket-issued': 'ticket_issue_date',
+                    'complete': 'complete_date',
+                    'refunded':'refund_date'
+                }
+                date_field = status_date_map.get(current_status)
+                if date_field:
+                    setattr(self, date_field, now)
+                    print(f"状态变更: {original.status} -> {self.status}")
+                    print(f"设置字段 {date_field} 为 {now}")
+        
+        # 最终保存更新
         super().save(*args, **kwargs)
+ 
 
     def __str__(self):
         return f"Order {self.po_number} - {self.customer.username}"

@@ -102,7 +102,7 @@ def vendor_order_detail(request, order_id):
             order.save()
             return redirect('vendor_order_detail', order_id=order.id)
 
-    return render(request, 'vendor/vendor_order_detail.html', {'order': order, 'order_items': order_items})
+    return render(request, 'vendor/vendor_order_detail.html', {'order': order, 'order_items': order_items.all})
 
 @login_required
 def vendor_product_detail(request, product_id):

@@ -34,6 +34,7 @@
         </tbody>
     </table>
 
+
     <form method="post" style="margin-top: 20px; text-align: center;">
         {% csrf_token %}
         <label for="status">{% trans "Change Order Status:" %}</label>
@@ -47,10 +48,78 @@
         </button>
     </form>
     
+    <div class="status-dates" style="margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+        <h4 style="margin-bottom: 12px;">{% trans "Status History" %}</h4>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+            {% if order.shipment_date %}
+            <div class="date-item">
+                <span style="font-weight: 500;">{% trans "Shipped Date:" %}</span>
+                {{ order.shipment_date|date:"Y-m-d H:i" }}
+            </div>
+            {% endif %}
+            
+            {% if order.cancel_date %}
+            <div class="date-item">
+                <span style="font-weight: 500;">{% trans "Cancelled Date:" %}</span>
+                {{ order.cancel_date|date:"Y-m-d H:i" }}
+            </div>
+            {% endif %}
+            
+            {% if order.ticket_issue_date %}
+            <div class="date-item">
+                <span style="font-weight: 500;">{% trans "Ticket Issued Date:" %}</span>
+                {{ order.ticket_issue_date|date:"Y-m-d H:i" }}
+            </div>
+            {% endif %}
+            
+            {% if order.refund_date %}
+            <div class="date-item">
+                <span style="font-weight: 500;">{% trans "Refund Date:" %}</span>
+                {{ order.refund_date|date:"Y-m-d H:i" }}
+            </div>
+            {% endif %}
+
+            {% if order.hold_date %}
+            <div class="date-item">
+                <span style="font-weight: 500;">{% trans "hold_date:" %}</span>
+                {{ order.hold_date|date:"Y-m-d H:i" }}
+            </div>
+            {% endif %}
+
+            {% if order.complete_date %}
+            <div class="date-item">
+                <span style="font-weight: 500;">{% trans "complete_date:" %}</span>
+                {{ order.complete_date|date:"Y-m-d H:i" }}
+            </div>
+            {% endif %}
+
+            {% if order.pending_date %}
+            <div class="date-item">
+                <span style="font-weight: 500;">{% trans "pending_date:" %}</span>
+                {{ order.pending_date|date:"Y-m-d H:i" }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
     <div style="margin-top: 20px; text-align: center;">
         <a href="{% url 'vendor_orders' %}" class="back-to-orders-button" style="display: inline-block; padding: 10px 20px; background-color: #ED7014; color: white; text-decoration: none; border-radius: 5px; transition: background 0.3s;">
             {% trans "Back to Orders" %}
         </a>
     </div>    
 </div>
+
+<style>
+    .status-dates {
+        border: 1px solid #e0e0e0;
+        background: #fff;
+    }
+    
+    .date-item {
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 6px;
+        border: 1px solid #eee;
+    }
+</style>
 {% endblock %}
