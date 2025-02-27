@@ -1,38 +1,83 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% block content %}
-<div class="product-detail">
-    <div class="product-image-container">
-        <!-- 显示主图 -->
-        <img src="{{ product.thumbnail_image.url }}" alt="{{ product.product_name }}" class="product-image">
-        <div class="product-thumbnail-container">
-            {% for photo in product.photos.all %}
-                <img src="{{ photo.photo.url }}" alt="{{ product.product_name }} thumbnail" class="product-thumbnail">
-            {% endfor %}
+<div class="product-detail-container">
+    <!-- 主内容区 -->
+    <div class="main-content">
+        <!-- 图片展示区 -->
+        <div class="gallery-section">
+            <!-- 主图 -->
+            <div class="main-gallery">
+                <img class="main-image" 
+                     src="{{ product.thumbnail_image.url }}" 
+                     alt="{{ product.product_name }}">
+            </div>
+            
+            <!-- 缩略图横向滚动 -->
+            <div class="thumbnail-scroll">
+                <div class="thumbnail-list">
+                    <div class="thumbnail-item active">
+                        <img src="{{ product.thumbnail_image.url }}" 
+                             onclick="switchImage('{{ product.thumbnail_image.url }}', this)">
+                    </div>
+                    {% for photo in product.photos.all %}
+                    <div class="thumbnail-item">
+                        <img src="{{ photo.photo.url }}" 
+                             onclick="switchImage('{{ photo.photo.url }}', this)">
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
-        <!-- 可选：显示视频 -->
-        {% for video in product.videos.all %}
-            <video src="{{ video.video.url }}" controls class="product-video"></video>
-        {% endfor %}
+
+        <!-- 商品信息区 -->
+        <div class="info-section">
+            <h1 class="product-title">{{ product.product_name }}</h1>
+            <div class="price-section">
+                <span class="price-label">Price</span>
+                <span class="price">¥{{ product.price }}</span>
+            </div>
+            
+            <div class="specs">
+                <div class="spec-item">
+                    <span class="spec-label">Age Range:</span>
+                    <span class="spec-value">{{ product.age_range }}</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Stock:</span>
+                    <span class="spec-value {% if product.stock_quantity == 0 %}out-of-stock{% endif %}">
+                        {{ product.stock_quantity|default:"0" }} Available
+                    </span>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <form method="POST" action="{% url 'add_to_cart' product.product_id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="buy-btn" {% if product.stock_quantity == 0 %}disabled{% endif %}>
+                        🛒 Add to Cart
+                    </button>
+                </form>
+            </div>
+        </div>
     </div>
-    <div class="product-info">
-        <h1 class="product-name-detail">{{ product.product_name }}</h1>
-        <p class="product-age-range">{% trans "Age Range" %}: {{ product.age_range }}</p>
-        <div class="product-price-status">
-            <p class="product-price">{% trans "Price" %}: ${{ product.price }}</p>
-            {% if product.stock_quantity > 0 %}
-                <p class="product-stock">{% trans "Stock" %}: {{ product.stock_quantity }} {% trans "Available" %}</p>
-            {% else %}
-                <p class="product-status out-of-stock">{% trans "Status" %}: {% trans "Out of Stock" %}</p>
-            {% endif %}
+
+    <!-- 商品描述区 -->
+    <div class="description-section">
+        <h3>Product Details</h3>
+        <div class="description-content">
+            {{ product.description|linebreaksbr }}
         </div>
-        <p class="product-description">{{ product.description|linebreaksbr }}</p>
-        <form method="POST" action="{% url 'add_to_cart' product.product_id %}">
-            {% csrf_token %}
-            <button type="submit" class="add-to-cart-btn" {% if product.stock_quantity == 0 %}disabled{% endif %}>
-                {% trans "Add to Cart" %}
-            </button>
-        </form>
     </div>
 </div>
+
+<script>
+    function switchImage(newSrc, element) {
+        document.querySelector('.main-image').src = newSrc;
+        document.querySelectorAll('.thumbnail-item').forEach(item => {
+            item.classList.remove('active');
+        });
+        element.parentElement.classList.add('active');
+    }
+    </script>
 {% endblock %}

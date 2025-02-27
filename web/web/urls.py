@@ -27,10 +27,18 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('vendor/', include('vendor.urls')),
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     path('login/', custom_login, name='login'),
     path('i18n/', include('django.conf.urls.i18n')),
 >>>>>>> 18eacdd3d0794211afcb12f5f426a2ecef86de06
+=======
+    path('vendor_login/', include('vendor.urls')),
+=======
+    path('login/', custom_login, name='login'),
+    path('i18n/', include('django.conf.urls.i18n')),
+>>>>>>> af3940cc85ffe3432103750a6ded31dad4670790
+>>>>>>> de3aadd0b2b568849c81c6f706be8b6d367a6151
 ]
 
 
