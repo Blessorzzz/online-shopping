@@ -9,6 +9,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Orders</title>
     <link rel="stylesheet" href="{% static 'css/order_list.css' %}">
+    <style>
+        .popup-message {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #f44336;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            display: none;
+        }
+        .popup-message.success {
+            background-color: #4CAF50;
+        }
+        .popup-message.error {
+            background-color: #f44336;
+        }
+        .popup-message .message {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
 </head>
 <body>
 
@@ -36,6 +61,7 @@
                 <th>{% trans "Purchase Date" %}</th>
                 <th>{% trans "Total Amount" %}</th>
                 <th>{% trans "Status" %}</th>
+                <th>{% trans "Actions" %}</th>
             </tr>
         </thead>
         <tbody>
@@ -44,13 +70,29 @@
                 <td>{{ order.po_number }}</td>
                 <td>{{ order.created_at|date:"F d, Y, g:i a" }}</td>
                 <td>${{ order.total_amount }}</td>
-                <td class="{% if order.status == 'pending' %}status-pending{% elif order.status == 'shipped' %}status-shipped{% elif order.status == 'cancelled' %}status-cancelled{% endif %}">
+                <td class="{% if order.status == 'pending' %}status-pending{% elif order.status == 'shipped' %}status-shipped{% elif order.status == 'cancelled' %}status-cancelled{% elif order.status == 'hold' %}status-hold{% endif %}">
                     {{ order.status }}
+                </td>
+                <td>
+                    {% if order.status == 'pending' or order.status == 'hold' %}
+                    <form method="post" action="{% url 'cancel_order' order.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">{% trans "Cancel" %}</button>
+                    </form>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+
+    {% if messages %}
+        <div class="popup-message" id="popup-message">
+            {% for message in messages %}
+                <p class="message {{ message.tags }}">{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
 
     <script>
         // Make the entire row clickable
@@ -60,9 +102,18 @@
                     window.location.href = this.dataset.href;
                 });
             });
+
+            // Show popup message
+            var popupMessage = document.getElementById('popup-message');
+            if (popupMessage) {
+                popupMessage.style.display = 'block';
+                setTimeout(function() {
+                    popupMessage.style.display = 'none';
+                }, 5000); // Hide after 5 seconds
+            }
         });
     </script>
     
-    </body>
-    </html>
-    {% endblock %}
+</body>
+</html>
+{% endblock %}
