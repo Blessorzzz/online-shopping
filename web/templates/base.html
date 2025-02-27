@@ -99,7 +99,7 @@
     {% block content %}
     {% endblock content %}
     {% if not request.user.is_authenticated and request.path == '/' %}
-        <a href="{% url 'login' %}" class="vendor-login-button">{% trans "Log in as Vendor" %}</a>
+        <a href="{% url 'vendor_login' %}" class="vendor-login-button">{% trans "Log in as Vendor" %}</a>
     {% endif %}
 </body>
 </html>
