@@ -1,8 +1,4 @@
 from django.contrib import admin
-
-# Register your models here.
-
-from django.contrib import admin
 from .models import Product, ProductPhoto, ProductVideo
 
 class ProductPhotoInline(admin.TabularInline):
@@ -14,6 +10,10 @@ class ProductPhotoInline(admin.TabularInline):
 
 class ProductAdmin(admin.ModelAdmin):
     inlines = [ProductPhotoInline]
+    list_display = ('product_name', 'product_type', 'price', 'vendor')  # 显示产品名称、类型、价格和供应商
+    list_filter = ('product_type', 'vendor')  # 添加过滤器
+    search_fields = ('product_name', 'vendor__username')  # 添加搜索字段
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(ProductPhoto)
+admin.site.register(ProductVideo)

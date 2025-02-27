@@ -10,6 +10,11 @@ class Product(models.Model):
         ('out_of_stock', _('Out of Stock')),
     ]
 
+    PRODUCT_TYPE_CHOICES = [
+        ('tangible', _('Tangible')),
+        ('virtual', _('Virtual')),
+    ]
+
     product_id = models.UUIDField(primary_key=True, default=uuid.uuid4,
                                    help_text=_('Unique ID for this product across whole shopping mall'))
     product_name = models.CharField(max_length=255, default="", verbose_name=_("Product Name"))
@@ -21,6 +26,7 @@ class Product(models.Model):
     stock_quantity = models.PositiveIntegerField(default=0)
     min_age = models.PositiveIntegerField(default=0, help_text=_("Minimum age suitable for the product"))
     max_age = models.PositiveIntegerField(default=0, help_text=_("Maximum age suitable for the product"))
+    product_type = models.CharField(max_length=10, choices=PRODUCT_TYPE_CHOICES, default='tangible', verbose_name=_("Product Type"))
 
     def __str__(self):
         return self.product_name
@@ -32,7 +38,6 @@ class Product(models.Model):
         return f'{self.min_age}-{self.max_age} ' + _('years old')
 
     def save(self, *args, **kwargs):
- 
         translations = {
             'es': 'es',  # 西班牙语
             'ja': 'ja',  # 日语
@@ -54,7 +59,6 @@ class Product(models.Model):
 
         super().save(*args, **kwargs)
 
-
 class ProductPhoto(models.Model):
     photo_id = models.AutoField(primary_key=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='photos')
@@ -62,7 +66,6 @@ class ProductPhoto(models.Model):
 
     def __str__(self):
         return f"Photo for {self.product.product_name}"
-
 
 class ProductVideo(models.Model):
     video_id = models.AutoField(primary_key=True)
