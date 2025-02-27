@@ -17,7 +17,7 @@ Including another URLconf
 # urls.py
 from django.contrib import admin
 from django.urls import path, include
-from vendor.views import custom_login
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -27,7 +27,7 @@ urlpatterns = [
     path('shoppingcart/', include('shoppingcart.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('vendor/', include('vendor.urls')),
-    path('login/', custom_login, name='login'),
+    path('vendor_login/', include('vendor.urls')),
     path('i18n/', include('django.conf.urls.i18n')),
 ]
 

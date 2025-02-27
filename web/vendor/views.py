@@ -1,6 +1,7 @@
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from shoppingcart.models import Order
 from ecommerce.models import Product
@@ -8,19 +9,19 @@ from .forms import ProductForm
 from django.http import HttpResponseForbidden
 from django.db.models import Q
 
-def custom_login(request):
+def vendor_login(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             user = form.get_user()
-            auth_login(request, user)
             if hasattr(user, 'vendor'):
+                auth_login(request, user)
                 return redirect('vendor_dashboard')
             else:
-                return redirect('home')
+                messages.error(request, "You are not a vendor.")
     else:
         form = AuthenticationForm()
-    return render(request, 'registration/login.html', {'form': form})
+    return render(request, 'registration/vendor_login.html', {'form': form})
 
 # vendor search function
 @login_required
