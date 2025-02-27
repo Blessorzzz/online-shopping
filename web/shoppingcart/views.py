@@ -129,8 +129,5 @@ def order_list(request):
 @login_required
 def order_detail(request, order_id):
     order = get_object_or_404(Order, id=order_id, customer=request.user)
-    user_timezone = request.session.get("django_timezone", "UTC")
-
-    order.local_purchase_date = order.get_local_purchase_date(user_timezone)
 
     return render(request, "order_detail.html", {"order": order})
