@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-26 00:38+0800\n"
+"POT-Creation-Date: 2025-02-27 15:37+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,14 +18,45 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
+#: .\ecommerce\models.py:9 .\templates\product_detail.html:48
+#: .\templates\vendor\vendor_product_detail.html:16
+msgid "Stock"
+msgstr "在庫"
+
+#: .\ecommerce\models.py:10 .\ecommerce\models.py:29
+#: .\templates\vendor\vendor_product_detail.html:18
+msgid "Out of Stock"
+msgstr "在庫切れ"
+
+#: .\ecommerce\models.py:14
+msgid "Unique ID for this product across whole shopping mall"
+msgstr "ショッピングモール全体でこの製品の一意のID"
+
 #: .\ecommerce\models.py:15 .\templates\vendor\dashboard.html:10
 #: .\templates\vendor\vendor_order_detail.html:15
 msgid "Product Name"
-msgstr "商品名"
+msgstr "製品名"
 
 #: .\ecommerce\models.py:18
 msgid "Description"
 msgstr "説明する"
+
+#: .\ecommerce\models.py:22
+msgid "Minimum age suitable for the product"
+msgstr "製品に適した最低年齢"
+
+#: .\ecommerce\models.py:23
+msgid "Maximum age suitable for the product"
+msgstr "製品に適した最大年齢"
+
+#: .\ecommerce\models.py:29 .\templates\product_detail.html:50
+#: .\templates\vendor\vendor_product_detail.html:16
+msgid "Available"
+msgstr "利用可能"
+
+#: .\ecommerce\models.py:32
+msgid "years old"
+msgstr "歳"
 
 #: .\templates\base.html:7 .\templates\vendor\vendor_base.html:7
 msgid "My Online Shop"
@@ -74,39 +105,19 @@ msgstr "ログアウト"
 msgid "Log in as Vendor"
 msgstr "ベンダーとしてログイン"
 
-#: .\templates\home.html:14 .\templates\product_detail.html:48
-#: .\templates\vendor\vendor_product_detail.html:16
-msgid "Stock"
-msgstr "在庫"
-
-#: .\templates\home.html:14 .\templates\product_detail.html:50
-#: .\templates\vendor\vendor_product_detail.html:16
-msgid "Available"
-msgstr "利用可能"
-
-#: .\templates\home.html:16 .\templates\order_list.html:38
-#: .\templates\vendor\vendor_orders.html:13
-#: .\templates\vendor\vendor_product_detail.html:18
-msgid "Status"
-msgstr "ステータス"
-
-#: .\templates\home.html:16 .\templates\vendor\vendor_product_detail.html:18
-msgid "Out of Stock"
-msgstr "在庫切れ"
-
-#: .\templates\home.html:26
+#: .\templates\home.html:42
 msgid "home"
 msgstr "ホーム"
 
-#: .\templates\home.html:27
+#: .\templates\home.html:43
 msgid "previous"
 msgstr "前へ"
 
-#: .\templates\home.html:39
+#: .\templates\home.html:55
 msgid "next"
 msgstr "次へ"
 
-#: .\templates\home.html:40
+#: .\templates\home.html:56
 msgid "last"
 msgstr "最後"
 
@@ -160,7 +171,7 @@ msgid "Subtotal"
 msgstr "小計"
 
 #: .\templates\order_detail.html:51
-#: .\templates\vendor\vendor_order_detail.html:52
+#: .\templates\vendor\vendor_order_detail.html:124
 msgid "Back to Orders"
 msgstr "注文一覧に戻る"
 
@@ -215,6 +226,11 @@ msgstr "購入日"
 #: .\templates\order_list.html:37 .\templates\vendor\vendor_orders.html:12
 msgid "Total Amount"
 msgstr "合計金額"
+
+#: .\templates\order_list.html:38 .\templates\vendor\vendor_orders.html:13
+#: .\templates\vendor\vendor_product_detail.html:18
+msgid "Status"
+msgstr "ステータス"
 
 #: .\templates\product_detail.html:38 .\templates\vendor\dashboard.html:11
 #: .\templates\vendor\vendor_order_detail.html:17
@@ -374,13 +390,25 @@ msgstr "注文アイテム"
 msgid "No items in this order."
 msgstr "この注文にはアイテムがありません。"
 
-#: .\templates\vendor\vendor_order_detail.html:39
+#: .\templates\vendor\vendor_order_detail.html:40
 msgid "Change Order Status:"
 msgstr "注文ステータスを変更:"
 
-#: .\templates\vendor\vendor_order_detail.html:46
+#: .\templates\vendor\vendor_order_detail.html:47
 msgid "Update Status"
 msgstr "ステータスを更新"
+
+#: .\templates\vendor\vendor_order_detail.html:52
+#, fuzzy
+#| msgid "Status"
+msgid "Status History"
+msgstr "ステータス"
+
+#: .\templates\vendor\vendor_order_detail.html:65
+#, fuzzy
+#| msgid "No purchase orders available."
+msgid "No status history available"
+msgstr "購入注文はありません。"
 
 #: .\templates\vendor\vendor_orders.html:5
 msgid "Purchase Orders"
@@ -418,18 +446,40 @@ msgstr "チェックアウト"
 msgid "Your cart is empty."
 msgstr "カートは空です。"
 
-#: .\web\settings.py:123
-msgid "English"
-msgstr "英語"
+#: .\user\form.py:9
+msgid "Email"
+msgstr "メール"
 
-#: .\web\settings.py:124
-msgid "Chinese"
-msgstr "中国語"
+#: .\user\form.py:10
+msgid "Please enter a valid email address."
+msgstr "有効なメールアドレスを入力してください。"
 
-#: .\web\settings.py:125
-msgid "Spanish"
-msgstr "スペイン語"
+#: .\user\form.py:14
+msgid "Full name"
+msgstr "フルネーム"
 
-#: .\web\settings.py:126
-msgid "Japanese"
-msgstr "日本語"
+#: .\user\form.py:15
+msgid "Please enter your full name."
+msgstr "フルネームを入力してください。"
+
+#: .\user\form.py:19
+#, fuzzy
+#| msgid "Shipping Address:"
+msgid "Shipping address"
+msgstr "配送先住所:"
+
+#: .\user\form.py:20
+msgid "Please enter your shipping address."
+msgstr "配送先住所を入力してください。"
+
+#~ msgid "English"
+#~ msgstr "英語"
+
+#~ msgid "Chinese"
+#~ msgstr "中国語"
+
+#~ msgid "Spanish"
+#~ msgstr "スペイン語"
+
+#~ msgid "Japanese"
+#~ msgstr "日本語"

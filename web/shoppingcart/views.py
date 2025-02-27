@@ -75,6 +75,8 @@ def checkout(request):
     user_profile, created = UserProfile.objects.get_or_create(user=request.user)
 
     # **检查收货地址**
+    # ✅ 正确代码
+    # ❌ 错误代码（checkout 视图）
     if not user_profile.address:
         messages.error(request, "Please enter a valid shipping address in 'My Profile'.")
         logger.warning("❌ Checkout failed: Missing shipping address.")

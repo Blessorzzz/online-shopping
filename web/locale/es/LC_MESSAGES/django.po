@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-26 00:38+0800\n"
+"POT-Creation-Date: 2025-02-27 15:37+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,6 +19,20 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? "
 "1 : 2;\n"
 
+#: .\ecommerce\models.py:9 .\templates\product_detail.html:48
+#: .\templates\vendor\vendor_product_detail.html:16
+msgid "Stock"
+msgstr "Stock"
+
+#: .\ecommerce\models.py:10 .\ecommerce\models.py:29
+#: .\templates\vendor\vendor_product_detail.html:18
+msgid "Out of Stock"
+msgstr "Agotado"
+
+#: .\ecommerce\models.py:14
+msgid "Unique ID for this product across whole shopping mall"
+msgstr "Identificación única para este producto en todo el centro comercial"
+
 #: .\ecommerce\models.py:15 .\templates\vendor\dashboard.html:10
 #: .\templates\vendor\vendor_order_detail.html:15
 msgid "Product Name"
@@ -27,6 +41,23 @@ msgstr "Nombre del producto"
 #: .\ecommerce\models.py:18
 msgid "Description"
 msgstr "describir"
+
+#: .\ecommerce\models.py:22
+msgid "Minimum age suitable for the product"
+msgstr "Edad mínima adecuada para el producto"
+
+#: .\ecommerce\models.py:23
+msgid "Maximum age suitable for the product"
+msgstr "Edad máxima apta para el producto"
+
+#: .\ecommerce\models.py:29 .\templates\product_detail.html:50
+#: .\templates\vendor\vendor_product_detail.html:16
+msgid "Available"
+msgstr "Disponible"
+
+#: .\ecommerce\models.py:32
+msgid "years old"
+msgstr "años"
 
 #: .\templates\base.html:7 .\templates\vendor\vendor_base.html:7
 msgid "My Online Shop"
@@ -75,39 +106,19 @@ msgstr "Cerrar sesión"
 msgid "Log in as Vendor"
 msgstr "Iniciar sesión como vendedor"
 
-#: .\templates\home.html:14 .\templates\product_detail.html:48
-#: .\templates\vendor\vendor_product_detail.html:16
-msgid "Stock"
-msgstr "Stock"
-
-#: .\templates\home.html:14 .\templates\product_detail.html:50
-#: .\templates\vendor\vendor_product_detail.html:16
-msgid "Available"
-msgstr "Disponible"
-
-#: .\templates\home.html:16 .\templates\order_list.html:38
-#: .\templates\vendor\vendor_orders.html:13
-#: .\templates\vendor\vendor_product_detail.html:18
-msgid "Status"
-msgstr "Estado"
-
-#: .\templates\home.html:16 .\templates\vendor\vendor_product_detail.html:18
-msgid "Out of Stock"
-msgstr "Agotado"
-
-#: .\templates\home.html:26
+#: .\templates\home.html:42
 msgid "home"
 msgstr "inicio"
 
-#: .\templates\home.html:27
+#: .\templates\home.html:43
 msgid "previous"
 msgstr "anterior"
 
-#: .\templates\home.html:39
+#: .\templates\home.html:55
 msgid "next"
 msgstr "siguiente"
 
-#: .\templates\home.html:40
+#: .\templates\home.html:56
 msgid "last"
 msgstr "último"
 
@@ -161,7 +172,7 @@ msgid "Subtotal"
 msgstr "Subtotal"
 
 #: .\templates\order_detail.html:51
-#: .\templates\vendor\vendor_order_detail.html:52
+#: .\templates\vendor\vendor_order_detail.html:124
 msgid "Back to Orders"
 msgstr "Volver a pedidos"
 
@@ -216,6 +227,11 @@ msgstr "Fecha de compra"
 #: .\templates\order_list.html:37 .\templates\vendor\vendor_orders.html:12
 msgid "Total Amount"
 msgstr "Monto total"
+
+#: .\templates\order_list.html:38 .\templates\vendor\vendor_orders.html:13
+#: .\templates\vendor\vendor_product_detail.html:18
+msgid "Status"
+msgstr "Estado"
 
 #: .\templates\product_detail.html:38 .\templates\vendor\dashboard.html:11
 #: .\templates\vendor\vendor_order_detail.html:17
@@ -375,13 +391,25 @@ msgstr "Artículos del pedido"
 msgid "No items in this order."
 msgstr "No hay artículos en este pedido."
 
-#: .\templates\vendor\vendor_order_detail.html:39
+#: .\templates\vendor\vendor_order_detail.html:40
 msgid "Change Order Status:"
 msgstr "Cambiar estado del pedido:"
 
-#: .\templates\vendor\vendor_order_detail.html:46
+#: .\templates\vendor\vendor_order_detail.html:47
 msgid "Update Status"
 msgstr "Actualizar estado"
+
+#: .\templates\vendor\vendor_order_detail.html:52
+#, fuzzy
+#| msgid "Status"
+msgid "Status History"
+msgstr "Estado"
+
+#: .\templates\vendor\vendor_order_detail.html:65
+#, fuzzy
+#| msgid "No purchase orders available."
+msgid "No status history available"
+msgstr "No hay órdenes de compra disponibles."
 
 #: .\templates\vendor\vendor_orders.html:5
 msgid "Purchase Orders"
@@ -419,18 +447,28 @@ msgstr "Pagar"
 msgid "Your cart is empty."
 msgstr "Tu carrito está vacío."
 
-#: .\web\settings.py:123
-msgid "English"
-msgstr ""
+#: .\user\form.py:9
+msgid "Email"
+msgstr "Correo electrónico"
 
-#: .\web\settings.py:124
-msgid "Chinese"
-msgstr ""
+#: .\user\form.py:10
+msgid "Please enter a valid email address."
+msgstr "Introduzca una dirección de correo electrónico válida"
 
-#: .\web\settings.py:125
-msgid "Spanish"
-msgstr ""
+#: .\user\form.py:14
+msgid "Full name"
+msgstr "Nombre completo"
 
-#: .\web\settings.py:126
-msgid "Japanese"
-msgstr ""
+#: .\user\form.py:15
+msgid "Please enter your full name."
+msgstr "Por favor, introduzca su nombre completo."
+
+#: .\user\form.py:19
+#, fuzzy
+#| msgid "Shipping Address:"
+msgid "Shipping address"
+msgstr "Dirección de envío:"
+
+#: .\user\form.py:20
+msgid "Please enter your shipping address."
+msgstr "Por favor, introduzca su dirección de envío."
