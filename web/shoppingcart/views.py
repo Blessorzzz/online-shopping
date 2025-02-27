@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 from django.db import transaction, IntegrityError
 =======
 from django.db import transaction,IntegrityError
@@ -7,6 +8,9 @@ from django.db import transaction,IntegrityError
 =======
 from django.db import transaction, IntegrityError
 >>>>>>> 8d8815b8 (Finished B2)
+=======
+from django.db import transaction, IntegrityError
+>>>>>>> ed1d2777 (Finished B2)
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
