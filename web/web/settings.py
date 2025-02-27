@@ -121,12 +121,11 @@ LANGUAGE_CODE = 'en'
 USE_L10N = True
 
 LANGUAGES = [
-    ('en', _('English')),
-    ('zh-hans', _('Chinese')),
-    ('es', _('Spanish')),
-    ('ja', _('Japanese')),  
+    ('en', 'English'),
+    ('es', 'Spanish'),
+    ('ja', 'Japanese'),
+    ('ko', 'Korean'),
 ]
-
 
 LANGUAGE_COOKIE_NAME = 'django_language'  
 LANGUAGE_COOKIE_AGE = 86400
@@ -135,11 +134,12 @@ LOCALE_PATHS = [
     os.path.join(BASE_DIR, 'locale'),  # 翻译文件存储目录
 ]
 
-TIME_ZONE = "Asia/Shanghai"
+TIME_ZONE = "UTC"
+USE_TZ = True  # 启用时区支持
+
 
 USE_I18N = True
 
-USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)

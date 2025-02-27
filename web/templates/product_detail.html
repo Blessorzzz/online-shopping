@@ -33,7 +33,7 @@
 
         <!-- 商品信息区 -->
         <div class="info-section">
-            <h1 class="product-title">{{ product.product_name }}</h1>
+            <h1 class="product-title">{{ product.product_name|default:product.product_name_en }}</h1>
             <div class="price-section">
                 <span class="price-label">{% trans "Price" %}</span>
                 <span class="price">¥{{ product.price }}</span>
@@ -67,7 +67,7 @@
     <div class="description-section">
         <h3>{% trans "Product Details" %}</h3>
         <div class="description-content">
-            {{ product.description|linebreaksbr }}
+            {{ product.description|default:product.description_en|linebreaksbr }}
         </div>
     </div>
 </div>
