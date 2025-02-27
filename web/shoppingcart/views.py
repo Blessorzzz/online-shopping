@@ -6,6 +6,7 @@ from ecommerce.models import Product  # 引用 Product 模型
 from .models import ShoppingCart, Order, OrderItem
 from django.contrib import messages
 from user.models import UserProfile
+from django import forms
 
 import logging
 
@@ -117,13 +118,19 @@ def checkout(request):
 @login_required
 def order_list(request):
     status_filter = request.GET.get('status')
+    orders = Order.objects.filter(customer=request.user)
+
     if status_filter:
-        orders = Order.objects.filter(status=status_filter, customer=request.user)
-    else:
-        orders = Order.objects.filter(customer=request.user)
-    return render(request, 'order_list.html', {'orders': orders})
+        orders = orders.filter(status=status_filter)
+
+    return render(request, "order_list.html", {"orders": orders})
+
 
 @login_required
 def order_detail(request, order_id):
     order = get_object_or_404(Order, id=order_id, customer=request.user)
-    return render(request, 'order_detail.html', {'order': order})
+    user_timezone = request.session.get("django_timezone", "UTC")
+
+    order.local_purchase_date = order.get_local_purchase_date(user_timezone)
+
+    return render(request, "order_detail.html", {"order": order})

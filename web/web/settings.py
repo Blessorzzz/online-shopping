@@ -139,6 +139,7 @@ USE_TZ = True  # 启用时区支持
 
 
 USE_I18N = True
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 
 

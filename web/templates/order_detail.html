@@ -19,7 +19,7 @@
     
     <div class="order-info">
         <p><strong>{% trans "P.O. Number:" %}</strong> {{ order.po_number }}</p>
-        <p><strong>{% trans "Purchase Date:" %}</strong> {{ order.created_at|date:"F d, Y, g:i a" }}</p>
+        <p><strong>{% trans "Purchase Date:" %}</strong> {{ order.purchase_date|date:"DATETIME_FORMAT" }}</p>
         <p><strong>{% trans "Shipping Address:" %}</strong> {{ order.shipping_address }}</p>
         <p><strong>{% trans "Total Amount:" %}</strong> <span class="total-amount">${{ order.total_amount }}</span></p>
         <p><strong>{% trans "Status:" %}</strong> <span class="status {{ order.status }}">{{ order.status }}</span></p>

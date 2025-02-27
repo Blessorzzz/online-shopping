@@ -14,6 +14,7 @@
 
     <h2>{% trans "My Orders" %}</h2>
 
+
     <form method="get" action=".">
         <label for="status">{% trans "Filter by status:" %}</label>
         <select name="status" id="status">
@@ -42,7 +43,7 @@
             {% for order in orders %}
             <tr class="clickable-row" data-href="{% url 'order_detail' order.id %}">
                 <td>{{ order.po_number }}</td>
-                <td>{{ order.created_at|date:"F d, Y, g:i a" }}</td>
+                <td>{{ order.purchase_date|date:"DATETIME_FORMAT" }}</td>
                 <td>${{ order.total_amount }}</td>
                 <td class="{% if order.status == 'pending' %}status-pending{% elif order.status == 'shipped' %}status-shipped{% elif order.status == 'cancelled' %}status-cancelled{% endif %}">
                     {{ order.status }}
@@ -63,6 +64,6 @@
         });
     </script>
     
-    </body>
-    </html>
-    {% endblock %}
+</body>
+</html>
+{% endblock %}
