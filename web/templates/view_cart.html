@@ -1,6 +1,6 @@
 <!-- templates/view_cart.html -->
 {% extends 'base.html' %}
-{% load static %}
+{% load static i18n %}
 
 {% block content %}
 <head>
@@ -8,17 +8,17 @@
 </head>
 
 <body>
-    <h2>Your Shopping Cart</h2>
+    <h2>{% trans "Your Shopping Cart" %}</h2>
 
     {% if cart_items %}
         <table>
             <thead>
                 <tr>
-                    <th>Product</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Total</th>
-                    <th>Actions</th>
+                    <th>{% trans "Product" %}</th>
+                    <th>{% trans "Price" %}</th>
+                    <th>{% trans "Quantity" %}</th>
+                    <th>{% trans "Total" %}</th>
+                    <th>{% trans "Actions" %}</th>
                 </tr>
             </thead>
             <tbody>
@@ -34,11 +34,11 @@
                                 <button type="submit" name="action" value="increase" class="quantity-button">+</button>
                             </form>
                         </td>
-                        <td>${{ item.total_price }}</td>  <!-- 显示从视图传递的总金额 -->
+                        <td>${{ item.total_price }}</td>
                         <td>
                             <form method="POST" action="{% url 'remove_from_cart' item.id %}">
                                 {% csrf_token %}
-                                <button type="submit" class="remove-button">Remove</button>
+                                <button type="submit" class="remove-button">{% trans "Remove" %}</button>
                             </form>
                         </td>
                     </tr>
@@ -47,18 +47,17 @@
         </table>
 
         {% if cart_items %}
-             <h3>Total: ${{ total_amount }}</h3>  <!-- 显示总金额 -->
+             <h3>{% trans "Total" %}: ${{ total_amount }}</h3>
 
              <form action="{% url 'checkout' %}" method="post">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-success">Checkout</button>
+                <button type="submit" class="btn btn-success">{% trans "Checkout" %}</button>
             </form>            
         {% else %}
-             <p>Your cart is empty.</p>
+             <p>{% trans "Your cart is empty." %}</p>
         {% endif %}
-
     {% else %}
-        <p>Your cart is empty.</p>
+        <p>{% trans "Your cart is empty." %}</p>
     {% endif %}
 </body>
 {% endblock %}

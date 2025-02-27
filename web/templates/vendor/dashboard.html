@@ -1,15 +1,16 @@
-{% extends 'vendor/vendor_base.html' %} <!-- change the base.html to the vendor_base.html when finished -->
+{% extends 'vendor/vendor_base.html' %}
+{% load i18n %}
 {% block content %}
-<p>Welcome, {{ vendor.store_name }}</p>
-<h3>Your Products</h3>
+<p>{% trans "Welcome" %}, {{ vendor.store_name }}</p>
+<h3>{% trans "Your Products" %}</h3>
 <table border="1">
     <tr>
-        <th>Thumbnail</th>
-        <th>Product ID</th>
-        <th>Product Name</th>
-        <th>Price</th>
-        <th>Stock Quantity</th>
-        <th>Actions</th>
+        <th>{% trans "Thumbnail" %}</th>
+        <th>{% trans "Product ID" %}</th>
+        <th>{% trans "Product Name" %}</th>
+        <th>{% trans "Price" %}</th>
+        <th>{% trans "Stock Quantity" %}</th>
+        <th>{% trans "Actions" %}</th>
     </tr>
     {% for product in products %}
     <tr>
@@ -26,22 +27,22 @@
         <td>${{ product.price }}</td>
         <td style="text-align: center;">{{ product.stock_quantity }}</td>
         <td>
-            <a href="{% url 'edit_product' product.product_id %}" style="color: #ED7014;">Edit</a>
+            <a href="{% url 'edit_product' product.product_id %}" style="color: #ED7014;">{% trans "Edit" %}</a>
             <a href="{% url 'toggle_product_status' product.product_id %}" style="color: #ED7014;">
-                {% if product.is_active %}Disable{% else %}Enable{% endif %}
+                {% if product.is_active %}{% trans "Disable" %}{% else %}{% trans "Enable" %}{% endif %}
             </a>
         </td>
     </tr>
     {% empty %}
     <tr>
-        <td colspan="6">No products found.</td> <!-- Update colspan to 6 -->
+        <td colspan="6">{% trans "No products found." %}</td>
     </tr>
     {% endfor %}
 </table>
 
 <div style="text-align: right; margin: 20px;">
     <a href="{% url 'add_product' %}" style="display: inline-block; padding: 10px 20px; background-color: #ED7014; color: white; text-decoration: none; border-radius: 5px;">
-        Add Product
+        {% trans "Add Product" %}
     </a>
 </div>
 {% endblock %}

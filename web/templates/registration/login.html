@@ -1,14 +1,14 @@
 <!-- templates/registration/login.html -->
 {% extends 'base.html' %}
-{% load static %}
+{% load static i18n %}
 {% block content %}
 <div class="container">
     <div class="login-box">
-        <h1>Login</h1>
+        <h1>{% trans "Login" %}</h1>
         <link rel="stylesheet" href="{% static 'css/login.css' %}">
     <form method ="post">{% csrf_token %}{{ form.as_p}}
-        <button type="submit">Login</button>
+        <button type="submit">{% trans "Login" %}</button>
     </form>
-<p> If you don't have an account <a href="{% url 'register' %}">Sign Up here.</a>
+<p> {% trans "If you don't have an account" %} <a href="{% url 'register' %}">{% trans "Sign Up here." %}</a>
 </div>
 {% endblock content %}
