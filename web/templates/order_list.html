@@ -68,7 +68,7 @@
             {% for order in orders %}
             <tr class="clickable-row" data-href="{% url 'order_detail' order.id %}">
                 <td>{{ order.po_number }}</td>
-                <td>{{ order.created_at|date:"F d, Y, g:i a" }}</td>
+                <td>{{ order.purchase_date|date:"DATETIME_FORMAT" }}</td>
                 <td>${{ order.total_amount }}</td>
                 <td class="{% if order.status == 'pending' %}status-pending{% elif order.status == 'shipped' %}status-shipped{% elif order.status == 'cancelled' %}status-cancelled{% elif order.status == 'hold' %}status-hold{% endif %}">
                     {{ order.status }}
