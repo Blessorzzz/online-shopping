@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
-{% load static %}
+{% load static i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,23 +12,47 @@
 </head>
 <body>
 
-<h2>My Orders</h2>
+    <h2>{% trans "My Orders" %}</h2>
 
-<form method="get" action=".">
-    <label for="status">Filter by status:</label>
-    <select name="status" id="status">
-        <option value="">All</option>
-        <option value="pending">Pending</option>
-        <option value="shipped">Shipped</option>
-        <option value="cancelled">Cancelled</option>
-        <option value="hold">Hold</option>
-        <option value="ticket-issued">Ticket Issued</option>
-        <option value="complete">Complete</option>
-        <option value="refunded">Refunded</option>
-    </select>
-    <button type="submit">Filter</button>
-</form>
+    <form method="get" action=".">
+        <label for="status">{% trans "Filter by status:" %}</label>
+        <select name="status" id="status">
+            <option value="">{% trans "All" %}</option>
+            <option value="pending">{% trans "Pending" %}</option>
+            <option value="shipped">{% trans "Shipped" %}</option>
+            <option value="cancelled">{% trans "Cancelled" %}</option>
+            <option value="hold">{% trans "Hold" %}</option>
+            <option value="ticket-issued">{% trans "Ticket Issued" %}</option>
+            <option value="complete">{% trans "Complete" %}</option>
+            <option value="refunded">{% trans "Refunded" %}</option>
+        </select>
+        <button type="submit">{% trans "Filter" %}</button>
+    </form>
+    
+    <table class="order-table">
+        <thead>
+            <tr>
+                <th>{% trans "P.O. Number" %}</th>
+                <th>{% trans "Purchase Date" %}</th>
+                <th>{% trans "Total Amount" %}</th>
+                <th>{% trans "Status" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr class="clickable-row" data-href="{% url 'order_detail' order.id %}">
+                <td>{{ order.po_number }}</td>
+                <td>{{ order.created_at|date:"F d, Y, g:i a" }}</td>
+                <td>${{ order.total_amount }}</td>
+                <td class="{% if order.status == 'pending' %}status-pending{% elif order.status == 'shipped' %}status-shipped{% elif order.status == 'cancelled' %}status-cancelled{% endif %}">
+                    {{ order.status }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
+<<<<<<< HEAD
 <table class="order-table">
     <thead>
         <tr>
@@ -58,12 +82,19 @@
         document.querySelectorAll(".clickable-row").forEach(row => {
             row.addEventListener("click", function() {
                 window.location.href = this.dataset.href;
+=======
+    <script>
+        // Make the entire row clickable
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll(".clickable-row").forEach(row => {
+                row.addEventListener("click", function() {
+                    window.location.href = this.dataset.href;
+                });
+>>>>>>> 18eacdd3d0794211afcb12f5f426a2ecef86de06
             });
         });
-    });
-</script>
-
-</body>
-</html>
-
-{% endblock %}
+    </script>
+    
+    </body>
+    </html>
+    {% endblock %}

@@ -1,29 +1,36 @@
 {% extends 'base.html' %}
-
+{% load i18n %}
 {% block content %}
 <div class="product-detail">
     <div class="product-image-container">
+        <!-- 显示主图 -->
         <img src="{{ product.thumbnail_image.url }}" alt="{{ product.product_name }}" class="product-image">
+        <div class="product-thumbnail-container">
+            {% for photo in product.photos.all %}
+                <img src="{{ photo.photo.url }}" alt="{{ product.product_name }} thumbnail" class="product-thumbnail">
+            {% endfor %}
+        </div>
+        <!-- 可选：显示视频 -->
+        {% for video in product.videos.all %}
+            <video src="{{ video.video.url }}" controls class="product-video"></video>
+        {% endfor %}
     </div>
     <div class="product-info">
         <h1 class="product-name-detail">{{ product.product_name }}</h1>
-        <p class="product-age-range">
-            Age Range: {{ product.age_range }}
-        </p>
+        <p class="product-age-range">{% trans "Age Range" %}: {{ product.age_range }}</p>
         <div class="product-price-status">
-            <p class="product-price">Price: ${{ product.price }}</p>
+            <p class="product-price">{% trans "Price" %}: ${{ product.price }}</p>
             {% if product.stock_quantity > 0 %}
-                <p class="product-stock">Stock: {{ product.stock_quantity }} Available</p>
+                <p class="product-stock">{% trans "Stock" %}: {{ product.stock_quantity }} {% trans "Available" %}</p>
             {% else %}
-                <p class="product-status out-of-stock">Status: Out of Stock</p>
+                <p class="product-status out-of-stock">{% trans "Status" %}: {% trans "Out of Stock" %}</p>
             {% endif %}
         </div>
         <p class="product-description">{{ product.description|linebreaksbr }}</p>
-        <!-- shopping button -->
         <form method="POST" action="{% url 'add_to_cart' product.product_id %}">
             {% csrf_token %}
             <button type="submit" class="add-to-cart-btn" {% if product.stock_quantity == 0 %}disabled{% endif %}>
-                Add to Cart
+                {% trans "Add to Cart" %}
             </button>
         </form>
     </div>

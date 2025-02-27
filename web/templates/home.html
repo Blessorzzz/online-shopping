@@ -1,5 +1,6 @@
 <!-- filepath: /c:/Users/Josh/ISI/django_projects/online-shopping/web/templates/home.html -->
 {% extends 'base.html' %}
+{% load i18n %}
 {% block content %}
 <div class="product-list">
     {% for product in products %}
@@ -10,9 +11,9 @@
                 <h2 class="product-name-homepage limited-lines">{{ product.product_name }}</h2>
                 <p class="product-price">${{ product.price }}</p>
                 {% if product.stock_quantity > 0 %}
-                    <p class="product-stock">Stock: {{ product.stock_quantity }} Available</p>
+                    <p class="product-stock">{% trans "Stock" %}: {{ product.stock_quantity }} {% trans "Available" %}</p>
                 {% else %}
-                    <p class="product-status out-of-stock">Status: Out of Stock</p>
+                    <p class="product-status out-of-stock">{% trans "Status" %}: {% trans "Out of Stock" %}</p>
                 {% endif %}
             </div>
         </a>
@@ -22,8 +23,8 @@
 <div class="pagination">
     <span class="step-links">
         {% if page_obj.has_previous %}
-            <a href="?page=1">&laquo; home</a>
-            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            <a href="?page=1">&laquo; {% trans "home" %}</a>
+            <a href="?page={{ page_obj.previous_page_number }}">{% trans "previous" %}</a>
         {% endif %}
 
         {% for page in page_obj.paginator.page_range %}
@@ -35,8 +36,8 @@
         {% endfor %}
 
         {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">next</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            <a href="?page={{ page_obj.next_page_number }}">{% trans "next" %}</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">{% trans "last" %} &raquo;</a>
         {% endif %}
     </span>
 </div>

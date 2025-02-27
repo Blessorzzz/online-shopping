@@ -191,6 +191,17 @@ form.nav-right button:hover {
     transform: scale(1.05); /* Slightly scale up the product item */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow effect */
 }
+.product-thumbnail {
+    width: 100px;
+    height: 100px;
+    margin: 5px;
+}
+
+.product-video {
+    width: 320px;
+    height: 240px;
+    margin: 5px;
+}
 
 .product-image {
     width: 100%; /* Maximize the image size inside the box */
