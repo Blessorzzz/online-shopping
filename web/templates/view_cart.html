@@ -5,10 +5,43 @@
 {% block content %}
 <head>
     <link rel="stylesheet" href="{% static 'css/shoppingcart.css' %}">
+    <style>
+        .popup-message {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #f44336;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            display: none;
+        }
+        .popup-message.success {
+            background-color: #4CAF50;
+        }
+        .popup-message.error {
+            background-color: #f44336;
+        }
+        .popup-message .message {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
 </head>
 
 <body>
     <h2>{% trans "Your Shopping Cart" %}</h2>
+
+    {% if messages %}
+        <div class="popup-message" id="popup-message">
+            {% for message in messages %}
+                <p class="message {{ message.tags }}">{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
 
     {% if cart_items %}
         <table>
@@ -46,18 +79,28 @@
             </tbody>
         </table>
 
-        {% if cart_items %}
-             <h3>{% trans "Total" %}: ${{ total_amount }}</h3>
+        <h3>{% trans "Total" %}: ${{ total_amount }}</h3>
 
-             <form action="{% url 'checkout' %}" method="post">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-success">{% trans "Checkout" %}</button>
-            </form>            
-        {% else %}
-             <p>{% trans "Your cart is empty." %}</p>
-        {% endif %}
+        <form action="{% url 'checkout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success">{% trans "Checkout" %}</button>
+        </form>
     {% else %}
         <p>{% trans "Your cart is empty." %}</p>
     {% endif %}
+
+    <script>
+        // Show popup message
+        document.addEventListener("DOMContentLoaded", function() {
+            var popupMessage = document.getElementById('popup-message');
+            if (popupMessage) {
+                popupMessage.style.display = 'block';
+                setTimeout(function() {
+                    popupMessage.style.display = 'none';
+                }, 5000); // Hide after 5 seconds
+            }
+        });
+    </script>
+    
 </body>
 {% endblock %}

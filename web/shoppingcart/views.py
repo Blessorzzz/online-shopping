@@ -1,4 +1,4 @@
-from django.db import transaction,IntegrityError
+from django.db import transaction, IntegrityError
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
@@ -18,6 +18,7 @@ def add_to_cart(request, product_id):
     if not created:  # 如果商品已存在购物车，增加数量
         cart_item.quantity += 1
     cart_item.save()  # 保存购物车项
+    messages.success(request, "Item has been added to cart.")
     return redirect('view_cart')  # 添加后重定向到购物车页面
 
 @login_required  # 确保用户已经登录
@@ -57,6 +58,7 @@ def update_cart(request, cart_item_id):
 def remove_from_cart(request, cart_item_id):
     cart_item = get_object_or_404(ShoppingCart, id=cart_item_id, user=request.user)
     cart_item.delete()  # 从购物车中删除该商品
+    messages.success(request, "Item has been removed from cart.")
     return redirect('view_cart')
 
 @login_required
@@ -127,3 +129,14 @@ def order_list(request):
 def order_detail(request, order_id):
     order = get_object_or_404(Order, id=order_id, customer=request.user)
     return render(request, 'order_detail.html', {'order': order})
+
+@login_required
+def cancel_order(request, order_id):
+    order = get_object_or_404(Order, id=order_id, customer=request.user)
+    if order.status in ['pending', 'hold']:
+        order.status = 'cancelled'
+        order.save()
+        messages.success(request, "Your order has been cancelled.")
+    else:
+        messages.error(request, "You can only cancel pending or on hold orders.")
+    return redirect('order_list')
