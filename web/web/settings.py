@@ -134,7 +134,7 @@ LOCALE_PATHS = [
     os.path.join(BASE_DIR, 'locale'),  # 翻译文件存储目录
 ]
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Asia/Shanghai"
 USE_TZ = True  # 启用时区支持
 
 
