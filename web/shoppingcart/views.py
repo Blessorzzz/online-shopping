@@ -71,18 +71,16 @@ def checkout(request):
     if not cart_items.exists():
         messages.error(request, "Your shopping cart is empty.")
         logger.warning("❌ Checkout failed: Cart is empty.")
-        return redirect('shopping_cart')
+        return redirect('view_cart')
 
     # **确保 UserProfile 存在**
     user_profile, created = UserProfile.objects.get_or_create(user=request.user)
 
     # **检查收货地址**
-    # ✅ 正确代码
-    # ❌ 错误代码（checkout 视图）
     if not user_profile.address:
         messages.error(request, "Please enter a valid shipping address in 'My Profile'.")
         logger.warning("❌ Checkout failed: Missing shipping address.")
-        return redirect('shopping_cart')
+        return redirect('view_cart')
 
     # **计算订单总金额**
     total_amount = sum(item.product.price * item.quantity for item in cart_items)
@@ -112,7 +110,7 @@ def checkout(request):
     except IntegrityError as e:
         logger.error(f"IntegrityError: {str(e)}")
         messages.error(request, "Failed to create order. Please try again.")
-        return redirect('shopping_cart')
+        return redirect('view_cart')
 
     return redirect('order_list')
 
