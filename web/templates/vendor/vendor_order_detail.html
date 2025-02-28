@@ -1,3 +1,4 @@
+<!-- filepath: /c:/Users/Josh/ISI/django_projects/online-shopping/web/templates/vendor/vendor_order_detail.html -->
 {% extends 'vendor/vendor_base.html' %}
 {% load i18n %}
 {% block content %}
@@ -34,14 +35,19 @@
         </tbody>
     </table>
 
-
     <form method="post" style="margin-top: 20px; text-align: center;">
         {% csrf_token %}
         <label for="status">{% trans "Change Order Status:" %}</label>
         <select name="status" id="status">
-            {% for value, display in order.STATUS_CHOICES %}
-            <option value="{{ value }}" {% if order.status == value %}selected{% endif %}>{{ display }}</option>
-            {% endfor %}
+            {% if order.items.first.product.product_type == 'tangible' %}
+                {% for value, display in order.STATUS_CHOICES_TANGIBLE %}
+                <option value="{{ value }}" {% if order.status == value %}selected{% endif %}>{{ display }}</option>
+                {% endfor %}
+            {% else %}
+                {% for value, display in order.STATUS_CHOICES_VIRTUAL %}
+                <option value="{{ value }}" {% if order.status == value %}selected{% endif %}>{{ display }}</option>
+                {% endfor %}
+            {% endif %}
         </select>
         <button type="submit" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; transition: background 0.3s;">
             {% trans "Update Status" %}
@@ -64,57 +70,6 @@
             {% empty %}
             <p class="no-history">{% trans "No status history available" %}</p>
             {% endfor %}
-        </div>
-    </div>
-        {% comment %} <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
-            {% if order.shipment_date %}
-            <div class="date-item">
-                <span style="font-weight: 500;">{% trans "Shipped Date:" %}</span>
-                {{ order.shipment_date|date:"Y-m-d H:i" }}
-            </div>
-            {% endif %}
-            
-            {% if order.cancel_date %}
-            <div class="date-item">
-                <span style="font-weight: 500;">{% trans "Cancelled Date:" %}</span>
-                {{ order.cancel_date|date:"Y-m-d H:i" }}
-            </div>
-            {% endif %}
-            
-            {% if order.ticket_issue_date %}
-            <div class="date-item">
-                <span style="font-weight: 500;">{% trans "Ticket Issued Date:" %}</span>
-                {{ order.ticket_issue_date|date:"Y-m-d H:i" }}
-            </div>
-            {% endif %}
-            
-            {% if order.refund_date %}
-            <div class="date-item">
-                <span style="font-weight: 500;">{% trans "Refund Date:" %}</span>
-                {{ order.refund_date|date:"Y-m-d H:i" }}
-            </div>
-            {% endif %}
-
-            {% if order.hold_date %}
-            <div class="date-item">
-                <span style="font-weight: 500;">{% trans "hold_date:" %}</span>
-                {{ order.hold_date|date:"Y-m-d H:i" }}
-            </div>
-            {% endif %}
-
-            {% if order.complete_date %}
-            <div class="date-item">
-                <span style="font-weight: 500;">{% trans "complete_date:" %}</span>
-                {{ order.complete_date|date:"Y-m-d H:i" }}
-            </div>
-            {% endif %}
-
-            {% if order.pending_date %}
-            <div class="date-item">
-                <span style="font-weight: 500;">{% trans "pending_date:" %}</span>
-                {{ order.pending_date|date:"Y-m-d H:i" }}
-            </div>
-            {% endif %} {% endcomment %}
         </div>
     </div>
 

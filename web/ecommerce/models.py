@@ -10,6 +10,11 @@ class Product(models.Model):
         ('out_of_stock', _('Out of Stock')),
     ]
 
+    PRODUCT_TYPE_CHOICES = [
+        ('tangible', _('Tangible')),
+        ('virtual', _('Virtual')),
+    ]
+
     product_id = models.UUIDField(primary_key=True, default=uuid.uuid4,
                                    help_text=_('Unique ID for this product across whole shopping mall'))
     product_name = models.CharField(max_length=255, default="", verbose_name=_("Product Name"))
@@ -21,6 +26,7 @@ class Product(models.Model):
     stock_quantity = models.PositiveIntegerField(default=0)
     min_age = models.PositiveIntegerField(default=0, help_text=_("Minimum age suitable for the product"))
     max_age = models.PositiveIntegerField(default=0, help_text=_("Maximum age suitable for the product"))
+    product_type = models.CharField(max_length=10, choices=PRODUCT_TYPE_CHOICES, default='tangible', verbose_name=_("Product Type"))
 
     def __str__(self):
         return self.product_name
@@ -32,28 +38,26 @@ class Product(models.Model):
         return f'{self.min_age}-{self.max_age} ' + _('years old')
 
     def save(self, *args, **kwargs):
-        """
-        如果 product_name 或 description 的翻译字段为空，则自动翻译它们。
-        """
         translations = {
             'es': 'es',  # 西班牙语
             'ja': 'ja',  # 日语
-            'zh-hans': 'zh-CN'  # 中文
+            'ko': 'ko',
         }
 
         for lang, dest in translations.items():
-            # 处理 product_name
             translated_field = f'product_name_{lang}'
-            if hasattr(self, translated_field) and not getattr(self, translated_field):
-                setattr(self, translated_field, GoogleTranslator(source='en', target=dest).translate(self.product_name))
+            if hasattr(self, translated_field) and not getattr(self, translated_field):  # ✅ 确保字段存在且为空
+                translated_text = GoogleTranslator(source='en', target=dest).translate(self.product_name)
+                print(f"🔹 Translating `{self.product_name}` to `{dest}`: {translated_text}")  # ✅ 添加调试信息
+                setattr(self, translated_field, translated_text)
 
-            # 处理 description
             translated_field = f'description_{lang}'
-            if hasattr(self, translated_field) and not getattr(self, translated_field):
-                setattr(self, translated_field, GoogleTranslator(source='en', target=dest).translate(self.description))
+            if hasattr(self, translated_field) and not getattr(self, translated_field):  # ✅ 确保字段存在且为空
+                translated_text = GoogleTranslator(source='en', target=dest).translate(self.description)
+                print(f"🔹 Translating `{self.description}` to `{dest}`: {translated_text}")  # ✅ 添加调试信息
+                setattr(self, translated_field, translated_text)
 
         super().save(*args, **kwargs)
-
 
 class ProductPhoto(models.Model):
     photo_id = models.AutoField(primary_key=True)
@@ -62,7 +66,6 @@ class ProductPhoto(models.Model):
 
     def __str__(self):
         return f"Photo for {self.product.product_name}"
-
 
 class ProductVideo(models.Model):
     video_id = models.AutoField(primary_key=True)

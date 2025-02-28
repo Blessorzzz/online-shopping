@@ -3,11 +3,12 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from shoppingcart.models import Order
+from shoppingcart.models import Order, OrderItem
 from ecommerce.models import Product
 from .forms import ProductForm
 from django.http import HttpResponseForbidden
 from django.db.models import Q
+from django.utils.timezone import now
 
 def vendor_login(request):
     if request.method == 'POST':
@@ -92,33 +93,42 @@ def toggle_product_status(request, product_id):
 def vendor_order_detail(request, order_id):
     if not hasattr(request.user, 'vendor'):
         return HttpResponseForbidden("You are not a vendor.")
-    
+
     order = get_object_or_404(Order, id=order_id)
-    order_items = order.items.all()  # Assuming 'items' is a related field in Order
+    order_items = order.items.all()
 
     if request.method == 'POST':
         new_status = request.POST.get('status')
-        if new_status in dict(Order.STATUS_CHOICES):
+        product_type = order.items.first().product.product_type if order.items.exists() else 'tangible'
+
+        if product_type == 'tangible' and new_status in dict(Order.STATUS_CHOICES_TANGIBLE):
             order.status = new_status
-            order.save()
+        elif product_type == 'virtual' and new_status in dict(Order.STATUS_CHOICES_VIRTUAL):
+            order.status = new_status
+        else:
+            messages.error(request, "Invalid status change.")
             return redirect('vendor_order_detail', order_id=order.id)
 
-    return render(request, 'vendor/vendor_order_detail.html', {'order': order, 'order_items': order_items.all})
+        # Update the timestamp for the corresponding status
+        status_date_map = {
+            'pending': 'pending_date',
+            'shipped': 'shipment_date',
+            'cancelled': 'cancel_date',
+            'hold': 'hold_date',
+            'ticket-issued': 'ticket_issue_date',
+            'complete': 'complete_date',
+            'refunded': 'refund_date'
+        }
+        
+        if new_status in status_date_map:
+            setattr(order, status_date_map[new_status], now())
+            print(f"Updated {status_date_map[new_status]} timestamp for status: {new_status}")
 
-@login_required
-def vendor_product_detail(request, product_id):
-    if not hasattr(request.user, 'vendor'):
-        return HttpResponseForbidden("You are not a vendor.")
-    
-    product = get_object_or_404(Product, pk=product_id)
-    return render(request, 'vendor/vendor_product_detail.html', {'product': product})
+        order.save()
+        messages.success(request, "Order status updated successfully.")
+        return redirect('vendor_order_detail', order_id=order.id)
 
-@login_required
-def vendor_order_detail(request, order_id):
-    order = get_object_or_404(Order, id=order_id)
-    order_items = order.items.all()
-    
-    # 生成状态时间线数据
+    # Generate status timeline data
     status_date_map = {
         'pending': order.pending_date,
         'shipped': order.shipment_date,
@@ -128,22 +138,24 @@ def vendor_order_detail(request, order_id):
         'complete': order.complete_date,
         'refunded': order.refund_date
     }
-    
-    # 过滤空值并按时间排序
+
     sorted_status_dates = sorted(
         [(status, date) for status, date in status_date_map.items() if date],
         key=lambda x: x[1]
     )
 
-    if request.method == 'POST':
-        new_status = request.POST.get('status')
-        if new_status in dict(Order.STATUS_CHOICES):
-            order.status = new_status
-            order.save()
-            return redirect('vendor_order_detail', order_id=order.id)
+    print("Sorted status dates:", sorted_status_dates)  # Debugging output
 
     return render(request, 'vendor/vendor_order_detail.html', {
         'order': order,
         'order_items': order_items,
         'sorted_status_dates': sorted_status_dates
     })
+
+@login_required
+def vendor_product_detail(request, product_id):
+    if not hasattr(request.user, 'vendor'):
+        return HttpResponseForbidden("You are not a vendor.")
+    
+    product = get_object_or_404(Product, pk=product_id)
+    return render(request, 'vendor/vendor_product_detail.html', {'product': product})
