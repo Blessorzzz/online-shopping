@@ -32,25 +32,25 @@ class Product(models.Model):
         return f'{self.min_age}-{self.max_age} ' + _('years old')
 
     def save(self, *args, **kwargs):
- 
+        """
+        如果 product_name 或 description 的翻译字段为空，则自动翻译它们。
+        """
         translations = {
             'es': 'es',  # 西班牙语
             'ja': 'ja',  # 日语
-            'ko': 'ko',
+            'zh-hans': 'zh-CN'  # 中文
         }
 
         for lang, dest in translations.items():
+            # 处理 product_name
             translated_field = f'product_name_{lang}'
-            if hasattr(self, translated_field) and not getattr(self, translated_field):  # ✅ 确保字段存在且为空
-                translated_text = GoogleTranslator(source='en', target=dest).translate(self.product_name)
-                print(f"🔹 Translating `{self.product_name}` to `{dest}`: {translated_text}")  # ✅ 添加调试信息
-                setattr(self, translated_field, translated_text)
+            if hasattr(self, translated_field) and not getattr(self, translated_field):
+                setattr(self, translated_field, GoogleTranslator(source='en', target=dest).translate(self.product_name))
 
+            # 处理 description
             translated_field = f'description_{lang}'
-            if hasattr(self, translated_field) and not getattr(self, translated_field):  # ✅ 确保字段存在且为空
-                translated_text = GoogleTranslator(source='en', target=dest).translate(self.description)
-                print(f"🔹 Translating `{self.description}` to `{dest}`: {translated_text}")  # ✅ 添加调试信息
-                setattr(self, translated_field, translated_text)
+            if hasattr(self, translated_field) and not getattr(self, translated_field):
+                setattr(self, translated_field, GoogleTranslator(source='en', target=dest).translate(self.description))
 
         super().save(*args, **kwargs)
 

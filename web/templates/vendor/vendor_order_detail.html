@@ -1,4 +1,154 @@
-{% extends 'vendor/vendor_base.html' %}
+from django.contrib.auth import login as auth_login
+from django.contrib.auth.forms import AuthenticationForm
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from shoppingcart.models import Order
+from ecommerce.models import Product
+from .forms import ProductForm
+from django.http import HttpResponseForbidden
+from django.db.models import Q
+
+def vendor_login(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            if hasattr(user, 'vendor'):
+                auth_login(request, user)
+                return redirect('vendor_dashboard')
+            else:
+                messages.error(request, "You are not a vendor.")
+    else:
+        form = AuthenticationForm()
+    return render(request, 'registration/vendor_login.html', {'form': form})
+
+# vendor search function
+@login_required
+def vendor_dashboard(request):
+    if not hasattr(request.user, 'vendor'):
+        return render(request, 'vendor/not_a_vendor.html')
+    
+    vendor = request.user.vendor
+    query = request.GET.get('q', '').strip()  # Get search query from URL
+    products = Product.objects.filter(vendor=vendor)  # Get all products for this vendor
+
+    if query:
+        products = products.filter(
+            Q(product_name__icontains=query) |  # Search by product name (case-insensitive)
+            Q(product_id__icontains=query)  # Search by product ID (case-insensitive)
+        )
+
+    return render(request, 'vendor/dashboard.html', {'vendor': vendor, 'products': products, 'query': query})
+
+@login_required
+def vendor_orders(request):
+    if not hasattr(request.user, 'vendor'):
+        return HttpResponseForbidden("You are not a vendor.")
+    
+    vendor = request.user.vendor
+    # Query all orders that include products from the vendor
+    orders = Order.objects.filter(items__product__vendor=vendor).distinct().order_by('-purchase_date')
+    
+    return render(request, 'vendor/vendor_orders.html', {'orders': orders})
+
+@login_required
+def add_product(request):
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            product = form.save(commit=False)
+            product.vendor = request.user.vendor
+            product.save()
+            return redirect('vendor_dashboard')
+    else:
+        form = ProductForm()
+    return render(request, 'vendor/add_product.html', {'form': form})
+
+@login_required
+def edit_product(request, product_id):
+    product = get_object_or_404(Product, product_id=product_id)
+
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES, instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect('vendor_dashboard')
+    else:
+        form = ProductForm(instance=product)
+
+    return render(request, 'vendor/edit_product.html', {'form': form, 'product': product})
+
+# Toggle the status of a product between active and inactive
+@login_required
+def toggle_product_status(request, product_id):
+    product = get_object_or_404(Product, product_id=product_id)
+    product.is_active = not product.is_active
+    product.save()
+    return redirect('vendor_dashboard')
+
+# Display the details of an order
+@login_required
+def vendor_order_detail(request, order_id):
+    if not hasattr(request.user, 'vendor'):
+        return HttpResponseForbidden("You are not a vendor.")
+    
+    order = get_object_or_404(Order, id=order_id)
+    order_items = order.items.all()  # Assuming 'items' is a related field in Order
+
+    if request.method == 'POST':
+        new_status = request.POST.get('status')
+        if new_status in dict(Order.STATUS_CHOICES):
+            order.status = new_status
+            order.save()
+            return redirect('vendor_order_detail', order_id=order.id)
+
+    return render(request, 'vendor/vendor_order_detail.html', {'order': order, 'order_items': order_items.all})
+
+@login_required
+def vendor_product_detail(request, product_id):
+    if not hasattr(request.user, 'vendor'):
+        return HttpResponseForbidden("You are not a vendor.")
+    
+    product = get_object_or_404(Product, pk=product_id)
+    return render(request, 'vendor/vendor_product_detail.html', {'product': product})
+
+@login_required
+def vendor_order_detail(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    order_items = order.items.all()
+    
+    # 生成状态时间线数据
+    status_date_map = {
+        'pending': order.pending_date,
+        'shipped': order.shipment_date,
+        'cancelled': order.cancel_date,
+        'hold': order.hold_date,
+        'ticket-issued': order.ticket_issue_date,
+        'complete': order.complete_date,
+        'refunded': order.refund_date
+    }
+    
+    # 过滤空值并按时间排序
+    sorted_status_dates = sorted(
+        [(status, date) for status, date in status_date_map.items() if date],
+        key=lambda x: x[1]
+    )
+
+    if request.method == 'POST':
+        new_status = request.POST.get('status')
+        if new_status in dict(Order.STATUS_CHOICES):
+            order.status = new_status
+            order.save()
+            return redirect('vendor_order_detail', order_id=order.id)
+
+    return render(request, 'vendor/vendor_order_detail.html', {
+        'order': order,
+        'order_items': order_items,
+        'sorted_status_dates': sorted_status_dates
+    })
+
+4.{% extends 'vendor/vendor_base.html' %}
 {% load i18n %}
 {% block content %}
 <div class="order-detail-container" style="max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
