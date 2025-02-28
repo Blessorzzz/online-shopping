@@ -14,30 +14,6 @@ class ShoppingCart(models.Model):
     def __str__(self):
         return f"{self.quantity} x {self.product.product_name} for {self.user.username}"
 
-class Order(models.Model):
-    STATUS_CHOICES = [
-        ('pending', 'Pending'),
-        ('shipped', 'Shipped'),
-        ('cancelled', 'Cancelled'),
-        ('hold', 'Hold'),
-        ('ticket-issued', 'Ticket Issued'),
-        ('complete', 'Complete'),
-        ('refunded', 'Refunded'),
-    ]
-
-    po_number = models.CharField(max_length=20, unique=True, editable=False, default='', null=True, blank=True)
-    customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='customer_orders', default=1)
-    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    purchase_date = models.DateTimeField(default=timezone.now)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
-    shipping_address = models.TextField()
-    shipment_date = models.DateTimeField(null=True, blank=True)
-    cancel_date = models.DateTimeField(null=True, blank=True)
-    ticket_issue_date = models.DateTimeField(null=True, blank=True)
-    refund_date = models.DateTimeField(null=True, blank=True)
-    hold_date = models.DateTimeField(null=True, blank=True)  # 新增hold状态对应的时间字段
-    complete_date = models.DateTimeField(null=True, blank=True)  # 新增complete状态对应的时间字段
-    pending_date = models.DateTimeField(null=True, blank=True)  # 新增pending状态对应的时间字段
 
 class Order(models.Model):
     STATUS_CHOICES = [
@@ -64,10 +40,39 @@ class Order(models.Model):
     complete_date = models.DateTimeField(null=True, blank=True)
     pending_date = models.DateTimeField(null=True, blank=True)
 
+<<<<<<< HEAD
+class Order(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('shipped', 'Shipped'),
+        ('cancelled', 'Cancelled'),
+        ('hold', 'Hold'),
+        ('ticket-issued', 'Ticket Issued'),
+        ('complete', 'Complete'),
+        ('refunded', 'Refunded'),
+    ]
+
+    po_number = models.CharField(max_length=20, unique=True, editable=False, default='', null=True, blank=True)
+    customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='customer_orders', default=1)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    purchase_date = models.DateTimeField(default=timezone.now)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    shipping_address = models.TextField()
+    shipment_date = models.DateTimeField(null=True, blank=True)
+    cancel_date = models.DateTimeField(null=True, blank=True)
+    ticket_issue_date = models.DateTimeField(null=True, blank=True)
+    refund_date = models.DateTimeField(null=True, blank=True)
+    hold_date = models.DateTimeField(null=True, blank=True)
+    complete_date = models.DateTimeField(null=True, blank=True)
+    pending_date = models.DateTimeField(null=True, blank=True)
+
+=======
+>>>>>>> b235ac8997e791a4773efea9efbdc608fc5184cd
     def save(self, *args, **kwargs):
         # 生成PO号（仅创建时）
         if not self.po_number:
             self.po_number = f'PO-{uuid.uuid4().hex[:10].upper()}'
+<<<<<<< HEAD
 <<<<<<< HEAD
             super().save(*args, **kwargs) 
         
@@ -104,6 +109,8 @@ class Order(models.Model):
             self.po_number = f'PO-{uuid.uuid4().hex[:10].upper()}'
 =======
 >>>>>>> 20aec1b7 (perfect b4)
+=======
+>>>>>>> b235ac8997e791a4773efea9efbdc608fc5184cd
             # 首次保存生成 id 和 po_number
             super().save(*args, **kwargs)
         else:
