@@ -118,9 +118,9 @@ def checkout(request):
 def order_list(request):
     status_filter = request.GET.get('status')
     if status_filter:
-        orders = Order.objects.filter(status=status_filter, customer=request.user)
+        orders = Order.objects.filter(status=status_filter, customer=request.user).order_by('-purchase_date')
     else:
-        orders = Order.objects.filter(customer=request.user)
+        orders = Order.objects.filter(customer=request.user).order_by('-purchase_date')
     return render(request, 'order_list.html', {'orders': orders})
 
 @login_required
