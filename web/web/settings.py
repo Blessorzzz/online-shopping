@@ -1,3 +1,4 @@
+
 """
 Django settings for web project.
 
@@ -121,11 +122,13 @@ LANGUAGE_CODE = 'en'
 USE_L10N = True
 
 LANGUAGES = [
-    ('en', 'English'),
-    ('es', 'Spanish'),
-    ('ja', 'Japanese'),
-    ('ko', 'Korean'),
+    ('en', _('English')),
+    ('es', _('Spanish')),
+    ('ja', _('Japanese')),
+    ('ko', _('Korean')),
+    ('zh-hans', _('Simplified Chinese')),  # ✅ 确保 Django 识别 `zh-hans`
 ]
+
 
 LANGUAGE_COOKIE_NAME = 'django_language'  
 LANGUAGE_COOKIE_AGE = 86400
@@ -139,6 +142,7 @@ USE_TZ = True  # 启用时区支持
 
 
 USE_I18N = True
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 
 

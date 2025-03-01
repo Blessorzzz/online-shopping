@@ -2,7 +2,8 @@ from django.db import models
 import uuid
 from vendor.models import Vendor
 from django.utils.translation import gettext_lazy as _
-from deep_translator import GoogleTranslator  # 使用 deep-translator 代替 googletrans
+from deep_translator import GoogleTranslator
+
 
 class Product(models.Model):
     STATUS_CHOICES = [
@@ -38,26 +39,40 @@ class Product(models.Model):
         return f'{self.min_age}-{self.max_age} ' + _('years old')
 
     def save(self, *args, **kwargs):
-        translations = {
-            'es': 'es',  # 西班牙语
-            'ja': 'ja',  # 日语
-            'ko': 'ko',
-        }
+      translations = {
+        'es': 'es',
+        'ja': 'ja',
+        'ko': 'ko',
+        'zh-hans': 'zh-CN',  
+    }
 
-        for lang, dest in translations.items():
-            translated_field = f'product_name_{lang}'
-            if hasattr(self, translated_field) and not getattr(self, translated_field):  # ✅ 确保字段存在且为空
-                translated_text = GoogleTranslator(source='en', target=dest).translate(self.product_name)
-                print(f"🔹 Translating `{self.product_name}` to `{dest}`: {translated_text}")  # ✅ 添加调试信息
+      updated = False
+
+    # ✅ 需要翻译的字段列表（新增此行）
+      translatable_fields = ['product_name', 'description']
+
+      for lang, dest in translations.items():
+        lang_code = lang.replace('-', '_') 
+
+        # ✅ 遍历所有需要翻译的字段（新增循环）
+        for field in translatable_fields:
+            translated_field = f'{field}_{lang_code}'  # 动态生成字段名（如 description_zh_hans）
+            source_text = getattr(self, field)  # 获取原始字段值（如英文 product_name 或 description）
+
+            existing_value = getattr(self, translated_field, None)
+
+            if not existing_value or existing_value == source_text:
+                translator = GoogleTranslator(source='auto', target=dest)
+                translated_text = translator.translate(source_text)
                 setattr(self, translated_field, translated_text)
+                updated = True
 
-            translated_field = f'description_{lang}'
-            if hasattr(self, translated_field) and not getattr(self, translated_field):  # ✅ 确保字段存在且为空
-                translated_text = GoogleTranslator(source='en', target=dest).translate(self.description)
-                print(f"🔹 Translating `{self.description}` to `{dest}`: {translated_text}")  # ✅ 添加调试信息
-                setattr(self, translated_field, translated_text)
-
+      if updated:
         super().save(*args, **kwargs)
+        self.refresh_from_db()
+        print("✅ 翻译已更新")
+      else:
+        print("⚠️ 没有发现更新，不执行保存")
 
 class ProductPhoto(models.Model):
     photo_id = models.AutoField(primary_key=True)

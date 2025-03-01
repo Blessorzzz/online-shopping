@@ -6,6 +6,7 @@ from ecommerce.models import Product  # 引用 Product 模型
 from .models import ShoppingCart, Order, OrderItem
 from django.contrib import messages
 from user.models import UserProfile
+from django import forms
 
 import logging
 
@@ -117,6 +118,8 @@ def checkout(request):
 @login_required
 def order_list(request):
     status_filter = request.GET.get('status')
+    orders = Order.objects.filter(customer=request.user)
+
     if status_filter:
         orders = Order.objects.filter(status=status_filter, customer=request.user).order_by('-purchase_date')
     else:

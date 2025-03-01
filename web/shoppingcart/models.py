@@ -8,7 +8,7 @@ class ShoppingCart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # 关联到 User 模型
     product = models.ForeignKey(Product, on_delete=models.CASCADE)  # 关联到 Product 模型
     quantity = models.PositiveIntegerField(default=1)  # 默认购买数量为 1
-    created_at = models.DateTimeField(auto_now_add=True)  # 自动记录创建时间
+    created_at = models.DateTimeField(auto_now_add=True)  # 自动记录创建时间（UTC）
 
     def __str__(self):
         return f"{self.quantity} x {self.product.product_name} for {self.user.username}"
@@ -34,6 +34,11 @@ class Order(models.Model):
     purchase_date = models.DateTimeField(default=timezone.now)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES_TANGIBLE, default='pending')
     shipping_address = models.TextField()
+    purchase_date = models.DateTimeField(default=timezone.now)  # 存储 UTC 时间
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    shipping_address = models.TextField()
+
+    # 各种状态的时间字段
     shipment_date = models.DateTimeField(null=True, blank=True)
     cancel_date = models.DateTimeField(null=True, blank=True)
     ticket_issue_date = models.DateTimeField(null=True, blank=True)
@@ -74,6 +79,11 @@ class Order(models.Model):
                 date_field = status_date_map.get(current_status)
                 if date_field:
                     setattr(self, date_field, now)
+
+        """ 在状态变更时更新相应的时间字段 """
+        if not self.po_number:
+            self.po_number = f'PO-{uuid.uuid4().hex[:10].upper()}'
+        super().save(*args, **kwargs)
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')

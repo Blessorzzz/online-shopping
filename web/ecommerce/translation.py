@@ -3,4 +3,4 @@ from .models import Product
 
 @register(Product)
 class ProductTranslationOptions(TranslationOptions):
-    fields = ('product_name', 'description')  # Add Chinese fields explicitly
+    fields = ('product_name', 'description')
