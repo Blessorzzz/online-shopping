@@ -1,0 +1,485 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-03-01 14:36+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_Hans\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: .\ecommerce\models.py:33 .\templates\product_detail.html:48
+#: .\templates\vendor\vendor_product_detail.html:16
+msgid "Stock"
+msgstr "库存"
+
+#: .\ecommerce\models.py:34 .\ecommerce\models.py:53
+#: .\templates\vendor\vendor_product_detail.html:18
+msgid "Out of Stock"
+msgstr "缺货"
+
+#: .\ecommerce\models.py:38
+msgid "Unique ID for this product across whole shopping mall"
+msgstr "该商品在整个商场的唯一ID"
+
+#: .\ecommerce\models.py:39 .\templates\vendor\dashboard.html:10
+#: .\templates\vendor\vendor_order_detail.html:15
+msgid "Product Name"
+msgstr "商品名称"
+
+#: .\ecommerce\models.py:42
+msgid "Description"
+msgstr "描述"
+
+#: .\ecommerce\models.py:46
+msgid "Minimum age suitable for the product"
+msgstr "该商品适用的最小年龄"
+
+#: .\ecommerce\models.py:47
+msgid "Maximum age suitable for the product"
+msgstr "该商品适用的最大年龄"
+
+#: .\ecommerce\models.py:53 .\templates\product_detail.html:50
+#: .\templates\vendor\vendor_product_detail.html:16
+msgid "Available"
+msgstr "可购买"
+
+#: .\ecommerce\models.py:56
+msgid "years old"
+msgstr "岁"
+
+#: .\templates\base.html:7 .\templates\vendor\vendor_base.html:7
+msgid "My Online Shop"
+msgstr "我的在线商店"
+
+#: .\templates\base.html:57
+msgid "Home"
+msgstr "首页"
+
+#: .\templates\base.html:60 .\templates\base.html:65
+msgid "My Cart"
+msgstr "我的购物车"
+
+#: .\templates\base.html:61 .\templates\base.html:66
+#: .\templates\order_list.html:15
+msgid "My Orders"
+msgstr "我的订单"
+
+#: .\templates\base.html:62 .\templates\base.html:67
+#: .\templates\registration\login.html:7 .\templates\registration\login.html:10
+msgid "Login"
+msgstr "登录"
+
+#: .\templates\base.html:63 .\templates\base.html:68
+#: .\templates\register.html:11
+msgid "Register"
+msgstr "注册"
+
+#: .\templates\base.html:74 .\templates\vendor\vendor_base.html:20
+msgid "Search product"
+msgstr "搜索商品"
+
+#: .\templates\base.html:75 .\templates\vendor\vendor_base.html:21
+msgid "Search"
+msgstr "搜索"
+
+#: .\templates\base.html:93 .\templates\vendor\vendor_base.html:30
+msgid "Hi"
+msgstr "你好"
+
+#: .\templates\base.html:96 .\templates\vendor\vendor_base.html:33
+msgid "Logout"
+msgstr "退出登录"
+
+#: .\templates\base.html:104
+msgid "Log in as Vendor"
+msgstr "以商家身份登录"
+
+#: .\templates\home.html:42
+msgid "home"
+msgstr "首页"
+
+#: .\templates\home.html:43
+msgid "previous"
+msgstr "上一页"
+
+#: .\templates\home.html:55
+msgid "next"
+msgstr "下一页"
+
+#: .\templates\home.html:56
+msgid "last"
+msgstr "最后一页"
+
+#: .\templates\order_detail.html:18
+msgid "Order Details"
+msgstr "订单详情"
+
+#: .\templates\order_detail.html:21
+msgid "P.O. Number:"
+msgstr "订单号："
+
+#: .\templates\order_detail.html:22
+#: .\templates\vendor\vendor_order_detail.html:7
+msgid "Purchase Date:"
+msgstr "购买日期："
+
+#: .\templates\order_detail.html:23
+msgid "Shipping Address:"
+msgstr "配送地址："
+
+#: .\templates\order_detail.html:24
+#: .\templates\vendor\vendor_order_detail.html:8
+msgid "Total Amount:"
+msgstr "总金额："
+
+#: .\templates\order_detail.html:25
+#: .\templates\vendor\vendor_order_detail.html:9
+msgid "Status:"
+msgstr "状态："
+
+#: .\templates\order_detail.html:28
+msgid "Items in this order:"
+msgstr "订单中的商品："
+
+#: .\templates\order_detail.html:33 .\templates\view_cart.html:17
+msgid "Product"
+msgstr "商品"
+
+#: .\templates\order_detail.html:34
+#: .\templates\vendor\vendor_order_detail.html:16 .\templates\view_cart.html:19
+msgid "Quantity"
+msgstr "数量"
+
+#: .\templates\order_detail.html:35
+msgid "Unit Price"
+msgstr "单价"
+
+#: .\templates\order_detail.html:36
+#: .\templates\vendor\vendor_order_detail.html:18
+msgid "Subtotal"
+msgstr "小计"
+
+#: .\templates\order_detail.html:51
+#: .\templates\vendor\vendor_order_detail.html:124
+msgid "Back to Orders"
+msgstr "返回订单列表"
+
+#: .\templates\order_list.html:19
+msgid "Filter by status:"
+msgstr "按状态筛选："
+
+#: .\templates\order_list.html:21
+msgid "All"
+msgstr "全部"
+
+#: .\templates\order_list.html:22
+msgid "Pending"
+msgstr "待处理"
+
+#: .\templates\order_list.html:23
+msgid "Shipped"
+msgstr "已发货"
+
+#: .\templates\order_list.html:24
+msgid "Cancelled"
+msgstr "已取消"
+
+#: .\templates\order_list.html:25
+msgid "Hold"
+msgstr "暂停"
+
+#: .\templates\order_list.html:26
+msgid "Ticket Issued"
+msgstr "已开票"
+
+#: .\templates\order_list.html:27
+msgid "Complete"
+msgstr "已完成"
+
+#: .\templates\order_list.html:28
+msgid "Refunded"
+msgstr "已退款"
+
+#: .\templates\order_list.html:30
+msgid "Filter"
+msgstr "筛选"
+
+#: .\templates\order_list.html:36 .\templates\vendor\vendor_orders.html:9
+msgid "P.O. Number"
+msgstr "订单号"
+
+#: .\templates\order_list.html:37 .\templates\vendor\vendor_orders.html:10
+msgid "Purchase Date"
+msgstr "购买日期"
+
+#: .\templates\order_list.html:38 .\templates\vendor\vendor_orders.html:12
+msgid "Total Amount"
+msgstr "总金额"
+
+#: .\templates\order_list.html:39 .\templates\vendor\vendor_orders.html:13
+#: .\templates\vendor\vendor_product_detail.html:18
+msgid "Status"
+msgstr "状态"
+
+#: .\templates\product_detail.html:38 .\templates\vendor\dashboard.html:11
+#: .\templates\vendor\vendor_order_detail.html:17
+#: .\templates\vendor\vendor_product_detail.html:14
+#: .\templates\view_cart.html:18
+msgid "Price"
+msgstr "价格"
+
+#: .\templates\product_detail.html:44
+#: .\templates\vendor\vendor_product_detail.html:11
+msgid "Age Range"
+msgstr "年龄范围"
+
+#: .\templates\product_detail.html:59
+msgid "Add to Cart"
+msgstr "加入购物车"
+
+#: .\templates\product_detail.html:68
+msgid "Product Details"
+msgstr "商品详情"
+
+#: .\templates\register.html:43
+msgid "Sign up"
+msgstr "注册"
+
+#: .\templates\registration\login.html:12
+msgid "If you don't have an account"
+msgstr "如果您没有账户"
+
+#: .\templates\registration\login.html:12
+msgid "Sign Up here."
+msgstr "请在此注册。"
+
+#: .\templates\vendor\add_product.html:6
+#: .\templates\vendor\add_product.html:176 .\templates\vendor\dashboard.html:45
+msgid "Add Product"
+msgstr "添加商品"
+
+#: .\templates\vendor\add_product.html:169
+#: .\templates\vendor\edit_product.html:148
+msgid "All fields must be filled out."
+msgstr "所有字段必须填写。"
+
+#: .\templates\vendor\add_product.html:170
+#: .\templates\vendor\edit_product.html:149
+msgid "Price must be greater than zero."
+msgstr "价格必须大于零。"
+
+#: .\templates\vendor\add_product.html:171
+#: .\templates\vendor\edit_product.html:150
+msgid "Stock quantity cannot be negative."
+msgstr "库存数量不能为负数。"
+
+#: .\templates\vendor\add_product.html:172
+msgid "A thumbnail image must be selected."
+msgstr "必须选择缩略图。"
+
+#: .\templates\vendor\add_product.html:173
+#: .\templates\vendor\edit_product.html:151
+msgid "Minimum age cannot be greater than maximum age."
+msgstr "最小年龄不能大于最大年龄。"
+
+#: .\templates\vendor\add_product.html:180
+#: .\templates\vendor\edit_product.html:158
+#: .\templates\vendor\vendor_orders.html:37
+msgid "Back to Dashboard"
+msgstr "返回仪表盘"
+
+#: .\templates\vendor\dashboard.html:4
+msgid "Welcome"
+msgstr "欢迎"
+
+#: .\templates\vendor\dashboard.html:5
+msgid "Your Products"
+msgstr "您的商品"
+
+#: .\templates\vendor\dashboard.html:8
+msgid "Thumbnail"
+msgstr "缩略图"
+
+#: .\templates\vendor\dashboard.html:9
+msgid "Product ID"
+msgstr "商品ID"
+
+#: .\templates\vendor\dashboard.html:12
+msgid "Stock Quantity"
+msgstr "库存数量"
+
+#: .\templates\vendor\dashboard.html:13
+#: .\templates\vendor\vendor_orders.html:14 .\templates\view_cart.html:21
+msgid "Actions"
+msgstr "操作"
+
+#: .\templates\vendor\dashboard.html:30
+msgid "Edit"
+msgstr "编辑"
+
+#: .\templates\vendor\dashboard.html:32
+msgid "Disable"
+msgstr "禁用"
+
+#: .\templates\vendor\dashboard.html:32
+msgid "Enable"
+msgstr "启用"
+
+#: .\templates\vendor\dashboard.html:38
+msgid "No products found."
+msgstr "未找到商品。"
+
+#: .\templates\vendor\edit_product.html:154
+msgid "Save Changes"
+msgstr "保存更改"
+
+#: .\templates\vendor\not_a_vendor.html:6
+msgid "Access Denied"
+msgstr "访问被拒绝"
+
+#: .\templates\vendor\not_a_vendor.html:50
+msgid "You are not a vendor"
+msgstr "您不是商家"
+
+#: .\templates\vendor\not_a_vendor.html:51
+msgid "Please log in as a vendor to access this page."
+msgstr "请以商家身份登录以访问此页面。"
+
+#: .\templates\vendor\not_a_vendor.html:52
+msgid "Back to Login"
+msgstr "返回登录"
+
+#: .\templates\vendor\vendor_base.html:13
+msgid "Vendor Dashboard"
+msgstr "商家仪表盘"
+
+#: .\templates\vendor\vendor_base.html:14
+msgid "View Purchase Orders"
+msgstr "查看采购订单"
+
+#: .\templates\vendor\vendor_base.html:24
+msgid "Reset"
+msgstr "重置"
+
+#: .\templates\vendor\vendor_order_detail.html:5
+msgid "Order Details - PO Number:"
+msgstr "订单详情 - 订单号："
+
+#: .\templates\vendor\vendor_order_detail.html:6
+msgid "Customer:"
+msgstr "客户："
+
+#: .\templates\vendor\vendor_order_detail.html:11
+msgid "Order Items"
+msgstr "订单商品"
+
+#: .\templates\vendor\vendor_order_detail.html:31
+msgid "No items in this order."
+msgstr "此订单中没有商品。"
+
+#: .\templates\vendor\vendor_order_detail.html:40
+msgid "Change Order Status:"
+msgstr "更改订单状态："
+
+#: .\templates\vendor\vendor_order_detail.html:47
+msgid "Update Status"
+msgstr "更新状态"
+
+#: .\templates\vendor\vendor_order_detail.html:52
+msgid "Status History"
+msgstr "状态历史"
+
+#: .\templates\vendor\vendor_order_detail.html:65
+msgid "No status history available"
+msgstr "无状态历史记录"
+
+#: .\templates\vendor\vendor_orders.html:5
+msgid "Purchase Orders"
+msgstr "采购订单"
+
+#: .\templates\vendor\vendor_orders.html:11
+msgid "Customer Name"
+msgstr "客户姓名"
+
+#: .\templates\vendor\vendor_orders.html:26
+msgid "View Details"
+msgstr "查看详情"
+
+#: .\templates\vendor\vendor_orders.html:31
+msgid "No purchase orders available."
+msgstr "没有可用的采购订单。"
+
+#: .\templates\view_cart.html:11
+msgid "Your Shopping Cart"
+msgstr "您的购物车"
+
+#: .\templates\view_cart.html:20 .\templates\view_cart.html:50
+msgid "Total"
+msgstr "总计"
+
+#: .\templates\view_cart.html:41
+msgid "Remove"
+msgstr "移除"
+
+#: .\templates\view_cart.html:54
+msgid "Checkout"
+msgstr "结账"
+
+#: .\templates\view_cart.html:57 .\templates\view_cart.html:60
+msgid "Your cart is empty."
+msgstr "您的购物车为空。"
+
+#: .\user\form.py:10
+msgid "Email"
+msgstr "电子邮件"
+
+#: .\user\form.py:11
+msgid "Please enter a valid email address."
+msgstr "请输入有效的电子邮件地址。"
+
+#: .\user\form.py:15
+msgid "Full name"
+msgstr "全名"
+
+#: .\user\form.py:16
+msgid "Please enter your full name."
+msgstr "请输入您的全名。"
+
+#: .\user\form.py:20
+msgid "Shipping address"
+msgstr "配送地址"
+
+#: .\user\form.py:21
+msgid "Please enter your shipping address."
+msgstr "请输入您的配送地址。"
+
+#: .\web\settings.py:124
+msgid "English"
+msgstr "英语"
+
+#: .\web\settings.py:125
+msgid "Spanish"
+msgstr "西班牙语"
+
+#: .\web\settings.py:126
+msgid "Japanese"
+msgstr "日语"
+
+#: .\web\settings.py:127
+msgid "Korean"
+msgstr "韩语"
+
+#: .\web\settings.py:128
+msgid "Simplified Chinese"
+msgstr "简体中文"
