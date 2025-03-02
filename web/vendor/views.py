@@ -101,31 +101,44 @@ def vendor_order_detail(request, order_id):
         new_status = request.POST.get('status')
         product_type = order.items.first().product.product_type if order.items.exists() else 'tangible'
 
-        if product_type == 'tangible' and new_status in dict(Order.STATUS_CHOICES_TANGIBLE):
+        # Define allowed status transitions
+        allowed_transitions = {
+            'tangible': {
+                'pending': ['shipped', 'cancelled', 'hold'],
+                'shipped': ['cancelled', 'hold'],
+                'cancelled': [],
+                'hold': ['shipped', 'cancelled']
+            },
+            'virtual': {
+                'pending': ['ticket-issued', 'complete', 'refunded'],
+                'ticket-issued': ['complete', 'refunded'],
+                'complete': [],
+                'refunded': []
+            }
+        }
+
+        current_status = order.status
+        if new_status in allowed_transitions[product_type].get(current_status, []):
             order.status = new_status
-        elif product_type == 'virtual' and new_status in dict(Order.STATUS_CHOICES_VIRTUAL):
-            order.status = new_status
+            # Update the timestamp for the corresponding status
+            status_date_map = {
+                'pending': 'pending_date',
+                'shipped': 'shipment_date',
+                'cancelled': 'cancel_date',
+                'hold': 'hold_date',
+                'ticket-issued': 'ticket_issue_date',
+                'complete': 'complete_date',
+                'refunded': 'refund_date'
+            }
+            
+            if new_status in status_date_map:
+                setattr(order, status_date_map[new_status], now())
+                print(f"Updated {status_date_map[new_status]} timestamp for status: {new_status}")
+
+            order.save()
+            messages.success(request, "Order status updated successfully.")
         else:
             messages.error(request, "Invalid status change.")
-            return redirect('vendor_order_detail', order_id=order.id)
-
-        # Update the timestamp for the corresponding status
-        status_date_map = {
-            'pending': 'pending_date',
-            'shipped': 'shipment_date',
-            'cancelled': 'cancel_date',
-            'hold': 'hold_date',
-            'ticket-issued': 'ticket_issue_date',
-            'complete': 'complete_date',
-            'refunded': 'refund_date'
-        }
-        
-        if new_status in status_date_map:
-            setattr(order, status_date_map[new_status], now())
-            print(f"Updated {status_date_map[new_status]} timestamp for status: {new_status}")
-
-        order.save()
-        messages.success(request, "Order status updated successfully.")
         return redirect('vendor_order_detail', order_id=order.id)
 
     # Generate status timeline data
