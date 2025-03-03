@@ -96,20 +96,56 @@ def add_product(request):
         'form': form,
         'formset': formset
     })
+
 @login_required
 def edit_product(request, product_id):
     product = get_object_or_404(Product, product_id=product_id)
+    ProductPhotoFormSet = inlineformset_factory(
+        Product, ProductPhoto, 
+        fields=('photo',), 
+        extra=3,
+        can_delete=True,
+        validate_min=False,
+        widgets={'photo': forms.FileInput(attrs={'accept': 'image/*'})}
+    )
 
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES, instance=product)
-        if form.is_valid():
-            form.save()
+        formset = ProductPhotoFormSet(request.POST, request.FILES, instance=product)
+        
+        if form.is_valid() and formset.is_valid():
+            # 保存主产品
+            product = form.save()
+            
+            # 处理图片表单集
+        instances = formset.save(commit=False)
+        for instance in instances:
+            if not instance.photo and not instance.pk:  # 新增且无文件则跳过
+                continue
+            if not instance.pk:
+                instance.product = product
+            instance.save()
+            
+            # 显式删除标记删除的实例
+            for deleted_form in formset.deleted_objects:
+                deleted_form.delete()
+            
+            messages.success(request, "产品更新成功！")
             return redirect('vendor_dashboard')
+        else:
+            # 调试输出错误信息
+            print("表单错误:", form.errors)
+            print("表单集错误:", formset.errors)
+            messages.error(request, "请检查表单中的错误。")
     else:
         form = ProductForm(instance=product)
+        formset = ProductPhotoFormSet(instance=product)
 
-    return render(request, 'vendor/edit_product.html', {'form': form, 'product': product})
-
+    return render(request, 'vendor/edit_product.html', {
+        'form': form,
+        'formset': formset,
+        'product': product
+    })
 # Toggle the status of a product between active and inactive
 @login_required
 def toggle_product_status(request, product_id):

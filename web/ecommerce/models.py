@@ -22,7 +22,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
     is_active = models.BooleanField(default=True)
     description = models.TextField(default="", verbose_name=_("Description"))
-    thumbnail_image = models.ImageField(upload_to='product_thumbnails/', default="https://via.placeholder.com/150")
+    thumbnail_image = models.ImageField(upload_to='product_thumbnails/')
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, related_name='products', default=1)
     stock_quantity = models.PositiveIntegerField(default=0)
     min_age = models.PositiveIntegerField(default=0, help_text=_("Minimum age suitable for the product"))
@@ -77,7 +77,7 @@ class Product(models.Model):
 class ProductPhoto(models.Model):
     photo_id = models.AutoField(primary_key=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='photos')
-    photo = models.ImageField(upload_to='product_photos/', default="https://via.placeholder.com/150")
+    photo = models.ImageField(upload_to='product_photos/')
 
     def __str__(self):
         return f"Photo for {self.product.product_name}"
