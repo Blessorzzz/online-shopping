@@ -20,6 +20,23 @@
             {{ form.min_age.label_tag }} {{ form.min_age }}
             {{ form.max_age.label_tag }} {{ form.max_age }}
         </div>
+        <div style="width: 100%; text-align: left; margin-top: 20px;">
+            <h4>{% trans "Product Photos" %}</h4>
+            {{ formset.management_form }}
+            {% for form in formset %}
+                <div class="photo-form" style="margin-bottom: 15px; padding: 10px; border: 1px solid #eee;">
+                    {{ form.photo }}
+                    {% if form.instance.photo %}
+                        <img src="{{ form.instance.photo_url }}" 
+                             style="max-width: 100px; margin: 5px 0; display: block;">
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <button type="button" class="add-photo" 
+                    style="margin-top: 10px; padding: 5px 10px; background: #ED7014; color: white; border: none;">
+                + {% trans "Add More Photos" %}
+            </button>
+        </div>
         <style>
             textarea {
                 height: 150px;
@@ -87,6 +104,32 @@
             }
         </style>
         <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const addButton = document.querySelector('.add-photo');
+                if (!addButton) return;
+            
+                addButton.addEventListener('click', function() {
+                    const totalForms = document.getElementById('id_photos-TOTAL_FORMS');
+                    const currentCount = parseInt(totalForms.value);
+                    const newForm = document.querySelector('.photo-form:last-of-type').cloneNode(true);
+                    
+                    // 替换索引
+                    newForm.innerHTML = newForm.innerHTML.replace(
+                        /photos-\d+-/g, 
+                        `photos-${currentCount}-`
+                    );
+                    
+                    // 清空输入和预览
+                    newForm.querySelector('input').value = '';
+                    newForm.querySelector('img')?.remove();
+                    
+                    // 更新总表单数
+                    totalForms.value = currentCount + 1;
+                    
+                    // 插入新表单
+                    this.parentNode.insertBefore(newForm, this);
+                });
+            });
             function validateForm() {
                 let fields = document.querySelectorAll("input, textarea, select");
                 let price = document.querySelector("input[name='price']");

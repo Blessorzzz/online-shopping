@@ -1,14 +1,17 @@
+from django import forms
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.forms import AuthenticationForm
+from django.forms import inlineformset_factory
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from shoppingcart.models import Order, OrderItem
-from ecommerce.models import Product
+from ecommerce.models import Product, ProductPhoto
 from .forms import ProductForm
 from django.http import HttpResponseForbidden
 from django.db.models import Q
 from django.utils.timezone import now
+
 
 def vendor_login(request):
     if request.method == 'POST':
@@ -55,17 +58,44 @@ def vendor_orders(request):
 
 @login_required
 def add_product(request):
+    ProductPhotoFormSet = inlineformset_factory(
+        Product, ProductPhoto, 
+        fields=('photo',), 
+        extra=3,
+        can_delete=True,
+        widgets={'photo': forms.FileInput(attrs={'accept': 'image/*'}) } # 添加文件类型限制
+    )
+    
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             product = form.save(commit=False)
             product.vendor = request.user.vendor
             product.save()
-            return redirect('vendor_dashboard')
+
+            # 实例化表单集时传入 product 实例
+            formset = ProductPhotoFormSet(request.POST, request.FILES, instance=product)
+            if formset.is_valid():
+                # 保存图片表单集
+                for photo_form in formset:
+                    if photo_form.cleaned_data.get('photo'):
+                        photo = photo_form.save(commit=False)
+                        photo.product = product
+                        photo.save()
+                
+                # 处理标记删除的图片
+                for obj in formset.deleted_forms:  # 修改为 deleted_forms
+                    if obj.instance.pk:
+                        obj.instance.delete()
+                        
+                return redirect('vendor_dashboard')
     else:
         form = ProductForm()
-    return render(request, 'vendor/add_product.html', {'form': form})
-
+        formset = ProductPhotoFormSet()
+    return render(request, 'vendor/add_product.html', {
+        'form': form,
+        'formset': formset
+    })
 @login_required
 def edit_product(request, product_id):
     product = get_object_or_404(Product, product_id=product_id)

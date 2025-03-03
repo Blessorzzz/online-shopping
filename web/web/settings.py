@@ -161,5 +161,9 @@ LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# 媒体文件的 URL 前缀
 MEDIA_URL = '/media/'
+# 媒体文件在服务器上的存储路径
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
