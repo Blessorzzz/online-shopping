@@ -12,7 +12,7 @@
             {{ form.thumbnail_image.label_tag }} {{ form.thumbnail_image }}
         </div>
         <div class="thumbnail-container" style="margin-top: 10px;">
-            <img id="thumbnail-preview" src="#" alt="Thumbnail Preview" class="thumbnail-preview" onclick="openModal()">
+            <img id="thumbnail-preview" src="#" alt="Thumbnail Preview" class="thumbnail-preview" style="display: none;" onclick="openModal()">
         </div>
         <div style="width: 100%; text-align: left;">
             {{ form.stock_quantity.label_tag }} {{ form.stock_quantity }}
@@ -189,6 +189,7 @@
             function previewImages() {
                 let previewContainer = document.getElementById('image-preview-container');
                 let files = document.getElementById('additional_images').files;
+                previewContainer.innerHTML = ''; // Clear the container before adding new images
                 for (let i = 0; i < files.length; i++) {
                     let file = files[i];
                     let reader = new FileReader();
