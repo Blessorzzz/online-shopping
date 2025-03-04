@@ -1,17 +1,14 @@
-from django import forms
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.forms import AuthenticationForm
-from django.forms import inlineformset_factory
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from shoppingcart.models import Order, OrderItem
-from ecommerce.models import Product, ProductPhoto, ProductPhoto
+from ecommerce.models import Product, ProductPhoto
 from .forms import ProductForm
 from django.http import HttpResponseForbidden, JsonResponse
 from django.db.models import Q
 from django.utils.timezone import now
-
 
 def vendor_login(request):
     if request.method == 'POST':
@@ -58,94 +55,46 @@ def vendor_orders(request):
 
 @login_required
 def add_product(request):
-    ProductPhotoFormSet = inlineformset_factory(
-        Product, ProductPhoto, 
-        fields=('photo',), 
-        extra=3,
-        can_delete=True,
-        widgets={'photo': forms.FileInput(attrs={'accept': 'image/*'}) } # 添加文件类型限制
-    )
-    
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             product = form.save(commit=False)
             product.vendor = request.user.vendor
             product.save()
-
-            # 实例化表单集时传入 product 实例
-            formset = ProductPhotoFormSet(request.POST, request.FILES, instance=product)
-            if formset.is_valid():
-                # 保存图片表单集
-                for photo_form in formset:
-                    if photo_form.cleaned_data.get('photo'):
-                        photo = photo_form.save(commit=False)
-                        photo.product = product
-                        photo.save()
-                
-                # 处理标记删除的图片
-                for obj in formset.deleted_forms:  # 修改为 deleted_forms
-                    if obj.instance.pk:
-                        obj.instance.delete()
-                        
-                return redirect('vendor_dashboard')
+            
+            # Handle additional images
+            for file in request.FILES.getlist('additional_images'):
+                ProductPhoto.objects.create(product=product, photo=file)
+            
+            return redirect('vendor_dashboard')
     else:
         form = ProductForm()
-        formset = ProductPhotoFormSet()
-    return render(request, 'vendor/add_product.html', {
-        'form': form,
-        'formset': formset
-    })
+    return render(request, 'vendor/add_product.html', {'form': form})
 
 @login_required
 def edit_product(request, product_id):
     product = get_object_or_404(Product, product_id=product_id)
-    ProductPhotoFormSet = inlineformset_factory(
-        Product, ProductPhoto, 
-        fields=('photo',), 
-        extra=3,
-        can_delete=True,
-        validate_min=False,
-        widgets={'photo': forms.FileInput(attrs={'accept': 'image/*'})}
-    )
 
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES, instance=product)
-        formset = ProductPhotoFormSet(request.POST, request.FILES, instance=product)
-        
-        if form.is_valid() and formset.is_valid():
-            # 保存主产品
+        if form.is_valid():
             product = form.save()
-            
-            # 处理图片表单集
-        instances = formset.save(commit=False)
-        for instance in instances:
-            if not instance.photo and not instance.pk:  # 新增且无文件则跳过
-                continue
-            if not instance.pk:
-                instance.product = product
-            instance.save()
-            
-            # 显式删除标记删除的实例
-            for deleted_form in formset.deleted_objects:
-                deleted_form.delete()
-            
-            messages.success(request, "产品更新成功！")
+            for file in request.FILES.getlist('additional_images'):
+                ProductPhoto.objects.create(product=product, photo=file)
             return redirect('vendor_dashboard')
-        else:
-            # 调试输出错误信息
-            print("表单错误:", form.errors)
-            print("表单集错误:", formset.errors)
-            messages.error(request, "请检查表单中的错误。")
     else:
         form = ProductForm(instance=product)
-        formset = ProductPhotoFormSet(instance=product)
 
-    return render(request, 'vendor/edit_product.html', {
-        'form': form,
-        'formset': formset,
-        'product': product
-    })
+    return render(request, 'vendor/edit_product.html', {'form': form, 'product': product})
+
+@login_required
+def delete_product_photo(request, photo_id):
+    if request.method == 'POST':
+        photo = get_object_or_404(ProductPhoto, pk=photo_id)
+        photo.delete()
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False})
+
 # Toggle the status of a product between active and inactive
 @login_required
 def toggle_product_status(request, product_id):

@@ -18,7 +18,7 @@ class Product(models.Model):
 
     product_id = models.UUIDField(primary_key=True, default=uuid.uuid4,
                                    help_text=_('Unique ID for this product across whole shopping mall'))
-    product_name = models.CharField(max_length=255, default="", verbose_name=_("Product Name"))
+    product_name = models.CharField(max_length=300, default="", verbose_name=_("Product Name"))
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
     is_active = models.BooleanField(default=True)
     description = models.TextField(default="", verbose_name=_("Description"))

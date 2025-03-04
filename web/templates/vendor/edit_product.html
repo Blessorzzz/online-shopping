@@ -19,30 +19,8 @@
             {{ form.min_age.label_tag }} {{ form.min_age }}
             {{ form.max_age.label_tag }} {{ form.max_age }}
         </div>
-        <div style="width: 100%; text-align: left; margin-top: 20px;">
-            <h4>{% trans "Product Photos" %}</h4>
-            {{ formset.management_form }}
-            {% for form in formset %}
-            <div class="photo-form" style="margin-bottom: 15px; padding: 10px; border: 1px solid #eee;">
-                {{ form.id }}  <!-- 必须渲染ID字段 -->
-                {{ form.photo }}
-                {% if form.instance.photo %}
-                    <img src="{{ form.instance.photo.url }}" 
-                         style="max-width: 100px; margin: 5px 0; display: block; cursor: pointer;"
-                         onclick="openExistingModal('{{ form.instance.photo.url }}')">
-                    <label style="color: red;">
-                        {{ form.DELETE }} {% trans "删除此图片" %}
-                    </label>
-                {% endif %}
-            </div>
-            {% endfor %}
-            <button type="button" class="add-photo" 
-                    style="margin-top: 10px; padding: 5px 10px; background: #ED7014; color: white; border: none;">
-                + {% trans "Add More Photos" %}
-            </button>
-        </div>
         <div style="width: 100%; text-align: left;">
-            <label for="additional_images">{% trans "Additional Images" %}</label>
+            <label for="additional_images">{% trans "Add Additional Images" %}</label>
             <input type="file" id="additional_images" name="additional_images" multiple onchange="previewImages()">
         </div>
         <div id="image-preview-container" style="width: 100%; text-align: left;">
@@ -142,43 +120,6 @@
             }
         </style>
         <script>
-                // 添加动态表单功能
-                document.addEventListener('DOMContentLoaded', function() {
-                    const addButton = document.querySelector('.add-photo');
-                    if (!addButton) return;
-                
-                    addButton.addEventListener('click', function() {
-                        const totalForms = document.getElementById('id_photos-TOTAL_FORMS');
-                        const newIndex = parseInt(totalForms.value);
-                        
-                        // 克隆最后一张表单
-                        const lastForm = document.querySelector('.photo-form:last-of-type');
-                        const newForm = lastForm.cloneNode(true);
-                        
-                        // 彻底替换所有索引标识
-                        newForm.innerHTML = newForm.innerHTML
-                            .replace(/photos-(\d+)-/g, `photos-${newIndex}-`)
-                            .replace(/id_photos-(\d+)-/g, `id_photos-${newIndex}-`)
-                            .replace(/name="photos-(\d+)-/g, `name="photos-${newIndex}-"`)
-                            .replace(/for="id_photos-(\d+)-/g, `for="id_photos-${newIndex}-"`);
-                        
-                        // 清空文件输入和预览
-                        newForm.querySelector('input[type="file"]').value = '';
-                        newForm.querySelector('img')?.remove();
-                        newForm.querySelector('input[name$="-DELETE"]')?.remove();
-                        
-                        // 插入新表单
-                        lastForm.parentNode.insertBefore(newForm, lastForm.nextSibling);
-                        
-                        // 更新总表单数
-                        totalForms.value = newIndex + 1;
-                    });
-                });
-            // 新增查看现有图片的功能
-            function openExistingModal(imgUrl) {
-                document.getElementById('imageModal').style.display = "block";
-                document.getElementById('modalImage').src = imgUrl;
-            }
             function validateForm() {
                 let fields = document.querySelectorAll("input, textarea, select");
                 let price = document.querySelector("input[name='price']");
@@ -237,7 +178,6 @@
             function previewImages() {
                 let previewContainer = document.getElementById('image-preview-container');
                 let files = document.getElementById('additional_images').files;
-                previewContainer.innerHTML = '';
                 for (let i = 0; i < files.length; i++) {
                     let file = files[i];
                     let reader = new FileReader();
