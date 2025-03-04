@@ -1,0 +1,762 @@
+/* General styles */
+body {
+    font-family: Arial, Helvetica, sans-serif; /* Set the font family for the entire page */
+    font-size: 1rem; /* Set the base font size */
+    color: #333; /* Set the base text color */
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+    box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
+    overflow-x: scroll; /* 防止缩放时页面超出 */
+    transform-origin: top left; /* 确保缩放从顶部开始 */
+    width: auto;
+    min-width: 100vw;
+}
+
+
+/* 让字体大小按钮排成一行 */
+.font-size-controls {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    flex-shrink: 0; /* 防止它因为导航栏挤压而消失 */
+}
+
+
+/* 让按钮更美观 */
+.font-size-controls button {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    background-color: white;
+    color: #333;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    min-width: 40px;
+}
+
+/* 鼠标悬停时 */
+.font-size-controls button:hover {
+    background-color: #f0f0f0;
+}
+
+/* 选中状态 */
+.font-size-controls button.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+/* 让 <select> 字体大小随着 body 一起变化 */
+select, option {
+    font-size: inherit !important;
+}
+
+
+*,
+*::before,
+*::after {
+    box-sizing: inherit; /* Inherit box-sizing from the body */
+}
+
+/* Form styles */
+form {
+    max-width: 400px; /* Set the maximum width of the form */
+    margin: 20px auto; /* Center the form horizontally and add vertical margin */
+    padding: auto; /* Add padding inside the form */
+    background-color:transparent; /* Set the background color of the form */
+    border-radius: 8px; /* Round the corners of the form */
+}
+
+input,
+button {
+    width: 100%; /* Make the input and button elements take up the full width of their container */
+    padding: 10px; /* Add padding inside the input and button elements */
+    margin-top:10px;
+    margin-bottom: 10px; /* Add margin below the input and button elements */
+    border: 1px solid #ccc; /* Add a border to the input and button elements */
+    border-radius: 5px; /* Round the corners of the input and button elements */
+    font-size: 0.875rem; /* 14px */
+    padding: 0.5rem 1rem;
+}
+
+button {
+    background-color: #4da6ff; /* Set the background color of the button */
+    color: white; /* Set the text color of the button */
+    border: none; /* Remove the default border of the button */
+    cursor: pointer; /* Change the cursor to a pointer when hovering over the button */
+    transition: background-color 0.3s ease; /* Add a transition effect to the background color */
+}
+
+button:hover {
+    background-color: #007bff; /* Change the background color when hovering over the button */
+}
+
+/* Navigation menu styles */
+#menu {
+    background-color: #007bff; /* Set the background color of the navigation menu */
+    overflow: hidden; /* Prevent content from overflowing */
+    margin: 0; /* Remove default margin */
+    display: flex; /* Use flexbox for layout */
+    justify-content: space-between; /* Distribute space between the items */
+    align-items: center; /* Align items vertically in the center */
+    padding: 10px 20px; /* Add padding inside the navigation menu */
+    height:auto;
+    flex-wrap: nowrap;
+    width: 100vw;
+    min-width: 100%;
+}
+
+#menu ul {
+    list-style: none; /* Remove default list styling */
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+    display: flex; /* Use flexbox for layout */
+    align-items: center;
+    flex-wrap: nowrap; /* 允许换行 */
+    gap: 8px; /* 元素间距 */
+}
+
+#menu ul.nav-center {
+    flex: 2;
+    justify-content: center;
+}
+
+#menu ul.nav-center {
+    flex: 2;
+    justify-content: center;
+}
+
+#menu ul.nav-left {
+    flex: 1; /* Allow the left navigation items to take up available space */
+}
+
+#menu ul li {
+    display: inline; /* Display list items inline */
+    margin-right: 15px; /* Add margin to the right of each list item */
+}
+
+#menu ul a {
+    text-decoration: none; /* Remove default link underline */
+    color: #f5f5f5; /* Set the text color of the links */
+    height: 36px;
+    padding: 8px 16px; /* Add padding inside the links */
+    transition: background-color 0.3s ease; /* Add a transition effect to the background color */
+    border-radius: 5px; /* Round the corners of the links */
+}
+
+#menu ul a:hover {
+    background-color: #0056b3; /* Change the background color when hovering over the links */
+}
+
+/* Search bar styles */
+form.nav-right {
+    margin:10px;
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+form.nav-right input[type="text"] {
+    width: 200px;
+    padding: 8px;
+    border-radius: 5px 0 0 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+form.nav-right button {
+    margin-top:10px;
+    margin-bottom: 10px;
+    padding: 8px; 
+    border-radius: 0 5px 5px 0; 
+    border: 1px solid #ccc;
+    background-color: #4da6ff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form.nav-right button:hover {
+    background-color: #007bff;
+}
+
+/* User section styles */
+.user {
+    color: white; /* Set the text color of the user section */
+    font-size: 15px; /* Set the font size of the user section */
+    display: flex; /* Use flexbox for layout */
+    align-items: center; /* Align items vertically in the center */
+    gap: 10px;
+    height: 36px;
+    margin-left: 20px; /* Add space to the left of the user section */
+}
+
+.user p {
+    margin: 0 10px 0 0; /* Add margin to the right of the user name */
+    font-size: 14px; 
+    color: white;
+}
+
+.user button {
+    margin:10px;
+    padding: 8px 16px !important;
+    height: 36px;
+    align-items: center;
+    display: flex;
+    background-color: #007bff; /* Set the background color of the button */
+    border: none; /* Remove the default border of the button */
+    color: white; /* Set the text color of the button */
+    border-radius: 5px; /* Round the corners of the button */
+    cursor: pointer; /* Change the cursor to a pointer when hovering over the button */
+}
+
+.user button:hover {
+    background-color: #4da6ff; /* Change the background color when hovering over the button */
+}
+
+.user.nav-right {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+/* Product list styles */
+.product-list {
+    display: flex; /* Use flexbox for layout */
+    flex-wrap: wrap; /* Allow items to wrap to the next line */
+    gap: 20px; /* Add space between the items */
+    justify-content: flex-start;  /* Ensure items are evenly spaced */
+}
+
+.product-item {
+    border: 1px solid #ddd; /* Add a border to the product item */
+    padding: 10px; /* Add padding inside the product item */
+    width: calc(20% - 20px); /* Adjust width to fit 5 items in one row, accounting for gap */
+    text-align: left; /* Center the text inside the product item */
+    box-sizing: border-box; /* Ensure padding and border are included in the width */
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Arrange items in a column */
+    align-items: flex-start; /* Center items horizontally */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add transition for hover effect */
+    border-radius: 8px; 
+    background-color: #fff;
+    transition: transform 0.3s ease-in-out; /* 平滑缩放效果 */
+}
+
+.product-item:hover {
+    transform: scale(1.05); /* Slightly scale up the product item */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow effect */
+}
+.product-thumbnail {
+    width: 100px;
+    height: 100px;
+    margin: 5px;
+}
+
+.product-video {
+    width: 320px;
+    height: 240px;
+    margin: 5px;
+}
+
+.product-image {
+    width: 100%; /* Maximize the image size inside the box */
+    height: auto; /* Maintain the aspect ratio of the image */
+    object-fit: cover; /* Ensure the entire image is visible without cropping */
+    border-radius: 8px;
+    background-color: #f9f9f9; /* Add a background color to fill the empty space */
+    max-height: 250px;
+    object-fit: contain; /* 确保完整显示 */
+}
+
+.product-info {
+    flex: 2; /* Flex grows to 2/3 */
+    max-width: 66%; /* Max width of 2/3 */
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.product-name-homepage {
+    font-size: 14px; /* Revert font size for homepage */
+    font-weight: normal; /* Revert font weight for homepage */
+    color: #333; /* Set the text color */
+    line-height: 1.5;
+}
+
+.product-name-homepage.limited-lines {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal; /* Allow the text to wrap to the next line */
+}
+
+.product-name-detail {
+    font-size: 22px; /* Font size for product detail page */
+    font-weight: bold; /* Make the product name bold */
+    color: #333; /* Set the text color */
+    line-height: 1.5;
+    overflow: visible; /* Ensure the text is fully visible */
+    text-overflow: ellipsis;
+    white-space: normal; /* Allow the text to wrap to the next line */
+}
+
+.product-price {
+    color: #ff5000; /* Set the text color of the product price */
+    font-size: 22px; /* Increase the font size to match the status */
+    font-weight: bold; /* Make the product price bold */
+    margin-top:8px;
+}
+
+.product-price-status {
+    display: flex; /* Use flexbox for layout */
+    gap: 20px; /* Add space between the price and status */
+    align-items: center; /* Align items vertically in the center */
+}
+
+.product-status {
+    font-size: 22px; /* Set the font size of the product status */
+    font-weight: bold; /* Make the product status bold */
+    padding: 8px 12px; /* Add padding inside the product status */
+    display: inline-block; /* Display the product status as an inline block */
+    border-radius: 5px; /* Round the corners of the product status */
+    margin-bottom: 15px; /* Add margin to the bottom of the product status */
+}
+
+.product-status.in-stock {
+    color: rgb(18, 226, 18); /* Set the text color for in-stock status */
+    background: #eaffea; /* Set the background color for in-stock status */
+}
+
+.product-status.out-of-stock {
+    color: red; /* Set the text color for out-of-stock status */
+    background: #ffecec; /* Set the background color for out-of-stock status */
+}
+
+/* Product detail styles */
+.product-detail {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px; /* Increase gap for better separation */
+    margin: 40px auto; /* Center the container */
+    max-width: 1200px; /* Limit maximum width for better readability */
+    padding: 20px; /* Add padding for spacing */
+    align-items: flex-start; /* Align items to the top */
+}
+
+.product-stock {
+    font-size: 22px; /* Set the font size of the product stock */
+    font-weight: bold; /* Make the product stock bold */
+    padding: 8px 12px; /* Add padding inside the product stock */
+    display: inline-block; /* Display the product stock as an inline block */
+    border-radius: 5px; /* Round the corners of the product stock */
+    margin-bottom: 15px; /* Add margin to the bottom of the product stock */
+    color: rgb(18, 226, 18); /* Set the text color for in-stock */
+    background: #eaffea; /* Set the background color for in-stock */
+}
+
+/* Product Image Container */
+.product-detail .product-image-container {
+    flex: 1; /* Allow the image container to take up available space */
+    display: flex; /* Use flexbox for layout */
+    justify-content: center; /* Center the image horizontally */
+    align-items: center; /* Center the image vertically */
+    background-color: #f9f9f9; /* Optional: Add a background color to the image container */
+    border-radius: 5px; /* Round the corners of the image container */
+    padding: 5px; /* Add padding inside the image container */
+    max-width: 50%; /* Set the maximum width of the image container */
+}
+
+/* Product Image Styling */
+.product-detail .product-image {
+    max-width: 100%; /* Ensure the image fills the container */
+    height: auto; /* Maintain the aspect ratio of the image */
+    border: 1px solid #ddd; /* Add a border to the image */
+    padding: 5px; /* Add padding inside the image */
+    background-color: #fff; /* Set the background color of the image */
+    transition: transform 0.3s ease-in-out; /* Add a transition effect to the transform property */
+}
+
+.product-detail .product-image:hover {
+    transform: scale(1.03); /* Slight zoom effect when hovering over the image */
+}
+
+/* Product-detail page */
+.product-detail .product-info {
+    flex: 1; /* Allow the product info to take up available space */
+    max-width: 45%; /* Set the maximum width of the product info */
+}
+
+.product-age-range {
+    font-size: 16px;
+    color: white;
+    background-color: #007bff;
+    padding: 5px 10px;
+    border-radius: 15px;
+    margin-top: 10px;
+    display: inline-block;
+}
+.product-detail-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+.main-content {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.gallery-section {
+    flex: 1;
+    min-width: 600px;
+}
+
+.main-gallery {
+    border: 1px solid #eee;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.main-image {
+    width: 100%;
+    height: 500px;
+    object-fit: contain;
+}
+
+.thumbnail-scroll {
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+
+.thumbnail-list {
+    display: flex;
+    gap: 10px;
+}
+
+.thumbnail-item {
+    width: 80px;
+    height: 80px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.thumbnail-item.active {
+    border-color: #ff4400;
+}
+
+.thumbnail-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.info-section {
+    flex: 0 0 400px;
+    padding: 20px;
+    background: #f5f5f5;
+    border-radius: 4px;
+}
+
+.product-title {
+    font-size: 1.4rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.price-section {
+    background: #fff;
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.price {
+    color: #ff4400;
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.specs {
+    background: white;
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.spec-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.action-buttons .buy-btn {
+    width: 100%;
+    height: 50px;
+    background: #ff4400;
+    color: white;
+    font-size: 18px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.description-section {
+    background: white;
+    padding: 30px;
+    border-radius: 4px;
+    min-height: 500px;
+}
+/* Responsive Fix for Smaller Screens */
+@media (max-width: 768px) {
+    .main-content {
+        flex-direction: column;
+    }
+    
+    .gallery-section {
+        min-width: unset;
+    }
+    
+    .main-image {
+        height: 300px;
+    }
+}
+
+/* Pagination styles */
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pagination a {
+    color: #007bff;
+    text-decoration: none;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin: 0 5px;
+}
+
+.pagination .current {
+    padding: 5px 10px;
+    border: 1px solid #007bff;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    margin: 0 5px;
+}
+
+/*home page */
+/* base.css 新增样式 */
+.product-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 15px;
+    padding: 15px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.product-card {
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+}
+
+.product-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.image-wrapper {
+    position: relative;
+    padding: 10px;
+    background: #f8f8f8;
+}
+
+.product-thumb {
+    width: 100%;
+    height: 240px;
+    object-fit: contain;
+    mix-blend-mode: multiply;
+}
+
+.sold-out-tag {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(0,0,0,0.7);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+.product-meta {
+    padding: 12px;
+}
+
+.product-title {
+    font-size: 14px;
+    line-height: 1.4;
+    height: 40px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    margin-bottom: 8px;
+}
+
+.product-title a {
+    color: #333;
+    text-decoration: none;
+}
+
+.price-section {
+    margin: 8px 0;
+}
+
+.current-price {
+    color: #ff4400;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.sales-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #666;
+}
+
+.stock-status {
+    color: #00c800;
+}
+
+.stock-status.out-stock {
+    color: #999;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .product-list {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+    
+    .product-thumb {
+        height: 180px;
+    }
+    
+    .product-title {
+        font-size: 13px;
+        height: 36px;
+    }
+    
+    .current-price {
+        font-size: 18px;
+    }
+}
+
+/* 滚动条美化 */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.2);
+    border-radius: 3px;
+}
+
+/* 确保导航栏不会换行 */
+.nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: nowrap; /* 禁止换行 */
+    width: 100%;
+    overflow: hidden;
+    max-height: 60px;
+}
+
+
+/* 让搜索框、语言切换和 A- / A+ 不会挤到下一行 */
+.search-container,
+.language-selector,
+.font-size-controls {
+    flex-shrink: 0; /* 避免被压缩 */
+    white-space: nowrap; /* 确保不会换行 */
+    min-width: auto; /* 避免 min-width 过大 */
+}
+
+/* 让导航栏按钮有更好的间距 */
+.nav-container a,
+.nav-container button,
+.nav-container select {
+    margin-right: 10px;
+}
+
+/* 让搜索框适应大小变化，但不会太大 */
+.search-container input {
+    max-width: 200px;
+    min-width: 120px;
+    width: auto;
+}
+
+html {
+    overflow-x: scroll; /* ✅ 确保始终显示横向滚动条 */
+    width: auto;
+    min-width: 100vw;
+}
+
+#accessibility-toolbar {
+    display: none;
+    position: fixed;
+    top: 50px;
+    left: 10px;
+    background: #333;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 1000;
+}
+
+.accessibility-toolbar button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.accessibility-toolbar button:hover {
+    background: #0056b3;
+}
+
+/* 高对比模式 */
+.high-contrast {
+    filter: contrast(2);
+    background: black;
+    color: yellow;
+}
+
+/* 阅读模式 */
+.reading-mode {
+    background: #f5f5dc;
+    color: black;
+    font-family: "Arial", sans-serif;
+}
+
