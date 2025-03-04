@@ -6,9 +6,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from shoppingcart.models import Order, OrderItem
-from ecommerce.models import Product, ProductPhoto
+from ecommerce.models import Product, ProductPhoto, ProductPhoto
 from .forms import ProductForm
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, JsonResponse
 from django.db.models import Q
 from django.utils.timezone import now
 
