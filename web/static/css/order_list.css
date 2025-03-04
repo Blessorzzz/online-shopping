@@ -39,18 +39,47 @@
 }
 
 /* 订单状态颜色 */
-.status-pending {
-    color: #ffc107;
+/* 订单状态样式 */
+.status-label {
     font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.status-pending {
+    color: #ff9800;
+    background-color: #fff3cd;
 }
 
 .status-shipped {
     color: #28a745;
-    font-weight: bold;
+    background-color: #d4edda;
 }
 
 .status-cancelled {
     color: #dc3545;
-    font-weight: bold;
+    background-color: #f8d7da;
 }
+
+.status-hold {
+    color: #ffc107;
+    background-color: #fff3cd;
+}
+
+.status-ticket {
+    color: #17a2b8;
+    background-color: #d1ecf1;
+}
+
+.status-complete {
+    color: #28a745;
+    background-color: #d4edda;
+}
+
+.status-refunded {
+    color: #6c757d;
+    background-color: #e2e3e5;
+}
+
 

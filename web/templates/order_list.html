@@ -107,9 +107,24 @@
                 <td>{{ order.po_number }}</td>
                 <td>{{ order.purchase_date|date:"DATETIME_FORMAT" }}</td>
                 <td>${{ order.total_amount }}</td>
-                <td class="{% if order.status == 'pending' %}status-pending{% elif order.status == 'shipped' %}status-shipped{% elif order.status == 'cancelled' %}status-cancelled{% elif order.status == 'hold' %}status-hold{% endif %}">
-                    {{ order.status }}
+                <td class="status">
+                    {% if order.status == 'pending' %}
+                        <span class="status-label status-pending">⏳ Pending</span>
+                    {% elif order.status == 'shipped' %}
+                        <span class="status-label status-shipped">📦 Shipped</span>
+                    {% elif order.status == 'cancelled' %}
+                        <span class="status-label status-cancelled">❌ Cancelled</span>
+                    {% elif order.status == 'hold' %}
+                        <span class="status-label status-hold">⏸️ Hold</span>
+                    {% elif order.status == 'ticket-issued' %}
+                        <span class="status-label status-ticket">🎫 Ticket Issued</span>
+                    {% elif order.status == 'complete' %}
+                        <span class="status-label status-complete">✅ Complete</span>
+                    {% elif order.status == 'refunded' %}
+                        <span class="status-label status-refunded">💰 Refunded</span>
+                    {% endif %}
                 </td>
+                
                 <td>
                     {% if order.status == 'pending' or order.status == 'hold' %}
                     <form method="post" action="{% url 'cancel_order' order.id %}" style="display:inline;">
