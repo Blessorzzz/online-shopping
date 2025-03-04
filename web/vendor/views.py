@@ -4,9 +4,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from shoppingcart.models import Order, OrderItem
-from ecommerce.models import Product
+from ecommerce.models import Product, ProductPhoto
 from .forms import ProductForm
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, JsonResponse
 from django.db.models import Q
 from django.utils.timezone import now
 
@@ -73,12 +73,22 @@ def edit_product(request, product_id):
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES, instance=product)
         if form.is_valid():
-            form.save()
+            product = form.save()
+            for file in request.FILES.getlist('additional_images'):
+                ProductPhoto.objects.create(product=product, photo=file)
             return redirect('vendor_dashboard')
     else:
         form = ProductForm(instance=product)
 
     return render(request, 'vendor/edit_product.html', {'form': form, 'product': product})
+
+@login_required
+def delete_product_photo(request, photo_id):
+    if request.method == 'POST':
+        photo = get_object_or_404(ProductPhoto, pk=photo_id)
+        photo.delete()
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False})
 
 # Toggle the status of a product between active and inactive
 @login_required
