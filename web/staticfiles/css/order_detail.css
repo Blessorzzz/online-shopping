@@ -1,0 +1,97 @@
+/* 订单详情页面样式 */
+.order-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+}
+
+h2, h3 {
+    text-align: center;
+    color: #333;
+}
+
+/* 订单信息部分 */
+.order-info p {
+    font-size: 16px;
+    margin: 10px 0;
+    padding: 5px;
+    background: #f9f9f9;
+    border-radius: 5px;
+}
+
+/* 订单总金额样式 */
+.total-amount {
+    font-size: 18px;
+    font-weight: bold;
+    color: #007bff;
+}
+
+/* 状态标签 */
+.status {
+    font-weight: bold;
+    padding: 4px 10px;
+    border-radius: 5px;
+}
+
+.status.pending {
+    color: #ffc107;
+}
+
+.status.shipped {
+    color: #28a745;
+}
+
+.status.cancelled {
+    color: #dc3545;
+}
+
+/* 订单表格 */
+.order-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.order-table th {
+    background: #007bff;
+    color: white;
+    padding: 12px;
+}
+
+.order-table td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+.order-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.order-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* 返回订单按钮 */
+.back-button {
+    display: block;
+    width: 200px;
+    margin: 20px auto;
+    text-align: center;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.back-button:hover {
+    background-color: #0056b3;
+}

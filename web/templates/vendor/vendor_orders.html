@@ -21,7 +21,22 @@
                 <td style="border: 1px solid #ddd; padding: 12px 15px;">{{ order.purchase_date }}</td>
                 <td style="border: 1px solid #ddd; padding: 12px 15px;">{{ order.customer.username }}</td>
                 <td style="border: 1px solid #ddd; padding: 12px 15px;">${{ order.total_amount }}</td>
-                <td style="border: 1px solid #ddd; padding: 12px 15px;">{{ order.status }}</td>
+                <td style="border: 1px solid #ddd; padding: 12px 15px;">
+                    {% if order.status == 'pending' %}
+                        <span class="status-label status-pending">⏳ Pending</span>
+                    {% elif order.status == 'shipped' %}
+                        <span class="status-label status-shipped">📦 Shipped</span>
+                    {% elif order.status == 'cancelled' %}
+                        <span class="status-label status-cancelled">❌ Cancelled</span>
+                    {% elif order.status == 'hold' %}
+                        <span class="status-label status-hold">⏸️ Hold</span>
+                    {% elif order.status == 'ticket-issued' %}
+                        <span class="status-label status-ticket">🎫 Ticket Issued</span>
+                    {% elif order.status == 'complete' %}
+                        <span class="status-label status-complete">✅ Complete</span>
+                    {% elif order.status == 'refunded' %}
+                        <span class="status-label status-refunded">💰 Refunded</span>
+                    {% endif %}</td>
                 <td style="border: 1px solid #ddd; padding: 12px 15px;">
                     <a href="{% url 'vendor_order_detail' order.id %}" class="view-details-button">{% trans "View Details" %}</a>
                 </td>

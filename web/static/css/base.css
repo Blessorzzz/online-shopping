@@ -1,12 +1,56 @@
 /* General styles */
 body {
     font-family: Arial, Helvetica, sans-serif; /* Set the font family for the entire page */
-    font-size: 16px; /* Set the base font size */
+    font-size: 1rem; /* Set the base font size */
     color: #333; /* Set the base text color */
     margin: 0; /* Remove default margin */
     padding: 0; /* Remove default padding */
     box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
+    overflow-x: scroll; /* 防止缩放时页面超出 */
+    transform-origin: top left; /* 确保缩放从顶部开始 */
+    width: auto;
+    min-width: 100vw;
 }
+
+
+/* 让字体大小按钮排成一行 */
+.font-size-controls {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    flex-shrink: 0; /* 防止它因为导航栏挤压而消失 */
+}
+
+
+/* 让按钮更美观 */
+.font-size-controls button {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    background-color: white;
+    color: #333;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    min-width: 40px;
+}
+
+/* 鼠标悬停时 */
+.font-size-controls button:hover {
+    background-color: #f0f0f0;
+}
+
+/* 选中状态 */
+.font-size-controls button.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+/* 让 <select> 字体大小随着 body 一起变化 */
+select, option {
+    font-size: inherit !important;
+}
+
 
 *,
 *::before,
@@ -31,7 +75,8 @@ button {
     margin-bottom: 10px; /* Add margin below the input and button elements */
     border: 1px solid #ccc; /* Add a border to the input and button elements */
     border-radius: 5px; /* Round the corners of the input and button elements */
-    font-size: 14px; /* Set the font size of the input and button elements */
+    font-size: 0.875rem; /* 14px */
+    padding: 0.5rem 1rem;
 }
 
 button {
@@ -50,13 +95,15 @@ button:hover {
 #menu {
     background-color: #007bff; /* Set the background color of the navigation menu */
     overflow: hidden; /* Prevent content from overflowing */
-    padding: 0; /* Remove default padding */
     margin: 0; /* Remove default margin */
     display: flex; /* Use flexbox for layout */
     justify-content: space-between; /* Distribute space between the items */
     align-items: center; /* Align items vertically in the center */
-    padding: 0px 20px; /* Add padding inside the navigation menu */
-    height:50px;
+    padding: 10px 20px; /* Add padding inside the navigation menu */
+    height:auto;
+    flex-wrap: nowrap;
+    width: 100vw;
+    min-width: 100%;
 }
 
 #menu ul {
@@ -65,6 +112,8 @@ button:hover {
     padding: 0; /* Remove default padding */
     display: flex; /* Use flexbox for layout */
     align-items: center;
+    flex-wrap: nowrap; /* 允许换行 */
+    gap: 8px; /* 元素间距 */
 }
 
 #menu ul.nav-center {
@@ -165,6 +214,12 @@ form.nav-right button:hover {
     background-color: #4da6ff; /* Change the background color when hovering over the button */
 }
 
+.user.nav-right {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
 /* Product list styles */
 .product-list {
     display: flex; /* Use flexbox for layout */
@@ -185,6 +240,7 @@ form.nav-right button:hover {
     transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add transition for hover effect */
     border-radius: 8px; 
     background-color: #fff;
+    transition: transform 0.3s ease-in-out; /* 平滑缩放效果 */
 }
 
 .product-item:hover {
@@ -205,10 +261,12 @@ form.nav-right button:hover {
 
 .product-image {
     width: 100%; /* Maximize the image size inside the box */
-    height: 200px; /* Maintain the aspect ratio of the image */
+    height: auto; /* Maintain the aspect ratio of the image */
     object-fit: cover; /* Ensure the entire image is visible without cropping */
     border-radius: 8px;
     background-color: #f9f9f9; /* Add a background color to fill the empty space */
+    max-height: 250px;
+    object-fit: contain; /* 确保完整显示 */
 }
 
 .product-info {
@@ -352,6 +410,7 @@ form.nav-right button:hover {
     display: flex;
     gap: 40px;
     margin-bottom: 40px;
+    transition: transform 0.3s ease-in-out; /* ✅ 平滑缩放动画 */
 }
 
 .gallery-section {
@@ -407,7 +466,7 @@ form.nav-right button:hover {
 }
 
 .product-title {
-    font-size: 24px;
+    font-size: 1.4rem;
     color: #333;
     margin-bottom: 20px;
 }
@@ -621,3 +680,112 @@ form.nav-right button:hover {
     border-radius: 3px;
 }
 
+/* 确保导航栏不会换行 */
+.nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: nowrap; /* 禁止换行 */
+    width: 100%;
+    overflow: hidden;
+    max-height: 60px;
+}
+
+
+/* 让搜索框、语言切换和 A- / A+ 不会挤到下一行 */
+.search-container,
+.language-selector,
+.font-size-controls {
+    flex-shrink: 0; /* 避免被压缩 */
+    white-space: nowrap; /* 确保不会换行 */
+    min-width: auto; /* 避免 min-width 过大 */
+}
+
+/* 让导航栏按钮有更好的间距 */
+.nav-container a,
+.nav-container button,
+.nav-container select {
+    margin-right: 10px;
+}
+
+/* 让搜索框适应大小变化，但不会太大 */
+.search-container input {
+    max-width: 200px;
+    min-width: 120px;
+    width: auto;
+}
+
+html {
+    overflow-x: scroll; /* ✅ 确保始终显示横向滚动条 */
+    width: auto;
+    min-width: 100vw;
+}
+
+#accessibility-toolbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px; /* 调整按钮间距 */
+    flex-wrap: nowrap;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #3a3a3a; /* ✅ 改成深灰色背景 */
+    color: white;
+    padding: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 10000;
+    text-align: center;
+}
+
+#accessibility-toolbar button {
+    background: #e0e0e0; /* ✅ 按钮灰色背景 */
+    color: black;
+    border: 1px solid #b0b0b0; /* ✅ 增加边框 */
+    padding: 12px;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 60px; /* ✅ 统一按钮大小 */
+    height: 60px;
+    text-align: center;
+    font-size: 18px;
+    display: flex;
+    flex-direction: column; /* ✅ 让图标和文字垂直排列 */
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+
+/* 鼠标悬停时 */
+#accessibility-toolbar button:hover {
+    background: #d6d6d6;
+    transform: scale(1.05);
+}
+
+/* 选中状态（比如开启功能时高亮） */
+#accessibility-toolbar button.active {
+    background: orange;
+    color: white;
+    border-color: orange;
+}
+
+/* 退出按钮的特殊样式 */
+#accessibility-toolbar button.exit {
+    background: red;
+    color: white;
+    border-color: darkred;
+}
+
+/* 调整图标大小 */
+#accessibility-toolbar button i {
+    font-size: 20px;
+}
+
+/* 小文字样式 */
+#accessibility-toolbar button small {
+    font-size: 12px;
+    margin-top: 3px;
+    display: block;
+    color: black;
+}

@@ -20,7 +20,24 @@
         <p><strong>{% trans "Purchase Date:" %}</strong> {{ order.purchase_date|date:"DATETIME_FORMAT" }}</p>
         <p><strong>{% trans "Shipping Address:" %}</strong> {{ order.shipping_address }}</p>
         <p><strong>{% trans "Total Amount:" %}</strong> <span class="total-amount">${{ order.total_amount }}</span></p>
-        <p><strong>{% trans "Status:" %}</strong> <span class="status {{ order.status }}">{{ order.status }}</span></p>
+        <p><strong>{% trans "Status:" %}</strong>
+            {% if order.status == 'pending' %}
+                <span class="status-label status-pending">⏳ Pending</span>
+            {% elif order.status == 'shipped' %}
+                <span class="status-label status-shipped">📦 Shipped</span>
+            {% elif order.status == 'cancelled' %}
+                <span class="status-label status-cancelled">❌ Cancelled</span>
+            {% elif order.status == 'hold' %}
+                <span class="status-label status-hold">⏸️ Hold</span>
+            {% elif order.status == 'ticket-issued' %}
+                <span class="status-label status-ticket">🎫 Ticket Issued</span>
+            {% elif order.status == 'complete' %}
+                <span class="status-label status-complete">✅ Complete</span>
+            {% elif order.status == 'refunded' %}
+                <span class="status-label status-refunded">💰 Refunded</span>
+            {% endif %}
+        </p>
+        
     </div>
 
     <div class="status-dates">

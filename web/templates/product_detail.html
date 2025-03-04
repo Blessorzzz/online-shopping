@@ -46,10 +46,15 @@
                 </div>
                 <div class="spec-item">
                     <span class="spec-label">{% trans "Stock" %}:</span>
-                    <span class="spec-value {% if product.stock_quantity == 0 %}out-of-stock{% endif %}">
-                        {{ product.stock_quantity|default:"0" }} {% trans "Available" %}
+                    <span class="stock-status {% if product.stock_quantity == 0 %}out-of-stock{% else %}in-stock{% endif %}">
+                        {% if product.stock_quantity > 0 %}
+                            🟢 In Stock ({{ product.stock_quantity }} Available)
+                        {% else %}
+                            🔴 Out of Stock
+                        {% endif %}
                     </span>
                 </div>
+                
             </div>
 
             <div class="action-buttons">
