@@ -2,7 +2,9 @@
 body {
     font-family: Arial, Helvetica, sans-serif; /* Set the font family for the entire page */
     font-size: 1rem; /* Set the base font size */
-    color: #333; /* Set the base text color */
+    
+    color: var(--text-color) !important; /* ensure high contrast for text */
+     /* Set the base text color */
     margin: 0; /* Remove default margin */
     padding: 0; /* Remove default padding */
     box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
@@ -27,7 +29,9 @@ body {
     padding: 5px 10px;
     border: 1px solid #ccc;
     background-color: white;
-    color: #333;
+    
+    color: var(--text-color) !important; /* ensure high contrast for text */
+    
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
@@ -41,9 +45,12 @@ body {
 
 /* 选中状态 */
 .font-size-controls button.active {
-    background-color: #007bff;
+    
+    background-color: var(--border-color) !important; /* Change hover to ensure visibility */
+    color: var(--button-bg) !important;
+    
     color: white;
-    border-color: #007bff;
+    border-color: #0056b3;
 }
 
 /* 让 <select> 字体大小随着 body 一起变化 */
@@ -80,7 +87,7 @@ button {
 }
 
 button {
-    background-color: #4da6ff; /* Set the background color of the button */
+    background-color: #004c99; /* Set the background color of the button */
     color: white; /* Set the text color of the button */
     border: none; /* Remove the default border of the button */
     cursor: pointer; /* Change the cursor to a pointer when hovering over the button */
@@ -88,12 +95,27 @@ button {
 }
 
 button:hover {
-    background-color: #007bff; /* Change the background color when hovering over the button */
+    
+    background-color: var(--border-color) !important; /* Change hover to ensure visibility */
+    color: var(--button-bg) !important;
+     /* Change the background color when hovering over the button */
 }
 
 /* Navigation menu styles */
-#menu {
-    background-color: #007bff; /* Set the background color of the navigation menu */
+
+    #menu, /* unify background for menu */
+    .product-info, /* unify background for product info */
+    button, /* unify button background */
+    body { /* unify page background */
+        background-color: var(--bg-color) !important;
+        color: var(--text-color) !important;
+    }
+    #menu {
+    
+    
+    background-color: var(--border-color) !important; /* Change hover to ensure visibility */
+    color: var(--button-bg) !important;
+     /* Set the background color of the navigation menu */
     overflow: hidden; /* Prevent content from overflowing */
     margin: 0; /* Remove default margin */
     display: flex; /* Use flexbox for layout */
@@ -137,7 +159,7 @@ button:hover {
 
 #menu ul a {
     text-decoration: none; /* Remove default link underline */
-    color: #f5f5f5; /* Set the text color of the links */
+    color: #ebebeb; /* Set the text color of the links */
     height: 36px;
     padding: 8px 16px; /* Add padding inside the links */
     transition: background-color 0.3s ease; /* Add a transition effect to the background color */
@@ -145,7 +167,10 @@ button:hover {
 }
 
 #menu ul a:hover {
-    background-color: #0056b3; /* Change the background color when hovering over the links */
+    
+    background-color: var(--border-color) !important; /* Change hover to ensure visibility */
+    color: var(--button-bg) !important;
+     /* Change the background color when hovering over the links */
 }
 
 /* Search bar styles */
@@ -170,14 +195,17 @@ form.nav-right button {
     padding: 8px; 
     border-radius: 0 5px 5px 0; 
     border: 1px solid #ccc;
-    background-color: #4da6ff;
+    background-color: #004c99;
     color: white;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 form.nav-right button:hover {
-    background-color: #007bff;
+    
+    background-color: var(--border-color) !important; /* Change hover to ensure visibility */
+    color: var(--button-bg) !important;
+    
 }
 
 /* User section styles */
@@ -203,7 +231,10 @@ form.nav-right button:hover {
     height: 36px;
     align-items: center;
     display: flex;
-    background-color: #007bff; /* Set the background color of the button */
+    
+    background-color: var(--border-color) !important; /* Change hover to ensure visibility */
+    color: var(--button-bg) !important;
+     /* Set the background color of the button */
     border: none; /* Remove the default border of the button */
     color: white; /* Set the text color of the button */
     border-radius: 5px; /* Round the corners of the button */
@@ -211,7 +242,7 @@ form.nav-right button:hover {
 }
 
 .user button:hover {
-    background-color: #4da6ff; /* Change the background color when hovering over the button */
+    background-color: #004c99; /* Change the background color when hovering over the button */
 }
 
 .user.nav-right {
@@ -281,7 +312,9 @@ form.nav-right button:hover {
 .product-name-homepage {
     font-size: 14px; /* Revert font size for homepage */
     font-weight: normal; /* Revert font weight for homepage */
-    color: #333; /* Set the text color */
+    
+    color: var(--text-color) !important; /* ensure high contrast for text */
+     /* Set the text color */
     line-height: 1.5;
 }
 
@@ -298,7 +331,9 @@ form.nav-right button:hover {
 .product-name-detail {
     font-size: 22px; /* Font size for product detail page */
     font-weight: bold; /* Make the product name bold */
-    color: #333; /* Set the text color */
+    
+    color: var(--text-color) !important; /* ensure high contrast for text */
+     /* Set the text color */
     line-height: 1.5;
     overflow: visible; /* Ensure the text is fully visible */
     text-overflow: ellipsis;
@@ -306,7 +341,7 @@ form.nav-right button:hover {
 }
 
 .product-price {
-    color: #ff5000; /* Set the text color of the product price */
+    color: #c0392b; /* Set the text color of the product price */
     font-size: 22px; /* Increase the font size to match the status */
     font-weight: bold; /* Make the product price bold */
     margin-top:8px;
@@ -329,12 +364,12 @@ form.nav-right button:hover {
 
 .product-status.in-stock {
     color: rgb(18, 226, 18); /* Set the text color for in-stock status */
-    background: #eaffea; /* Set the background color for in-stock status */
+    background: #d4f8d4; /* Set the background color for in-stock status */
 }
 
 .product-status.out-of-stock {
     color: red; /* Set the text color for out-of-stock status */
-    background: #ffecec; /* Set the background color for out-of-stock status */
+    background: #f8d7da; /* Set the background color for out-of-stock status */
 }
 
 /* Product detail styles */
@@ -356,7 +391,7 @@ form.nav-right button:hover {
     border-radius: 5px; /* Round the corners of the product stock */
     margin-bottom: 15px; /* Add margin to the bottom of the product stock */
     color: rgb(18, 226, 18); /* Set the text color for in-stock */
-    background: #eaffea; /* Set the background color for in-stock */
+    background: #d4f8d4; /* Set the background color for in-stock */
 }
 
 /* Product Image Container */
@@ -394,7 +429,10 @@ form.nav-right button:hover {
 .product-age-range {
     font-size: 16px;
     color: white;
-    background-color: #007bff;
+    
+    background-color: var(--border-color) !important; /* Change hover to ensure visibility */
+    color: var(--button-bg) !important;
+    
     padding: 5px 10px;
     border-radius: 15px;
     margin-top: 10px;
@@ -449,7 +487,7 @@ form.nav-right button:hover {
 }
 
 .thumbnail-item.active {
-    border-color: #ff4400;
+    border-color: #b8321a;
 }
 
 .thumbnail-item img {
@@ -458,16 +496,23 @@ form.nav-right button:hover {
     object-fit: cover;
 }
 
-.info-section {
+
+    .info-section, .description-section { /* Make both sections follow the theme background */
+        background-color: var(--bg-color) !important;
+    }
+    .info-section {
+    
     flex: 0 0 400px;
     padding: 20px;
-    background: #f5f5f5;
+    background: #ebebeb;
     border-radius: 4px;
 }
 
 .product-title {
     font-size: 1.4rem;
-    color: #333;
+    
+    color: var(--text-color) !important; /* ensure high contrast for text */
+    
     margin-bottom: 20px;
 }
 
@@ -479,7 +524,7 @@ form.nav-right button:hover {
 }
 
 .price {
-    color: #ff4400;
+    color: #b8321a;
     font-size: 36px;
     font-weight: bold;
 }
@@ -501,7 +546,7 @@ form.nav-right button:hover {
 .action-buttons .buy-btn {
     width: 100%;
     height: 50px;
-    background: #ff4400;
+    background: #b8321a;
     color: white;
     font-size: 18px;
     border: none;
@@ -537,7 +582,7 @@ form.nav-right button:hover {
 }
 
 .pagination a {
-    color: #007bff;
+    color: #0056b3;
     text-decoration: none;
     padding: 5px 10px;
     border: 1px solid #ddd;
@@ -547,8 +592,11 @@ form.nav-right button:hover {
 
 .pagination .current {
     padding: 5px 10px;
-    border: 1px solid #007bff;
-    background-color: #007bff;
+    border: 1px solid #0056b3;
+    
+    background-color: var(--border-color) !important; /* Change hover to ensure visibility */
+    color: var(--button-bg) !important;
+    
     color: white;
     border-radius: 4px;
     margin: 0 5px;
@@ -618,7 +666,9 @@ form.nav-right button:hover {
 }
 
 .product-title a {
-    color: #333;
+    
+    color: var(--text-color) !important; /* ensure high contrast for text */
+    
     text-decoration: none;
 }
 
@@ -627,7 +677,7 @@ form.nav-right button:hover {
 }
 
 .current-price {
-    color: #ff4400;
+    color: #b8321a;
     font-size: 20px;
     font-weight: 700;
 }
@@ -789,3 +839,278 @@ html {
     display: block;
     color: black;
 }
+
+
+/* 确保键盘导航焦点可见 */
+button:focus, a:focus, input:focus, select:focus {
+    outline: 3px solid #ffcc00; /* 添加高可见度的焦点框 */
+    outline-offset: 2px;
+}
+
+/* 确保禁用按钮不影响无障碍访问 */
+button:disabled {
+    background-color: #cccccc !important;  /* 确保禁用状态可识别 */
+    color: #666666 !important;
+    cursor: not-allowed;
+}
+
+
+/* ======== 无障碍主题样式 ======== */
+
+/* 高对比度模式 */
+[data-theme="high-contrast"] {
+    --bg-color: #000000;
+    --text-color: #FFFF00;
+    --button-bg: #000000;
+    --button-text: #FFFF00;
+    --border-color: #FFD700;
+}
+
+/* Protanopia（红色盲友好模式） */
+[data-theme="protanopia"] {
+    --bg-color: #F0F0F0;
+    --text-color: var(--text-color) !important; /* ensure high contrast for text */
+    --button-bg: #336699;
+    --button-text: #FFFFFF;
+    --border-color: #336699;
+}
+
+/* Tritanopia（蓝色盲友好模式） */
+[data-theme="tritanopia"] {
+    --bg-color: #F0F0F0;
+    --text-color: #333333;
+    --button-bg: #993366;
+    --button-text: #FFFFFF;
+    --border-color: #993366;
+}
+
+/* 灰度模式 */
+[data-theme="grayscale"] {
+    filter: grayscale(100%);
+}
+
+/* 使用变量应用到全局 */
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+button {
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border: 1px solid var(--border-color);
+}
+
+button:hover {
+    background-color: var(--border-color);
+    color: var(--button-bg);
+}
+
+/* 链接颜色调整 */
+a {
+    color: var(--button-bg);
+}
+
+a:hover {
+    color: var(--border-color);
+}
+
+
+/* ======== 无障碍主题优化 ======== */
+
+/* 高对比度模式（黑底黄字） */
+[data-theme="high-contrast"] {
+    --bg-color: #000000;
+    --text-color: #FFFF00;
+    --button-bg: #000000;
+    --button-text: #FFFF00;
+    --border-color: #FFD700;
+    --link-color: #FFD700;
+    --hover-bg: #FFFF00;
+    --hover-text: #000000;
+}
+
+/* Protanopia（红色盲）模式 */
+[data-theme="protanopia"] {
+    --bg-color: #EAEAEA;
+    --text-color: var(--text-color) !important; /* ensure high contrast for text */
+    
+    --button-bg: #0057B8;
+    --button-text: #FFFFFF;
+    --border-color: #003F88;
+    --link-color: #0057B8;
+    --hover-bg: #003F88;
+    --hover-text: #FFFFFF;
+}
+
+/* Deuteranopia（绿色盲）模式 */
+[data-theme="deuteranopia"] {
+    --bg-color: #F5F5F5;
+    --text-color: var(--text-color) !important; /* ensure high contrast for text */
+    
+    --button-bg: #3366CC;
+    --button-text: #FFFFFF;
+    --border-color: #224499;
+    --link-color: #3366CC;
+    --hover-bg: #224499;
+    --hover-text: #FFFFFF;
+}
+
+/* Tritanopia（蓝色盲）模式 */
+[data-theme="tritanopia"] {
+    --bg-color: #FAFAFA;
+    --text-color: var(--text-color) !important; /* ensure high contrast for text */
+    
+    --button-bg: #AA5500;
+    --button-text: #FFFFFF;
+    --border-color: #774400;
+    --link-color: #AA5500;
+    --hover-bg: #774400;
+    --hover-text: #FFFFFF;
+}
+
+/* 灰度模式（全黑白） */
+[data-theme="grayscale"] {
+    --bg-color: #E0E0E0;
+    --text-color: #111111;
+    --button-bg: #777777;
+    --button-text: #FFFFFF;
+    --border-color: #555555;
+    --link-color: #777777;
+    --hover-bg: #555555;
+    --hover-text: #FFFFFF;
+}
+
+/* 应用无障碍颜色变量 */
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+button, input, select {
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border: 2px solid var(--border-color);
+}
+
+button:hover, input:hover, select:hover {
+    background-color: var(--hover-bg);
+    color: var(--hover-text);
+}
+
+a {
+    color: var(--link-color);
+}
+
+a:hover {
+    color: var(--hover-bg);
+}
+
+
+
+/* 确保 menu 的颜色跟随主题变化 */
+[data-theme] 
+    #menu, /* unify background for menu */
+    .product-info, /* unify background for product info */
+    button, /* unify button background */
+    body { /* unify page background */
+        background-color: var(--bg-color) !important;
+        color: var(--text-color) !important;
+    }
+    #menu {
+    
+    background-color: var(--button-bg);
+    color: var(--button-text);
+}
+
+/* 让导航栏链接颜色也随主题变化 */
+[data-theme] #menu ul a {
+    color: var(--button-text);
+}
+
+[data-theme] #menu ul a:hover {
+    background-color: var(--border-color);
+    color: var(--hover-text);
+}
+
+/* 让 product-card 颜色随主题变化 */
+[data-theme] .product-card {
+    background: var(--bg-color);
+    color: var(--text-color);
+    border: 2px solid var(--border-color);
+}
+
+[data-theme] .product-card:hover {
+    box-shadow: 0 4px 12px var(--border-color);
+}
+
+/* 确保搜索按钮颜色随主题变化 */
+[data-theme] form.nav-right button {
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border: 2px solid var(--border-color);
+}
+
+[data-theme] form.nav-right button:hover {
+    background-color: var(--border-color);
+    color: var(--hover-text);
+}
+
+
+
+/* ======== 确保背景颜色填充整个页面 ======== */
+body {
+    min-height: 100vh; /* 确保背景颜色填满整个屏幕 */
+}
+
+/* ======== 让价格区域背景颜色随主题变化 ======== */
+[data-theme] .product-price {
+    background-color: var(--button-bg); /* 让价格区域背景颜色随主题变化 */
+    color: var(--button-text); /* 确保价格文字颜色随主题变化 */
+    padding: 10px; /* 增加内边距，避免贴边 */
+    border-radius: 5px; /* 增加圆角 */
+}
+
+/* ======== 让所有非白色背景的文字默认使用白色 ======== */
+[data-theme]:not([data-theme="default"]) body, 
+[data-theme]:not([data-theme="default"]) button, 
+[data-theme]:not([data-theme="default"]) a, 
+[data-theme]:not([data-theme="default"]) input, 
+[data-theme]:not([data-theme="default"]) select {
+    color: white; /* 让所有文本在非白色背景时变白色 */
+}
+
+/* ======== 让 Hover 颜色高对比度，提高可见性 ======== */
+button:hover, a:hover, .product-card:hover, form.nav-right button:hover {
+    background-color: var(--hover-bg);
+    color: var(--hover-text) !important;
+}
+
+/* ======== 让导航栏和主页背景颜色统一 ======== */
+[data-theme="high-contrast"] #menu, 
+
+    /* Ensure price-section and specs background is also black in high contrast mode */
+    [data-theme="high-contrast"] .price-section,
+    [data-theme="high-contrast"] .specs {
+        background-color: var(--bg-color) !important; /* Use black background */
+    }
+    [data-theme="high-contrast"] body {
+    
+    background-color: var(--bg-color) !important; /* 让整个页面背景色一致 */
+}
+
+/* ======== 确保菜单和搜索按钮的背景随主题变化 ======== */
+[data-theme] #menu, 
+[data-theme] form.nav-right button {
+    background-color: var(--button-bg) !important;
+    color: var(--button-text) !important;
+    border-color: var(--border-color) !important;
+}
+
+/* ======== 让产品卡片背景随主题变化 ======== */
+[data-theme] .product-card {
+    background-color: var(--bg-color) !important;
+    color: var(--text-color) !important;
+    border-color: var(--border-color) !important;
+}
+

@@ -104,7 +104,7 @@
     {% if not request.user.is_authenticated and request.path == '/' %}
         <a href="{% url 'vendor_login' %}" class="vendor-login-button">{% trans "Log in as Vendor" %}</a>
     {% endif %}
-    <script src="{% static 'js/font-size.js' %}"></script>
+    {% comment %} <script src="{% static 'js/font-size.js' %}"></script> {% endcomment %}
     <script src="{% static 'js/accessibility.js' %}"></script>
 
 </body>
