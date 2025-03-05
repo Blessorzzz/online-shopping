@@ -767,6 +767,5 @@ html {
 }
 
 #content-wrapper {
-    transition: transform 0.3s ease-in-out; /* ✅ 让缩放变得更平滑 */
     padding-top: 60px;  /* 为导航栏留出空间 */
 }

@@ -91,39 +91,47 @@ let zoomLevel = 1.0;
 let targetZoomLevel = 1.0;
 let animationFrameId = null;
 
+
 function smoothZoom() {
     if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);
     }
 
     function animate() {
-        zoomLevel += (targetZoomLevel - zoomLevel) * 0.2; // ✅ 让缩放平滑过渡
-
+        zoomLevel += (targetZoomLevel - zoomLevel) * 0.2;
         if (Math.abs(targetZoomLevel - zoomLevel) < 0.001) {
-            zoomLevel = targetZoomLevel; // ✅ 避免浮点误差
+            zoomLevel = targetZoomLevel;
         } else {
             animationFrameId = requestAnimationFrame(animate);
         }
 
-        const content = document.querySelector("#content-wrapper");
-        if (content) {
-            content.style.transform = `scale(${zoomLevel})`;
-            content.style.transformOrigin = "top left"; // ✅ 从屏幕中心缩放
-        }
+        // ✅ 强制同步布局并同时设置两个元素的缩放
+        const menu = document.getElementById("menu");
+        const contentWrapper = document.getElementById("content-wrapper");
+        
+        // 使用 requestAnimationFrame 确保同一帧内更新
+        requestAnimationFrame(() => {
+            menu.style.transform = `scale(${zoomLevel})`;
+            menu.style.transformOrigin = "top left";
+            contentWrapper.style.transform = `scale(${zoomLevel})`;
+            contentWrapper.style.transformOrigin = "top left"; // 确保基准点一致
+        });
     }
 
     animate();
 }
 
+
+
 function increaseZoom() {
-    if (targetZoomLevel < 2.0) {
+    if (targetZoomLevel < 1.8) {
         targetZoomLevel += 0.1;
         smoothZoom();
     }
 }
 
 function decreaseZoom() {
-    if (targetZoomLevel > 0.8) {
+    if (targetZoomLevel > 1.0) {
         targetZoomLevel -= 0.1;
         smoothZoom();
     }
@@ -132,25 +140,18 @@ function decreaseZoom() {
 function resetAccessibility() {
     console.log("🔄 Resetting accessibility settings...");
 
-    const toolbar = document.getElementById("accessibility-toolbar");
-    const menu = document.getElementById("menu");
-    const contentWrapper = document.getElementById("content-wrapper");
-
-    // ✅ **恢复默认缩放级别**
     zoomLevel = 1.0;
     targetZoomLevel = 1.0;
-    if (contentWrapper) {
-        contentWrapper.style.transform = "scale(1)";
-        contentWrapper.style.transformOrigin = "top left";
-        contentWrapper.style.paddingTop = "120px"; // ✅ **恢复默认间距**
-    }
 
+    document.querySelectorAll("#menu, #content-wrapper").forEach(element => {
+        element.style.transform = "scale(1)";
+        element.style.transformOrigin = "top left"; 
+    });
 
-    // ✅ **恢复 body 的 margin**
     document.body.style.marginTop = "5px";
-
-    // ✅ **滚动回到顶部**
     window.scrollTo({ top: 0, behavior: "smooth" });
 
     console.log("✅ Accessibility settings reset!");
 }
+
+
