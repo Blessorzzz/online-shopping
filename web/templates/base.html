@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
     {% load static i18n %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% trans "My Online Shop" %}{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <script src="{% url 'javascript-catalog' %}"></script> <!-- 加载 Django 语言翻译 -->
     <style>
         .nav-container {
             display: flex;
@@ -52,7 +53,41 @@
     </style>
 </head>
 <body>
-    <div id="accessibility-toolbar"></div>
+    <!-- Web Accessibility 工具栏 -->
+    <div id="accessibility-toolbar" style="display: none;">
+        <button onclick="increaseZoom()" title="{% trans 'Zoom In' %}">
+            <span>➕</span><small>{% trans 'Zoom In' %}</small>
+        </button>
+        <button onclick="decreaseZoom()" title="{% trans 'Zoom Out' %}">
+            <span>➖</span><small>{% trans 'Zoom Out' %}</small>
+        </button>
+        <button onclick="toggleCursorMode()" title="{% trans 'Cursor Mode' %}">
+            <span>🖱️</span><small>{% trans 'Cursor Mode' %}</small>
+        </button>
+        <button onclick="toggleCrosshair()" title="{% trans 'Crosshair Mode' %}">
+            <span>🎯</span><small>{% trans 'Crosshair Mode' %}</small>
+        </button>
+        <button onclick="toggleLargeCaptions()" title="{% trans 'Large Captions' %}">
+            <span>🔠</span><small>{% trans 'Large Captions' %}</small>
+        </button>
+        <button onclick="toggleColorScheme()" title="{% trans 'Color Settings' %}">
+            <span>🎨</span><small>{% trans 'Color Settings' %}</small>
+        </button>
+        <button onclick="resetAccessibility()" title="{% trans 'Reset' %}">
+            <span>🔄</span><small>{% trans 'Reset' %}</small>
+        </button>
+        <button onclick="toggleStickyMode()" title="{% trans 'Sticky Mode' %}">
+            <span>📌</span><small>{% trans 'Sticky Mode' %}</small>
+        </button>
+        <button onclick="showAccessibilityInfo()" title="{% trans 'Information' %}">
+            <span>ℹ️</span><small>{% trans 'Information' %}</small>
+        </button>
+        <button onclick="closeToolbar()" title="{% trans 'Exit Service' %}" class="exit">
+            <span>⏻</span><small>{% trans 'Exit Service' %}</small>
+        </button>
+    </div>
+
+    <!-- 导航菜单 -->
     <div id="menu" class="nav-container">
         <ul>
             <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
@@ -93,6 +128,7 @@
             {% endif %}
         </div>
     </div>
+
     <div id="content-wrapper">
         {% block content %}
         {% endblock content %}
@@ -100,6 +136,7 @@
             <a href="{% url 'vendor_login' %}" class="vendor-login-button">{% trans "Log in as Vendor" %}</a>
         {% endif %}
     </div>
+
     <script src="{% static 'js/font-size.js' %}"></script>
     <script src="{% static 'js/accessibility.js' %}"></script>
 </body>

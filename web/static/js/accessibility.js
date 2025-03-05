@@ -7,41 +7,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const accessibilityLink = document.querySelector('#accessibility-btn').parentElement;
 
 
-    toolbar.id = "accessibility-toolbar";
-    toolbar.innerHTML = `
-        <button onclick="increaseZoom()" title="Zoom In">
-            <span>➕</span><small>Zoom In</small>
-        </button>
-        <button onclick="decreaseZoom()" title="Zoom Out">
-            <span>➖</span><small>Zoom Out</small>
-        </button>
-        <button onclick="toggleCursorMode()" title="Cursor Mode">
-            <span>🖱️</span><small>Cursor</small>
-        </button>
-        <button onclick="toggleCrosshair()" title="Crosshair Mode">
-            <span>🎯</span><small>Crosshair</small>
-        </button>
-        <button onclick="toggleLargeCaptions()" title="Large Captions">
-            <span>🔠</span><small>Captions</small>
-        </button>
-        <button onclick="toggleColorScheme()" title="Color Settings">
-            <span>🎨</span><small>Colors</small>
-        </button>
-        <button onclick="resetAccessibility()" title="Reset">
-            <span>🔄</span><small>Reset</small>
-        </button>
-        <button onclick="toggleStickyMode()" title="Sticky Mode">
-            <span>📌</span><small>Sticky</small>
-        </button>
-        <button onclick="showAccessibilityInfo()" title="Information">
-            <span>ℹ️</span><small>Info</small>
-        </button>
-        <button onclick="closeToolbar()" title="Exit Service" class="exit">
-            <span>⏻</span><small>Exit</small>
-        </button>
-    `;
-    document.body.prepend(toolbar);
-
     // 默认隐藏工具栏 & 页面不移动
     toolbar.style.display = "none";
 
@@ -53,11 +18,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     
             menu.style.position = "fixed"; 
-            menu.style.top = "60px";  // ✅ 让菜单下移
+            menu.style.top = "103px";  // ✅ 让菜单下移
+            menu.style.height = "80px";
             menu.style.display = "flex";
             menu.style.zIndex = "10000"; 
 
-            contentWrapper.style.paddingTop = "110px";  // ✅ 确保内容不会被遮挡
+            contentWrapper.style.paddingTop = "160px";  // ✅ 确保内容不会被遮挡
         }
     });    
 });
