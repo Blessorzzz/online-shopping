@@ -1081,13 +1081,13 @@ body {
 }
 
 /* ======== 让所有非白色背景的文字默认使用白色 ======== */
-[data-theme]:not([data-theme="default"]) body, 
+/* [data-theme]:not([data-theme="default"]) body, 
 [data-theme]:not([data-theme="default"]) button, 
 [data-theme]:not([data-theme="default"]) a, 
 [data-theme]:not([data-theme="default"]) input, 
 [data-theme]:not([data-theme="default"]) select {
-    color: white; /* 让所有文本在非白色背景时变白色 */
-}
+    color: var(--text-color); 
+} */
 
 /* ======== 让 Hover 颜色高对比度，提高可见性 ======== */
 button:hover, a:hover, .product-card:hover, form.nav-right button:hover {
