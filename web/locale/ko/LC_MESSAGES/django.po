@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-27 15:37+0800\n"
+"POT-Creation-Date: 2025-03-05 17:12+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,43 +18,56 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: .\ecommerce\models.py:9 .\templates\product_detail.html:48
+#: .\ecommerce\models.py:10 .\templates\product_detail.html:48
 #: .\templates\vendor\vendor_product_detail.html:16
 msgid "Stock"
 msgstr "재고"
 
-#: .\ecommerce\models.py:10 .\ecommerce\models.py:29
+#: .\ecommerce\models.py:11 .\ecommerce\models.py:36
 #: .\templates\vendor\vendor_product_detail.html:18
 msgid "Out of Stock"
 msgstr "재고 없음"
 
-#: .\ecommerce\models.py:14
+#: .\ecommerce\models.py:15
+msgid "Tangible"
+msgstr ""
+
+#: .\ecommerce\models.py:16
+msgid "Virtual"
+msgstr ""
+
+#: .\ecommerce\models.py:20
 msgid "Unique ID for this product across whole shopping mall"
 msgstr "이 상품은 전체 쇼핑몰에서 고유한 ID를 가집니다."
 
-#: .\ecommerce\models.py:15 .\templates\vendor\dashboard.html:10
-#: .\templates\vendor\vendor_order_detail.html:15
+#: .\ecommerce\models.py:21 .\templates\vendor\dashboard.html:10
+#: .\templates\vendor\vendor_order_detail.html:16
 msgid "Product Name"
 msgstr "상품 이름"
 
-#: .\ecommerce\models.py:18
+#: .\ecommerce\models.py:24
 msgid "Description"
 msgstr "상품 설명"
 
-#: .\ecommerce\models.py:22
+#: .\ecommerce\models.py:28
 msgid "Minimum age suitable for the product"
 msgstr "이 제품에 적합한 최소 연령"
 
-#: .\ecommerce\models.py:23
+#: .\ecommerce\models.py:29
 msgid "Maximum age suitable for the product"
 msgstr "이 제품에 적합한 최대 연령"
 
-#: .\ecommerce\models.py:29 .\templates\product_detail.html:50
-#: .\templates\vendor\vendor_product_detail.html:16
+#: .\ecommerce\models.py:30
+#, fuzzy
+#| msgid "Product Name"
+msgid "Product Type"
+msgstr "상품 이름"
+
+#: .\ecommerce\models.py:36 .\templates\vendor\vendor_product_detail.html:16
 msgid "Available"
 msgstr "구매 가능"
 
-#: .\ecommerce\models.py:32
+#: .\ecommerce\models.py:39
 msgid "years old"
 msgstr "살"
 
@@ -62,46 +75,91 @@ msgstr "살"
 msgid "My Online Shop"
 msgstr "내 온라인 쇼핑몰"
 
-#: .\templates\base.html:57
+#: .\templates\base.html:58 .\templates\base.html:59
+msgid "Zoom In"
+msgstr "크게 하다"
+
+#: .\templates\base.html:61 .\templates\base.html:62
+msgid "Zoom Out"
+msgstr "축소"
+
+#: .\templates\base.html:64 .\templates\base.html:65
+msgid "Cursor Mode"
+msgstr "마우스 스타일"
+
+#: .\templates\base.html:67 .\templates\base.html:68
+msgid "Crosshair Mode"
+msgstr "조준선"
+
+#: .\templates\base.html:70 .\templates\base.html:71
+msgid "Large Captions"
+msgstr "큰 자막"
+
+#: .\templates\base.html:73 .\templates\base.html:74
+msgid "Color Settings"
+msgstr "색상"
+
+#: .\templates\base.html:76 .\templates\base.html:77
+#: .\templates\vendor\vendor_base.html:24
+msgid "Reset"
+msgstr "초기화"
+
+#: .\templates\base.html:79 .\templates\base.html:80
+msgid "Sticky Mode"
+msgstr "결정된"
+
+#: .\templates\base.html:82 .\templates\base.html:83
+msgid "Information"
+msgstr "설명하다"
+
+#: .\templates\base.html:85 .\templates\base.html:86
+msgid "Exit Service"
+msgstr "서비스 종료"
+
+#: .\templates\base.html:93
 msgid "Home"
 msgstr "홈"
 
-#: .\templates\base.html:60 .\templates\base.html:65
+#: .\templates\base.html:95 .\templates\base.html:100
 msgid "My Cart"
 msgstr "내 장바구니"
 
-#: .\templates\base.html:61 .\templates\base.html:66
-#: .\templates\order_list.html:15
+#: .\templates\base.html:96 .\templates\base.html:101
+#: .\templates\order_list.html:40
 msgid "My Orders"
 msgstr "내 주문"
 
-#: .\templates\base.html:62 .\templates\base.html:67
+#: .\templates\base.html:97 .\templates\base.html:102
 #: .\templates\registration\login.html:7 .\templates\registration\login.html:10
 msgid "Login"
 msgstr "로그인"
 
-#: .\templates\base.html:63 .\templates\base.html:68
+#: .\templates\base.html:98 .\templates\base.html:103
 #: .\templates\register.html:11
 msgid "Register"
 msgstr "회원가입"
 
-#: .\templates\base.html:74 .\templates\vendor\vendor_base.html:20
+#: .\templates\base.html:105
+msgid "Web Accessibility"
+msgstr "웹 접근성"
+
+#: .\templates\base.html:109 .\templates\vendor\vendor_base.html:20
 msgid "Search product"
 msgstr "상품 검색"
 
-#: .\templates\base.html:75 .\templates\vendor\vendor_base.html:21
+#: .\templates\base.html:110 .\templates\vendor\vendor_base.html:21
 msgid "Search"
 msgstr "검색"
 
-#: .\templates\base.html:91 .\templates\vendor\vendor_base.html:30
+#: .\templates\base.html:123 .\templates\vendor\vendor_base.html:30
 msgid "Hi"
 msgstr "안녕하세요"
 
-#: .\templates\base.html:94 .\templates\vendor\vendor_base.html:33
+#: .\templates\base.html:126 .\templates\vendor\vendor_base.html:33
 msgid "Logout"
 msgstr "로그아웃"
 
-#: .\templates\base.html:102
+#: .\templates\base.html:136
 msgid "Log in as Vendor"
 msgstr "판매자로 로그인"
 
@@ -130,7 +188,7 @@ msgid "P.O. Number:"
 msgstr "주문 번호:"
 
 #: .\templates\order_detail.html:22
-#: .\templates\vendor\vendor_order_detail.html:7
+#: .\templates\vendor\vendor_order_detail.html:8
 msgid "Purchase Date:"
 msgstr "구매 일자:"
 
@@ -139,103 +197,114 @@ msgid "Shipping Address:"
 msgstr "배송 주소:"
 
 #: .\templates\order_detail.html:24
-#: .\templates\vendor\vendor_order_detail.html:8
+#: .\templates\vendor\vendor_order_detail.html:9
 msgid "Total Amount:"
 msgstr "총 금액:"
 
 #: .\templates\order_detail.html:25
-#: .\templates\vendor\vendor_order_detail.html:9
+#: .\templates\vendor\vendor_order_detail.html:10
 msgid "Status:"
 msgstr "상태:"
 
-#: .\templates\order_detail.html:28
+#: .\templates\order_detail.html:45
 msgid "Items in this order:"
 msgstr "이 주문의 항목들:"
 
-#: .\templates\order_detail.html:33 .\templates\view_cart.html:17
+#: .\templates\order_detail.html:50 .\templates\view_cart.html:50
 msgid "Product"
 msgstr "상품"
 
-#: .\templates\order_detail.html:34
-#: .\templates\vendor\vendor_order_detail.html:16 .\templates\view_cart.html:19
+#: .\templates\order_detail.html:51
+#: .\templates\vendor\vendor_order_detail.html:17 .\templates\view_cart.html:52
 msgid "Quantity"
 msgstr "수량"
 
-#: .\templates\order_detail.html:35
+#: .\templates\order_detail.html:52
 msgid "Unit Price"
 msgstr "단가"
 
-#: .\templates\order_detail.html:36
-#: .\templates\vendor\vendor_order_detail.html:18
+#: .\templates\order_detail.html:53
+#: .\templates\vendor\vendor_order_detail.html:19
 msgid "Subtotal"
 msgstr "소계"
 
-#: .\templates\order_detail.html:51
-#: .\templates\vendor\vendor_order_detail.html:124
+#: .\templates\order_detail.html:68
+#: .\templates\vendor\vendor_order_detail.html:78
 msgid "Back to Orders"
 msgstr "주문 목록으로 돌아가기"
 
-#: .\templates\order_list.html:18
+#: .\templates\order_list.html:44
 msgid "Filter by status:"
 msgstr "상태로 필터"
 
-#: .\templates\order_list.html:20
+#: .\templates\order_list.html:46
 msgid "All"
 msgstr "모두"
 
-#: .\templates\order_list.html:21
+#: .\templates\order_list.html:47
 msgid "Pending"
 msgstr "대기 중"
 
-#: .\templates\order_list.html:22
+#: .\templates\order_list.html:48
 msgid "Shipped"
 msgstr "발송됨"
 
-#: .\templates\order_list.html:23
+#: .\templates\order_list.html:49
 msgid "Cancelled"
 msgstr "취소됨"
 
-#: .\templates\order_list.html:24
+#: .\templates\order_list.html:50
 msgid "Hold"
 msgstr "보류"
 
-#: .\templates\order_list.html:25
+#: .\templates\order_list.html:51
 msgid "Ticket Issued"
 msgstr "티켓 발급됨"
 
-#: .\templates\order_list.html:26
+#: .\templates\order_list.html:52
 msgid "Complete"
 msgstr "완료됨"
 
-#: .\templates\order_list.html:27
+#: .\templates\order_list.html:53
 msgid "Refunded"
 msgstr "환불됨"
 
-#: .\templates\order_list.html:29
+#: .\templates\order_list.html:55
 msgid "Filter"
 msgstr "필터"
 
-#: .\templates\order_list.html:35 .\templates\vendor\vendor_orders.html:9
+#: .\templates\order_list.html:61 .\templates\vendor\vendor_orders.html:9
 msgid "P.O. Number"
 msgstr "주문 번호"
 
-#: .\templates\order_list.html:36 .\templates\vendor\vendor_orders.html:10
+#: .\templates\order_list.html:62 .\templates\vendor\vendor_orders.html:10
 msgid "Purchase Date"
 msgstr "구매 일자"
 
-#: .\templates\order_list.html:37 .\templates\vendor\vendor_orders.html:12
+#: .\templates\order_list.html:63 .\templates\vendor\vendor_orders.html:12
 msgid "Total Amount"
 msgstr "총 금액"
 
-#: .\templates\order_list.html:38 .\templates\vendor\vendor_orders.html:13
+#: .\templates\order_list.html:64 .\templates\vendor\vendor_orders.html:13
 #: .\templates\vendor\vendor_product_detail.html:18
 msgid "Status"
 msgstr "상태"
 
+#: .\templates\order_list.html:65 .\templates\vendor\dashboard.html:13
+#: .\templates\vendor\vendor_orders.html:14 .\templates\view_cart.html:54
+msgid "Actions"
+msgstr "작업"
+
+#: .\templates\order_list.html:96
+#, fuzzy
+#| msgid "Cancelled"
+msgid "Cancel"
+msgstr "취소됨"
+
 #: .\templates\product_detail.html:38 .\templates\vendor\dashboard.html:11
-#: .\templates\vendor\vendor_order_detail.html:17
+#: .\templates\vendor\vendor_order_detail.html:18
 #: .\templates\vendor\vendor_product_detail.html:14
-#: .\templates\view_cart.html:18
+#: .\templates\view_cart.html:51
 msgid "Price"
 msgstr "가격"
 
@@ -244,11 +313,11 @@ msgstr "가격"
 msgid "Age Range"
 msgstr "연령대"
 
-#: .\templates\product_detail.html:59
+#: .\templates\product_detail.html:64
 msgid "Add to Cart"
 msgstr "장바구니에 추가"
 
-#: .\templates\product_detail.html:68
+#: .\templates\product_detail.html:73
 msgid "Product Details"
 msgstr "상품 세부정보"
 
@@ -295,7 +364,7 @@ msgstr "최소 연령은 최대 연령보다 클 수 없습니다."
 
 #: .\templates\vendor\add_product.html:180
 #: .\templates\vendor\edit_product.html:158
-#: .\templates\vendor\vendor_orders.html:37
+#: .\templates\vendor\vendor_orders.html:52
 msgid "Back to Dashboard"
 msgstr "대시보드로 돌아가기"
 
@@ -318,11 +387,6 @@ msgstr "상품 ID"
 #: .\templates\vendor\dashboard.html:12
 msgid "Stock Quantity"
 msgstr "재고 수량"
-
-#: .\templates\vendor\dashboard.html:13
-#: .\templates\vendor\vendor_orders.html:14 .\templates\view_cart.html:21
-msgid "Actions"
-msgstr "작업"
 
 #: .\templates\vendor\dashboard.html:30
 msgid "Edit"
@@ -368,23 +432,19 @@ msgstr "판매자 대시보드"
 msgid "View Purchase Orders"
 msgstr "구매 주문 보기"
 
-#: .\templates\vendor\vendor_base.html:24
-msgid "Reset"
-msgstr "초기화"
-
-#: .\templates\vendor\vendor_order_detail.html:5
+#: .\templates\vendor\vendor_order_detail.html:6
 msgid "Order Details - PO Number:"
 msgstr "주문 세부사항 - 주문 번호:"
 
-#: .\templates\vendor\vendor_order_detail.html:6
+#: .\templates\vendor\vendor_order_detail.html:7
 msgid "Customer:"
 msgstr "고객:"
 
-#: .\templates\vendor\vendor_order_detail.html:11
+#: .\templates\vendor\vendor_order_detail.html:12
 msgid "Order Items"
 msgstr "주문 항목"
 
-#: .\templates\vendor\vendor_order_detail.html:31
+#: .\templates\vendor\vendor_order_detail.html:32
 msgid "No items in this order."
 msgstr "이 주문에는 항목이 없습니다."
 
@@ -392,15 +452,15 @@ msgstr "이 주문에는 항목이 없습니다."
 msgid "Change Order Status:"
 msgstr "주문 상태 변경:"
 
-#: .\templates\vendor\vendor_order_detail.html:47
+#: .\templates\vendor\vendor_order_detail.html:53
 msgid "Update Status"
 msgstr "상태 업데이트"
 
-#: .\templates\vendor\vendor_order_detail.html:52
+#: .\templates\vendor\vendor_order_detail.html:58
 msgid "Status History"
 msgstr "상태 기록"
 
-#: .\templates\vendor\vendor_order_detail.html:65
+#: .\templates\vendor\vendor_order_detail.html:71
 msgid "No status history available"
 msgstr "상태 기록이 없습니다."
 
@@ -412,56 +472,76 @@ msgstr "구매 주문"
 msgid "Customer Name"
 msgstr "고객 이름"
 
-#: .\templates\vendor\vendor_orders.html:26
+#: .\templates\vendor\vendor_orders.html:41
 msgid "View Details"
 msgstr "상세 보기"
 
-#: .\templates\vendor\vendor_orders.html:31
+#: .\templates\vendor\vendor_orders.html:46
 msgid "No purchase orders available."
 msgstr "구매 주문이 없습니다."
 
-#: .\templates\view_cart.html:11
+#: .\templates\view_cart.html:36
 msgid "Your Shopping Cart"
 msgstr "당신의 장바구니"
 
-#: .\templates\view_cart.html:20 .\templates\view_cart.html:50
+#: .\templates\view_cart.html:53 .\templates\view_cart.html:82
 msgid "Total"
 msgstr "합계"
 
-#: .\templates\view_cart.html:41
+#: .\templates\view_cart.html:74
 msgid "Remove"
 msgstr "제거"
 
-#: .\templates\view_cart.html:54
+#: .\templates\view_cart.html:86
 msgid "Checkout"
 msgstr "결제"
 
-#: .\templates\view_cart.html:57 .\templates\view_cart.html:60
+#: .\templates\view_cart.html:89
 msgid "Your cart is empty."
 msgstr "장바구니가 비었습니다."
 
-#: .\user\form.py:9
+#: .\user\form.py:10
 msgid "Email"
 msgstr "이메일"
 
-#: .\user\form.py:10
+#: .\user\form.py:11
 msgid "Please enter a valid email address."
 msgstr "유효한 이메일 주소를 입력하세요."
 
-#: .\user\form.py:14
+#: .\user\form.py:15
 msgid "Full name"
 msgstr "전체 이름"
 
-#: .\user\form.py:15
+#: .\user\form.py:16
 msgid "Please enter your full name."
 msgstr "전체 이름을 입력하세요"
 
-#: .\user\form.py:19
+#: .\user\form.py:20
 #, fuzzy
 #| msgid "Shipping Address:"
 msgid "Shipping address"
 msgstr "배송 주소:"
 
-#: .\user\form.py:20
+#: .\user\form.py:21
 msgid "Please enter your shipping address."
 msgstr "배송지 주소를 입력하세요."
+
+#: .\web\settings.py:120
+msgid "English"
+msgstr ""
+
+#: .\web\settings.py:121
+msgid "Spanish"
+msgstr ""
+
+#: .\web\settings.py:122
+msgid "Japanese"
+msgstr ""
+
+#: .\web\settings.py:123
+msgid "Korean"
+msgstr ""
+
+#: .\web\settings.py:124
+msgid "Simplified Chinese"
+msgstr ""
