@@ -2,7 +2,6 @@
 {% load static i18n %}
 {% block content %}
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +12,6 @@
 </head>
 <body>
 
-
 <div class="order-container">
     <h2>{% trans "Order Details" %}</h2>
     
@@ -22,7 +20,43 @@
         <p><strong>{% trans "Purchase Date:" %}</strong> {{ order.purchase_date|date:"DATETIME_FORMAT" }}</p>
         <p><strong>{% trans "Shipping Address:" %}</strong> {{ order.shipping_address }}</p>
         <p><strong>{% trans "Total Amount:" %}</strong> <span class="total-amount">${{ order.total_amount }}</span></p>
-        <p><strong>{% trans "Status:" %}</strong> <span class="status {{ order.status }}">{{ order.status }}</span></p>
+        <p><strong>{% trans "Status:" %}</strong>
+            {% if order.status == 'pending' %}
+                <span class="status-label status-pending">⏳ Pending</span>
+            {% elif order.status == 'shipped' %}
+                <span class="status-label status-shipped">📦 Shipped</span>
+            {% elif order.status == 'cancelled' %}
+                <span class="status-label status-cancelled">❌ Cancelled</span>
+            {% elif order.status == 'hold' %}
+                <span class="status-label status-hold">⏸️ Hold</span>
+            {% elif order.status == 'ticket-issued' %}
+                <span class="status-label status-ticket">🎫 Ticket Issued</span>
+            {% elif order.status == 'complete' %}
+                <span class="status-label status-complete">✅ Complete</span>
+            {% elif order.status == 'refunded' %}
+                <span class="status-label status-refunded">💰 Refunded</span>
+            {% endif %}
+        </p>
+        
+    </div>
+
+    <div class="status-dates">
+        <h4>{% trans "Status History" %}</h4>
+        <div class="timeline">
+            {% for status, date in sorted_status_dates %}
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="status-card">
+                        <span class="status-label">{{ status|title }}:</span>
+                        <span class="status-date">{{ date|date:"Y-m-d H:i" }}</span>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p class="no-history">{% trans "No status history available" %}</p>
+            {% endfor %}
+        </div>
     </div>
     
     <h3>{% trans "Items in this order:" %}</h3>
@@ -50,5 +84,73 @@
     
     <a href="{% url 'order_list' %}" class="back-button">{% trans "Back to Orders" %}</a>
 </div>
-{% endblock %}
+
+<style>
+    .timeline {
+        position: relative;
+        padding: 20px 0;
+        margin-left: 30px;
+    }
     
+    .timeline::before {
+        content: '';
+        position: absolute;
+        left: 15px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: #007bff;
+    }
+    
+    .timeline-item {
+        position: relative;
+        margin-bottom: 30px;
+        padding-left: 40px;
+    }
+    
+    .timeline-marker {
+        position: absolute;
+        left: 6px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #fff;
+        border: 3px solid #007bff;
+        z-index: 1;
+    }
+    
+    .timeline-content {
+        position: relative;
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        border: 1px solid #dee2e6;
+        transition: transform 0.2s;
+    }
+    
+    .status-card {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .status-label {
+        font-weight: 600;
+        color: #2c3e50;
+    }
+    
+    .status-date {
+        color: #7f8c8d;
+        font-size: 0.9em;
+    }
+    
+    .no-history {
+        color: #95a5a6;
+        text-align: center;
+        padding: 20px;
+    }
+</style>
+
+{% endblock %}

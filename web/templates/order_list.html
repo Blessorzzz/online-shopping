@@ -33,23 +33,60 @@
             margin: 0;
             padding: 0;
         }
+        .filter-form {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #007bff;
+            border-radius: 5px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            flex-wrap: wrap; /* Ensure elements wrap if they don't fit in one line */
+        }
+        .filter-form label {
+            color: white;
+            margin-right: 10px;
+            font-weight: bold;
+            white-space: nowrap; /* Prevent label from wrapping */
+        }
+        .filter-form select {
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-right: 10px;
+        }
+        .filter-form button {
+            padding: 5px 10px;
+            background-color: #0056b3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            width: auto; /* Ensure the button width adjusts to the content */
+            white-space: nowrap; /* Prevent the text from wrapping */
+        }
+        .filter-form button:hover {
+            background-color: #003d80;
+        }
     </style>
 </head>
 <body>
 
     <h2>{% trans "My Orders" %}</h2>
 
-    <form method="get" action=".">
+    <form method="get" action="." class="filter-form">
         <label for="status">{% trans "Filter by status:" %}</label>
         <select name="status" id="status">
-            <option value="">{% trans "All" %}</option>
-            <option value="pending">{% trans "Pending" %}</option>
-            <option value="shipped">{% trans "Shipped" %}</option>
-            <option value="cancelled">{% trans "Cancelled" %}</option>
-            <option value="hold">{% trans "Hold" %}</option>
-            <option value="ticket-issued">{% trans "Ticket Issued" %}</option>
-            <option value="complete">{% trans "Complete" %}</option>
-            <option value="refunded">{% trans "Refunded" %}</option>
+            <option value="" {% if not request.GET.status %}selected{% endif %}>{% trans "All" %}</option>
+            <option value="pending" {% if request.GET.status == "pending" %}selected{% endif %}>{% trans "Pending" %}</option>
+            <option value="shipped" {% if request.GET.status == "shipped" %}selected{% endif %}>{% trans "Shipped" %}</option>
+            <option value="cancelled" {% if request.GET.status == "cancelled" %}selected{% endif %}>{% trans "Cancelled" %}</option>
+            <option value="hold" {% if request.GET.status == "hold" %}selected{% endif %}>{% trans "Hold" %}</option>
+            <option value="ticket-issued" {% if request.GET.status == "ticket-issued" %}selected{% endif %}>{% trans "Ticket Issued" %}</option>
+            <option value="complete" {% if request.GET.status == "complete" %}selected{% endif %}>{% trans "Complete" %}</option>
+            <option value="refunded" {% if request.GET.status == "refunded" %}selected{% endif %}>{% trans "Refunded" %}</option>
         </select>
         <button type="submit">{% trans "Filter" %}</button>
     </form>
@@ -70,9 +107,24 @@
                 <td>{{ order.po_number }}</td>
                 <td>{{ order.purchase_date|date:"DATETIME_FORMAT" }}</td>
                 <td>${{ order.total_amount }}</td>
-                <td class="{% if order.status == 'pending' %}status-pending{% elif order.status == 'shipped' %}status-shipped{% elif order.status == 'cancelled' %}status-cancelled{% elif order.status == 'hold' %}status-hold{% endif %}">
-                    {{ order.status }}
+                <td class="status">
+                    {% if order.status == 'pending' %}
+                        <span class="status-label status-pending">⏳ Pending</span>
+                    {% elif order.status == 'shipped' %}
+                        <span class="status-label status-shipped">📦 Shipped</span>
+                    {% elif order.status == 'cancelled' %}
+                        <span class="status-label status-cancelled">❌ Cancelled</span>
+                    {% elif order.status == 'hold' %}
+                        <span class="status-label status-hold">⏸️ Hold</span>
+                    {% elif order.status == 'ticket-issued' %}
+                        <span class="status-label status-ticket">🎫 Ticket Issued</span>
+                    {% elif order.status == 'complete' %}
+                        <span class="status-label status-complete">✅ Complete</span>
+                    {% elif order.status == 'refunded' %}
+                        <span class="status-label status-refunded">💰 Refunded</span>
+                    {% endif %}
                 </td>
+                
                 <td>
                     {% if order.status == 'pending' or order.status == 'hold' %}
                     <form method="post" action="{% url 'cancel_order' order.id %}" style="display:inline;">

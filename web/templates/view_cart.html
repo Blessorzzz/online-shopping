@@ -58,7 +58,7 @@
                 {% for item in cart_items %}
                     <tr>
                         <td><a href="{% url 'product_detail' item.product.product_id %}">{{ item.product.product_name }}</a></td>
-                        <td>${{ item.product.price }}</td>
+                        <td>{{ item.product.product_name }}</td>        
                         <td>
                             <form method="POST" action="{% url 'update_cart' item.id %}" class="quantity-form">
                                 {% csrf_token %}

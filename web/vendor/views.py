@@ -4,9 +4,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from shoppingcart.models import Order, OrderItem
-from ecommerce.models import Product
+from ecommerce.models import Product, ProductPhoto
 from .forms import ProductForm
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, JsonResponse
 from django.db.models import Q
 from django.utils.timezone import now
 
@@ -61,6 +61,11 @@ def add_product(request):
             product = form.save(commit=False)
             product.vendor = request.user.vendor
             product.save()
+            
+            # Handle additional images
+            for file in request.FILES.getlist('additional_images'):
+                ProductPhoto.objects.create(product=product, photo=file)
+            
             return redirect('vendor_dashboard')
     else:
         form = ProductForm()
@@ -73,12 +78,22 @@ def edit_product(request, product_id):
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES, instance=product)
         if form.is_valid():
-            form.save()
+            product = form.save()
+            for file in request.FILES.getlist('additional_images'):
+                ProductPhoto.objects.create(product=product, photo=file)
             return redirect('vendor_dashboard')
     else:
         form = ProductForm(instance=product)
 
     return render(request, 'vendor/edit_product.html', {'form': form, 'product': product})
+
+@login_required
+def delete_product_photo(request, photo_id):
+    if request.method == 'POST':
+        photo = get_object_or_404(ProductPhoto, pk=photo_id)
+        photo.delete()
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False})
 
 # Toggle the status of a product between active and inactive
 @login_required
@@ -101,31 +116,44 @@ def vendor_order_detail(request, order_id):
         new_status = request.POST.get('status')
         product_type = order.items.first().product.product_type if order.items.exists() else 'tangible'
 
-        if product_type == 'tangible' and new_status in dict(Order.STATUS_CHOICES_TANGIBLE):
+        # Define allowed status transitions
+        allowed_transitions = {
+            'tangible': {
+                'pending': ['shipped', 'cancelled', 'hold'],
+                'shipped': ['cancelled', 'hold'],
+                'cancelled': [],
+                'hold': ['shipped', 'cancelled']
+            },
+            'virtual': {
+                'pending': ['ticket-issued', 'complete', 'refunded'],
+                'ticket-issued': ['complete', 'refunded'],
+                'complete': [],
+                'refunded': []
+            }
+        }
+
+        current_status = order.status
+        if new_status in allowed_transitions[product_type].get(current_status, []):
             order.status = new_status
-        elif product_type == 'virtual' and new_status in dict(Order.STATUS_CHOICES_VIRTUAL):
-            order.status = new_status
+            # Update the timestamp for the corresponding status
+            status_date_map = {
+                'pending': 'pending_date',
+                'shipped': 'shipment_date',
+                'cancelled': 'cancel_date',
+                'hold': 'hold_date',
+                'ticket-issued': 'ticket_issue_date',
+                'complete': 'complete_date',
+                'refunded': 'refund_date'
+            }
+            
+            if new_status in status_date_map:
+                setattr(order, status_date_map[new_status], now())
+                print(f"Updated {status_date_map[new_status]} timestamp for status: {new_status}")
+
+            order.save()
+            messages.success(request, "Order status updated successfully.")
         else:
             messages.error(request, "Invalid status change.")
-            return redirect('vendor_order_detail', order_id=order.id)
-
-        # Update the timestamp for the corresponding status
-        status_date_map = {
-            'pending': 'pending_date',
-            'shipped': 'shipment_date',
-            'cancelled': 'cancel_date',
-            'hold': 'hold_date',
-            'ticket-issued': 'ticket_issue_date',
-            'complete': 'complete_date',
-            'refunded': 'refund_date'
-        }
-        
-        if new_status in status_date_map:
-            setattr(order, status_date_map[new_status], now())
-            print(f"Updated {status_date_map[new_status]} timestamp for status: {new_status}")
-
-        order.save()
-        messages.success(request, "Order status updated successfully.")
         return redirect('vendor_order_detail', order_id=order.id)
 
     # Generate status timeline data
