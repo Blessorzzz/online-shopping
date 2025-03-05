@@ -35,6 +35,8 @@ function closeToolbar() {
     const contentWrapper = document.getElementById("content-wrapper");
     const accessibilityBtn = document.getElementById("accessibility-btn"); // 重新获取按钮
 
+    resetAccessibility();
+
     toolbar.style.display = "none";
 
     menu.style.top = "0";  // ✅ 让菜单回到顶部
