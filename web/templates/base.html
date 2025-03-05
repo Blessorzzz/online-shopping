@@ -52,35 +52,30 @@
     </style>
 </head>
 <body>
+    <div id="accessibility-toolbar"></div>
     <div id="menu" class="nav-container">
         <ul>
             <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
-
             {% if user.is_authenticated %}
                 <li><a href="{% url 'shopping_cart' %}">{% trans "My Cart" %}</a></li>
                 <li><a href="{% url 'order_list' %}">{% trans "My Orders" %}</a></li>
                 <li><a href="{% url 'login' %}">{% trans "Login" %}</a></li>
-                <li><a href="{% url 'register' %}">{% trans "Register" %}</a></li>
-                <li><a href="#" id="accessibility-btn">{% trans "Web Accessibility" %}</a></li>       
+                <li><a href="{% url 'register' %}">{% trans "Register" %}</a></li>       
             {% else %}
                 <li><a href="{% url 'shopping_cart' %}">{% trans "My Cart" %}</a></li>
                 <li><a href="{% url 'order_list' %}">{% trans "My Orders" %}</a></li>
                 <li><a href="{% url 'login' %}">{% trans "Login" %}</a></li>
                 <li><a href="{% url 'register' %}">{% trans "Register" %}</a></li>
-                <li><a href="#" id="accessibility-btn">{% trans "Web Accessibility" %}</a></li>
             {% endif %}
+            <li><a href="#" id="accessibility-btn">{% trans "Web Accessibility" %}</a></li>
         </ul>
-        
         <div class="user nav-right">
             <form method="get" action="{% url 'home' %}">
                 <input type="text" name="q" placeholder="{% trans 'Search product' %}">
                 <button type="submit">{% trans 'Search' %}</button>
             </form>
-
-            <!-- 语言切换下拉菜单 -->
             <form method="post" action="{% url 'set_language' %}">
                 {% csrf_token %}
-                
                 <select name="language" onchange="this.form.submit()" style="font-size: 0.875rem;">
                     <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
                     <option value="es" {% if LANGUAGE_CODE == 'es' %}selected{% endif %}>Español</option>
@@ -89,7 +84,6 @@
                     <option value="zh-hans" {% if LANGUAGE_CODE == 'zh-hans' %}selected{% endif %}>简体中文</option>
                 </select>  
             </form>            
-    
             {% if request.user.is_authenticated %}
             <p>{% trans "Hi" %} {{ user.username }}!</p>
             <form action="{% url 'logout' %}" method="post">
@@ -99,13 +93,14 @@
             {% endif %}
         </div>
     </div>
-    {% block content %}
-    {% endblock content %}
-    {% if not request.user.is_authenticated and request.path == '/' %}
-        <a href="{% url 'vendor_login' %}" class="vendor-login-button">{% trans "Log in as Vendor" %}</a>
-    {% endif %}
+    <div id="content-wrapper">
+        {% block content %}
+        {% endblock content %}
+        {% if not request.user.is_authenticated and request.path == '/' %}
+            <a href="{% url 'vendor_login' %}" class="vendor-login-button">{% trans "Log in as Vendor" %}</a>
+        {% endif %}
+    </div>
     <script src="{% static 'js/font-size.js' %}"></script>
     <script src="{% static 'js/accessibility.js' %}"></script>
-
 </body>
 </html>

@@ -6,51 +6,10 @@ body {
     margin: 0; /* Remove default margin */
     padding: 0; /* Remove default padding */
     box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
-    overflow-x: scroll; /* 防止缩放时页面超出 */
     transform-origin: top left; /* 确保缩放从顶部开始 */
     width: auto;
     min-width: 100vw;
 }
-
-
-/* 让字体大小按钮排成一行 */
-.font-size-controls {
-    display: flex;
-    gap: 5px;
-    align-items: center;
-    flex-shrink: 0; /* 防止它因为导航栏挤压而消失 */
-}
-
-
-/* 让按钮更美观 */
-.font-size-controls button {
-    padding: 5px 10px;
-    border: 1px solid #ccc;
-    background-color: white;
-    color: #333;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-    min-width: 40px;
-}
-
-/* 鼠标悬停时 */
-.font-size-controls button:hover {
-    background-color: #f0f0f0;
-}
-
-/* 选中状态 */
-.font-size-controls button.active {
-    background-color: #007bff;
-    color: white;
-    border-color: #007bff;
-}
-
-/* 让 <select> 字体大小随着 body 一起变化 */
-select, option {
-    font-size: inherit !important;
-}
-
 
 *,
 *::before,
@@ -93,17 +52,19 @@ button:hover {
 
 /* Navigation menu styles */
 #menu {
-    background-color: #007bff; /* Set the background color of the navigation menu */
-    overflow: hidden; /* Prevent content from overflowing */
-    margin: 0; /* Remove default margin */
-    display: flex; /* Use flexbox for layout */
-    justify-content: space-between; /* Distribute space between the items */
-    align-items: center; /* Align items vertically in the center */
-    padding: 10px 20px; /* Add padding inside the navigation menu */
-    height:auto;
+    background-color: #007bff;
+    overflow: hidden;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    height: 60px;
     flex-wrap: nowrap;
-    width: 100vw;
-    min-width: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
 }
 
 #menu ul {
@@ -128,6 +89,7 @@ button:hover {
 
 #menu ul.nav-left {
     flex: 1; /* Allow the left navigation items to take up available space */
+    transition: all 0.3s ease;
 }
 
 #menu ul li {
@@ -146,6 +108,10 @@ button:hover {
 
 #menu ul a:hover {
     background-color: #0056b3; /* Change the background color when hovering over the links */
+}
+
+#menu ul li.hidden {
+    display: none !important;
 }
 
 /* Search bar styles */
@@ -410,6 +376,7 @@ form.nav-right button:hover {
     display: flex;
     gap: 40px;
     margin-bottom: 40px;
+    transition: transform 0.3s ease-in-out; /* ✅ 平滑缩放动画 */
 }
 
 .gallery-section {
@@ -667,16 +634,28 @@ form.nav-right button:hover {
     }
 }
 
-/* 滚动条美化 */
+/* 让滚动条变大、更明显 */
 ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-    background: transparent;
+    width: 16px;  /* ✅ 增大垂直滚动条宽度 */
+    height: 16px; /* ✅ 增大水平滚动条高度 */
 }
 
+/* 滚动条滑块 */
 ::-webkit-scrollbar-thumb {
-    background: rgba(0,0,0,0.2);
-    border-radius: 3px;
+    background: rgba(100, 100, 100, 0.8); /* ✅ 深灰色滚动条，增强可见性 */
+    border-radius: 8px;
+    border: 3px solid rgba(255, 255, 255, 0.5); /* ✅ 给滚动条加点边框，提高辨识度 */
+}
+
+/* 滚动条轨道 */
+::-webkit-scrollbar-track {
+    background: #f1f1f1; /* ✅ 浅色背景，形成对比 */
+    border-radius: 10px;
+}
+
+/* 悬停时的滚动条 */
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(60, 60, 60, 0.9); /* ✅ 悬停时更暗 */
 }
 
 /* 确保导航栏不会换行 */
@@ -715,48 +694,84 @@ form.nav-right button:hover {
 }
 
 html {
-    overflow-x: scroll; /* ✅ 确保始终显示横向滚动条 */
-    width: auto;
+    overflow-x: auto;  /* ✅ 确保始终显示水平滚动条 */
+    overflow-y: auto;  /* ✅ 允许垂直滚动 */
+    width: 100%;
     min-width: 100vw;
 }
 
 #accessibility-toolbar {
-    display: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px; /* 调整按钮间距 */
+    flex-wrap: nowrap;
     position: fixed;
-    top: 50px;
-    left: 10px;
-    background: #333;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #3a3a3a; /* ✅ 改成深灰色背景 */
     color: white;
     padding: 10px;
-    border-radius: 5px;
-    z-index: 1000;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    text-align: center;
+    height: 60px; /* ✅ 确保 `toolbar` 有固定高度 */
+    display: none; /* 默认隐藏 */
 }
 
-.accessibility-toolbar button {
-    background: #007bff;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    margin: 5px;
-    cursor: pointer;
-    border-radius: 3px;
-}
-
-.accessibility-toolbar button:hover {
-    background: #0056b3;
-}
-
-/* 高对比模式 */
-.high-contrast {
-    filter: contrast(2);
-    background: black;
-    color: yellow;
-}
-
-/* 阅读模式 */
-.reading-mode {
-    background: #f5f5dc;
+#accessibility-toolbar button {
+    background: #e0e0e0; /* ✅ 按钮灰色背景 */
     color: black;
-    font-family: "Arial", sans-serif;
+    border: 1px solid #b0b0b0; /* ✅ 增加边框 */
+    padding: 12px;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 60px; /* ✅ 统一按钮大小 */
+    height: 60px;
+    text-align: center;
+    font-size: 18px;
+    display: flex;
+    flex-direction: column; /* ✅ 让图标和文字垂直排列 */
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
 }
 
+/* 鼠标悬停时 */
+#accessibility-toolbar button:hover {
+    background: #d6d6d6;
+    transform: scale(1.05);
+}
+
+/* 选中状态（比如开启功能时高亮） */
+#accessibility-toolbar button.active {
+    background: orange;
+    color: white;
+    border-color: orange;
+}
+
+/* 退出按钮的特殊样式 */
+#accessibility-toolbar button.exit {
+    background: red;
+    color: white;
+    border-color: darkred;
+}
+
+/* 调整图标大小 */
+#accessibility-toolbar button i {
+    font-size: 20px;
+}
+
+/* 小文字样式 */
+#accessibility-toolbar button small {
+    font-size: 12px;
+    margin-top: 3px;
+    display: block;
+    color: black;
+}
+
+#content-wrapper {
+    transition: transform 0.3s ease-in-out; /* ✅ 让缩放变得更平滑 */
+    padding-top: 60px;  /* 为导航栏留出空间 */
+}
