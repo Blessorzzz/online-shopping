@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">{% trans "Add a Review for Your Order" %}</h2>
+    
+    <div class="card p-4 shadow-sm">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label class="form-label">{% trans "Select Product:" %}</label>
+                <select name="product" class="form-control">
+                    {% for item in products %}
+                        <option value="{{ item.product.product_id }}">{{ item.product.product_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">{% trans "Rating (1-5):" %}</label>
+                {{ form.rating }}
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">{% trans "Comment:" %}</label>
+                {{ form.comment }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">{% trans "Upload Image:" %}</label>
+                {{ form.image }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">{% trans "Upload Video:" %}</label>
+                {{ form.video }}
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">{% trans "Submit Review" %}</button>
+        </form>
+    </div>
+</div>
+
+<style>
+    .container {
+        max-width: 600px;
+    }
+    .card {
+        border-radius: 10px;
+        padding: 20px;
+    }
+</style>
+{% endblock %}

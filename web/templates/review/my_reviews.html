@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+<div class="container-fluid mt-5">
+    <h2 class="text-center mb-4">{% trans "My Reviews" %}</h2>
+    
+    <div class="card p-4 shadow-sm">
+        <table class="review-table">
+            <thead>
+                <tr>
+                    <th>{% trans "Product" %}</th>
+                    <th>{% trans "Rating" %}</th>
+                    <th>{% trans "Comment" %}</th>
+                    <th>{% trans "Status" %}</th>
+                    <th>{% trans "Created At" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for review in reviews %}
+                    <tr>
+                        <td>{{ review.product.product_name }}</td>
+                        <td>{{ review.rating }}</td>
+                        <td>{{ review.comment }}</td>
+                        <td>
+                            <span class="status-label {% if review.is_approved %}status-approved{% else %}status-pending{% endif %}">
+                                {% if review.is_approved %}
+                                    {% trans "Approved" %}
+                                {% else %}
+                                    {% trans "Pending" %}
+                                {% endif %}
+                            </span>
+                        </td>
+                        <td>{{ review.created_at|date:"Y-m-d H:i" }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    .container-fluid {
+        max-width: 100%;
+    }
+    .card {
+        border-radius: 10px;
+        padding: 20px;
+    }
+    /* Review table overall style */
+    .review-table {
+        width: 100%;
+        border-collapse: collapse;  /* Ensure borders are collapsed */
+        margin-top: 20px;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        overflow: hidden;
+        text-align: center;  /* Center table content */
+        border: 1px solid #ddd;  /* Ensure there is a border */
+    }
+
+    /* Table header style */
+    .review-table th {
+        background-color: #007bff;
+        color: white;
+        padding: 12px;
+        text-align: center;
+        border: 1px solid #ddd;  /* Ensure header has a border */
+    }
+
+    /* Table row style */
+    .review-table tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .review-table tr:hover {
+        background-color: #e3f2fd;  /* Highlight on hover */
+        cursor: pointer;  /* Change cursor to pointer */
+    }
+
+    /* Cell style */
+    .review-table td {
+        padding: 12px;
+        border: 1px solid #ddd;  /* Ensure each cell has a border */
+        text-align: center;
+    }
+
+    /* Review status colors */
+    .status-label {
+        font-weight: bold;
+        padding: 5px 10px;
+        border-radius: 5px;
+        display: inline-block;
+    }
+
+    .status-approved {
+        color: #28a745;
+        background-color: #d4edda;
+    }
+
+    .status-pending {
+        color: #ffc107;
+        background-color: #fff3cd;
+    }
+
+    .status-rejected {
+        color: #dc3545;
+        background-color: #f8d7da;
+    }
+</style>
+{% endblock %}
