@@ -195,7 +195,63 @@ function resetAccessibility() {
     document.body.style.marginTop = "5px";
     window.scrollTo({ top: 0, behavior: "smooth" });
 
+    // **隐藏字幕框**
+    document.getElementById("large-caption").style.display = "none";
+    largeCaptionEnabled = false; // 关闭字幕功能
+    document.removeEventListener("mouseover", updateCaption);
+
+
     console.log("✅ Accessibility settings reset!");
 }
+
+let largeCaptionEnabled = false;
+
+function toggleLargeCaptions() {
+    largeCaptionEnabled = !largeCaptionEnabled;
+    const captionBox = document.getElementById("large-caption");
+    const contentWrapper = document.getElementById("content-wrapper");
+
+    if (largeCaptionEnabled) {
+        captionBox.style.display = "block"; // 显示字幕框
+        contentWrapper.style.paddingBottom = "120px"; // 为内容区增加底部内边距
+        captionBox.innerText = "";
+        document.addEventListener("mouseover", updateCaption);
+    } else {
+        captionBox.style.display = "none"; // 隐藏字幕框
+        contentWrapper.style.paddingBottom = "40px"; // 恢复原始内边距（根据你的页面设计调整）
+        document.removeEventListener("mouseover", updateCaption);
+    }
+}
+
+
+function updateCaption(event) {
+    if (!largeCaptionEnabled) return; // ✅ 仅在 "Large Captions" 开启时生效
+
+    const captionBox = document.getElementById("large-caption");
+    let targetElement = event.target;
+
+    // 1️⃣ 获取文本信息
+    let text = (
+        targetElement.innerText?.trim() ||
+        targetElement.getAttribute("alt")?.trim() ||
+        targetElement.getAttribute("title")?.trim()
+    );
+
+    // 2️⃣ 过滤无意义元素（空白区域）
+    const structuralTags = ["BODY", "HTML","DIV", "SECTION", "HEADER", "MAIN"];
+    const isStructuralTag = structuralTags.includes(targetElement.tagName);
+    const isInvisible = targetElement.offsetWidth === 0 || targetElement.offsetHeight === 0;
+
+    if (!text || isStructuralTag || isInvisible) {
+        captionBox.innerText = ""; // ✅ 鼠标未悬停在文本上时，字幕框仍然可见，但不显示文字
+        return;
+    }
+
+    // 3️⃣ 显示字幕内容
+    captionBox.innerText = text;
+}
+
+
+
 
 

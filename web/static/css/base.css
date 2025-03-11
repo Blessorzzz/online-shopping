@@ -1123,3 +1123,28 @@ button:hover, a:hover, .product-card:hover, form.nav-right button:hover {
     border-color: var(--border-color) !important;
 }
 
+#large-caption {
+    position: fixed;
+    bottom: 10px;  /* 保持距离底部 10px */
+    left: 50%;
+    transform: translateX(-50%); /* 居中 */
+    width: 90%;  /* 宽度保持 90% */
+    height: 100px; /* 🔥 增加高度 */
+    background-color: rgba(0, 0, 0, 0.9);
+    color: white;
+    text-align: center;
+    font-size: 48px; /* 🔥 字体变大 */
+    padding: 10px;
+    display: none; /* 默认隐藏 */
+    z-index: 9999;
+    line-height: 90px; /* 🔥 让文字垂直居中 */
+    border-radius: 10px; /* 圆角 */
+    overflow: hidden; /* 防止文字溢出 */
+    white-space: nowrap; /* 让文本不换行 */
+    text-overflow: ellipsis; /* 过长时显示省略号 */
+    font-weight: bold; /* 🔥 加粗让文字更明显 */
+}
+
+
+
+

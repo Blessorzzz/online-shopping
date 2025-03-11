@@ -79,9 +79,6 @@
         <button onclick="toggleStickyMode()" title="{% trans 'Sticky Mode' %}">
             <span>📌</span><small>{% trans 'Sticky Mode' %}</small>
         </button>
-        <button onclick="showAccessibilityInfo()" title="{% trans 'Information' %}">
-            <span>ℹ️</span><small>{% trans 'Information' %}</small>
-        </button>
         <button onclick="closeToolbar()" title="{% trans 'Exit Service' %}" class="exit">
             <span>⏻</span><small>{% trans 'Exit Service' %}</small>
         </button>
@@ -139,5 +136,7 @@
 
     <script src="{% static 'js/font-size.js' %}"></script>
     <script src="{% static 'js/accessibility.js' %}"></script>
+    <div id="large-caption"></div>
+
 </body>
 </html>
