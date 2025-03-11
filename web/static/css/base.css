@@ -110,8 +110,6 @@ button:hover {
         color: var(--text-color) !important;
     }
     #menu {
-    
-    
     background-color: var(--border-color) !important; /* Change hover to ensure visibility */
     color: var(--button-bg) !important;
      /* Set the background color of the navigation menu */
