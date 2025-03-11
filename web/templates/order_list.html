@@ -1,3 +1,4 @@
+<!-- filepath: c:\Users\Josh\ISI\django_projects\online-shopping\web\templates\order_list.html -->
 {% extends "base.html" %}
 {% block content %}
 
@@ -9,68 +10,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Orders</title>
     <link rel="stylesheet" href="{% static 'css/order_list.css' %}">
-    <style>
-        .popup-message {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #f44336;
-            color: #ffffff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            z-index: 1000;
-            display: none;
-        }
-        .popup-message.success {
-            background-color: #4CAF50;
-        }
-        .popup-message.error {
-            background-color: #f44336;
-        }
-        .popup-message .message {
-            margin: 0;
-            padding: 0;
-        }
-        .filter-form {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-            padding: 10px;
-            background-color: #007bff;
-            border-radius: 5px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            flex-wrap: wrap; /* Ensure elements wrap if they don't fit in one line */
-        }
-        .filter-form label {
-            color: white;
-            margin-right: 10px;
-            font-weight: bold;
-            white-space: nowrap; /* Prevent label from wrapping */
-        }
-        .filter-form select {
-            padding: 5px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            margin-right: 10px;
-        }
-        .filter-form button {
-            padding: 5px 10px;
-            background-color: #0056b3;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s;
-            width: auto; /* Ensure the button width adjusts to the content */
-            white-space: nowrap; /* Prevent the text from wrapping */
-        }
-        .filter-form button:hover {
-            background-color: #003d80;
-        }
-    </style>
 </head>
 <body>
 
@@ -87,6 +26,7 @@
             <option value="ticket-issued" {% if request.GET.status == "ticket-issued" %}selected{% endif %}>{% trans "Ticket Issued" %}</option>
             <option value="complete" {% if request.GET.status == "complete" %}selected{% endif %}>{% trans "Complete" %}</option>
             <option value="refunded" {% if request.GET.status == "refunded" %}selected{% endif %}>{% trans "Refunded" %}</option>
+            <option value="delivered" {% if request.GET.status == "delivered" %}selected{% endif %}>{% trans "Delivered" %}</option>
         </select>
         <button type="submit">{% trans "Filter" %}</button>
     </form>
@@ -123,6 +63,8 @@
                         <span class="status-label status-complete">✅ Complete</span>
                     {% elif order.status == 'refunded' %}
                         <span class="status-label status-refunded">💰 Refunded</span>
+                    {% elif order.status == 'delivered' %}
+                        <span class="status-label status-delivered">📬 Delivered</span>
                     {% endif %}
                 </td>
                 
