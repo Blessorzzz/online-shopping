@@ -40,40 +40,40 @@ class Product(models.Model):
         return f'{self.min_age}-{self.max_age} ' + _('years old')
 
     def save(self, *args, **kwargs):
-      translations = {
-        'es': 'es',
-        'ja': 'ja',
-        'ko': 'ko',
-        'zh-hans': 'zh-CN',  
-    }
+        translations = {
+            'es': 'es',
+            'ja': 'ja',
+            'ko': 'ko',
+            'zh-hans': 'zh-CN',  
+        }
 
-      updated = False
+        updated = False
+        translatable_fields = ['product_name', 'description']
 
-    # ✅ 需要翻译的字段列表（新增此行）
-      translatable_fields = ['product_name', 'description']
+        for lang, dest in translations.items():
+            lang_code = lang.replace('-', '_')
 
-      for lang, dest in translations.items():
-        lang_code = lang.replace('-', '_') 
+            for field in translatable_fields:
+                translated_field = f'{field}_{lang_code}'
+                source_text = getattr(self, field, "")
 
-        # ✅ 遍历所有需要翻译的字段（新增循环）
-        for field in translatable_fields:
-            translated_field = f'{field}_{lang_code}'  # 动态生成字段名（如 description_zh_hans）
-            source_text = getattr(self, field)  # 获取原始字段值（如英文 product_name 或 description）
+                existing_value = getattr(self, translated_field, None)
 
-            existing_value = getattr(self, translated_field, None)
+                if not existing_value or existing_value == source_text:
+                    translator = GoogleTranslator(source='auto', target=dest)
+                    translated_text = translator.translate(source_text)
+                    setattr(self, translated_field, translated_text)
+                    updated = True
 
-            if not existing_value or existing_value == source_text:
-                translator = GoogleTranslator(source='auto', target=dest)
-                translated_text = translator.translate(source_text)
-                setattr(self, translated_field, translated_text)
-                updated = True
-
-      if updated:
+        # ✅ Ensure stock quantity updates even if no translation changes
         super().save(*args, **kwargs)
-        self.refresh_from_db()
-        print("✅ 翻译已更新")
-      else:
-        print("⚠️ 没有发现更新，不执行保存")
+
+        if updated:
+            self.refresh_from_db()
+            print("✅ Translation updated")
+        else:
+            print("⚠️ No translation changes")
+
 
 class ProductPhoto(models.Model):
     photo_id = models.AutoField(primary_key=True)

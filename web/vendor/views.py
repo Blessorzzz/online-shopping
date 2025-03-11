@@ -77,15 +77,30 @@ def edit_product(request, product_id):
 
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES, instance=product)
+
+        # Debugging: Check if stock_quantity is being received in POST data
+        print("Stock Quantity in POST data:", request.POST.get("stock_quantity"))
+
         if form.is_valid():
             product = form.save()
+
+            # Debugging: Check if stock_quantity is saved correctly
+            print("Saved product stock_quantity:", product.stock_quantity)
+
             for file in request.FILES.getlist('additional_images'):
                 ProductPhoto.objects.create(product=product, photo=file)
+
             return redirect('vendor_dashboard')
+        else:
+            # Debugging: Print form errors if the form is not valid
+            print("Form errors:", form.errors)
+            print("Form cleaned data:", form.cleaned_data)  # Check what data is being processed
+
     else:
         form = ProductForm(instance=product)
 
     return render(request, 'vendor/edit_product.html', {'form': form, 'product': product})
+
 
 @login_required
 def delete_product_photo(request, photo_id):
@@ -120,9 +135,10 @@ def vendor_order_detail(request, order_id):
         allowed_transitions = {
             'tangible': {
                 'pending': ['shipped', 'cancelled', 'hold'],
-                'shipped': ['cancelled', 'hold'],
+                'shipped': ['cancelled', 'hold', 'delivered'],
                 'cancelled': [],
-                'hold': ['shipped', 'cancelled']
+                'hold': ['shipped', 'cancelled'],
+                'delivered': []
             },
             'virtual': {
                 'pending': ['ticket-issued', 'complete', 'refunded'],
@@ -143,7 +159,8 @@ def vendor_order_detail(request, order_id):
                 'hold': 'hold_date',
                 'ticket-issued': 'ticket_issue_date',
                 'complete': 'complete_date',
-                'refunded': 'refund_date'
+                'refunded': 'refund_date',
+                'delivered': 'delivered_date',
             }
             
             if new_status in status_date_map:
@@ -164,7 +181,8 @@ def vendor_order_detail(request, order_id):
         'hold': order.hold_date,
         'ticket-issued': order.ticket_issue_date,
         'complete': order.complete_date,
-        'refunded': order.refund_date
+        'refunded': order.refund_date,
+        'delivered': order.delivered_date,
     }
 
     sorted_status_dates = sorted(

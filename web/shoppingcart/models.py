@@ -20,6 +20,7 @@ class Order(models.Model):
         ('shipped', 'Shipped'),
         ('cancelled', 'Cancelled'),
         ('hold', 'Hold'),
+        ('delivered', 'Delivered')
     ]
 
     STATUS_CHOICES_VIRTUAL = [
@@ -42,6 +43,7 @@ class Order(models.Model):
     hold_date = models.DateTimeField(null=True, blank=True)
     complete_date = models.DateTimeField(null=True, blank=True)
     pending_date = models.DateTimeField(null=True, blank=True)
+    delivered_date = models.DateTimeField(null=True, blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='orders', null=True, blank=True)
 
     def save(self, *args, **kwargs):
@@ -71,7 +73,8 @@ class Order(models.Model):
                     'hold': 'hold_date',
                     'ticket-issued': 'ticket_issue_date',
                     'complete': 'complete_date',
-                    'refunded': 'refund_date'
+                    'refunded': 'refund_date',
+                    'delivered': 'delivered_date',
                 }
                 date_field = status_date_map.get(current_status)
                 if date_field:
