@@ -4,6 +4,7 @@ from django.views.generic import ListView, DetailView, UpdateView
 from django.db.models import Q
 from .models import Product
 from shoppingcart.models import ShoppingCart  # 引用购物车模型
+from review.models import Review
 
 # 首页视图，显示商品列表
 class HomePageView(ListView):
@@ -30,6 +31,11 @@ class ProductDetailView(DetailView):
     model = Product
     template_name = 'product_detail.html'
     context_object_name = 'product'
+
+def product_detail(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    reviews = Review.objects.filter(product=product, is_approved=True).order_by("-created_at") # Fetch only approved reviews
+    return render(request, "ecommerce/product_detail.html", {"product": product, "reviews": reviews})
 
 # 购物车页面视图
 class CartView(ListView):

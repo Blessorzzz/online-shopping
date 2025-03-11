@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
 from ecommerce.models import Product  # 引用 Product 模型
@@ -41,6 +42,7 @@ class Order(models.Model):
     hold_date = models.DateTimeField(null=True, blank=True)
     complete_date = models.DateTimeField(null=True, blank=True)
     pending_date = models.DateTimeField(null=True, blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='orders', null=True, blank=True)
 
     def save(self, *args, **kwargs):
         # Save the order first to get the primary key

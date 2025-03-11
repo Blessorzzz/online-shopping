@@ -1,4 +1,3 @@
-
 """
 Django settings for web project.
 
@@ -46,6 +45,7 @@ INSTALLED_APPS = [
     "user",
     "shoppingcart",
     "vendor",
+    'review',
 ]
 
 MIDDLEWARE = [
@@ -88,10 +88,6 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
-        # 'USER':'root',
-        # 'PASSWORD':'123456',
-        # 'HOST':'127.0.0.1',
-        # 'PORT':'3307',
     }
 }
 
@@ -129,7 +125,6 @@ LANGUAGES = [
     ('zh-hans', _('Simplified Chinese')),  # ✅ 确保 Django 识别 `zh-hans`
 ]
 
-
 LANGUAGE_COOKIE_NAME = 'django_language'  
 LANGUAGE_COOKIE_AGE = 86400
 
@@ -140,17 +135,27 @@ LOCALE_PATHS = [
 TIME_ZONE = "Asia/Shanghai"
 USE_TZ = True  # 启用时区支持
 
-
 USE_I18N = True
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
-
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / "static"]
+
+# 让 Django 识别项目中的静态文件目录
+STATICFILES_DIRS = [
+    BASE_DIR / "static",  # 确保项目中的 static 目录可以被 Django 识别
+]
+
+# 让 Django 知道收集静态文件的最终存放目录
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# 默认上传文件的存储路径
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

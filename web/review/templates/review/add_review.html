@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Add a Review for {{ product.name }}</h2>
+    
+    <div class="card p-4 shadow-sm">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label class="form-label">Rating (1-5):</label>
+                {{ form.rating }}
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Comment:</label>
+                {{ form.comment }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Upload Image:</label>
+                {{ form.image }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Upload Video:</label>
+                {{ form.video }}
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Submit Review</button>
+        </form>
+    </div>
+</div>
+
+<style>
+    .container {
+        max-width: 600px;
+    }
+    .card {
+        border-radius: 10px;
+        padding: 20px;
+    }
+</style>
+{% endblock %}

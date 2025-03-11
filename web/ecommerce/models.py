@@ -28,6 +28,7 @@ class Product(models.Model):
     min_age = models.PositiveIntegerField(default=0, help_text=_("Minimum age suitable for the product"))
     max_age = models.PositiveIntegerField(default=0, help_text=_("Maximum age suitable for the product"))
     product_type = models.CharField(max_length=10, choices=PRODUCT_TYPE_CHOICES, default='tangible', verbose_name=_("Product Type"))
+    name = models.CharField(max_length=255, default="", verbose_name=_("Product Name"))
 
     def __str__(self):
         return self.product_name
