@@ -99,6 +99,7 @@
                 <th>{% trans "Total Amount" %}</th>
                 <th>{% trans "Status" %}</th>
                 <th>{% trans "Actions" %}</th>
+                <th>{% trans "Reviews" %}</th>
             </tr>
         </thead>
         <tbody>
@@ -131,6 +132,11 @@
                         {% csrf_token %}
                         <button type="submit" class="btn btn-danger">{% trans "Cancel" %}</button>
                     </form>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if order.status == "complete" or order.status == "refunded" %}
+                        <a href="{% url 'add_review' order.id %}" class="btn btn-primary">Add a Review</a>
                     {% endif %}
                 </td>
             </tr>

@@ -87,4 +87,22 @@
     }
 </script>
 
+<div>
+    <h3>Customer Reviews</h3>
+
+    {% if reviews %}
+        <ul>
+            {% for review in reviews %}
+                <li>
+                    <strong>{{ review.user.username }}</strong> rated this 
+                    <strong>{{ review.rating }}/5</strong>
+                    <p>{{ review.comment }}</p>
+                    <small>Reviewed on {{ review.created_at|date:"Y-m-d H:i" }}</small>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No reviews yet. Be the first to review this product!</p>
+    {% endif %}
+</div>
 {% endblock %}
