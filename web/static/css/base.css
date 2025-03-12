@@ -257,7 +257,7 @@ button:hover {
 
 #menu ul a {
     text-decoration: none; /* Remove default link underline */
-    color: #ebebeb; /* Set the text color of the links */
+    color: #454242; /* Set the text color of the links */
     height: 36px;
     padding: 8px 16px; /* Add padding inside the links */
     transition: background-color 0.3s ease; /* Add a transition effect to the background color */
