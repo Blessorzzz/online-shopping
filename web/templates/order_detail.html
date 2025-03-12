@@ -85,7 +85,7 @@
     <a href="{% url 'order_list' %}" class="back-button">{% trans "Back to Orders" %}</a>
 </div>
 
-<style>
+{% comment %} <style>
     .timeline {
         position: relative;
         padding: 20px 0;
@@ -151,6 +151,6 @@
         text-align: center;
         padding: 20px;
     }
-</style>
+</style> {% endcomment %}
 
 {% endblock %}

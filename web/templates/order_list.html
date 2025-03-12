@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Orders</title>
     <link rel="stylesheet" href="{% static 'css/order_list.css' %}">
-    <style>
+    {% comment %} <style>
         .popup-message {
             position: fixed;
             top: 20px;
@@ -39,7 +39,7 @@
             justify-content: center;
             margin-bottom: 20px;
             padding: 10px;
-            background-color: #007bff;
+            background-color:var();
             border-radius: 5px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             flex-wrap: wrap; /* Ensure elements wrap if they don't fit in one line */
@@ -70,7 +70,7 @@
         .filter-form button:hover {
             background-color: #003d80;
         }
-    </style>
+    </style> {% endcomment %}
 </head>
 <body>
 

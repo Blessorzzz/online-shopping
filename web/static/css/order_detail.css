@@ -1,4 +1,4 @@
-/* 订单详情页面样式 */
+/* 
 .order-container {
     max-width: 800px;
     margin: 20px auto;
@@ -14,7 +14,7 @@ h2, h3 {
     color: #333;
 }
 
-/* 订单信息部分 */
+
 .order-info p {
     font-size: 16px;
     margin: 10px 0;
@@ -23,14 +23,14 @@ h2, h3 {
     border-radius: 5px;
 }
 
-/* 订单总金额样式 */
+
 .total-amount {
     font-size: 18px;
     font-weight: bold;
     color: #007bff;
 }
 
-/* 状态标签 */
+
 .status {
     font-weight: bold;
     padding: 4px 10px;
@@ -49,7 +49,7 @@ h2, h3 {
     color: #dc3545;
 }
 
-/* 订单表格 */
+
 .order-table {
     width: 100%;
     border-collapse: collapse;
@@ -57,9 +57,13 @@ h2, h3 {
     font-size: 14px;
     text-align: center;
 }
+table.order-table thead {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
 
 .order-table th {
-    background: #007bff;
+    background: var(--bg-color);
     color: white;
     padding: 12px;
 }
@@ -68,23 +72,24 @@ h2, h3 {
     padding: 12px;
     border-bottom: 1px solid #ddd;
 }
-
-.order-table tr:nth-child(even) {
-    background-color: #f9f9f9;
+.order-table tbody tr {
+    background-color: var(--bg-color);
+    color: var(--text-color);
 }
 
-.order-table tr:hover {
-    background-color: #f1f1f1;
+.order-table tbody tr:hover {
+    background-color: var(--hover-bg);
+    color: var(--hover-text);
 }
 
-/* 返回订单按钮 */
+
 .back-button {
     display: block;
     width: 200px;
     margin: 20px auto;
     text-align: center;
     padding: 10px 15px;
-    background-color: #007bff;
+    background-color: var(--bg-color);
     color: white;
     font-size: 16px;
     border-radius: 5px;
@@ -93,5 +98,5 @@ h2, h3 {
 }
 
 .back-button:hover {
-    background-color: #0056b3;
-}
+    background-color: var(--hover-bg);
+} */
