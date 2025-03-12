@@ -1,5 +1,6 @@
 /* General styles */
 body {
+    cursor:auto; 
     font-family: Arial, Helvetica, sans-serif; /* Set the font family for the entire page */
     font-size: 1rem; /* Set the base font size */
     
@@ -1123,3 +1124,44 @@ button:hover, a:hover, .product-card:hover, form.nav-right button:hover {
     border-color: var(--border-color) !important;
 }
 
+/* 十字线样式：跟随鼠标的辅助定位 */
+.crosshair {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%); /* 中心对齐鼠标位置 */
+}
+
+.crosshair::before,
+.crosshair::after {
+    content: "";
+    position: absolute;
+    background-color: orange; /* 高对比度颜色 */
+}
+
+.crosshair::before {
+    width: 2px; /* 垂直线 */
+    height: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.crosshair::after {
+    width: 100%; /* 水平线 */
+    height: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+body.large-cursor {
+    cursor: url('../img/pointer.svg'), auto;
+}
+
+/* 确保子元素继承光标样式 */
+body.large-cursor * {
+    cursor: inherit !important;
+}

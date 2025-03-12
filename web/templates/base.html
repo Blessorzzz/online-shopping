@@ -61,11 +61,11 @@
         <button onclick="decreaseZoom()" title="{% trans 'Zoom Out' %}">
             <span>➖</span><small>{% trans 'Zoom Out' %}</small>
         </button>
-        <button onclick="toggleCursorMode()" title="{% trans 'Cursor Mode' %}">
-            <span>🖱️</span><small>{% trans 'Cursor Mode' %}</small>
+        <button onclick="toggleCursorMode()" title="{% trans 'Cursor Mode' %}" aria-label="{% trans 'Toggle Cursor Mode' %}" aria-pressed="false">
+            <span aria-hidden="true">🖱️</span><small>{% trans 'Cursor Mode' %}</small>
         </button>
-        <button onclick="toggleCrosshair()" title="{% trans 'Crosshair Mode' %}">
-            <span>🎯</span><small>{% trans 'Crosshair Mode' %}</small>
+        <button onclick="toggleCrosshair()" title="{% trans 'Crosshair Mode' %}" aria-label="{% trans 'Toggle Crosshair Mode' %}" aria-pressed="false">
+            <span aria-hidden="true">🎯</span><small>{% trans 'Crosshair Mode' %}</small>
         </button>
         <button onclick="toggleLargeCaptions()" title="{% trans 'Large Captions' %}">
             <span>🔠</span><small>{% trans 'Large Captions' %}</small>
@@ -137,7 +137,7 @@
         {% endif %}
     </div>
 
-    <script src="{% static 'js/font-size.js' %}"></script>
+
     <script src="{% static 'js/accessibility.js' %}"></script>
 </body>
 </html>
