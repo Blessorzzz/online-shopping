@@ -2,11 +2,11 @@
 :root {
     --bg-color: #F9F6F7;
     --text-color: #3E3E3E;
-    --button-bg: #9B5151;
+    --button-bg: #b57676;
     --button-text: #FFFFFF;
     --border-color: #D9BFBF;
-    --link-color: #9B5151;
-    --hover-bg: #7A3E3E;
+    --link-color: #180d0d;
+    --hover-bg: #a75b5b;
     --hover-text: #FFFFFF;
 }
 body {
@@ -1464,7 +1464,7 @@ table.order-table thead {
     text-align: center;
     padding: 10px 15px;
     background-color: var(--bg-color);
-    color: white;
+    color: rgb(71, 70, 70);
     font-size: 16px;
     border-radius: 5px;
     text-decoration: none;
