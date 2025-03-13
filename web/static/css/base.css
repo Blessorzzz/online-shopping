@@ -1143,6 +1143,17 @@ button:hover, a:hover, .product-card:hover, form.nav-right button:hover {
     font-weight: bold; /* 🔥 加粗让文字更明显 */
 }
 
+/* 新增：多行字幕样式 */
+#large-caption.multiline {
+    white-space: normal !important;       /* 允许换行 */
+    text-overflow: unset !important;       /* 取消省略号 */
+    overflow-y: auto !important;           /* 出现滚动条显示多余内容 */
+    height: auto !important;               /* 高度自适应 */
+    line-height: 1.2 !important;           /* 调整行高 */
+    max-height: 200px !important;          /* 设置最大高度，防止过高 */
+}
+
+
 
 
 

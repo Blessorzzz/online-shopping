@@ -56,21 +56,23 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // 如果不希望页面加载时自动显示大字幕，请注释掉下面这段代码
-    
-    // 仅当固定模式开启时，才恢复大字幕状态
+    // 针对固定模式下大字幕状态的恢复
     if (stickyActive) {
         const largeCaptionSetting = localStorage.getItem("largeCaptionEnabled");
         if (largeCaptionSetting === "true") {
             largeCaptionEnabled = true;
             const captionBox = document.getElementById("large-caption");
             captionBox.style.display = "block";
-            contentWrapper.style.paddingBottom = "120px";
+            // 检测是否为登录页（通过判断 .login-box 是否存在）
+            const isLoginPage = document.querySelector('.login-box') !== null;
+            if (!isLoginPage) {
+                contentWrapper.style.paddingBottom = "120px";
+            } else {
+                contentWrapper.style.paddingBottom = "0";
+            }
             document.addEventListener("mouseover", updateCaption);
         }
     }
-
-    
 });
 
 // ---------------------- 缩放功能 ----------------------
@@ -160,19 +162,15 @@ function applyColorScheme(theme) {
 };
 
 function resetColorScheme() {
-    // 删除 data-theme 属性
     delete document.body.dataset.theme;
     localStorage.removeItem('accessibilityTheme');
     currentTheme = null;
-    // 恢复 body 默认样式
     document.body.style.cssText = 'display: block;';
-    // 移除通过 JS 设置的 CSS 变量，恢复 CSS 文件中定义的默认值
     document.documentElement.style.removeProperty('--bg-color');
     document.documentElement.style.removeProperty('--text-color');
     document.documentElement.style.removeProperty('--button-bg');
     document.documentElement.style.removeProperty('--button-text');
     document.documentElement.style.removeProperty('--border-color');
-    // 清除相关元素的内联样式，确保默认样式生效
     document.querySelectorAll("button, #menu, form.nav-right button, .product-card").forEach(el => {
         el.style.backgroundColor = "";
         el.style.color = "";
@@ -180,7 +178,6 @@ function resetColorScheme() {
     });
 }
 
-// 初始化加载时应用保存的主题
 document.addEventListener("DOMContentLoaded", function() {
     const savedTheme = localStorage.getItem('accessibilityTheme');
     if (savedTheme) {
@@ -193,12 +190,10 @@ function toggleStickyMode() {
     const stickyActive = localStorage.getItem("stickyMode") === "true";
     const stickyBtn = document.querySelector("#accessibility-toolbar button[onclick='toggleStickyMode()']");
     if (!stickyActive) {
-        // 启用固定模式：保存当前状态
         localStorage.setItem("stickyMode", "true");
         localStorage.setItem("savedZoomLevel", zoomLevel);
         if (stickyBtn) stickyBtn.classList.add("active");
     } else {
-        // 关闭固定模式：清除保存状态
         localStorage.removeItem("stickyMode");
         localStorage.removeItem("savedZoomLevel");
         if (stickyBtn) stickyBtn.classList.remove("active");
@@ -219,11 +214,10 @@ function resetAccessibility() {
 
     // 2) 恢复“工具栏已开启”时的布局，让菜单避免被遮挡
     const toolbar = document.getElementById("accessibility-toolbar");
-    toolbar.style.display = "flex"; // 工具栏保持显示
+    toolbar.style.display = "flex";
 
     const menu = document.getElementById("menu");
     const contentWrapper = document.getElementById("content-wrapper");
-    // 菜单下移到与 toolbar 不重叠的位置
     menu.style.position = "fixed";
     menu.style.top = "103px";
     menu.style.height = "80px";
@@ -231,10 +225,9 @@ function resetAccessibility() {
     menu.style.zIndex = "10000";
     contentWrapper.style.paddingTop = "160px";
 
-    // 移除 body 顶部额外边距（避免页面整体上移过多）
     document.body.style.marginTop = "";
-
-    // 3) 关闭“大字幕”功能，重置颜色主题（同时清除相关内联样式）
+    
+    // 3) 关闭“大字幕”功能，重置颜色主题
     const captionBox = document.getElementById("large-caption");
     captionBox.style.display = "none";
     document.removeEventListener("mouseover", updateCaption);
@@ -256,29 +249,20 @@ function resetAccessibility() {
 // ---------------------- 关闭工具栏功能（退出服务） ----------------------
 function closeToolbar() {
     console.log("🔒 Closing accessibility toolbar...");
-    // 1) 先重置所有无障碍设置
     resetAccessibility();
-
-    // 2) 隐藏工具栏，恢复“Web Accessibility”入口按钮
     const toolbar = document.getElementById("accessibility-toolbar");
     const accessibilityBtn = document.getElementById("accessibility-btn");
     toolbar.style.display = "none";
     accessibilityBtn.style.display = "block";
-
-    // 3) 让菜单回到默认（与 toolbar 不再并存）
     const menu = document.getElementById("menu");
     const contentWrapper = document.getElementById("content-wrapper");
     menu.style.top = "0";
     menu.style.position = "fixed";
     menu.style.display = "flex";
     menu.style.zIndex = "10000";
-    // 可以视需要增加/去除 body 顶部边距
     document.body.style.marginTop = "10px";
     contentWrapper.style.paddingTop = "40px";
-
-    // 4) 滚动到顶部
     window.scrollTo({ top: 0, behavior: "smooth" });
-
     console.log("✅ Accessibility toolbar closed!");
 }
 
@@ -287,13 +271,17 @@ let largeCaptionEnabled = false;
 
 function toggleLargeCaptions() {
     largeCaptionEnabled = !largeCaptionEnabled;
-    // 将大字幕状态存入 localStorage，便于跨页面保存
     localStorage.setItem("largeCaptionEnabled", largeCaptionEnabled);
     const captionBox = document.getElementById("large-caption");
     const contentWrapper = document.getElementById("content-wrapper");
+    const isLoginPage = document.querySelector('.login-box') !== null;
     if (largeCaptionEnabled) {
         captionBox.style.display = "block";
-        contentWrapper.style.paddingBottom = "120px";
+        if (!isLoginPage) {
+            contentWrapper.style.paddingBottom = "120px";
+        } else {
+            contentWrapper.style.paddingBottom = "0";
+        }
         captionBox.innerText = "";
         document.addEventListener("mouseover", updateCaption);
     } else {
@@ -317,7 +305,25 @@ function updateCaption(event) {
     const isInvisible = targetElement.offsetWidth === 0 || targetElement.offsetHeight === 0;
     if (!text || isStructuralTag || isInvisible) {
         captionBox.innerText = "";
+        captionBox.classList.remove("multiline");
         return;
+    }
+    // 如果文本较长，启用多行显示；这里阈值可根据实际情况调整
+    if (text.length > 100) {
+        captionBox.classList.add("multiline");
+        // 清除之前设置的内联样式，确保 .multiline 样式生效
+        captionBox.style.whiteSpace = "";
+        captionBox.style.height = "";
+        captionBox.style.lineHeight = "";
+        captionBox.style.overflowY = "";
+    } else {
+        captionBox.classList.remove("multiline");
+        // 单行模式下设置内联样式
+        captionBox.style.whiteSpace = "nowrap";
+        captionBox.style.height = "100px";
+        captionBox.style.lineHeight = "90px";
+        captionBox.style.overflowY = "hidden";
     }
     captionBox.innerText = text;
 }
+
