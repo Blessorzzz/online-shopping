@@ -7,52 +7,64 @@
     <h2 class="text-center mb-4">{% trans "My Reviews" %}</h2>
     
     <div class="card p-4 shadow-sm">
-        <table class="review-table">
-            <thead>
-                <tr>
-                    <th>{% trans "Product" %}</th>
-                    <th>{% trans "Rating" %}</th>
-                    <th>{% trans "Comment" %}</th>
-                    <th>{% trans "Verified Purchase" %}</th>
-                    <th>{% trans "Status" %}</th>
-                    <th>{% trans "Created At" %}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for review in reviews %}
+        {% if reviews %}
+            <table class="review-table">
+                <thead>
                     <tr>
-                        <td>{{ review.product.product_name }}</td>
-                        <td>
-                            <span class="star-rating">
-                                {% for i in "12345" %}
-                                    {% if review.rating >= i|add:"0.5" %}
-                                        ★
-                                    {% elif review.rating >= i|add:"0" %}
-                                        ☆
-                                    {% endif %}
-                                {% endfor %}
-                            </span>
-                        </td>
-                        <td>{{ review.comment }}</td>
-                        <td>
-                            {% if review.is_verified_purchase %}
-                                <span class="verified-badge">✔ Verified Purchase</span>
-                            {% endif %}
-                        </td>
-                        <td>
-                            <span class="status-label {% if review.is_approved %}status-approved{% else %}status-pending{% endif %}">
-                                {% if review.is_approved %}
-                                    {% trans "Approved" %}
-                                {% else %}
-                                    {% trans "Pending" %}
-                                {% endif %}
-                            </span>
-                        </td>
-                        <td>{{ review.created_at|date:"Y-m-d H:i" }}</td>
+                        <th>{% trans "Product" %}</th>
+                        <th>{% trans "Rating" %}</th>
+                        <th>{% trans "Comment" %}</th>
+                        <th>{% trans "Verified Purchase" %}</th>
+                        <th>{% trans "Status" %}</th>
+                        <th>{% trans "Created At" %}</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% for review in reviews %}
+                        <tr>
+                            <td>
+                                {% if review.product %}
+                                    {{ review.product.product_name }}
+                                {% else %}
+                                    {% trans "Product not available" %}
+                                {% endif %}
+                            </td>
+                            <td>
+                                <span class="star-rating">
+                                    {% for i in "12345" %}
+                                        {% if review.rating >= i|add:"0.5" %}
+                                            ★
+                                        {% elif review.rating >= i|add:"0" %}
+                                            ☆
+                                        {% endif %}
+                                    {% endfor %}
+                                </span>
+                            </td>
+                            <td>{{ review.comment }}</td>
+                            <td>
+                                {% if review.verified_purchase %}
+                                    <span class="verified-badge">✔ Verified Purchase</span>
+                                {% else %}
+                                    <span class="verified-badge">✘ Not Verified</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <span class="status-label {% if review.is_approved %}status-approved{% else %}status-pending{% endif %}">
+                                    {% if review.is_approved %}
+                                        {% trans "Approved" %}
+                                    {% else %}
+                                        {% trans "Pending" %}
+                                    {% endif %}
+                                </span>
+                            </td>
+                            <td>{{ review.created_at|date:"Y-m-d H:i" }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="text-center">{% trans "You have no reviews yet." %}</p>
+        {% endif %}
     </div>
 </div>
 

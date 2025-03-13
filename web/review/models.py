@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from ecommerce.models import Product
 from shoppingcart.models import Order
-from django.conf import settings
 from decimal import Decimal
 
 class Review(models.Model):
@@ -20,5 +19,5 @@ class Review(models.Model):
         return f"Review by {self.user.username} for {self.product.product_name}"
 
     def is_verified_purchase(self):
-        """Check if the review is from a verified purchase"""
-        return self.order.status in ['Completed', 'Delivered', 'Refunded']
+        """Return whether the review is a verified purchase based on the order status."""
+        return self.order.status in ['complete', 'refunded', 'delivered']

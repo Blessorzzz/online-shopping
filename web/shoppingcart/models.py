@@ -80,6 +80,11 @@ class Order(models.Model):
     def can_be_reviewed(self):
         return self.status in ['complete', 'refunded', 'delivered']
 
+    @property
+    def verified_purchase(self):
+        """Return True if the order is eligible for verified purchase."""
+        return self.status in ['complete', 'refunded', 'delivered']
+
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
