@@ -57,16 +57,20 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // 如果不希望页面加载时自动显示大字幕，请注释掉下面这段代码
-    /*
-    const largeCaptionSetting = localStorage.getItem("largeCaptionEnabled");
-    if (largeCaptionSetting === "true") {
-        largeCaptionEnabled = true;
-        const captionBox = document.getElementById("large-caption");
-        captionBox.style.display = "block";
-        contentWrapper.style.paddingBottom = "120px";
-        document.addEventListener("mouseover", updateCaption);
+    
+    // 仅当固定模式开启时，才恢复大字幕状态
+    if (stickyActive) {
+        const largeCaptionSetting = localStorage.getItem("largeCaptionEnabled");
+        if (largeCaptionSetting === "true") {
+            largeCaptionEnabled = true;
+            const captionBox = document.getElementById("large-caption");
+            captionBox.style.display = "block";
+            contentWrapper.style.paddingBottom = "120px";
+            document.addEventListener("mouseover", updateCaption);
+        }
     }
-    */
+
+    
 });
 
 // ---------------------- 缩放功能 ----------------------
