@@ -1,5 +1,16 @@
 /* General styles */
+:root {
+    --bg-color: #F9F6F7;
+    --text-color: #3E3E3E;
+    --button-bg: #b57676;
+    --button-text: #FFFFFF;
+    --border-color: #D9BFBF;
+    --link-color: #180d0d;
+    --hover-bg: #a75b5b;
+    --hover-text: #FFFFFF;
+}
 body {
+    cursor:auto; 
     font-family: Arial, Helvetica, sans-serif; /* Set the font family for the entire page */
     font-size: 1rem; /* Set the base font size */
     
@@ -11,6 +22,92 @@ body {
     transform-origin: top left; /* 确保缩放从顶部开始 */
     width: auto;
     min-width: 100vw;
+    background-color: var(--bg-color, #ffffff);
+}
+
+/* Table general styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table th, table td {
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    text-align: left;
+}
+
+/* Table row hover styles */
+table tr:hover {
+    background-color: var(--hover-bg);
+    color: var(--hover-text);
+}
+
+/* Shopping cart table styles */
+.content-wrapper table {
+    margin-top: 20px;
+}
+
+.content-wrapper table th, .content-wrapper table td {
+    padding: 10px;
+    border: 1px solid var(--border-color);
+}
+
+.content-wrapper table thead {
+    background-color: var(--table-header-bg);
+    color: var(--table-header-text);
+}
+
+.content-wrapper table tr:hover {
+    background-color: var(--hover-bg);
+    color: var(--hover-text);
+}
+
+/* Order table styles */
+.order-table {
+    margin-top: 20px;
+}
+
+.order-table th {
+    background-color: var(--table-header-bg);
+    color: var(--table-header-text);
+}
+
+.order-table tbody tr {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.order-table tbody tr:hover {
+    background-color: var(--hover-bg);
+    color: var(--hover-text);
+}
+
+/* Status label styles */
+.status-label {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    background-color: var(--status-bg);
+    color: var(--status-text);
+}
+
+/* Order container styles */
+.order-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 20px auto;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+/* Timeline content styles */
+.timeline-content {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    padding: 10px;
+    border: 1px solid var(--border-color);
 }
 
 
@@ -110,8 +207,6 @@ button:hover {
         color: var(--text-color) !important;
     }
     #menu {
-    
-    
     background-color: var(--border-color) !important; /* Change hover to ensure visibility */
     color: var(--button-bg) !important;
      /* Set the background color of the navigation menu */
@@ -160,7 +255,7 @@ button:hover {
 
 #menu ul a {
     text-decoration: none; /* Remove default link underline */
-    color: #ebebeb; /* Set the text color of the links */
+    color: #454242; /* Set the text color of the links */
     height: 36px;
     padding: 8px 16px; /* Add padding inside the links */
     transition: background-color 0.3s ease; /* Add a transition effect to the background color */
@@ -864,39 +959,7 @@ button:disabled {
 }
 
 
-/* ======== 无障碍主题样式 ======== */
 
-/* 高对比度模式 */
-[data-theme="high-contrast"] {
-    --bg-color: #000000;
-    --text-color: #FFFF00;
-    --button-bg: #000000;
-    --button-text: #FFFF00;
-    --border-color: #FFD700;
-}
-
-/* Protanopia（红色盲友好模式） */
-[data-theme="protanopia"] {
-    --bg-color: #F0F0F0;
-    --text-color: var(--text-color) !important; /* ensure high contrast for text */
-    --button-bg: #336699;
-    --button-text: #FFFFFF;
-    --border-color: #336699;
-}
-
-/* Tritanopia（蓝色盲友好模式） */
-[data-theme="tritanopia"] {
-    --bg-color: #F0F0F0;
-    --text-color: #333333;
-    --button-bg: #993366;
-    --button-text: #FFFFFF;
-    --border-color: #993366;
-}
-
-/* 灰度模式 */
-[data-theme="grayscale"] {
-    filter: grayscale(100%);
-}
 
 /* 使用变量应用到全局 */
 body {
@@ -924,38 +987,52 @@ a:hover {
     color: var(--border-color);
 }
 
-
+/* [data-theme] {
+    --bg-color: #ffffff;
+    --text-color: #000000;
+    --button-bg: #007bff;
+    --button-text: #ffffff;
+    --border-color: #000000;
+    --hover-bg: #f0f0f0;
+    --hover-text: #000000;
+    --table-header-bg: #007bff;
+    --table-header-text: #ffffff;
+    --status-bg: #f0f0f0;
+    --status-text: #000000;
+} */
 /* ======== 无障碍主题优化 ======== */
 
 /* 高对比度模式（黑底黄字） */
-[data-theme="high-contrast"] {
+[data-theme="high contrast"] {
     --bg-color: #000000;
     --text-color: #FFFF00;
     --button-bg: #000000;
     --button-text: #FFFF00;
     --border-color: #FFD700;
-    --link-color: #FFD700;
-    --hover-bg: #FFFF00;
-    --hover-text: #000000;
+    --hover-bg: #333333;
+    --hover-text: #FFFF00;
+    --table-header-bg: #000000;
+    --table-header-text: #FFFF00;
+    --status-bg: #333333;
+    --status-text: #FFFF00;
 }
 
-/* Protanopia（红色盲）模式 */
+/* Protanopia（红色盲）& Deuteranopia 模式 */
 [data-theme="protanopia"] {
     --bg-color: #EAEAEA;
-    --text-color: var(--text-color) !important; /* ensure high contrast for text */
-    
+    --text-color: #000; /* ensure high contrast for text */
     --button-bg: #0057B8;
     --button-text: #FFFFFF;
     --border-color: #003F88;
     --link-color: #0057B8;
-    --hover-bg: #003F88;
-    --hover-text: #FFFFFF;
+    --hover-bg: #d8e0e8;
+    --hover-text: #242443;
 }
 
 /* Deuteranopia（绿色盲）模式 */
-[data-theme="deuteranopia"] {
+/* [data-theme="deuteranopia"] {
     --bg-color: #F5F5F5;
-    --text-color: var(--text-color) !important; /* ensure high contrast for text */
+    --text-color: #000; 
     
     --button-bg: #3366CC;
     --button-text: #FFFFFF;
@@ -963,12 +1040,12 @@ a:hover {
     --link-color: #3366CC;
     --hover-bg: #224499;
     --hover-text: #FFFFFF;
-}
+} */
 
 /* Tritanopia（蓝色盲）模式 */
 [data-theme="tritanopia"] {
     --bg-color: #FAFAFA;
-    --text-color: var(--text-color) !important; /* ensure high contrast for text */
+    --text-color: #000; /* ensure high contrast for text */
     
     --button-bg: #AA5500;
     --button-text: #FFFFFF;
@@ -978,16 +1055,9 @@ a:hover {
     --hover-text: #FFFFFF;
 }
 
-/* 灰度模式（全黑白） */
+/* 灰度模式 */
 [data-theme="grayscale"] {
-    --bg-color: #E0E0E0;
-    --text-color: #111111;
-    --button-bg: #777777;
-    --button-text: #FFFFFF;
-    --border-color: #555555;
-    --link-color: #777777;
-    --hover-bg: #555555;
-    --hover-text: #FFFFFF;
+    filter: grayscale(100%);
 }
 
 /* 应用无障碍颜色变量 */
@@ -1096,17 +1166,6 @@ button:hover, a:hover, .product-card:hover, form.nav-right button:hover {
 }
 
 /* ======== 让导航栏和主页背景颜色统一 ======== */
-[data-theme="high-contrast"] #menu, 
-
-    /* Ensure price-section and specs background is also black in high contrast mode */
-    [data-theme="high-contrast"] .price-section,
-    [data-theme="high-contrast"] .specs {
-        background-color: var(--bg-color) !important; /* Use black background */
-    }
-    [data-theme="high-contrast"] body {
-    
-    background-color: var(--bg-color) !important; /* 让整个页面背景色一致 */
-}
 
 /* ======== 确保菜单和搜索按钮的背景随主题变化 ======== */
 [data-theme] #menu, 
@@ -1123,3 +1182,391 @@ button:hover, a:hover, .product-card:hover, form.nav-right button:hover {
     border-color: var(--border-color) !important;
 }
 
+/* 十字线样式：跟随鼠标的辅助定位 */
+.crosshair {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%); /* 中心对齐鼠标位置 */
+}
+
+.crosshair::before,
+.crosshair::after {
+    content: "";
+    position: absolute;
+    background-color: orange; /* 高对比度颜色 */
+}
+
+.crosshair::before {
+    width: 2px; /* 垂直线 */
+    height: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.crosshair::after {
+    width: 100%; /* 水平线 */
+    height: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: orange;
+}
+
+body.large-cursor {
+    cursor: url('../img/pointer.svg'), auto;
+}
+
+/* 确保子元素继承光标样式 */
+body.large-cursor * {
+    cursor: inherit !important;
+}
+
+.popup-message {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #f44336;
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    display: none;
+}
+.popup-message.success {
+    background-color: #4CAF50;
+}
+.popup-message.error {
+    background-color: #f44336;
+}
+.popup-message .message {
+    margin: 0;
+    padding: 0;
+}
+.filter-form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color:var(--bg-color);
+    border-radius: 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    flex-wrap: wrap; /* Ensure elements wrap if they don't fit in one line */
+}
+.filter-form label {
+    color: var(--text-color);
+    margin-right: 10px;
+    font-weight: bold;
+    white-space: nowrap; /* Prevent label from wrapping */
+}
+.filter-form select {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+}
+.filter-form button {
+    padding: 5px 10px;
+    background-color: var(--bg-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+    width: auto; /* Ensure the button width adjusts to the content */
+    white-space: nowrap; /* Prevent the text from wrapping */
+}
+.filter-form button:hover {
+    background-color: var(--hover-bg);
+}
+
+
+.order-table {
+    width: 100%;
+    border-collapse: collapse;  
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    text-align: center;  
+    border: 1px solid #ddd; 
+}
+
+.order-table th {
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ddd;  
+}
+
+
+.order-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.order-table tr:hover {
+    background-color: #e3f2fd;  
+    cursor: pointer; 
+}
+
+
+.order-table td {
+    padding: 12px;
+    border: 1px solid #ddd;  
+    text-align: center;
+}
+
+
+.status-label {
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.status-pending {
+    color: #ff9800;
+    background-color: #fff3cd;
+}
+
+.status-shipped {
+    color: #28a745;
+    background-color: #d4edda;
+}
+
+.status-cancelled {
+    color: #dc3545;
+    background-color: #f8d7da;
+}
+
+.status-hold {
+    color: #ffc107;
+    background-color: #fff3cd;
+}
+
+.status-ticket {
+    color: #17a2b8;
+    background-color: #d1ecf1;
+}
+
+.status-complete {
+    color: #28a745;
+    background-color: #d4edda;
+}
+
+.status-refunded {
+    color: #6c757d;
+    background-color: #e2e3e5;}
+#large-caption {
+    position: fixed;
+    bottom: 10px;  /* 保持距离底部 10px */
+    left: 50%;
+    transform: translateX(-50%); /* 居中 */
+    width: 90%;  /* 宽度保持 90% */
+    height: 100px; /* 🔥 增加高度 */
+    background-color: rgba(0, 0, 0, 0.9);
+    color: white;
+    text-align: center;
+    font-size: 48px; /* 🔥 字体变大 */
+    padding: 10px;
+    display: none; /* 默认隐藏 */
+    z-index: 9999;
+    line-height: 90px; /* 🔥 让文字垂直居中 */
+    border-radius: 10px; /* 圆角 */
+    overflow: hidden; /* 防止文字溢出 */
+    white-space: nowrap; /* 让文本不换行 */
+    text-overflow: ellipsis; /* 过长时显示省略号 */
+    font-weight: bold; /* 🔥 加粗让文字更明显 */
+}
+
+/* 新增：多行字幕样式 */
+#large-caption.multiline {
+    white-space: normal !important;       /* 允许换行 */
+    text-overflow: unset !important;       /* 取消省略号 */
+    overflow-y: auto !important;           /* 出现滚动条显示多余内容 */
+    height: auto !important;               /* 高度自适应 */
+    line-height: 1.2 !important;           /* 调整行高 */
+    max-height: 200px !important;          /* 设置最大高度，防止过高 */
+}
+
+
+
+.order-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+}
+
+h2, h3 {
+    text-align: center;
+    color: var(--text-color);
+    background-color: var(--button-bg);
+}
+
+
+.order-info p {
+    font-size: 16px;
+    margin: 10px 0;
+    padding: 5px;
+    background: #f9f9f9;
+    border-radius: 5px;
+}
+
+
+.total-amount {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--button-bg);
+}
+
+
+.status {
+    font-weight: bold;
+    padding: 4px 10px;
+    border-radius: 5px;
+}
+
+.status.pending {
+    color: #ffc107;
+}
+
+.status.shipped {
+    color: #28a745;
+}
+
+.status.cancelled {
+    color: #dc3545;
+}
+
+
+.order-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-size: 14px;
+    text-align: center;
+}
+table.order-table thead {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.order-table th {
+    background: var(--bg-color);
+    color: var(--text-color);
+    padding: 12px;
+}
+
+.order-table td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+.order-table tbody tr {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.order-table tbody tr:hover {
+    background-color: var(--hover-bg);
+    color: var(--hover-text);
+}
+
+
+.back-button {
+    display: block;
+    width: 200px;
+    margin: 20px auto;
+    text-align: center;
+    padding: 10px 15px;
+    background-color: var(--bg-color);
+    color: rgb(71, 70, 70);
+    font-size: 16px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.back-button:hover {
+    background-color: var(--hover-bg);
+}
+
+
+
+.timeline {
+    position: relative;
+    padding: 20px 0;
+    margin-left: 30px;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background:var(--button-bg);
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 30px;
+    padding-left: 40px;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid var(--border-color);
+    z-index: 1;
+}
+
+.timeline-content {
+    position: relative;
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+    border: 1px solid #dee2e6;
+    transition: transform 0.2s;
+}
+
+.status-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.status-label {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.status-date {
+    color: #7f8c8d;
+    font-size: 0.9em;
+}
+
+.no-history {
+    color: #95a5a6;
+    text-align: center;
+    padding: 20px;
+}
