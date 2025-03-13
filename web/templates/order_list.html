@@ -77,7 +77,7 @@
                     {% endif %}
                 </td>
                 <td>
-                    {% if order.status == "complete" or order.status == "refunded" %}
+                    {% if order.status == "complete" or order.status == "refunded" or order.status == "delivered" %}
                         <a href="{% url 'add_review' order.id %}" class="btn btn-primary">Add a Review</a>
                     {% endif %}
                 </td>

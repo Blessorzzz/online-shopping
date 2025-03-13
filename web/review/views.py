@@ -20,18 +20,8 @@ def add_review(request, order_id):
     if request.method == "POST":
         form = ReviewForm(request.POST, request.FILES)
         if form.is_valid():
-            product_id = request.POST.get("product")
-            try:
-                product_uuid = uuid.UUID(product_id)
-            except ValueError:
-                messages.error(request, "Invalid product selection.")
-                return redirect("add_review", order_id=order.id)
-
-            product = get_object_or_404(Product, product_id=product_uuid)
-            if product not in [item.product for item in products]:
-                messages.error(request, "Invalid product selection.")
-                return redirect("add_review", order_id=order.id)
-
+            product = products[0].product  # Assuming you're dealing with one product in the order
+            
             review = form.save(commit=False)
             review.user = request.user
             review.product = product

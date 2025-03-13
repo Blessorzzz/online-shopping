@@ -13,6 +13,7 @@
                     <th>{% trans "Product" %}</th>
                     <th>{% trans "Rating" %}</th>
                     <th>{% trans "Comment" %}</th>
+                    <th>{% trans "Verified Purchase" %}</th>
                     <th>{% trans "Status" %}</th>
                     <th>{% trans "Created At" %}</th>
                 </tr>
@@ -21,8 +22,23 @@
                 {% for review in reviews %}
                     <tr>
                         <td>{{ review.product.product_name }}</td>
-                        <td>{{ review.rating }}</td>
+                        <td>
+                            <span class="star-rating">
+                                {% for i in "12345" %}
+                                    {% if review.rating >= i|add:"0.5" %}
+                                        ★
+                                    {% elif review.rating >= i|add:"0" %}
+                                        ☆
+                                    {% endif %}
+                                {% endfor %}
+                            </span>
+                        </td>
                         <td>{{ review.comment }}</td>
+                        <td>
+                            {% if review.is_verified_purchase %}
+                                <span class="verified-badge">✔ Verified Purchase</span>
+                            {% endif %}
+                        </td>
                         <td>
                             <span class="status-label {% if review.is_approved %}status-approved{% else %}status-pending{% endif %}">
                                 {% if review.is_approved %}
@@ -48,7 +64,7 @@
         border-radius: 10px;
         padding: 20px;
     }
-    /* Review table overall style */
+
     .review-table {
         width: 100%;
         border-collapse: collapse;  /* Ensure borders are collapsed */
@@ -62,33 +78,39 @@
         border: 1px solid #ddd;  /* Ensure there is a border */
     }
 
-    /* Table header style */
     .review-table th {
         background-color: #007bff;
         color: white;
         padding: 12px;
         text-align: center;
-        border: 1px solid #ddd;  /* Ensure header has a border */
+        border: 1px solid #ddd;
     }
 
-    /* Table row style */
     .review-table tr:nth-child(even) {
         background-color: #f9f9f9;
     }
 
     .review-table tr:hover {
-        background-color: #e3f2fd;  /* Highlight on hover */
-        cursor: pointer;  /* Change cursor to pointer */
+        background-color: #e3f2fd;
+        cursor: pointer;
     }
 
-    /* Cell style */
     .review-table td {
         padding: 12px;
-        border: 1px solid #ddd;  /* Ensure each cell has a border */
+        border: 1px solid #ddd;
         text-align: center;
     }
 
-    /* Review status colors */
+    .verified-badge {
+        color: #28a745;
+        font-weight: bold;
+    }
+
+    .star-rating {
+        color: gold;
+        font-size: 1.2rem;
+    }
+
     .status-label {
         font-weight: bold;
         padding: 5px 10px;
@@ -105,10 +127,6 @@
         color: #ffc107;
         background-color: #fff3cd;
     }
-
-    .status-rejected {
-        color: #dc3545;
-        background-color: #f8d7da;
-    }
 </style>
+
 {% endblock %}

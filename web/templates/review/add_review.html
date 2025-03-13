@@ -10,18 +10,17 @@
             {% csrf_token %}
             
             <div class="mb-3">
-                <label class="form-label">{% trans "Select Product:" %}</label>
-                <select name="product" class="form-control">
+                <label class="form-label">{% trans "Product:" %}</label>
                     {% for item in products %}
                         <option value="{{ item.product.product_id }}">{{ item.product.product_name }}</option>
                     {% endfor %}
-                </select>
             </div>
             
             <div class="mb-3">
                 <label class="form-label">{% trans "Rating (1-5):" %}</label>
-                {{ form.rating }}
+                <input type="number" step="0.1" name="rating" min="1" max="5" class="form-control" value="{{ form.rating.value|default:1 }}">
             </div>
+            
             
             <div class="mb-3">
                 <label class="form-label">{% trans "Comment:" %}</label>
@@ -51,5 +50,43 @@
         border-radius: 10px;
         padding: 20px;
     }
+    .star-rating {
+        direction: rtl;
+        font-size: 2rem;
+        color: #ddd;
+        cursor: pointer;
+    }
+
+    .star {
+        display: inline-block;
+        transition: color 0.3s;
+    }
+
+    .star:hover,
+    .star.selected {
+        color: gold;
+    }
 </style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const stars = document.querySelectorAll(".star");
+        const ratingInput = document.getElementById("rating");
+
+        stars.forEach(star => {
+            star.addEventListener("mouseover", function () {
+                let value = this.getAttribute("data-value");
+                stars.forEach(s => s.style.color = (s.getAttribute("data-value") <= value) ? "gold" : "#ddd");
+            });
+
+            star.addEventListener("click", function () {
+                let value = this.getAttribute("data-value");
+                ratingInput.value = value;
+                stars.forEach(s => s.classList.remove("selected"));
+                this.classList.add("selected");
+            });
+        });
+    });
+</script>
+
 {% endblock %}
