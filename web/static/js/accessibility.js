@@ -292,6 +292,7 @@ function toggleCursorMode() {
         body.classList.add('large-cursor');
     }
     isLargeCursorActive = !isLargeCursorActive;
+}
 // ---------------------- 关闭工具栏功能（退出服务） ----------------------
 function closeToolbar() {
     console.log("🔒 Closing accessibility toolbar...");
@@ -371,7 +372,7 @@ function updateCaption(event) {
         captionBox.style.overflowY = "hidden";
     }
     captionBox.innerText = text;
-}
+
 
     // 更新 ARIA 属性以提高可访问性
     const button = document.querySelector('button[onclick="toggleCursorMode()"]');
