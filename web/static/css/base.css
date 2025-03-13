@@ -1213,7 +1213,7 @@ button:hover, a:hover, .product-card:hover, form.nav-right button:hover {
     height: 2px;
     top: 50%;
     transform: translateY(-50%);
-    background-color: var(--border-color);
+    background-color: orange;
 }
 
 body.large-cursor {
