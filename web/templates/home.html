@@ -1,4 +1,3 @@
-<!-- filepath: /c:/Users/Josh/ISI/django_projects/online-shopping/web/templates/home.html -->
 {% extends 'base.html' %}
 {% load i18n %}
 {% block content %}
@@ -30,6 +29,25 @@
                 <span class="stock-status {% if product.stock_quantity == 0 %}out-stock{% endif %}">
                     {{ product.stock_quantity|default:"0" }} Left
                 </span>
+            </div>
+
+            <div class="average-rating">
+                {% if product.average_rating %}
+                    <span class="rating">
+                        {% for i in "12345" %}
+                            {% if forloop.counter <= product.average_rating %}
+                                <i class="fas fa-star"></i> <!-- Full star -->
+                            {% elif forloop.counter == product.average_rating|add:0.5 %}
+                                <i class="fas fa-star-half-alt"></i> <!-- Half star -->
+                            {% else %}
+                                <i class="far fa-star"></i> <!-- Empty star -->
+                            {% endif %}
+                        {% endfor %}
+                    </span>
+                    <span class="average-rating-text">({{ product.average_rating|floatformat:1 }} / 5)</span>
+                {% else %}
+                    <span class="no-rating">{% trans "No reviews yet" %}</span>
+                {% endif %}
             </div>
         </div>
     </div>

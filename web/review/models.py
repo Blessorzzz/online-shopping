@@ -6,7 +6,7 @@ from decimal import Decimal
 
 class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')  # Add related_name here
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     rating = models.DecimalField(max_digits=3, decimal_places=1)
     comment = models.TextField()
@@ -21,3 +21,4 @@ class Review(models.Model):
     def is_verified_purchase(self):
         """Return whether the review is a verified purchase based on the order status."""
         return self.order.status in ['complete', 'refunded', 'delivered']
+

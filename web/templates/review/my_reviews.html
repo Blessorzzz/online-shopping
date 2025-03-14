@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load static %}
 {% load i18n %}
 
 {% block content %}
@@ -14,7 +13,6 @@
                         <th>{% trans "Product" %}</th>
                         <th>{% trans "Rating" %}</th>
                         <th>{% trans "Comment" %}</th>
-                        <th>{% trans "Verified Purchase" %}</th>
                         <th>{% trans "Status" %}</th>
                         <th>{% trans "Created At" %}</th>
                     </tr>
@@ -30,24 +28,9 @@
                                 {% endif %}
                             </td>
                             <td>
-                                <span class="star-rating">
-                                    {% for i in "12345" %}
-                                        {% if review.rating >= i|add:"0.5" %}
-                                            ★
-                                        {% elif review.rating >= i|add:"0" %}
-                                            ☆
-                                        {% endif %}
-                                    {% endfor %}
-                                </span>
+                                <span class="star-rating" data-rating="{{ review.rating }}"></span>
                             </td>
                             <td>{{ review.comment }}</td>
-                            <td>
-                                {% if review.verified_purchase %}
-                                    <span class="verified-badge">✔ Verified Purchase</span>
-                                {% else %}
-                                    <span class="verified-badge">✘ Not Verified</span>
-                                {% endif %}
-                            </td>
                             <td>
                                 <span class="status-label {% if review.is_approved %}status-approved{% else %}status-pending{% endif %}">
                                     {% if review.is_approved %}
@@ -68,6 +51,38 @@
     </div>
 </div>
 
+<!-- JavaScript to handle star rendering -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll('.star-rating').forEach(function (element) {
+        let rating = parseFloat(element.getAttribute('data-rating'));
+        let fullStars = Math.floor(rating); // Count of full stars
+        let halfStar = rating % 1 >= 0.5;  // Check if there is a half star
+        let starHtml = '';
+
+        // Add full stars
+        for (let i = 0; i < fullStars; i++) {
+            starHtml += '<i class="fas fa-star custom-star"></i>';
+        }
+
+        // Add half star if needed
+        if (halfStar) {
+            starHtml += '<i class="fas fa-star-half-alt custom-star"></i>';
+        }
+
+        // Add empty stars to complete 5 stars
+        while (starHtml.split('fa-star').length - 1 < 5) {
+            starHtml += '<i class="far fa-star custom-star"></i>';
+        }
+
+        element.innerHTML = starHtml;
+    });
+});
+</script>
+
+<!-- Include FontAwesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
 <style>
     .container-fluid {
         max-width: 100%;
@@ -79,15 +94,15 @@
 
     .review-table {
         width: 100%;
-        border-collapse: collapse;  /* Ensure borders are collapsed */
+        border-collapse: collapse;
         margin-top: 20px;
         font-family: Arial, sans-serif;
         font-size: 14px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         border-radius: 10px;
         overflow: hidden;
-        text-align: center;  /* Center table content */
-        border: 1px solid #ddd;  /* Ensure there is a border */
+        text-align: center;
+        border: 1px solid #ddd;
     }
 
     .review-table th {
@@ -113,14 +128,13 @@
         text-align: center;
     }
 
-    .verified-badge {
-        color: #28a745;
-        font-weight: bold;
+    .star-rating {
+        font-size: 1.5rem;
     }
 
-    .star-rating {
-        color: gold;
-        font-size: 1.2rem;
+    /* Custom star color */
+    .custom-star {
+        color: #FFD700; /* Lighter Gold color */
     }
 
     .status-label {

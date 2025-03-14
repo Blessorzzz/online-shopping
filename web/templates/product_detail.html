@@ -54,7 +54,6 @@
                         {% endif %}
                     </span>
                 </div>
-                
             </div>
 
             <div class="action-buttons">
@@ -85,6 +84,39 @@
         });
         element.parentElement.classList.add('active');
     }
+
+    // Star Rating Render
+    function renderStars(rating) {
+        let fullStars = Math.floor(rating);
+        let halfStar = rating % 1 >= 0.5;
+        let starHtml = '';
+
+        // Add full stars
+        for (let i = 0; i < fullStars; i++) {
+            starHtml += '<i class="fas fa-star custom-star"></i>';
+        }
+
+        // Add half star if needed
+        if (halfStar) {
+            starHtml += '<i class="fas fa-star-half-alt custom-star"></i>';
+        }
+
+        // Add empty stars to complete 5 stars
+        while (starHtml.split('fa-star').length - 1 < 5) {
+            starHtml += '<i class="far fa-star custom-star"></i>';
+        }
+
+        return starHtml;
+    }
+
+    // Dynamically render stars for each review
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.star-rating').forEach(function(element) {
+            const rating = parseFloat(element.getAttribute('data-rating'));
+            console.log("Rating Value:", rating);  // Debugging line
+            element.innerHTML = renderStars(rating);
+        });
+    });
 </script>
 
 <!-- Customer Reviews Section -->
@@ -96,7 +128,7 @@
             {% for review in reviews %}
                 <li class="review-item">
                     <strong>{{ review.user.username }}</strong> rated this 
-                    <strong>{{ review.rating }}/5</strong>
+                    <span class="star-rating" data-rating="{{ review.rating }}"></span>
                     <p>{{ review.comment }}</p>
                     {% if review.image %}
                         <img src="{{ review.image.url }}" alt="Review Image" style="max-width: 200px; max-height: 200px;">
@@ -235,5 +267,13 @@
     .review-item small {
         color: #888;
     }
+    .star-rating {
+        font-size: 1.2rem;
+        color: #FFD700; /* Lighter Gold color */
+    }
+    .custom-star {
+        margin-right: 3px;
+    }
 </style>
 {% endblock %}
+    

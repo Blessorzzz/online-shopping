@@ -4,7 +4,7 @@ from ecommerce.models import Product, ProductPhoto
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['product_name', 'price', 'description', 'thumbnail_image', 'stock_quantity', 'min_age', 'max_age']
+        fields = ['product_name', 'price', 'description', 'thumbnail_image', 'stock_quantity', 'min_age', 'max_age', 'product_type']  # Include product_type
 
     def clean(self):
         cleaned_data = super().clean()

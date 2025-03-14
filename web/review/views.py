@@ -27,13 +27,8 @@ def add_review(request, order_id):
             review.product = product
             review.order = order  # Set the order field
             review.save()
-
             messages.success(request, "Review submitted successfully!")
-            print(f"Review for {review.product.product_name} has been created successfully.")
             return redirect("my_reviews")
-        else:
-            print("Form is not valid, errors: ", form.errors)  # Debugging: print form errors
-            messages.error(request, "There was an error submitting your review.")
     else:
         form = ReviewForm()
 
@@ -42,12 +37,4 @@ def add_review(request, order_id):
 @login_required
 def my_reviews(request):
     reviews = Review.objects.filter(user=request.user).order_by("-created_at")
-    
-    # Debugging: print reviews to the console or logs
-    print(f"Reviews for user {request.user.username}: {reviews}")
-    
-    # Check if there are no reviews
-    if not reviews:
-        messages.info(request, "You have not written any reviews yet.")
-    
     return render(request, "review/my_reviews.html", {"reviews": reviews})
