@@ -29,6 +29,8 @@ def add_review(request, order_id):
             review.save()
             messages.success(request, "Review submitted successfully!")
             return redirect("my_reviews")
+        else:
+            messages.error(request, "Your review contains inappropriate language. Please edit and try again.")
     else:
         form = ReviewForm()
 

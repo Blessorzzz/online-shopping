@@ -92,29 +92,44 @@
     <h3>{% trans "Customer Reviews" %}</h3>
 
     {% if reviews %}
-        <ul class="reviews-list">
+        <div class="reviews-container">
             {% for review in reviews %}
-                <li class="review-item">
-                    <strong>{{ review.user.username }}</strong> rated this 
-                    <strong>{{ review.rating }}/5</strong>
-                    <p>{{ review.comment }}</p>
+                <div class="review-card">
+                    <div class="review-header">
+                        <strong class="review-user">{{ review.user.username }}</strong>
+                        <div class="review-rating">
+                            {% for i in "12345" %}
+                                {% if forloop.counter <= review.rating %}
+                                    <span class="star filled">&#9733;</span>
+                                {% else %}
+                                    <span class="star">&#9733;</span>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <p class="review-comment">{{ review.comment }}</p>
+
                     {% if review.image %}
-                        <img src="{{ review.image.url }}" alt="Review Image" style="max-width: 200px; max-height: 200px;">
+                        <img src="{{ review.image.url }}" alt="Review Image" class="review-media">
                     {% endif %}
+
                     {% if review.video %}
-                        <video controls style="max-width: 200px; max-height: 200px;">
+                        <video controls class="review-media">
                             <source src="{{ review.video.url }}" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
                     {% endif %}
-                    <small>{% trans "Reviewed on" %} {{ review.created_at|date:"Y-m-d H:i" }}</small>
-                </li>
+
+                    <small class="review-date">{% trans "Reviewed on" %} {{ review.created_at|date:"Y-m-d H:i" }}</small>
+                </div>
             {% endfor %}
-        </ul>
+        </div>
     {% else %}
-        <p>{% trans "No reviews yet. Be the first to review this product!" %}</p>
+        <p class="no-reviews">{% trans "No reviews yet. Be the first to review this product!" %}</p>
     {% endif %}
 </div>
+
 
 <style>
     .product-detail-container {
@@ -213,27 +228,79 @@
     }
     .reviews-section {
         margin-top: 40px;
+        padding: 25px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
     }
-    .reviews-list {
-        list-style-type: none;
-        padding: 0;
+
+    .reviews-section h3 {
+        font-size: 24px;
+        margin-bottom: 20px;
+        color: #333;
+        text-align: center;
     }
-    .review-item {
-        border-bottom: 1px solid #ddd;
-        padding: 10px 0;
+
+    .reviews-container {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
     }
-    .review-item strong {
+
+    .review-card {
+        background: white;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .review-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .review-user {
         font-weight: bold;
+        color: #007bff;
     }
-    .review-item p {
-        margin: 5px 0;
+
+    .review-rating {
+        display: flex;
     }
-    .review-item img, .review-item video {
+
+    .star {
+        font-size: 18px;
+        color: #ddd;
+    }
+
+    .star.filled {
+        color: gold;
+    }
+
+    .review-comment {
+        color: #555;
+        margin: 10px 0;
+    }
+
+    .review-media {
         display: block;
+        max-width: 100%;
+        max-height: 250px;
+        border-radius: 5px;
         margin-top: 10px;
     }
-    .review-item small {
+
+    .review-date {
+        display: block;
+        margin-top: 10px;
         color: #888;
+        font-size: 0.9rem;
+    }
+
+    .no-reviews {
+        text-align: center;
+        color: #777;
     }
 </style>
 {% endblock %}

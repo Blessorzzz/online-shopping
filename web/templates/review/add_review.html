@@ -2,67 +2,145 @@
 {% load i18n %}
 
 {% block content %}
-<div class="container mt-5">
-    <h2 class="text-center mb-4">{% trans "Add a Review for Your Order" %}</h2>
-    
-    <div class="card p-4 shadow-sm">
+<div class="review-container">
+    <div class="review-card">
+        <h2>{% trans "Add a Review" %}</h2>
+
+        {% if messages %}
+        <div class="message-box">
+            {% for message in messages %}
+            <p class="message {% if message.tags == 'error' %}error{% else %}success{% endif %}">
+                {{ message }}
+            </p>
+            {% endfor %}
+        </div>
+        {% endif %}
+
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            
-            <div class="mb-3">
-                <label class="form-label">{% trans "Product:" %}</label>
+
+            <div class="form-group">
+                <label>{% trans "Product:" %}</label>
+                <select name="product" class="input-field">
                     {% for item in products %}
                         <option value="{{ item.product.product_id }}">{{ item.product.product_name }}</option>
                     {% endfor %}
+                </select>
             </div>
-            
-            <div class="mb-3">
-                <label class="form-label">{% trans "Rating (1-5):" %}</label>
-                <input type="number" step="0.1" name="rating" min="1" max="5" class="form-control" value="{{ form.rating.value|default:1 }}">
+
+            <div class="form-group">
+                <label>{% trans "Rating:" %}</label>
+                <div class="star-rating">
+                    <span class="star" data-value="1">&#9733;</span>
+                    <span class="star" data-value="2">&#9733;</span>
+                    <span class="star" data-value="3">&#9733;</span>
+                    <span class="star" data-value="4">&#9733;</span>
+                    <span class="star" data-value="5">&#9733;</span>
+                </div>
+                <input type="hidden" name="rating" id="rating" value="5">
             </div>
-            
-            
-            <div class="mb-3">
-                <label class="form-label">{% trans "Comment:" %}</label>
+
+            <div class="form-group">
+                <label>{% trans "Comment:" %}</label>
                 {{ form.comment }}
             </div>
 
-            <div class="mb-3">
-                <label class="form-label">{% trans "Upload Image:" %}</label>
+            <div class="form-group">
+                <label>{% trans "Upload Image:" %}</label>
                 {{ form.image }}
             </div>
 
-            <div class="mb-3">
-                <label class="form-label">{% trans "Upload Video:" %}</label>
+            <div class="form-group">
+                <label>{% trans "Upload Video:" %}</label>
                 {{ form.video }}
             </div>
 
-            <button type="submit" class="btn btn-primary w-100">{% trans "Submit Review" %}</button>
+            <button type="submit" class="submit-btn">{% trans "Submit Review" %}</button>
         </form>
     </div>
 </div>
 
 <style>
-    .container {
-        max-width: 600px;
+    /* General Container */
+    .review-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f8f9fa;
     }
-    .card {
-        border-radius: 10px;
-        padding: 20px;
+
+    .review-card {
+        background: #fff;
+        padding: 25px;
+        width: 400px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
     }
+
+    h2 {
+        color: #333;
+        margin-bottom: 20px;
+        font-size: 1.8rem;
+    }
+
+    /* Message Box */
+    .message-box {
+        margin-bottom: 15px;
+    }
+
+    .message {
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 0.9rem;
+    }
+
+    .error {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+
+    .success {
+        background-color: #d4edda;
+        color: #155724;
+    }
+
+    /* Form Fields */
+    .form-group {
+        text-align: left;
+        margin-bottom: 15px;
+    }
+
+    label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+        color: #555;
+    }
+
+    .input-field {
+        width: 100%;
+        padding: 8px;
+        border-radius: 6px;
+        border: 1px solid #ddd;
+        font-size: 1rem;
+    }
+
+    /* Star Rating */
     .star-rating {
-        direction: rtl;
+        display: flex;
+        justify-content: center;
         font-size: 2rem;
-        color: #ddd;
-        cursor: pointer;
+        margin-bottom: 10px;
     }
 
     .star {
-        display: inline-block;
+        color: #bbb;
+        padding: 5px;
         transition: color 0.3s;
     }
 
-    .star:hover,
     .star.selected {
         color: gold;
     }
@@ -74,16 +152,18 @@
         const ratingInput = document.getElementById("rating");
 
         stars.forEach(star => {
-            star.addEventListener("mouseover", function () {
-                let value = this.getAttribute("data-value");
-                stars.forEach(s => s.style.color = (s.getAttribute("data-value") <= value) ? "gold" : "#ddd");
-            });
-
             star.addEventListener("click", function () {
                 let value = this.getAttribute("data-value");
                 ratingInput.value = value;
-                stars.forEach(s => s.classList.remove("selected"));
-                this.classList.add("selected");
+                
+                // Highlight all stars up to the clicked one
+                stars.forEach(s => {
+                    if (s.getAttribute("data-value") <= value) {
+                        s.classList.add("selected");
+                    } else {
+                        s.classList.remove("selected");
+                    }
+                });
             });
         });
     });
