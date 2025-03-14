@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+<div class="container-fluid mt-5">
+    <h2 class="text-center mb-4">{% trans "My Reviews" %}</h2>
+    
+    <div class="card p-4 shadow-sm">
+        <table class="review-table">
+            <thead>
+                <tr>
+                    <th>{% trans "Product" %}</th>
+                    <th>{% trans "Rating" %}</th>
+                    <th>{% trans "Comment" %}</th>
+                    <th>{% trans "Verified Purchase" %}</th>
+                    <th>{% trans "Status" %}</th>
+                    <th>{% trans "Created At" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for review in reviews %}
+                    <tr>
+                        <td>{{ review.product.product_name }}</td>
+                        <td>
+                            <span class="star-rating">
+                                {% for i in "12345" %}
+                                    {% if review.rating >= i|add:"0.5" %}
+                                        ★
+                                    {% elif review.rating >= i|add:"0" %}
+                                        ☆
+                                    {% endif %}
+                                {% endfor %}
+                            </span>
+                        </td>
+                        <td>{{ review.comment }}</td>
+                        <td>
+                            {% if review.is_verified_purchase %}
+                                <span class="verified-badge">✔ Verified Purchase</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <span class="status-label {% if review.is_approved %}status-approved{% else %}status-pending{% endif %}">
+                                {% if review.is_approved %}
+                                    {% trans "Approved" %}
+                                {% else %}
+                                    {% trans "Pending" %}
+                                {% endif %}
+                            </span>
+                        </td>
+                        <td>{{ review.created_at|date:"Y-m-d H:i" }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    .container-fluid {
+        max-width: 100%;
+    }
+    .card {
+        border-radius: 10px;
+        padding: 20px;
+    }
+
+    .review-table {
+        width: 100%;
+        border-collapse: collapse;  /* Ensure borders are collapsed */
+        margin-top: 20px;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        overflow: hidden;
+        text-align: center;  /* Center table content */
+        border: 1px solid #ddd;  /* Ensure there is a border */
+    }
+
+    .review-table th {
+        background-color: #007bff;
+        color: white;
+        padding: 12px;
+        text-align: center;
+        border: 1px solid #ddd;
+    }
+
+    .review-table tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .review-table tr:hover {
+        background-color: #e3f2fd;
+        cursor: pointer;
+    }
+
+    .review-table td {
+        padding: 12px;
+        border: 1px solid #ddd;
+        text-align: center;
+    }
+
+    .verified-badge {
+        color: #28a745;
+        font-weight: bold;
+    }
+
+    .star-rating {
+        color: gold;
+        font-size: 1.2rem;
+    }
+
+    .status-label {
+        font-weight: bold;
+        padding: 5px 10px;
+        border-radius: 5px;
+        display: inline-block;
+    }
+
+    .status-approved {
+        color: #28a745;
+        background-color: #d4edda;
+    }
+
+    .status-pending {
+        color: #ffc107;
+        background-color: #fff3cd;
+    }
+</style>
+
+{% endblock %}

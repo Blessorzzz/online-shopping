@@ -1,3 +1,4 @@
+<!-- filepath: c:\Users\Josh\ISI\django_projects\online-shopping\web\templates\order_detail.html -->
 {% extends "base.html" %}
 {% load static i18n %}
 {% block content %}
@@ -35,6 +36,8 @@
                 <span class="status-label status-complete">✅ Complete</span>
             {% elif order.status == 'refunded' %}
                 <span class="status-label status-refunded">💰 Refunded</span>
+            {% elif order.status == 'delivered' %}
+                <span class="status-label status-delivered">📬 Delivered</span>
             {% endif %}
         </p>
         

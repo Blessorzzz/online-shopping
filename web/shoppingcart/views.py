@@ -127,7 +127,8 @@ def order_detail(request, order_id):
         'hold': order.hold_date,
         'ticket-issued': order.ticket_issue_date,
         'complete': order.complete_date,
-        'refunded': order.refund_date
+        'refunded': order.refund_date,
+        'delivered': order.delivered_date,
     }
 
     sorted_status_dates = sorted(

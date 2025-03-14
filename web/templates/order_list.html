@@ -1,3 +1,4 @@
+<!-- filepath: c:\Users\Josh\ISI\django_projects\online-shopping\web\templates\order_list.html -->
 {% extends "base.html" %}
 {% block content %}
 
@@ -87,6 +88,7 @@
             <option value="ticket-issued" {% if request.GET.status == "ticket-issued" %}selected{% endif %}>{% trans "Ticket Issued" %}</option>
             <option value="complete" {% if request.GET.status == "complete" %}selected{% endif %}>{% trans "Complete" %}</option>
             <option value="refunded" {% if request.GET.status == "refunded" %}selected{% endif %}>{% trans "Refunded" %}</option>
+            <option value="delivered" {% if request.GET.status == "delivered" %}selected{% endif %}>{% trans "Delivered" %}</option>
         </select>
         <button type="submit">{% trans "Filter" %}</button>
     </form>
@@ -99,6 +101,7 @@
                 <th>{% trans "Total Amount" %}</th>
                 <th>{% trans "Status" %}</th>
                 <th>{% trans "Actions" %}</th>
+                <th>{% trans "Reviews" %}</th>
             </tr>
         </thead>
         <tbody>
@@ -122,6 +125,8 @@
                         <span class="status-label status-complete">✅ Complete</span>
                     {% elif order.status == 'refunded' %}
                         <span class="status-label status-refunded">💰 Refunded</span>
+                    {% elif order.status == 'delivered' %}
+                        <span class="status-label status-delivered">📬 Delivered</span>
                     {% endif %}
                 </td>
                 
@@ -131,6 +136,11 @@
                         {% csrf_token %}
                         <button type="submit" class="btn btn-danger">{% trans "Cancel" %}</button>
                     </form>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if order.status == "complete" or order.status == "refunded" or order.status == "delivered" %}
+                        <a href="{% url 'add_review' order.id %}" class="btn btn-primary">Add a Review</a>
                     {% endif %}
                 </td>
             </tr>
