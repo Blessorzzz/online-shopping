@@ -3,18 +3,18 @@
 
 {% block content %}
 <div class="product-detail-container">
-    <!-- 主内容区 -->
+    <!-- Main Content Area -->
     <div class="main-content">
-        <!-- 图片展示区 -->
+        <!-- Image Gallery Section -->
         <div class="gallery-section">
-            <!-- 主图 -->
+            <!-- Main Image -->
             <div class="main-gallery">
                 <img class="main-image" 
                      src="{{ product.thumbnail_image.url }}" 
                      alt="{{ product.product_name }}">
             </div>
             
-            <!-- 缩略图横向滚动 -->
+            <!-- Thumbnail Horizontal Scroll -->
             <div class="thumbnail-scroll">
                 <div class="thumbnail-list">
                     <div class="thumbnail-item active">
@@ -31,7 +31,7 @@
             </div>
         </div>
 
-        <!-- 商品信息区 -->
+        <!-- Product Information Section -->
         <div class="info-section">
             <h1 class="product-title">{{ product.product_name|default:product.product_name_en }}</h1>
             <div class="price-section">
@@ -46,10 +46,15 @@
                 </div>
                 <div class="spec-item">
                     <span class="spec-label">{% trans "Stock" %}:</span>
-                    <span class="spec-value {% if product.stock_quantity == 0 %}out-of-stock{% endif %}">
-                        {{ product.stock_quantity|default:"0" }} {% trans "Available" %}
+                    <span class="stock-status {% if product.stock_quantity == 0 %}out-of-stock{% else %}in-stock{% endif %}">
+                        {% if product.stock_quantity > 0 %}
+                            🟢 In Stock ({{ product.stock_quantity }} Available)
+                        {% else %}
+                            🔴 Out of Stock
+                        {% endif %}
                     </span>
                 </div>
+                
             </div>
 
             <div class="action-buttons">
@@ -63,13 +68,13 @@
         </div>
     </div>
 
-    <!-- 商品描述区 -->
+    <!-- Product Description Section -->
     <div class="description-section">
         <h3>{% trans "Product Details" %}</h3>
         <div class="description-content">
-            {{ product.description|default:product.description_en|linebreaksbr }}
+            <span title="{{ product.description|default:product.description_en }}">{{ product.description|default:product.description_en|linebreaksbr }}</span>
         </div>
-    </div>
+    </div>    
 </div>
 
 <script>
@@ -82,4 +87,153 @@
     }
 </script>
 
+<!-- Customer Reviews Section -->
+<div class="reviews-section">
+    <h3>{% trans "Customer Reviews" %}</h3>
+
+    {% if reviews %}
+        <ul class="reviews-list">
+            {% for review in reviews %}
+                <li class="review-item">
+                    <strong>{{ review.user.username }}</strong> rated this 
+                    <strong>{{ review.rating }}/5</strong>
+                    <p>{{ review.comment }}</p>
+                    {% if review.image %}
+                        <img src="{{ review.image.url }}" alt="Review Image" style="max-width: 200px; max-height: 200px;">
+                    {% endif %}
+                    {% if review.video %}
+                        <video controls style="max-width: 200px; max-height: 200px;">
+                            <source src="{{ review.video.url }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    {% endif %}
+                    <small>{% trans "Reviewed on" %} {{ review.created_at|date:"Y-m-d H:i" }}</small>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>{% trans "No reviews yet. Be the first to review this product!" %}</p>
+    {% endif %}
+</div>
+
+<style>
+    .product-detail-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    .main-content {
+        display: flex;
+        justify-content: space-between;
+    }
+    .gallery-section, .info-section {
+        width: 48%;
+    }
+    .main-gallery {
+        margin-bottom: 20px;
+    }
+    .main-image {
+        width: 100%;
+        border-radius: 10px;
+    }
+    .thumbnail-scroll {
+        display: flex;
+        overflow-x: auto;
+    }
+    .thumbnail-list {
+        display: flex;
+    }
+    .thumbnail-item {
+        margin-right: 10px;
+    }
+    .thumbnail-item img {
+        width: 100px;
+        height: 100px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .thumbnail-item.active img {
+        border: 2px solid #007bff;
+    }
+    .info-section {
+        padding: 20px;
+    }
+    .product-title {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+    .price-section {
+        margin-bottom: 20px;
+    }
+    .price-label {
+        font-weight: bold;
+    }
+    .price {
+        font-size: 24px;
+        color: #007bff;
+    }
+    .specs {
+        margin-bottom: 20px;
+    }
+    .spec-item {
+        margin-bottom: 10px;
+    }
+    .spec-label {
+        font-weight: bold;
+    }
+    .stock-status {
+        font-weight: bold;
+    }
+    .out-of-stock {
+        color: #dc3545;
+    }
+    .in-stock {
+        color: #28a745;
+    }
+    .action-buttons {
+        margin-top: 20px;
+    }
+    .buy-btn {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .buy-btn:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
+    .description-section {
+        margin-top: 40px;
+    }
+    .description-content {
+        white-space: pre-wrap;
+    }
+    .reviews-section {
+        margin-top: 40px;
+    }
+    .reviews-list {
+        list-style-type: none;
+        padding: 0;
+    }
+    .review-item {
+        border-bottom: 1px solid #ddd;
+        padding: 10px 0;
+    }
+    .review-item strong {
+        font-weight: bold;
+    }
+    .review-item p {
+        margin: 5px 0;
+    }
+    .review-item img, .review-item video {
+        display: block;
+        margin-top: 10px;
+    }
+    .review-item small {
+        color: #888;
+    }
+</style>
 {% endblock %}

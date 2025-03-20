@@ -1,12 +1,159 @@
 /* General styles */
+:root {
+    --bg-color: #F9F6F7;
+    --text-color: #3E3E3E;
+    --button-bg: #b57676;
+    --button-text: #FFFFFF;
+    --border-color: #D9BFBF;
+    --link-color: #180d0d;
+    --hover-bg: #a75b5b;
+    --hover-text: #FFFFFF;
+}
 body {
+    cursor:auto; 
     font-family: Arial, Helvetica, sans-serif; /* Set the font family for the entire page */
-    font-size: 16px; /* Set the base font size */
-    color: #333; /* Set the base text color */
+    font-size: 1rem; /* Set the base font size */
+    
+    color: var(--text-color) !important; /* ensure high contrast for text */
+     /* Set the base text color */
     margin: 0; /* Remove default margin */
     padding: 0; /* Remove default padding */
     box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
+    transform-origin: top left; /* 确保缩放从顶部开始 */
+    width: auto;
+    min-width: 100vw;
+    background-color: var(--bg-color, #ffffff);
 }
+
+/* Table general styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table th, table td {
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    text-align: left;
+}
+
+/* Table row hover styles */
+table tr:hover {
+    background-color: var(--hover-bg);
+    color: var(--hover-text);
+}
+
+/* Shopping cart table styles */
+.content-wrapper table {
+    margin-top: 20px;
+}
+
+.content-wrapper table th, .content-wrapper table td {
+    padding: 10px;
+    border: 1px solid var(--border-color);
+}
+
+.content-wrapper table thead {
+    background-color: var(--table-header-bg);
+    color: var(--table-header-text);
+}
+
+.content-wrapper table tr:hover {
+    background-color: var(--hover-bg);
+    color: var(--hover-text);
+}
+
+/* Order table styles */
+.order-table {
+    margin-top: 20px;
+}
+
+.order-table th {
+    background-color: var(--table-header-bg);
+    color: var(--table-header-text);
+}
+
+.order-table tbody tr {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.order-table tbody tr:hover {
+    background-color: var(--hover-bg);
+    color: var(--hover-text);
+}
+
+/* Status label styles */
+.status-label {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    background-color: var(--status-bg);
+    color: var(--status-text);
+}
+
+/* Order container styles */
+.order-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 20px auto;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+/* Timeline content styles */
+.timeline-content {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    padding: 10px;
+    border: 1px solid var(--border-color);
+}
+
+
+/* 让字体大小按钮排成一行 */
+.font-size-controls {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    flex-shrink: 0; /* 防止它因为导航栏挤压而消失 */
+}
+
+
+/* 让按钮更美观 */
+.font-size-controls button {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    background-color: white;
+    
+    color: var(--text-color) !important; /* ensure high contrast for text */
+    
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    min-width: 40px;
+}
+
+/* 鼠标悬停时 */
+.font-size-controls button:hover {
+    background-color: #f0f0f0;
+}
+
+/* 选中状态 */
+.font-size-controls button.active {
+    
+    background-color: var(--border-color) !important; /* Change hover to ensure visibility */
+    color: var(--button-bg) !important;
+    
+    color: white;
+    border-color: #0056b3;
+}
+
+/* 让 <select> 字体大小随着 body 一起变化 */
+select, option {
+    font-size: inherit !important;
+}
+
 
 *,
 *::before,
@@ -31,11 +178,12 @@ button {
     margin-bottom: 10px; /* Add margin below the input and button elements */
     border: 1px solid #ccc; /* Add a border to the input and button elements */
     border-radius: 5px; /* Round the corners of the input and button elements */
-    font-size: 14px; /* Set the font size of the input and button elements */
+    font-size: 0.875rem; /* 14px */
+    padding: 0.5rem 1rem;
 }
 
 button {
-    background-color: #4da6ff; /* Set the background color of the button */
+    background-color: #004c99; /* Set the background color of the button */
     color: white; /* Set the text color of the button */
     border: none; /* Remove the default border of the button */
     cursor: pointer; /* Change the cursor to a pointer when hovering over the button */
@@ -43,20 +191,37 @@ button {
 }
 
 button:hover {
-    background-color: #007bff; /* Change the background color when hovering over the button */
+    
+    background-color: var(--border-color) !important; /* Change hover to ensure visibility */
+    color: var(--button-bg) !important;
+     /* Change the background color when hovering over the button */
 }
 
 /* Navigation menu styles */
-#menu {
-    background-color: #007bff; /* Set the background color of the navigation menu */
+
+    #menu, /* unify background for menu */
+    .product-info, /* unify background for product info */
+    button, /* unify button background */
+    body { /* unify page background */
+        background-color: var(--bg-color) !important;
+        color: var(--text-color) !important;
+    }
+    #menu {
+    background-color: var(--border-color) !important; /* Change hover to ensure visibility */
+    color: var(--button-bg) !important;
+     /* Set the background color of the navigation menu */
     overflow: hidden; /* Prevent content from overflowing */
-    padding: 0; /* Remove default padding */
     margin: 0; /* Remove default margin */
     display: flex; /* Use flexbox for layout */
     justify-content: space-between; /* Distribute space between the items */
     align-items: center; /* Align items vertically in the center */
-    padding: 0px 20px; /* Add padding inside the navigation menu */
-    height:50px;
+    padding: 10px 20px; /* Add padding inside the navigation menu */
+    height:auto;
+    flex-wrap: nowrap;
+    width: 100%;
+    position: fixed;
+    top: 0px;
+    z-index: 1000;
 }
 
 #menu ul {
@@ -65,6 +230,8 @@ button:hover {
     padding: 0; /* Remove default padding */
     display: flex; /* Use flexbox for layout */
     align-items: center;
+    flex-wrap: nowrap; /* 允许换行 */
+    gap: 8px; /* 元素间距 */
 }
 
 #menu ul.nav-center {
@@ -88,7 +255,7 @@ button:hover {
 
 #menu ul a {
     text-decoration: none; /* Remove default link underline */
-    color: #f5f5f5; /* Set the text color of the links */
+    color: #454242; /* Set the text color of the links */
     height: 36px;
     padding: 8px 16px; /* Add padding inside the links */
     transition: background-color 0.3s ease; /* Add a transition effect to the background color */
@@ -96,7 +263,10 @@ button:hover {
 }
 
 #menu ul a:hover {
-    background-color: #0056b3; /* Change the background color when hovering over the links */
+    
+    background-color: var(--border-color) !important; /* Change hover to ensure visibility */
+    color: var(--button-bg) !important;
+     /* Change the background color when hovering over the links */
 }
 
 /* Search bar styles */
@@ -121,14 +291,17 @@ form.nav-right button {
     padding: 8px; 
     border-radius: 0 5px 5px 0; 
     border: 1px solid #ccc;
-    background-color: #4da6ff;
+    background-color: #004c99;
     color: white;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 form.nav-right button:hover {
-    background-color: #007bff;
+    
+    background-color: var(--border-color) !important; /* Change hover to ensure visibility */
+    color: var(--button-bg) !important;
+    
 }
 
 /* User section styles */
@@ -154,7 +327,10 @@ form.nav-right button:hover {
     height: 36px;
     align-items: center;
     display: flex;
-    background-color: #007bff; /* Set the background color of the button */
+    
+    background-color: var(--border-color) !important; /* Change hover to ensure visibility */
+    color: var(--button-bg) !important;
+     /* Set the background color of the button */
     border: none; /* Remove the default border of the button */
     color: white; /* Set the text color of the button */
     border-radius: 5px; /* Round the corners of the button */
@@ -162,7 +338,13 @@ form.nav-right button:hover {
 }
 
 .user button:hover {
-    background-color: #4da6ff; /* Change the background color when hovering over the button */
+    background-color: #004c99; /* Change the background color when hovering over the button */
+}
+
+.user.nav-right {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
 }
 
 /* Product list styles */
@@ -185,6 +367,7 @@ form.nav-right button:hover {
     transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add transition for hover effect */
     border-radius: 8px; 
     background-color: #fff;
+    transition: transform 0.3s ease-in-out; /* 平滑缩放效果 */
 }
 
 .product-item:hover {
@@ -205,10 +388,12 @@ form.nav-right button:hover {
 
 .product-image {
     width: 100%; /* Maximize the image size inside the box */
-    height: 200px; /* Maintain the aspect ratio of the image */
+    height: auto; /* Maintain the aspect ratio of the image */
     object-fit: cover; /* Ensure the entire image is visible without cropping */
     border-radius: 8px;
     background-color: #f9f9f9; /* Add a background color to fill the empty space */
+    max-height: 250px;
+    object-fit: contain; /* 确保完整显示 */
 }
 
 .product-info {
@@ -223,7 +408,9 @@ form.nav-right button:hover {
 .product-name-homepage {
     font-size: 14px; /* Revert font size for homepage */
     font-weight: normal; /* Revert font weight for homepage */
-    color: #333; /* Set the text color */
+    
+    color: var(--text-color) !important; /* ensure high contrast for text */
+     /* Set the text color */
     line-height: 1.5;
 }
 
@@ -240,7 +427,9 @@ form.nav-right button:hover {
 .product-name-detail {
     font-size: 22px; /* Font size for product detail page */
     font-weight: bold; /* Make the product name bold */
-    color: #333; /* Set the text color */
+    
+    color: var(--text-color) !important; /* ensure high contrast for text */
+     /* Set the text color */
     line-height: 1.5;
     overflow: visible; /* Ensure the text is fully visible */
     text-overflow: ellipsis;
@@ -248,7 +437,7 @@ form.nav-right button:hover {
 }
 
 .product-price {
-    color: #ff5000; /* Set the text color of the product price */
+    color: #c0392b; /* Set the text color of the product price */
     font-size: 22px; /* Increase the font size to match the status */
     font-weight: bold; /* Make the product price bold */
     margin-top:8px;
@@ -271,12 +460,12 @@ form.nav-right button:hover {
 
 .product-status.in-stock {
     color: rgb(18, 226, 18); /* Set the text color for in-stock status */
-    background: #eaffea; /* Set the background color for in-stock status */
+    background: #d4f8d4; /* Set the background color for in-stock status */
 }
 
 .product-status.out-of-stock {
     color: red; /* Set the text color for out-of-stock status */
-    background: #ffecec; /* Set the background color for out-of-stock status */
+    background: #f8d7da; /* Set the background color for out-of-stock status */
 }
 
 /* Product detail styles */
@@ -298,7 +487,7 @@ form.nav-right button:hover {
     border-radius: 5px; /* Round the corners of the product stock */
     margin-bottom: 15px; /* Add margin to the bottom of the product stock */
     color: rgb(18, 226, 18); /* Set the text color for in-stock */
-    background: #eaffea; /* Set the background color for in-stock */
+    background: #d4f8d4; /* Set the background color for in-stock */
 }
 
 /* Product Image Container */
@@ -336,7 +525,10 @@ form.nav-right button:hover {
 .product-age-range {
     font-size: 16px;
     color: white;
-    background-color: #007bff;
+    
+    background-color: var(--border-color) !important; /* Change hover to ensure visibility */
+    color: var(--button-bg) !important;
+    
     padding: 5px 10px;
     border-radius: 15px;
     margin-top: 10px;
@@ -352,6 +544,7 @@ form.nav-right button:hover {
     display: flex;
     gap: 40px;
     margin-bottom: 40px;
+    transition: transform 0.3s ease-in-out; /* ✅ 平滑缩放动画 */
 }
 
 .gallery-section {
@@ -390,7 +583,7 @@ form.nav-right button:hover {
 }
 
 .thumbnail-item.active {
-    border-color: #ff4400;
+    border-color: #b8321a;
 }
 
 .thumbnail-item img {
@@ -399,16 +592,23 @@ form.nav-right button:hover {
     object-fit: cover;
 }
 
-.info-section {
+
+    .info-section, .description-section { /* Make both sections follow the theme background */
+        background-color: var(--bg-color) !important;
+    }
+    .info-section {
+    
     flex: 0 0 400px;
     padding: 20px;
-    background: #f5f5f5;
+    background: #ebebeb;
     border-radius: 4px;
 }
 
 .product-title {
-    font-size: 24px;
-    color: #333;
+    font-size: 1.4rem;
+    
+    color: var(--text-color) !important; /* ensure high contrast for text */
+    
     margin-bottom: 20px;
 }
 
@@ -420,7 +620,7 @@ form.nav-right button:hover {
 }
 
 .price {
-    color: #ff4400;
+    color: #b8321a;
     font-size: 36px;
     font-weight: bold;
 }
@@ -442,7 +642,7 @@ form.nav-right button:hover {
 .action-buttons .buy-btn {
     width: 100%;
     height: 50px;
-    background: #ff4400;
+    background: #b8321a;
     color: white;
     font-size: 18px;
     border: none;
@@ -478,7 +678,7 @@ form.nav-right button:hover {
 }
 
 .pagination a {
-    color: #007bff;
+    color: #0056b3;
     text-decoration: none;
     padding: 5px 10px;
     border: 1px solid #ddd;
@@ -488,8 +688,11 @@ form.nav-right button:hover {
 
 .pagination .current {
     padding: 5px 10px;
-    border: 1px solid #007bff;
-    background-color: #007bff;
+    border: 1px solid #0056b3;
+    
+    background-color: var(--border-color) !important; /* Change hover to ensure visibility */
+    color: var(--button-bg) !important;
+    
     color: white;
     border-radius: 4px;
     margin: 0 5px;
@@ -559,7 +762,9 @@ form.nav-right button:hover {
 }
 
 .product-title a {
-    color: #333;
+    
+    color: var(--text-color) !important; /* ensure high contrast for text */
+    
     text-decoration: none;
 }
 
@@ -568,7 +773,7 @@ form.nav-right button:hover {
 }
 
 .current-price {
-    color: #ff4400;
+    color: #b8321a;
     font-size: 20px;
     font-weight: 700;
 }
@@ -609,15 +814,759 @@ form.nav-right button:hover {
     }
 }
 
-/* 滚动条美化 */
+/* 让滚动条变大、更明显 */
 ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-    background: transparent;
+    width: 16px;  /* ✅ 增大垂直滚动条宽度 */
+    height: 16px; /* ✅ 增大水平滚动条高度 */
 }
 
+/* 滚动条滑块 */
 ::-webkit-scrollbar-thumb {
-    background: rgba(0,0,0,0.2);
-    border-radius: 3px;
+    background: rgba(100, 100, 100, 0.8); /* ✅ 深灰色滚动条，增强可见性 */
+    border-radius: 8px;
+    border: 3px solid rgba(255, 255, 255, 0.5); /* ✅ 给滚动条加点边框，提高辨识度 */
 }
 
+/* 滚动条轨道 */
+::-webkit-scrollbar-track {
+    background: #f1f1f1; /* ✅ 浅色背景，形成对比 */
+    border-radius: 10px;
+}
+
+/* 悬停时的滚动条 */
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(60, 60, 60, 0.9); /* ✅ 悬停时更暗 */
+}
+
+/* 确保导航栏不会换行 */
+.nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: nowrap; /* 禁止换行 */
+    width: 100%;
+    overflow: hidden;
+    max-height: 60px;
+}
+
+
+/* 让搜索框、语言切换和 A- / A+ 不会挤到下一行 */
+.search-container,
+.language-selector,
+.font-size-controls {
+    flex-shrink: 0; /* 避免被压缩 */
+    white-space: nowrap; /* 确保不会换行 */
+    min-width: auto; /* 避免 min-width 过大 */
+}
+
+/* 让导航栏按钮有更好的间距 */
+.nav-container a,
+.nav-container button,
+.nav-container select {
+    margin-right: 10px;
+}
+
+/* 让搜索框适应大小变化，但不会太大 */
+.search-container input {
+    max-width: 200px;
+    min-width: 120px;
+    width: auto;
+}
+
+html {
+    overflow-x: auto;  /* ✅ 确保始终显示水平滚动条 */
+    overflow-y: auto;  /* ✅ 允许垂直滚动 */
+    width: 100%;
+    min-width: 100vw;
+}
+
+#accessibility-toolbar {
+    display: flex;
+    flex-wrap: nowrap; /* ✅ 让按钮自动换行，避免溢出 */
+    justify-content: center; /* ✅ 让按钮居中 */
+    align-items: center; /* ✅ 让按钮垂直居中 */
+    background-color: rgba(51, 51, 51, 0.8); /* ✅ 0.8 让颜色有轻微透明度 */
+    padding: 2px; /* ✅ 增加内边距，避免拥挤 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10000;
+    gap: 10px;
+}
+
+#accessibility-toolbar button {
+    width: 80px; /* ✅ 让按钮变宽，适应长文本 */
+    height: 80px; /* ✅ 增加按钮高度 */
+    font-size: 13px; /* ✅ 调整字体大小 */
+    padding: 10px 15px; /* ✅ 让按钮内部的文字更好显示 */
+    white-space: nowrap; /* ✅ 避免文本换行 */
+    display: flex;
+    flex-direction: column; /* ✅ 让图标和文本垂直排列 */
+    align-items: center;
+    justify-content: center;
+    text-align: center; /* ✅ 让文字居中 */
+    white-space: normal; /* ✅ 允许文本换行 */
+    gap: 5px; /* ✅ 增加图标和文本的间距 */
+}
+
+
+/* 鼠标悬停时 */
+#accessibility-toolbar button:hover {
+    background: #d6d6d6;
+    transform: scale(1.05);
+}
+
+/* 选中状态（比如开启功能时高亮） */
+#accessibility-toolbar button.active {
+    background: orange;
+    color: white;
+    border-color: orange;
+}
+
+/* 退出按钮的特殊样式 */
+#accessibility-toolbar button.exit {
+    background: red;
+    color: white;
+    border-color: darkred;
+}
+
+/* 调整图标大小 */
+#accessibility-toolbar button i {
+    font-size: 20px;
+}
+
+/* 小文字样式 */
+#accessibility-toolbar button small {
+    font-size: 12px;
+    margin-top: 3px;
+    display: block;
+    color: black;
+}
+
+
+/* 确保键盘导航焦点可见 */
+button:focus, a:focus, input:focus, select:focus {
+    outline: 3px solid #ffcc00; /* 添加高可见度的焦点框 */
+    outline-offset: 2px;
+}
+
+/* 确保禁用按钮不影响无障碍访问 */
+button:disabled {
+    background-color: #cccccc !important;  /* 确保禁用状态可识别 */
+    color: #666666 !important;
+    cursor: not-allowed;
+}
+
+
+
+
+/* 使用变量应用到全局 */
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+button {
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border: 1px solid var(--border-color);
+}
+
+button:hover {
+    background-color: var(--border-color);
+    color: var(--button-bg);
+}
+
+/* 链接颜色调整 */
+a {
+    color: var(--button-bg);
+}
+
+a:hover {
+    color: var(--border-color);
+}
+
+/* [data-theme] {
+    --bg-color: #ffffff;
+    --text-color: #000000;
+    --button-bg: #007bff;
+    --button-text: #ffffff;
+    --border-color: #000000;
+    --hover-bg: #f0f0f0;
+    --hover-text: #000000;
+    --table-header-bg: #007bff;
+    --table-header-text: #ffffff;
+    --status-bg: #f0f0f0;
+    --status-text: #000000;
+} */
+/* ======== 无障碍主题优化 ======== */
+
+/* 高对比度模式（黑底黄字） */
+[data-theme="high contrast"] {
+    --bg-color: #000000;
+    --text-color: #FFFF00;
+    --button-bg: #000000;
+    --button-text: #FFFF00;
+    --border-color: #FFD700;
+    --hover-bg: #333333;
+    --hover-text: #FFFF00;
+    --table-header-bg: #000000;
+    --table-header-text: #FFFF00;
+    --status-bg: #333333;
+    --status-text: #FFFF00;
+}
+
+/* Protanopia（红色盲）& Deuteranopia 模式 */
+[data-theme="protanopia"] {
+    --bg-color: #EAEAEA;
+    --text-color: #000; /* ensure high contrast for text */
+    --button-bg: #0057B8;
+    --button-text: #FFFFFF;
+    --border-color: #003F88;
+    --link-color: #0057B8;
+    --hover-bg: #d8e0e8;
+    --hover-text: #242443;
+}
+
+/* Deuteranopia（绿色盲）模式 */
+/* [data-theme="deuteranopia"] {
+    --bg-color: #F5F5F5;
+    --text-color: #000; 
+    
+    --button-bg: #3366CC;
+    --button-text: #FFFFFF;
+    --border-color: #224499;
+    --link-color: #3366CC;
+    --hover-bg: #224499;
+    --hover-text: #FFFFFF;
+} */
+
+/* Tritanopia（蓝色盲）模式 */
+[data-theme="tritanopia"] {
+    --bg-color: #FAFAFA;
+    --text-color: #000; /* ensure high contrast for text */
+    
+    --button-bg: #AA5500;
+    --button-text: #FFFFFF;
+    --border-color: #774400;
+    --link-color: #AA5500;
+    --hover-bg: #774400;
+    --hover-text: #FFFFFF;
+}
+
+/* 灰度模式 */
+[data-theme="grayscale"] {
+    filter: grayscale(100%);
+}
+
+/* 应用无障碍颜色变量 */
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+button, input, select {
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border: 2px solid var(--border-color);
+}
+
+button:hover, input:hover, select:hover {
+    background-color: var(--hover-bg);
+    color: var(--hover-text);
+}
+
+a {
+    color: var(--link-color);
+}
+
+a:hover {
+    color: var(--hover-bg);
+}
+
+
+
+/* 确保 menu 的颜色跟随主题变化 */
+[data-theme] 
+    #menu, /* unify background for menu */
+    .product-info, /* unify background for product info */
+    button, /* unify button background */
+    body { /* unify page background */
+        background-color: var(--bg-color) !important;
+        color: var(--text-color) !important;
+    }
+    #menu {
+    
+    background-color: var(--button-bg);
+    color: var(--button-text);
+}
+
+/* 让导航栏链接颜色也随主题变化 */
+[data-theme] #menu ul a {
+    color: var(--button-text);
+}
+
+[data-theme] #menu ul a:hover {
+    background-color: var(--border-color);
+    color: var(--hover-text);
+}
+
+/* 让 product-card 颜色随主题变化 */
+[data-theme] .product-card {
+    background: var(--bg-color);
+    color: var(--text-color);
+    border: 2px solid var(--border-color);
+}
+
+[data-theme] .product-card:hover {
+    box-shadow: 0 4px 12px var(--border-color);
+}
+
+/* 确保搜索按钮颜色随主题变化 */
+[data-theme] form.nav-right button {
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border: 2px solid var(--border-color);
+}
+
+[data-theme] form.nav-right button:hover {
+    background-color: var(--border-color);
+    color: var(--hover-text);
+}
+
+
+
+/* ======== 确保背景颜色填充整个页面 ======== */
+body {
+    min-height: 100vh; /* 确保背景颜色填满整个屏幕 */
+}
+
+/* ======== 让价格区域背景颜色随主题变化 ======== */
+[data-theme] .product-price {
+    background-color: var(--button-bg); /* 让价格区域背景颜色随主题变化 */
+    color: var(--button-text); /* 确保价格文字颜色随主题变化 */
+    padding: 10px; /* 增加内边距，避免贴边 */
+    border-radius: 5px; /* 增加圆角 */
+}
+
+/* ======== 让所有非白色背景的文字默认使用白色 ======== */
+/* [data-theme]:not([data-theme="default"]) body, 
+[data-theme]:not([data-theme="default"]) button, 
+[data-theme]:not([data-theme="default"]) a, 
+[data-theme]:not([data-theme="default"]) input, 
+[data-theme]:not([data-theme="default"]) select {
+    color: var(--text-color); 
+} */
+
+/* ======== 让 Hover 颜色高对比度，提高可见性 ======== */
+button:hover, a:hover, .product-card:hover, form.nav-right button:hover {
+    background-color: var(--hover-bg);
+    color: var(--hover-text) !important;
+}
+
+/* ======== 让导航栏和主页背景颜色统一 ======== */
+
+/* ======== 确保菜单和搜索按钮的背景随主题变化 ======== */
+[data-theme] #menu, 
+[data-theme] form.nav-right button {
+    background-color: var(--button-bg) !important;
+    color: var(--button-text) !important;
+    border-color: var(--border-color) !important;
+}
+
+/* ======== 让产品卡片背景随主题变化 ======== */
+[data-theme] .product-card {
+    background-color: var(--bg-color) !important;
+    color: var(--text-color) !important;
+    border-color: var(--border-color) !important;
+}
+
+/* 十字线样式：跟随鼠标的辅助定位 */
+.crosshair {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%); /* 中心对齐鼠标位置 */
+}
+
+.crosshair::before,
+.crosshair::after {
+    content: "";
+    position: absolute;
+    background-color: orange; /* 高对比度颜色 */
+}
+
+.crosshair::before {
+    width: 2px; /* 垂直线 */
+    height: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.crosshair::after {
+    width: 100%; /* 水平线 */
+    height: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: var(--border-color);
+}
+
+body.large-cursor {
+    cursor: url('../img/pointer.svg'), auto;
+}
+
+/* 确保子元素继承光标样式 */
+body.large-cursor * {
+    cursor: inherit !important;
+}
+
+.popup-message {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #f44336;
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    display: none;
+}
+.popup-message.success {
+    background-color: #4CAF50;
+}
+.popup-message.error {
+    background-color: #f44336;
+}
+.popup-message .message {
+    margin: 0;
+    padding: 0;
+}
+.filter-form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color:var(--bg-color);
+    border-radius: 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    flex-wrap: wrap; /* Ensure elements wrap if they don't fit in one line */
+}
+.filter-form label {
+    color: var(--text-color);
+    margin-right: 10px;
+    font-weight: bold;
+    white-space: nowrap; /* Prevent label from wrapping */
+}
+.filter-form select {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+}
+.filter-form button {
+    padding: 5px 10px;
+    background-color: var(--bg-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+    width: auto; /* Ensure the button width adjusts to the content */
+    white-space: nowrap; /* Prevent the text from wrapping */
+}
+.filter-form button:hover {
+    background-color: var(--hover-bg);
+}
+
+
+.order-table {
+    width: 100%;
+    border-collapse: collapse;  
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    text-align: center;  
+    border: 1px solid #ddd; 
+}
+
+.order-table th {
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ddd;  
+}
+
+
+.order-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.order-table tr:hover {
+    background-color: #e3f2fd;  
+    cursor: pointer; 
+}
+
+
+.order-table td {
+    padding: 12px;
+    border: 1px solid #ddd;  
+    text-align: center;
+}
+
+
+.status-label {
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.status-pending {
+    color: #ff9800;
+    background-color: #fff3cd;
+}
+
+.status-shipped {
+    color: #28a745;
+    background-color: #d4edda;
+}
+
+.status-cancelled {
+    color: #dc3545;
+    background-color: #f8d7da;
+}
+
+.status-hold {
+    color: #ffc107;
+    background-color: #fff3cd;
+}
+
+.status-ticket {
+    color: #17a2b8;
+    background-color: #d1ecf1;
+}
+
+.status-complete {
+    color: #28a745;
+    background-color: #d4edda;
+}
+
+.status-refunded {
+    color: #6c757d;
+    background-color: #e2e3e5;}
+#large-caption {
+    position: fixed;
+    bottom: 10px;  /* 保持距离底部 10px */
+    left: 50%;
+    transform: translateX(-50%); /* 居中 */
+    width: 90%;  /* 宽度保持 90% */
+    height: 100px; /* 🔥 增加高度 */
+    background-color: rgba(0, 0, 0, 0.9);
+    color: white;
+    text-align: center;
+    font-size: 48px; /* 🔥 字体变大 */
+    padding: 10px;
+    display: none; /* 默认隐藏 */
+    z-index: 9999;
+    line-height: 90px; /* 🔥 让文字垂直居中 */
+    border-radius: 10px; /* 圆角 */
+    overflow: hidden; /* 防止文字溢出 */
+    white-space: nowrap; /* 让文本不换行 */
+    text-overflow: ellipsis; /* 过长时显示省略号 */
+    font-weight: bold; /* 🔥 加粗让文字更明显 */
+}
+
+/* 新增：多行字幕样式 */
+#large-caption.multiline {
+    white-space: normal !important;       /* 允许换行 */
+    text-overflow: unset !important;       /* 取消省略号 */
+    overflow-y: auto !important;           /* 出现滚动条显示多余内容 */
+    height: auto !important;               /* 高度自适应 */
+    line-height: 1.2 !important;           /* 调整行高 */
+    max-height: 200px !important;          /* 设置最大高度，防止过高 */
+}
+
+
+
+.order-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+}
+
+h2, h3 {
+    text-align: center;
+    color: var(--text-color);
+    background-color: var(--button-bg);
+}
+
+
+.order-info p {
+    font-size: 16px;
+    margin: 10px 0;
+    padding: 5px;
+    background: #f9f9f9;
+    border-radius: 5px;
+}
+
+
+.total-amount {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--button-bg);
+}
+
+
+.status {
+    font-weight: bold;
+    padding: 4px 10px;
+    border-radius: 5px;
+}
+
+.status.pending {
+    color: #ffc107;
+}
+
+.status.shipped {
+    color: #28a745;
+}
+
+.status.cancelled {
+    color: #dc3545;
+}
+
+
+.order-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-size: 14px;
+    text-align: center;
+}
+table.order-table thead {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.order-table th {
+    background: var(--bg-color);
+    color: var(--text-color);
+    padding: 12px;
+}
+
+.order-table td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+.order-table tbody tr {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.order-table tbody tr:hover {
+    background-color: var(--hover-bg);
+    color: var(--hover-text);
+}
+
+
+.back-button {
+    display: block;
+    width: 200px;
+    margin: 20px auto;
+    text-align: center;
+    padding: 10px 15px;
+    background-color: var(--bg-color);
+    color: rgb(71, 70, 70);
+    font-size: 16px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.back-button:hover {
+    background-color: var(--hover-bg);
+}
+
+
+
+.timeline {
+    position: relative;
+    padding: 20px 0;
+    margin-left: 30px;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background:var(--button-bg);
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 30px;
+    padding-left: 40px;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid var(--border-color);
+    z-index: 1;
+}
+
+.timeline-content {
+    position: relative;
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+    border: 1px solid #dee2e6;
+    transition: transform 0.2s;
+}
+
+.status-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.status-label {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.status-date {
+    color: #7f8c8d;
+    font-size: 0.9em;
+}
+
+.no-history {
+    color: #95a5a6;
+    text-align: center;
+    padding: 20px;
+}

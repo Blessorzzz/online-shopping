@@ -1,3 +1,4 @@
+<!-- filepath: c:\Users\Josh\ISI\django_projects\online-shopping\web\templates\vendor\vendor_orders.html -->
 {% extends 'vendor/vendor_base.html' %}
 {% load i18n %}
 {% block content %}
@@ -21,7 +22,25 @@
                 <td style="border: 1px solid #ddd; padding: 12px 15px;">{{ order.purchase_date }}</td>
                 <td style="border: 1px solid #ddd; padding: 12px 15px;">{{ order.customer.username }}</td>
                 <td style="border: 1px solid #ddd; padding: 12px 15px;">${{ order.total_amount }}</td>
-                <td style="border: 1px solid #ddd; padding: 12px 15px;">{{ order.status }}</td>
+                <td style="border: 1px solid #ddd; padding: 12px 15px;">
+                    {% if order.status == 'pending' %}
+                        <span class="status-label status-pending">⏳ Pending</span>
+                    {% elif order.status == 'shipped' %}
+                        <span class="status-label status-shipped">📦 Shipped</span>
+                    {% elif order.status == 'cancelled' %}
+                        <span class="status-label status-cancelled">❌ Cancelled</span>
+                    {% elif order.status == 'hold' %}
+                        <span class="status-label status-hold">⏸️ Hold</span>
+                    {% elif order.status == 'ticket-issued' %}
+                        <span class="status-label status-ticket">🎫 Ticket Issued</span>
+                    {% elif order.status == 'complete' %}
+                        <span class="status-label status-complete">✅ Complete</span>
+                    {% elif order.status == 'refunded' %}
+                        <span class="status-label status-refunded">💰 Refunded</span>
+                    {% elif order.status == 'delivered' %}
+                        <span class="status-label status-delivered">📬 Delivered</span>
+                    {% endif %}
+                </td>
                 <td style="border: 1px solid #ddd; padding: 12px 15px;">
                     <a href="{% url 'vendor_order_detail' order.id %}" class="view-details-button">{% trans "View Details" %}</a>
                 </td>
@@ -101,5 +120,45 @@
 
 .back-to-dashboard-button:hover {
     background-color: #d65c00;
+}
+
+.status-label {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+}
+
+.status-pending {
+    background-color: #ffc107;
+}
+
+.status-shipped {
+    background-color: #007bff;
+}
+
+.status-cancelled {
+    background-color: #dc3545;
+}
+
+.status-hold {
+    background-color: #6c757d;
+}
+
+.status-ticket {
+    background-color: #17a2b8;
+}
+
+.status-complete {
+    background-color: #28a745;
+}
+
+.status-refunded {
+    background-color: #ffc107;
+}
+
+.status-delivered {
+    background-color: #28a745;
 }
 </style>

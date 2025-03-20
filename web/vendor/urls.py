@@ -11,4 +11,5 @@ urlpatterns = [
     path('vendor/order_detail/<int:order_id>/', vendor_order_detail, name='vendor_order_detail'),
     path('vendor/product/<uuid:product_id>/', views.vendor_product_detail, name='vendor_product_detail'),
     path('vendor_login/', views.vendor_login, name='vendor_login'),
+    path('product/photo/<int:photo_id>/delete/', views.delete_product_photo, name='delete_product_photo'),  # New path for deleting product photos
 ]

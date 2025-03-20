@@ -4,6 +4,7 @@ from django.views.generic import ListView, DetailView, UpdateView
 from django.db.models import Q
 from .models import Product
 from shoppingcart.models import ShoppingCart  # 引用购物车模型
+from review.models import Review
 
 # 首页视图，显示商品列表
 class HomePageView(ListView):
@@ -26,10 +27,48 @@ class HomePageView(ListView):
         return context
 
 # 商品详情页视图
+# ecommerce/views.py
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import ListView, DetailView, UpdateView
+from django.db.models import Q
+from .models import Product
+from shoppingcart.models import ShoppingCart  # 引用购物车模型
+from review.models import Review
+
+# 首页视图，显示商品列表
+class HomePageView(ListView):
+    model = Product
+    template_name = 'home.html'
+    context_object_name = 'products'
+    paginate_by = 8  # 每页显示的商品数
+
+    def get_queryset(self):
+        queryset = Product.objects.filter(is_active=True)
+        query = self.request.GET.get('q')
+        if query:
+            queryset = queryset.filter(product_name__icontains=query)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        print(f"Total products: {self.get_queryset().count()}")
+        print(f"Number of pages: {context['paginator'].num_pages}")
+        return context
+
+# 商品详情页视图
 class ProductDetailView(DetailView):
     model = Product
     template_name = 'product_detail.html'
     context_object_name = 'product'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        product = self.get_object()
+        reviews = Review.objects.filter(product=product, is_approved=True).order_by("-created_at")
+        print(f"Product: {product}")
+        print(f"Reviews: {reviews}")
+        context['reviews'] = reviews
+        return context
 
 # 购物车页面视图
 class CartView(ListView):

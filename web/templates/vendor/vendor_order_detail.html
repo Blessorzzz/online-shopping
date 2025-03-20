@@ -8,6 +8,14 @@
     <p><strong>{% trans "Total Amount:" %}</strong> ${{ order.total_amount }}</p>
     <p><strong>{% trans "Status:" %}</strong> {{ order.status }}</p>
 
+    {% if messages %}
+        <div id="popup-message" class="popup-message-overlay">
+            {% for message in messages %}
+                <div class="popup-message-content {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <h3 style="margin-top: 20px;">{% trans "Order Items" %}</h3>
     <table class="order-items-table" style="width: 100%; border-collapse: collapse; margin-top: 10px;">
         <thead>
@@ -34,14 +42,19 @@
         </tbody>
     </table>
 
-
     <form method="post" style="margin-top: 20px; text-align: center;">
         {% csrf_token %}
         <label for="status">{% trans "Change Order Status:" %}</label>
         <select name="status" id="status">
-            {% for value, display in order.STATUS_CHOICES %}
-            <option value="{{ value }}" {% if order.status == value %}selected{% endif %}>{{ display }}</option>
-            {% endfor %}
+            {% if order.items.first.product.product_type == 'tangible' %}
+                {% for value, display in order.STATUS_CHOICES_TANGIBLE %}
+                <option value="{{ value }}" {% if order.status == value %}selected{% endif %}>{{ display }}</option>
+                {% endfor %}
+            {% else %}
+                {% for value, display in order.STATUS_CHOICES_VIRTUAL %}
+                <option value="{{ value }}" {% if order.status == value %}selected{% endif %}>{{ display }}</option>
+                {% endfor %}
+            {% endif %}
         </select>
         <button type="submit" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; transition: background 0.3s;">
             {% trans "Update Status" %}
@@ -64,57 +77,6 @@
             {% empty %}
             <p class="no-history">{% trans "No status history available" %}</p>
             {% endfor %}
-        </div>
-    </div>
-        {% comment %} <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
-            {% if order.shipment_date %}
-            <div class="date-item">
-                <span style="font-weight: 500;">{% trans "Shipped Date:" %}</span>
-                {{ order.shipment_date|date:"Y-m-d H:i" }}
-            </div>
-            {% endif %}
-            
-            {% if order.cancel_date %}
-            <div class="date-item">
-                <span style="font-weight: 500;">{% trans "Cancelled Date:" %}</span>
-                {{ order.cancel_date|date:"Y-m-d H:i" }}
-            </div>
-            {% endif %}
-            
-            {% if order.ticket_issue_date %}
-            <div class="date-item">
-                <span style="font-weight: 500;">{% trans "Ticket Issued Date:" %}</span>
-                {{ order.ticket_issue_date|date:"Y-m-d H:i" }}
-            </div>
-            {% endif %}
-            
-            {% if order.refund_date %}
-            <div class="date-item">
-                <span style="font-weight: 500;">{% trans "Refund Date:" %}</span>
-                {{ order.refund_date|date:"Y-m-d H:i" }}
-            </div>
-            {% endif %}
-
-            {% if order.hold_date %}
-            <div class="date-item">
-                <span style="font-weight: 500;">{% trans "hold_date:" %}</span>
-                {{ order.hold_date|date:"Y-m-d H:i" }}
-            </div>
-            {% endif %}
-
-            {% if order.complete_date %}
-            <div class="date-item">
-                <span style="font-weight: 500;">{% trans "complete_date:" %}</span>
-                {{ order.complete_date|date:"Y-m-d H:i" }}
-            </div>
-            {% endif %}
-
-            {% if order.pending_date %}
-            <div class="date-item">
-                <span style="font-weight: 500;">{% trans "pending_date:" %}</span>
-                {{ order.pending_date|date:"Y-m-d H:i" }}
-            </div>
-            {% endif %} {% endcomment %}
         </div>
     </div>
 
@@ -191,5 +153,42 @@
         text-align: center;
         padding: 20px;
     }
+
+    .popup-message-overlay {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 10px 20px;
+        border-radius: 5px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        z-index: 1000;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: #ffffff;
+    }
+    .popup-message-success {
+        background-color: #4CAF50;
+        color: #ffffff;
+    }
+    .popup-message-error {
+        background-color: #f44336;
+        color: #ffffff;
+    }
+    .popup-message-content {
+        margin: 0;
+        padding: 10px 0; /* Add padding to the message */
+    }
 </style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var popupMessage = document.getElementById('popup-message');
+        if (popupMessage) {
+            popupMessage.style.display = 'block';
+            setTimeout(function() {
+                popupMessage.style.display = 'none';
+            }, 5000); // Hide after 5 seconds
+        }
+    });
+</script>
 {% endblock %}

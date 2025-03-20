@@ -1,4 +1,4 @@
-<!-- filepath: /Users/williamchan/Desktop/ISI/django_project/online-shopping/web/templates/vendor/edit_product.html -->
+<!-- filepath: c:\Users\Josh\ISI\django_projects\online-shopping\web\templates\vendor\edit_product.html -->
 {% extends 'vendor/vendor_base.html' %}
 {% load i18n %}
 {% block content %}
@@ -13,13 +13,31 @@
             {{ form.thumbnail_image.label_tag }} {{ form.thumbnail_image }}
         </div>
         <div class="thumbnail-container">
-            <img src="{{ product.thumbnail_image.url }}" onclick="openModal()">
+            <img src="{{ product.thumbnail_image.url }}" onclick="openModal(this)">
         </div>
         <div style="width: 100%; text-align: left;">
             {{ form.stock_quantity.label_tag }} {{ form.stock_quantity }}
             {{ form.min_age.label_tag }} {{ form.min_age }}
             {{ form.max_age.label_tag }} {{ form.max_age }}
         </div>
+        <div style="width: 100%; text-align: left;">
+            <label for="additional_images">{% trans "Add Additional Images" %}</label>
+            <input type="file" id="additional_images" name="additional_images" multiple onchange="previewImages()">
+        </div>
+        <div id="image-preview-container" style="width: 100%; text-align: left;">
+            {% for image in product.photos.all %}
+                <div class="image-preview">
+                    <input type="checkbox" class="image-checkbox" value="{{ image.photo_id }}">
+                    <img src="{{ image.photo.url }}" alt="Additional Image" onclick="openModal(this)">
+                </div>
+            {% endfor %}
+        </div>
+        <button type="button" onclick="deleteSelectedImages()" style="width: 100%; padding: 10px; background-color: #ED7014; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; transition: background 0.3s;">
+            {% trans "Delete Selected Images" %}
+        </button>
+        <button type="button" id="discardButton" onclick="discardNewPhotos()" style="width: 100%; padding: 10px; background-color: #ED7014; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; transition: background 0.3s; display: none;">
+            {% trans "Discard Adding Photos" %}
+        </button>
         <style>
             textarea {
                 height: 150px;
@@ -86,6 +104,24 @@
                 text-decoration: none;
                 cursor: pointer;
             }
+            .image-preview {
+                display: inline-block;
+                position: relative;
+                margin: 10px;
+            }
+            .image-preview img {
+                max-width: 100px;
+                max-height: 100px;
+                border-radius: 5px;
+                border: 1px solid #ccc;
+                cursor: pointer;
+            }
+            .image-preview input[type="checkbox"] {
+                position: absolute;
+                top: 5px;
+                left: 30px;
+                cursor: pointer;
+            }
         </style>
         <script>
             function validateForm() {
@@ -134,16 +170,102 @@
                 return true;
             }
 
-            function openModal() {
+            function openModal(imgElement) {
                 document.getElementById('imageModal').style.display = "block";
-                document.getElementById('modalImage').src = document.querySelector('.thumbnail-container img').src;
+                document.getElementById('modalImage').src = imgElement.src;
             }
 
             function closeModal() {
                 document.getElementById('imageModal').style.display = "none";
             }
-        </script>
+
+            function previewImages() {
+                let previewContainer = document.getElementById('image-preview-container');
+                let files = document.getElementById('additional_images').files;
+                for (let i = 0; i < files.length; i++) {
+                    let file = files[i];
+                    let reader = new FileReader();
+                    reader.onload = function(e) {
+                        let img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.onclick = function() { openModal(img); };
+                        let div = document.createElement('div');
+                        div.className = 'image-preview';
+                        div.appendChild(img);
+                        previewContainer.appendChild(div);
+                    }
+                    reader.readAsDataURL(file);
+                }
+                document.getElementById('discardButton').style.display = 'block';
+            }
+
+            function discardNewPhotos() {
+                // Remove all newly added preview images (those with data URLs)
+                const previewContainer = document.getElementById('image-preview-container');
+                const newPreviews = previewContainer.querySelectorAll('.image-preview img[src^="data:"]');
+                
+                newPreviews.forEach(preview => {
+                    preview.parentElement.remove(); // Remove the parent div containing the image
+                });
         
+                // Clear the file input to prevent files from being kept in memory
+                const fileInput = document.getElementById('additional_images');
+                fileInput.value = ''; 
+                
+                // Hide the discard button
+                document.getElementById('discardButton').style.display = 'none';
+            }
+
+            async function deleteSelectedImages() {
+                const selectedCheckboxes = document.querySelectorAll('.image-checkbox:checked');
+                if (selectedCheckboxes.length === 0) {
+                    alert("{% trans 'Please select at least one image to delete.' %}");
+                    return;
+                }
+
+                if (confirm("{% trans 'Are you sure you want to delete the selected images?' %}")) {
+                    for (const checkbox of selectedCheckboxes) {
+                        const imageId = checkbox.value;
+                        const url = `{% url 'delete_product_photo' 0 %}`.replace('0', imageId);
+                        try {
+                            const response = await fetch(url, {
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRFToken': '{{ csrf_token }}',
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({}),
+                            });
+
+                            if (!response.ok) {
+                                if (response.status === 403) {
+                                    alert("{% trans 'You do not have permission to delete this image.' %}");
+                                } else if (response.status === 404) {
+                                    alert("{% trans 'Image not found.' %}");
+                                } else {
+                                    alert("{% trans 'Failed to delete the image.' %}");
+                                }
+                                continue;
+                            }
+
+                            const data = await response.json();
+                            if (data.success) {
+                                checkbox.parentElement.remove();
+                            } else {
+                                alert("{% trans 'Failed to delete the image.' %}");
+                            }
+                        } catch (error) {
+                            console.error('Error:', error);
+                            alert("{% trans 'An error occurred while deleting the image.' %}");
+                        }
+                    }
+                }
+            }
+        </script>
+        <div style="width: 100%; text-align: left;">
+            <!-- 原有错误提示基础上新增 -->
+            <span id="photo-error" class="error-message">{% trans "At least one product photo is required." %}</span>
+        </div>
         <div style="width: 100%; text-align: left;">
             <span id="empty-error" class="error-message">{% trans "All fields must be filled out." %}</span>
             <span id="price-error" class="error-message">{% trans "Price must be greater than zero." %}</span>
