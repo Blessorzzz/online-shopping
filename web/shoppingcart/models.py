@@ -78,7 +78,18 @@ class Order(models.Model):
                     setattr(self, date_field, now)
 
     def can_be_reviewed(self):
+        """Check if the order can be reviewed."""
         return self.status in ['complete', 'refunded', 'delivered']
+
+    @property
+    def verified_purchase(self):
+        """Return True if the order is eligible for verified purchase."""
+        return self.status in ['complete', 'refunded', 'delivered']
+
+    @property
+    def products(self):
+        """Return all products in the order."""
+        return [item.product for item in self.items.all()]
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')

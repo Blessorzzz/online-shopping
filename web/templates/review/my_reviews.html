@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load static %}
 {% load i18n %}
 
 {% block content %}
@@ -7,126 +6,93 @@
     <h2 class="text-center mb-4">{% trans "My Reviews" %}</h2>
     
     <div class="card p-4 shadow-sm">
-        <table class="review-table">
-            <thead>
-                <tr>
-                    <th>{% trans "Product" %}</th>
-                    <th>{% trans "Rating" %}</th>
-                    <th>{% trans "Comment" %}</th>
-                    <th>{% trans "Verified Purchase" %}</th>
-                    <th>{% trans "Status" %}</th>
-                    <th>{% trans "Created At" %}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for review in reviews %}
+        {% if orders_with_reviews %}
+            <table class="review-table">
+                <thead>
                     <tr>
-                        <td>{{ review.product.product_name }}</td>
-                        <td>
-                            <span class="star-rating">
-                                {% for i in "12345" %}
-                                    {% if review.rating >= i|add:"0.5" %}
-                                        ★
-                                    {% elif review.rating >= i|add:"0" %}
-                                        ☆
-                                    {% endif %}
-                                {% endfor %}
-                            </span>
-                        </td>
-                        <td>{{ review.comment }}</td>
-                        <td>
-                            {% if review.is_verified_purchase %}
-                                <span class="verified-badge">✔ Verified Purchase</span>
-                            {% endif %}
-                        </td>
-                        <td>
-                            <span class="status-label {% if review.is_approved %}status-approved{% else %}status-pending{% endif %}">
-                                {% if review.is_approved %}
-                                    {% trans "Approved" %}
-                                {% else %}
-                                    {% trans "Pending" %}
-                                {% endif %}
-                            </span>
-                        </td>
-                        <td>{{ review.created_at|date:"Y-m-d H:i" }}</td>
+                        <th>{% trans "Order ID" %}</th>
+                        <th>{% trans "Products" %}</th>
+                        <th>{% trans "Rating" %}</th>
+                        <th>{% trans "Comment" %}</th>
+                        <th>{% trans "Created At" %}</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% for order_id, data in orders_with_reviews.items %}
+                        <tr class="clickable-row" data-href="{% url 'order_detail' data.order.id %}">
+                            <td>{{ data.order.po_number }}</td>
+                            <td>
+                                <div class="product-list">
+                                    {% for product_review in data.reviews %}
+                                        <a href="{% url 'product_detail' product_review.product.product_id %}" class="product-link">
+                                            {{ product_review.product.product_name }}
+                                        </a>
+                                    {% endfor %}
+                                </div>
+                            </td>
+                            <td>
+                                {% for product_review in data.reviews %}
+                                    <span class="star-rating" data-rating="{{ product_review.review.rating }}"></span>
+                                    <span class="average-rating-text">({{ product_review.review.rating|floatformat:1 }} / 5)</span>
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {% for product_review in data.reviews %}
+                                    <p>{{ product_review.review.comment }}</p>
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {% for product_review in data.reviews %}
+                                    <p>{{ product_review.review.created_at|date:"Y-m-d H:i" }}</p>
+                                {% endfor %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="text-center">{% trans "You have no reviews yet." %}</p>
+        {% endif %}
     </div>
 </div>
 
-<style>
-    .container-fluid {
-        max-width: 100%;
-    }
-    .card {
-        border-radius: 10px;
-        padding: 20px;
-    }
+<script>
+    // Make the entire row clickable
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll(".clickable-row").forEach(row => {
+            row.addEventListener("click", function() {
+                window.location.href = this.dataset.href;
+            });
+        });
 
-    .review-table {
-        width: 100%;
-        border-collapse: collapse;  /* Ensure borders are collapsed */
-        margin-top: 20px;
-        font-family: Arial, sans-serif;
-        font-size: 14px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        border-radius: 10px;
-        overflow: hidden;
-        text-align: center;  /* Center table content */
-        border: 1px solid #ddd;  /* Ensure there is a border */
-    }
+        // Handle star rendering
+        document.querySelectorAll('.star-rating').forEach(function (element) {
+            let rating = parseFloat(element.getAttribute('data-rating'));
+            let fullStars = Math.floor(rating); // Count of full stars
+            let hasHalfStar = rating % 1 >= 0.5; // Check if there is a half star
+            let starHtml = '';
 
-    .review-table th {
-        background-color: #007bff;
-        color: white;
-        padding: 12px;
-        text-align: center;
-        border: 1px solid #ddd;
-    }
+            // Add full stars
+            for (let i = 0; i < fullStars; i++) {
+                starHtml += '<i class="fas fa-star custom-star"></i>';
+            }
 
-    .review-table tr:nth-child(even) {
-        background-color: #f9f9f9;
-    }
+            // Add half star if needed
+            if (hasHalfStar) {
+                starHtml += '<i class="fas fa-star-half-alt custom-star"></i>';
+            }
 
-    .review-table tr:hover {
-        background-color: #e3f2fd;
-        cursor: pointer;
-    }
+            // Add empty stars to complete 5 stars
+            while (starHtml.split('fa-star').length - 1 < 5) {
+                starHtml += '<i class="far fa-star custom-star"></i>';
+            }
 
-    .review-table td {
-        padding: 12px;
-        border: 1px solid #ddd;
-        text-align: center;
-    }
+            element.innerHTML = starHtml;
+        });
+    });
+</script>
 
-    .verified-badge {
-        color: #28a745;
-        font-weight: bold;
-    }
-
-    .star-rating {
-        color: gold;
-        font-size: 1.2rem;
-    }
-
-    .status-label {
-        font-weight: bold;
-        padding: 5px 10px;
-        border-radius: 5px;
-        display: inline-block;
-    }
-
-    .status-approved {
-        color: #28a745;
-        background-color: #d4edda;
-    }
-
-    .status-pending {
-        color: #ffc107;
-        background-color: #fff3cd;
-    }
-</style>
+<!-- Include FontAwesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 {% endblock %}

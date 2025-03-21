@@ -7,6 +7,11 @@
         {% csrf_token %}
         <div style="width: 100%; text-align: left;">
             {{ form.product_name.label_tag }} {{ form.product_name }}
+            <label for="product_type">{% trans "Product Type" %}</label>
+            <select name="product_type" id="id_product_type" required>
+                <option value="tangible" {% if form.product_type.value == "tangible" %}selected{% endif %}>Tangible</option>
+                <option value="virtual" {% if form.product_type.value == "virtual" %}selected{% endif %}>Virtual</option>
+            </select>
             {{ form.price.label_tag }} {{ form.price }}
             {{ form.description.label_tag }} {{ form.description }}
             {{ form.thumbnail_image.label_tag }} {{ form.thumbnail_image }}
