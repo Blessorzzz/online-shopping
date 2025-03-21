@@ -113,7 +113,6 @@
     document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.star-rating').forEach(function(element) {
             const rating = parseFloat(element.getAttribute('data-rating'));
-            console.log("Rating Value:", rating);  // Debugging line
             element.innerHTML = renderStars(rating);
         });
     });
@@ -131,15 +130,22 @@
                     <span class="star-rating" data-rating="{{ review.rating }}"></span>
                     <p>{{ review.comment }}</p>
                     {% if review.image %}
-                        <img src="{{ review.image.url }}" alt="Review Image" style="max-width: 200px; max-height: 200px;">
+                        <img src="{{ review.image.url }}" alt="Review Image" class="review-image">
                     {% endif %}
                     {% if review.video %}
-                        <video controls style="max-width: 200px; max-height: 200px;">
+                        <video controls class="review-video">
                             <source src="{{ review.video.url }}" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
                     {% endif %}
                     <small>{% trans "Reviewed on" %} {{ review.created_at|date:"Y-m-d H:i" }}</small>
+
+                    <!-- Verified Purchase -->
+                    {% if review.order and review.order.verified_purchase %}
+                        <span class="verified-purchase">
+                            <span class="verified-label">{% trans "Verified Purchase" %}</span>
+                        </span>
+                    {% endif %}
                 </li>
             {% endfor %}
         </ul>
@@ -152,128 +158,214 @@
     .product-detail-container {
         max-width: 1200px;
         margin: 0 auto;
-        padding: 20px;
+        padding: 30px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
+
     .main-content {
         display: flex;
         justify-content: space-between;
+        flex-wrap: wrap;
     }
+
     .gallery-section, .info-section {
         width: 48%;
+        margin-bottom: 30px;
     }
+
     .main-gallery {
         margin-bottom: 20px;
     }
+
     .main-image {
         width: 100%;
+        max-height: 500px;
+        object-fit: cover;
         border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
+
     .thumbnail-scroll {
         display: flex;
+        justify-content: flex-start;
+        gap: 10px;
         overflow-x: auto;
     }
-    .thumbnail-list {
-        display: flex;
-    }
+
     .thumbnail-item {
-        margin-right: 10px;
-    }
-    .thumbnail-item img {
-        width: 100px;
-        height: 100px;
+        width: 80px;
+        height: 80px;
         border-radius: 5px;
         cursor: pointer;
+        transition: transform 0.2s ease-in-out;
     }
+
+    .thumbnail-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 5px;
+    }
+
     .thumbnail-item.active img {
         border: 2px solid #007bff;
     }
+
+    .thumbnail-item:hover {
+        transform: scale(1.05);
+    }
+
     .info-section {
         padding: 20px;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
+
     .product-title {
-        font-size: 24px;
+        font-size: 2rem;
         margin-bottom: 20px;
+        font-weight: bold;
+        color: #333;
     }
+
     .price-section {
         margin-bottom: 20px;
     }
+
     .price-label {
         font-weight: bold;
+        font-size: 1.2rem;
     }
+
     .price {
-        font-size: 24px;
+        font-size: 2rem;
         color: #007bff;
     }
+
     .specs {
         margin-bottom: 20px;
     }
+
     .spec-item {
         margin-bottom: 10px;
     }
+
     .spec-label {
         font-weight: bold;
     }
+
     .stock-status {
         font-weight: bold;
+        font-size: 1rem;
     }
+
     .out-of-stock {
         color: #dc3545;
     }
+
     .in-stock {
         color: #28a745;
     }
+
     .action-buttons {
         margin-top: 20px;
     }
+
     .buy-btn {
         background-color: #007bff;
         color: white;
-        padding: 10px 20px;
+        padding: 12px 24px;
         border: none;
         border-radius: 5px;
+        font-size: 1.1rem;
         cursor: pointer;
+        width: 100%;
+        transition: background-color 0.2s;
     }
+
     .buy-btn:disabled {
         background-color: #ccc;
         cursor: not-allowed;
     }
+
+    .buy-btn:hover {
+        background-color: #0056b3;
+    }
+
     .description-section {
         margin-top: 40px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
+
     .description-content {
         white-space: pre-wrap;
+        color: #555;
     }
+
     .reviews-section {
         margin-top: 40px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
+
     .reviews-list {
         list-style-type: none;
         padding: 0;
     }
+
     .review-item {
         border-bottom: 1px solid #ddd;
         padding: 10px 0;
+        margin-bottom: 15px;
     }
+
     .review-item strong {
         font-weight: bold;
+        color: #333;
     }
+
     .review-item p {
         margin: 5px 0;
+        color: #555;
     }
+
     .review-item img, .review-item video {
         display: block;
         margin-top: 10px;
+        max-width: 300px;
+        border-radius: 5px;
     }
+
     .review-item small {
         color: #888;
     }
+
     .star-rating {
-        font-size: 1.2rem;
+        font-size: 1.5rem;
         color: #FFD700; /* Lighter Gold color */
     }
+
     .custom-star {
-        margin-right: 3px;
+        margin-right: 5px;
+    }
+
+    .verified-purchase {
+        font-size: 0.9rem;
+        margin-top: 10px;
+        display: inline-block;
+    }
+
+    .verified-label {
+        color: #28a745;
+        font-weight: bold;
     }
 </style>
 {% endblock %}
-    

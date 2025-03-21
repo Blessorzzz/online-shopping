@@ -1,0 +1,20 @@
+<!-- filepath: c:\Users\Josh\ISI\django_projects\online-shopping\web\templates\review\edit_review.html -->
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">{% trans "Edit Review" %}</h2>
+
+    <div class="card p-4 shadow-sm">
+        <h4>{% trans "Product:" %} {{ product.product_name }}</h4>
+        <p>{% trans "Order ID:" %} {{ order.po_number }}</p>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">{% trans "Update Review" %}</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

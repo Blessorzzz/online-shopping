@@ -1570,3 +1570,118 @@ table.order-table thead {
     text-align: center;
     padding: 20px;
 }
+
+.star-rating {
+    font-size: 1.5rem;
+}
+
+/* Custom star color */
+.custom-star {
+    color: #FFD700; /* Lighter Gold color */
+}
+
+/* Review Table Styles */
+.review-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.review-table th {
+    background-color: #007bff;
+    color: white;
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.review-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.review-table tr:hover {
+    background-color: #e3f2fd;
+    cursor: pointer;
+}
+
+.review-table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+/* Status Labels */
+.status-label {
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.status-approved {
+    color: #28a745;
+    background-color: #d4edda;
+}
+
+.status-pending {
+    color: #ffc107;
+    background-color: #fff3cd;
+}
+
+/* Product Grid Styling */
+.product-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Add spacing between product items */
+    justify-content: flex-start;
+}
+
+.product-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 120px; /* Adjust width for better spacing */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.product-thumbnail {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.product-name {
+    font-size: 14px;
+    color: #333;
+    font-weight: bold;
+    text-decoration: none;
+    margin-top: 5px;
+}
+
+.product-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.product-link:hover .product-name {
+    color: #007bff; /* Bootstrap primary color */
+}

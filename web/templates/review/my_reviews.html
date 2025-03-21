@@ -6,41 +6,46 @@
     <h2 class="text-center mb-4">{% trans "My Reviews" %}</h2>
     
     <div class="card p-4 shadow-sm">
-        {% if reviews %}
+        {% if orders_with_reviews %}
             <table class="review-table">
                 <thead>
                     <tr>
-                        <th>{% trans "Product" %}</th>
+                        <th>{% trans "Order ID" %}</th>
+                        <th>{% trans "Products" %}</th>
                         <th>{% trans "Rating" %}</th>
                         <th>{% trans "Comment" %}</th>
-                        <th>{% trans "Status" %}</th>
                         <th>{% trans "Created At" %}</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for review in reviews %}
-                        <tr>
+                    {% for order_id, data in orders_with_reviews.items %}
+                        <tr class="clickable-row" data-href="{% url 'order_detail' data.order.id %}">
+                            <td>{{ data.order.po_number }}</td>
                             <td>
-                                {% if review.product %}
-                                    {{ review.product.product_name }}
-                                {% else %}
-                                    {% trans "Product not available" %}
-                                {% endif %}
+                                <div class="product-list">
+                                    {% for product_review in data.reviews %}
+                                        <a href="{% url 'product_detail' product_review.product.product_id %}" class="product-link">
+                                            {{ product_review.product.product_name }}
+                                        </a>
+                                    {% endfor %}
+                                </div>
                             </td>
                             <td>
-                                <span class="star-rating" data-rating="{{ review.rating }}"></span>
+                                {% for product_review in data.reviews %}
+                                    <span class="star-rating" data-rating="{{ product_review.review.rating }}"></span>
+                                    <span class="average-rating-text">({{ product_review.review.rating|floatformat:1 }} / 5)</span>
+                                {% endfor %}
                             </td>
-                            <td>{{ review.comment }}</td>
                             <td>
-                                <span class="status-label {% if review.is_approved %}status-approved{% else %}status-pending{% endif %}">
-                                    {% if review.is_approved %}
-                                        {% trans "Approved" %}
-                                    {% else %}
-                                        {% trans "Pending" %}
-                                    {% endif %}
-                                </span>
+                                {% for product_review in data.reviews %}
+                                    <p>{{ product_review.review.comment }}</p>
+                                {% endfor %}
                             </td>
-                            <td>{{ review.created_at|date:"Y-m-d H:i" }}</td>
+                            <td>
+                                {% for product_review in data.reviews %}
+                                    <p>{{ product_review.review.created_at|date:"Y-m-d H:i" }}</p>
+                                {% endfor %}
+                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -51,108 +56,43 @@
     </div>
 </div>
 
-<!-- JavaScript to handle star rendering -->
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll('.star-rating').forEach(function (element) {
-        let rating = parseFloat(element.getAttribute('data-rating'));
-        let fullStars = Math.floor(rating); // Count of full stars
-        let halfStar = rating % 1 >= 0.5;  // Check if there is a half star
-        let starHtml = '';
+    // Make the entire row clickable
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll(".clickable-row").forEach(row => {
+            row.addEventListener("click", function() {
+                window.location.href = this.dataset.href;
+            });
+        });
 
-        // Add full stars
-        for (let i = 0; i < fullStars; i++) {
-            starHtml += '<i class="fas fa-star custom-star"></i>';
-        }
+        // Handle star rendering
+        document.querySelectorAll('.star-rating').forEach(function (element) {
+            let rating = parseFloat(element.getAttribute('data-rating'));
+            let fullStars = Math.floor(rating); // Count of full stars
+            let hasHalfStar = rating % 1 >= 0.5; // Check if there is a half star
+            let starHtml = '';
 
-        // Add half star if needed
-        if (halfStar) {
-            starHtml += '<i class="fas fa-star-half-alt custom-star"></i>';
-        }
+            // Add full stars
+            for (let i = 0; i < fullStars; i++) {
+                starHtml += '<i class="fas fa-star custom-star"></i>';
+            }
 
-        // Add empty stars to complete 5 stars
-        while (starHtml.split('fa-star').length - 1 < 5) {
-            starHtml += '<i class="far fa-star custom-star"></i>';
-        }
+            // Add half star if needed
+            if (hasHalfStar) {
+                starHtml += '<i class="fas fa-star-half-alt custom-star"></i>';
+            }
 
-        element.innerHTML = starHtml;
+            // Add empty stars to complete 5 stars
+            while (starHtml.split('fa-star').length - 1 < 5) {
+                starHtml += '<i class="far fa-star custom-star"></i>';
+            }
+
+            element.innerHTML = starHtml;
+        });
     });
-});
 </script>
 
 <!-- Include FontAwesome for icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-<style>
-    .container-fluid {
-        max-width: 100%;
-    }
-    .card {
-        border-radius: 10px;
-        padding: 20px;
-    }
-
-    .review-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-        font-family: Arial, sans-serif;
-        font-size: 14px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        border-radius: 10px;
-        overflow: hidden;
-        text-align: center;
-        border: 1px solid #ddd;
-    }
-
-    .review-table th {
-        background-color: #007bff;
-        color: white;
-        padding: 12px;
-        text-align: center;
-        border: 1px solid #ddd;
-    }
-
-    .review-table tr:nth-child(even) {
-        background-color: #f9f9f9;
-    }
-
-    .review-table tr:hover {
-        background-color: #e3f2fd;
-        cursor: pointer;
-    }
-
-    .review-table td {
-        padding: 12px;
-        border: 1px solid #ddd;
-        text-align: center;
-    }
-
-    .star-rating {
-        font-size: 1.5rem;
-    }
-
-    /* Custom star color */
-    .custom-star {
-        color: #FFD700; /* Lighter Gold color */
-    }
-
-    .status-label {
-        font-weight: bold;
-        padding: 5px 10px;
-        border-radius: 5px;
-        display: inline-block;
-    }
-
-    .status-approved {
-        color: #28a745;
-        background-color: #d4edda;
-    }
-
-    .status-pending {
-        color: #ffc107;
-        background-color: #fff3cd;
-    }
-</style>
 
 {% endblock %}

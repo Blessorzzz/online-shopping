@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Orders</title>
+    <title>{% trans "My Orders" %}</title>
     <link rel="stylesheet" href="{% static 'css/order_list.css' %}">
 </head>
 <body>
@@ -38,9 +38,8 @@
                 <th>{% trans "Purchase Date" %}</th>
                 <th>{% trans "Total Amount" %}</th>
                 <th>{% trans "Status" %}</th>
-                <th>{% trans "Verified Purchase" %}</th> <!-- Added Verified Purchase column -->
+                <th>{% trans "Verified Purchase" %}</th>
                 <th>{% trans "Actions" %}</th>
-                <th>{% trans "Reviews" %}</th>
             </tr>
         </thead>
         <tbody>
@@ -51,21 +50,21 @@
                 <td>${{ order.total_amount }}</td>
                 <td class="status">
                     {% if order.status == 'pending' %}
-                        <span class="status-label status-pending">⏳ Pending</span>
+                        <span class="status-label status-pending">⏳ {% trans "Pending" %}</span>
                     {% elif order.status == 'shipped' %}
-                        <span class="status-label status-shipped">📦 Shipped</span>
+                        <span class="status-label status-shipped">📦 {% trans "Shipped" %}</span>
                     {% elif order.status == 'cancelled' %}
-                        <span class="status-label status-cancelled">❌ Cancelled</span>
+                        <span class="status-label status-cancelled">❌ {% trans "Cancelled" %}</span>
                     {% elif order.status == 'hold' %}
-                        <span class="status-label status-hold">⏸️ Hold</span>
+                        <span class="status-label status-hold">⏸️ {% trans "Hold" %}</span>
                     {% elif order.status == 'ticket-issued' %}
-                        <span class="status-label status-ticket">🎫 Ticket Issued</span>
+                        <span class="status-label status-ticket">🎫 {% trans "Ticket Issued" %}</span>
                     {% elif order.status == 'complete' %}
-                        <span class="status-label status-complete">✅ Complete</span>
+                        <span class="status-label status-complete">✅ {% trans "Complete" %}</span>
                     {% elif order.status == 'refunded' %}
-                        <span class="status-label status-refunded">💰 Refunded</span>
+                        <span class="status-label status-refunded">💰 {% trans "Refunded" %}</span>
                     {% elif order.status == 'delivered' %}
-                        <span class="status-label status-delivered">📬 Delivered</span>
+                        <span class="status-label status-delivered">📬 {% trans "Delivered" %}</span>
                     {% endif %}
                 </td>
 
@@ -83,11 +82,6 @@
                         {% csrf_token %}
                         <button type="submit" class="btn btn-danger">{% trans "Cancel" %}</button>
                     </form>
-                    {% endif %}
-                </td>
-                <td>
-                    {% if order.status == "complete" or order.status == "refunded" or order.status == "delivered" %}
-                        <a href="{% url 'add_review' order.id %}" class="btn btn-primary">Add a Review</a>
                     {% endif %}
                 </td>
             </tr>
