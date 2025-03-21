@@ -72,9 +72,9 @@
     <div class="description-section">
         <h3>{% trans "Product Details" %}</h3>
         <div class="description-content">
-            {{ product.description|default:product.description_en|linebreaksbr }}
+            <span title="{{ product.description|default:product.description_en }}">{{ product.description|default:product.description_en|linebreaksbr }}</span>
         </div>
-    </div>
+    </div>    
 </div>
 
 <script>

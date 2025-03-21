@@ -12,7 +12,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 
@@ -65,4 +65,20 @@ body {
 
 .login-box a:hover {
     text-decoration: underline;
+}
+
+/* 强制在登录页中 #large-caption 固定在视口底部 */
+#large-caption {
+    position: fixed !important;
+    bottom: 10px !important;
+    left: 50% !important;
+    margin: 0 auto !important;
+    width: 90% !important;
+    z-index: 9999 !important;
+    transform: translateX(-50%) !important;
+}
+
+
+#content-wrapper {
+    padding-bottom: 0 !important;
 }
