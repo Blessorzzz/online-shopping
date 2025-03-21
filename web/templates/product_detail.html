@@ -126,31 +126,44 @@
         <ul class="reviews-list">
             {% for review in reviews %}
                 <li class="review-item">
-                    <strong>{{ review.user.username }}</strong> rated this 
-                    <span class="star-rating" data-rating="{{ review.rating }}"></span>
-                    <p>{{ review.comment }}</p>
+                    <!-- Review Header -->
+                    <div class="review-header">
+                        <strong>{{ review.user.username }}</strong>
+                        <span class="star-rating" data-rating="{{ review.rating }}"></span>
+                        <span class="review-date">{% trans "Reviewed on" %} {{ review.created_at|date:"Y-m-d H:i" }}</span>
+                    </div>
+
+                    <!-- Verified Purchase Badge -->
+                    {% if review.order and review.order.verified_purchase %}
+                        <div class="verified-purchase">
+                            <span class="verified-label">{% trans "Verified Purchase" %}</span>
+                        </div>
+                    {% endif %}
+
+                    <!-- Review Content -->
+                    <div class="review-content">
+                        <p>{{ review.comment }}</p>
+                    </div>
+
+                    <!-- Review Media (Images/Video) -->
                     {% if review.image %}
-                        <img src="{{ review.image.url }}" alt="Review Image" class="review-image">
+                        <div class="review-media">
+                            <img src="{{ review.image.url }}" alt="Review Image" class="review-image">
+                        </div>
                     {% endif %}
                     {% if review.video %}
-                        <video controls class="review-video">
-                            <source src="{{ review.video.url }}" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                    {% endif %}
-                    <small>{% trans "Reviewed on" %} {{ review.created_at|date:"Y-m-d H:i" }}</small>
-
-                    <!-- Verified Purchase -->
-                    {% if review.order and review.order.verified_purchase %}
-                        <span class="verified-purchase">
-                            <span class="verified-label">{% trans "Verified Purchase" %}</span>
-                        </span>
+                        <div class="review-media">
+                            <video controls class="review-video">
+                                <source src="{{ review.video.url }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
                     {% endif %}
                 </li>
             {% endfor %}
         </ul>
     {% else %}
-        <p>{% trans "No reviews yet. Be the first to review this product!" %}</p>
+        <p class="no-reviews-message">{% trans "No reviews yet. Be the first to review this product!" %}</p>
     {% endif %}
 </div>
 
@@ -308,12 +321,24 @@
         color: #555;
     }
 
+    /* Reviews Section */
     .reviews-section {
         margin-top: 40px;
         background-color: white;
         padding: 20px;
         border-radius: 8px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        max-width: 800px; /* Limit width for better readability */
+        margin-left: auto;
+        margin-right: auto; /* Center the section */
+    }
+
+    .reviews-section h3 {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 20px;
+        text-align: center; /* Center the heading */
     }
 
     .reviews-list {
@@ -323,49 +348,92 @@
 
     .review-item {
         border-bottom: 1px solid #ddd;
-        padding: 10px 0;
+        padding: 20px 0;
         margin-bottom: 15px;
     }
 
-    .review-item strong {
+    .review-item:last-child {
+        border-bottom: none;
+    }
+
+    /* Review Header */
+    .review-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    .review-header strong {
         font-weight: bold;
         color: #333;
     }
 
-    .review-item p {
-        margin: 5px 0;
-        color: #555;
+    .review-header .star-rating {
+        font-size: 1.2rem;
+        color: #FFD700;
     }
 
-    .review-item img, .review-item video {
-        display: block;
-        margin-top: 10px;
-        max-width: 300px;
-        border-radius: 5px;
-    }
-
-    .review-item small {
+    .review-header .review-date {
+        font-size: 0.9rem;
         color: #888;
     }
 
-    .star-rating {
-        font-size: 1.5rem;
-        color: #FFD700; /* Lighter Gold color */
-    }
-
-    .custom-star {
-        margin-right: 5px;
-    }
-
+    /* Verified Purchase Badge */
     .verified-purchase {
-        font-size: 0.9rem;
-        margin-top: 10px;
-        display: inline-block;
+        margin-bottom: 10px;
     }
 
     .verified-label {
+        font-size: 0.9rem;
         color: #28a745;
         font-weight: bold;
+        background-color: #e8f5e9;
+        padding: 4px 8px;
+        border-radius: 4px;
+        display: inline-block;
+    }
+
+    /* Review Content */
+    .review-content {
+        margin-bottom: 10px;
+    }
+
+    .review-content p {
+        margin: 0;
+        color: #555;
+        line-height: 1.5;
+    }
+
+    /* Review Media (Images/Video) */
+    .review-media {
+        margin-top: 10px;
+        text-align: center; /* Center media */
+    }
+
+    .review-image {
+        max-width: 100%;
+        max-height: 300px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .review-video {
+        max-width: 100%;
+        max-height: 300px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* No Reviews Message */
+    .no-reviews-message {
+        text-align: center;
+        color: #666;
+        font-size: 1.1rem;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        border: 1px solid #ddd;
     }
 </style>
 {% endblock %}
