@@ -152,7 +152,7 @@ function decreaseZoom() {
 let currentTheme = null;
 
 function toggleColorScheme() {
-    const themes = ['high-contrast', 'protanopia', 'deuteranopia', 'tritanopia', 'grayscale', null];
+    const themes = ['high-contrast', 'protanopia', 'tritanopia', 'grayscale', null];
     let savedTheme = localStorage.getItem('accessibilityTheme');
     let currentIndex = themes.indexOf(savedTheme);
     if (currentIndex === -1) {
