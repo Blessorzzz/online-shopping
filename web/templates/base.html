@@ -10,7 +10,21 @@
     
     <!-- Include Font Awesome for icons (such as stars) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    
+    <script>
+        function adjustContentPadding() {
+          const menu = document.getElementById("menu");
+          const contentWrapper = document.getElementById("content-wrapper");
+          // 获取菜单当前的高度
+          const menuHeight = menu.offsetHeight;
+          // 将内容区域的上内边距设置为菜单高度
+          contentWrapper.style.paddingTop = menuHeight + "px";
+        }
+        
+        // 页面加载和窗口大小变化时都调用
+        window.addEventListener("load", adjustContentPadding);
+        window.addEventListener("resize", adjustContentPadding);
+        </script>
+        
     <style>
         .nav-container {
             display: flex;

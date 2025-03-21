@@ -172,3 +172,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_URL = '/media/'
 # 媒体文件在服务器上的存储路径
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.ngrok-free.app',
+]
