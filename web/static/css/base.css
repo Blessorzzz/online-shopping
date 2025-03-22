@@ -316,8 +316,9 @@ form.nav-right button:hover {
 }
 
 .user button {
-    margin:10px;
-    padding: 8px 16px !important;
+    white-space: nowrap;
+    /* margin:10px;
+    padding: 8px 16px !important; */
     height: 36px;
     align-items: center;
     display: flex;
@@ -994,7 +995,7 @@ button:hover {
 
 /* 链接颜色调整 */
 a {
-    color: var(--button-text);
+    color: var(--text-color);
 }
 
 a:hover {
@@ -1092,7 +1093,7 @@ button:hover, input:hover, select:hover {
 }
 
 a {
-    color: var(--button-text);
+    color: var(--text-color);
 }
 
 a:hover {
@@ -1724,8 +1725,8 @@ table.order-table thead {
         margin-bottom: 10px; /* 分隔上下行 */
     }
     .nav-right {
-        
-        justify-content: center;
+        display: flex;
+        justify-content: flex-end;
     }
 }
     /* Product Grid */
@@ -1758,6 +1759,8 @@ table.order-table thead {
     }
     .nav-left ul,
     .nav-right {
+        display: flex;
+        justify-content: flex-end;
         flex-direction: column;
     }
     .nav-left ul li,
@@ -1784,3 +1787,5 @@ table.order-table thead {
         width: 100%; /* Make the search input full-width */
     }
 }
+
+
