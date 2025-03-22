@@ -1720,9 +1720,11 @@ table.order-table thead {
         text-align: center;
     }
     .nav-left {
+        white-space: nowrap !important;
         margin-bottom: 10px; /* 分隔上下行 */
     }
     .nav-right {
+        
         justify-content: center;
     }
 }
@@ -1743,36 +1745,16 @@ table.order-table thead {
         height: auto;
     }
 
-    /* Product Images */
-    .product-thumb {
-        height: 180px; /* Adjust image height for smaller screens */
-    }
 
-    /* Adjust button size */
-    .buy-btn {
-        padding: 12px 24px; /* Ensure button fits nicely */
-    }
-
-    /* Adjust the main image size for mobile */
-    .main-image {
-        height: 300px; /* Make the image smaller */
-        object-fit: contain;
-    }
-
-    /* Ensure better spacing and readability */
-    .product-price {
-        font-size: 18px; /* Make price text smaller */
-    }
-
-    .pagination a {
-        padding: 5px 8px; /* Reduce padding */
-    }
 }
 
 /* For very small screens (below 480px), adjust more aggressively */
 @media (max-width: 480px) {
     #menu {
         padding: 5px; /* Further reduce padding */
+    }
+    .nav-left{
+        white-space: nowrap;
     }
     .nav-left ul,
     .nav-right {

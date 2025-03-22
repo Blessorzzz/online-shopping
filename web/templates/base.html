@@ -108,17 +108,17 @@
         <ul>
             <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
             {% if user.is_authenticated %}
-                <li><a href="{% url 'shopping_cart' %}">{% trans "My Cart" %}</a></li>
-                <li><a href="{% url 'order_list' %}">{% trans "My Orders" %}</a></li>
-                <li><a href="{% url 'my_reviews' %}">{% trans "My Reviews" %}</a></li>
+                <li><a href="{% url 'shopping_cart' %}">{% trans "Cart" %}</a></li>
+                <li><a href="{% url 'order_list' %}">{% trans "Orders" %}</a></li>
+                <li><a href="{% url 'my_reviews' %}">{% trans "Reviews" %}</a></li>
                 <li><a href="{% url 'register' %}">{% trans "Register" %}</a></li>       
             {% else %}
-                <li><a href="{% url 'shopping_cart' %}">{% trans "My Cart" %}</a></li>
-                <li><a href="{% url 'order_list' %}">{% trans "My Orders" %}</a></li>
+                <li><a href="{% url 'shopping_cart' %}">{% trans "Cart" %}</a></li>
+                <li><a href="{% url 'order_list' %}">{% trans "Orders" %}</a></li>
                 <li><a href="{% url 'login' %}">{% trans "Login" %}</a></li>
                 <li><a href="{% url 'register' %}">{% trans "Register" %}</a></li>
             {% endif %}
-            <li><a href="#" id="accessibility-btn">{% trans "Web Accessibility" %}</a></li>
+            <li><a href="#" id="accessibility-btn">{% trans "Accessibility" %}</a></li>
         </ul>
     </div>
         <div class="user nav-right">
