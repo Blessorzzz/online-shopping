@@ -104,6 +104,7 @@
 
     <!-- 导航菜单 -->
     <div id="menu" class="nav-container">
+        <div class="user nav-left">
         <ul>
             <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
             {% if user.is_authenticated %}
@@ -119,6 +120,7 @@
             {% endif %}
             <li><a href="#" id="accessibility-btn">{% trans "Web Accessibility" %}</a></li>
         </ul>
+    </div>
         <div class="user nav-right">
             <form method="get" action="{% url 'home' %}">
                 <input type="text" name="q" placeholder="{% trans 'Search product' %}">
