@@ -45,15 +45,16 @@
                     <td>${{ order.total_amount }}</td>
                     <td class="status">
                         <span class="status-label status-{{ order.status }}" aria-label="{{ order.status|capfirst }}">
-                            {% if order.status == 'pending' %}⏳ Pending
-                            {% elif order.status == 'shipped' %}📦 Shipped
-                            {% elif order.status == 'cancelled' %}❌ Cancelled
-                            {% elif order.status == 'hold' %}⏸️ Hold
-                            {% elif order.status == 'ticket-issued' %}🎫 Ticket Issued
-                            {% elif order.status == 'complete' %}✅ Complete
-                            {% elif order.status == 'refunded' %}💰 Refunded
-                            {% elif order.status == 'delivered' %}📬 Delivered
+                            {% if order.status == 'pending' %}⏳ {% trans "Pending" %}
+                            {% elif order.status == 'shipped' %}📦 {% trans "Shipped" %}
+                            {% elif order.status == 'cancelled' %}❌ {% trans "Cancelled" %}
+                            {% elif order.status == 'hold' %}⏸️ {% trans "Hold" %}
+                            {% elif order.status == 'ticket-issued' %}🎫 {% trans "Ticket Issued" %}
+                            {% elif order.status == 'complete' %}✅ {% trans "Complete" %}
+                            {% elif order.status == 'refunded' %}💰 {% trans "Refunded" %}
+                            {% elif order.status == 'delivered' %}📬 {% trans "Delivered" %}
                             {% endif %}
+
                         </span>
                     </td>
                     <td>

@@ -119,9 +119,7 @@ USE_L10N = True
 
 LANGUAGES = [
     ('en', _('English')),
-    ('es', _('Spanish')),
     ('ja', _('Japanese')),
-    ('ko', _('Korean')),
     ('zh-hans', _('Simplified Chinese')),  # ✅ 确保 Django 识别 `zh-hans`
 ]
 

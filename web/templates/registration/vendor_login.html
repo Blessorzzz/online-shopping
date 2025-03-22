@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     {% load static %}
+    {% load i18n %}
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vendor Login</title>
@@ -97,10 +99,10 @@
             <form method="post" action="{% url 'vendor_login' %}">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <button type="submit">Login</button>
+                <button type="submit">{% trans "Login" %}</button>
             </form>
             <div style="margin-top: 20px;">
-                <a href="{% url 'home' %}" class="back-to-home-button">Back to Home</a>
+                <a href="{% url 'home' %}" class="back-to-home-button">{% trans "Back to Home" %}</a>
             </div>
         </div>
     </div>

@@ -39,8 +39,13 @@
 
             <div class="price-section">
                 <span class="price-label">{% trans "Price" %}</span>
-                <span class="price" aria-label="{% trans 'Product price' %}">¥{{ product.price }}</span>
+                <span class="price"
+                      aria-label="{% trans 'Product price' %} ¥{{ product.price }}"
+                      tabindex="0">
+                    ¥{{ product.price }}
+                </span>
             </div>
+            
 
             <div class="specs">
                 <div class="spec-item">

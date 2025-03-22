@@ -37,8 +37,13 @@
                                 {{ item.product.product_name }}
                             </a>
                         </td>
-                        <td aria-label="{% trans 'Price per item' %}">${{ item.product.price }}</td>
-                        <td>
+
+                        <!-- ✅ 加入 aria-label 和 tabindex -->
+                        <td aria-label="{% trans 'Price per item' %} ${{ item.product.price }}" tabindex="0">
+                            ${{ item.product.price }}
+                        </td>
+
+                        <td aria-label="{% trans 'Quantity' %}: {{ item.quantity }}" tabindex="0">
                             <form method="POST" action="{% url 'update_cart' item.id %}" class="quantity-form" aria-label="{% trans 'Update quantity for' %} {{ item.product.product_name }}">
                                 {% csrf_token %}
                                 <button type="submit" name="action" value="decrease" class="quantity-button"
@@ -49,7 +54,11 @@
                                         aria-label="{% trans 'Increase quantity of' %} {{ item.product.product_name }}">+</button>
                             </form>
                         </td>
-                        <td aria-label="{% trans 'Subtotal for this product' %}">${{ item.total_price }}</td>
+
+                        <td aria-label="{% trans 'Subtotal' %}: ${{ item.total_price }}" tabindex="0">
+                            ${{ item.total_price }}
+                        </td>
+
                         <td>
                             <form method="POST" action="{% url 'remove_from_cart' item.id %}">
                                 {% csrf_token %}
@@ -79,12 +88,11 @@
     {% endif %}
 
     <script>
-        // Show popup message
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             var popupMessage = document.getElementById('popup-message');
             if (popupMessage) {
                 popupMessage.style.display = 'block';
-                setTimeout(function() {
+                setTimeout(function () {
                     popupMessage.style.display = 'none';
                 }, 5000);
             }
