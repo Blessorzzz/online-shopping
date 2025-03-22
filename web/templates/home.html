@@ -2,59 +2,56 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% block content %}
-{# home.html 修改部分 #}
-<div class="product-list">
-    {% for product in products %}
-    <div class="product-card">
-        <div class="image-wrapper">
-            <a href="{% url 'product_detail' product.product_id %}">
-                <img src="{{ product.thumbnail_image.url }}" 
-                     alt="{{ product.product_name }}" 
-                     class="product-thumb">
-                {% if product.stock_quantity == 0 %}
-                <div class="sold-out-tag">SOLD OUT</div>
-                {% endif %}
-            </a>
-        </div>
-        <div class="product-meta">
-            <h3 class="product-title">
-                <a href="{% url 'product_detail' product.product_id %}">
-                    {{ product.product_name }}
+<main id="main-content" role="main" aria-label="{% trans 'Product List' %}">
+    <section class="product-list">
+        {% for product in products %}
+        <article class="product-card" role="group" aria-label="{{ product.product_name }}">
+            <div class="image-wrapper">
+                <a href="{% url 'product_detail' product.product_id %}" aria-label="{% trans 'View details for' %} {{ product.product_name }}">
+                    <img src="{{ product.thumbnail_image.url }}"
+                         alt="{% trans 'Thumbnail image of' %} {{ product.product_name }}"
+                         class="product-thumb">
+                    {% if product.stock_quantity == 0 %}
+                    <div class="sold-out-tag" aria-label="{% trans 'Sold Out' %}">SOLD OUT</div>
+                    {% endif %}
                 </a>
-            </h3>
-            <div class="price-section">
-                <span class="current-price">¥{{ product.price }}</span>
             </div>
-            <div class="sales-info">
-                <span class="sales-count">Sales: 999+</span>
-                <span class="stock-status {% if product.stock_quantity == 0 %}out-stock{% endif %}">
-                    {{ product.stock_quantity|default:"0" }} Left
-                </span>
+            <div class="product-meta">
+                <h3 class="product-title">
+                    <a href="{% url 'product_detail' product.product_id %}">{{ product.product_name }}</a>
+                </h3>
+                <div class="price-section">
+                    <span class="current-price" aria-label="{% trans 'Price' %} ¥{{ product.price }}">¥{{ product.price }}</span>
+                </div>
+                <div class="sales-info" aria-label="{% trans 'Sales and stock information' %}">
+                    <span class="sales-count">{% trans 'Sales' %}: 999+</span>
+                    <span class="stock-status {% if product.stock_quantity == 0 %}out-stock{% endif %}">
+                        {{ product.stock_quantity|default:"0" }} {% trans 'Left' %}
+                    </span>
+                </div>
             </div>
-        </div>
-    </div>
-    {% endfor %}
-</div>
-
-<div class="pagination">
-    <span class="step-links">
-        {% if page_obj.has_previous %}
-            <a href="?page=1">&laquo; {% trans "home" %}</a>
-            <a href="?page={{ page_obj.previous_page_number }}">{% trans "previous" %}</a>
-        {% endif %}
-
-        {% for page in page_obj.paginator.page_range %}
-            {% if page == page_obj.number %}
-                <span class="current">{{ page }}</span>
-            {% else %}
-                <a href="?page={{ page }}">{{ page }}</a>
-            {% endif %}
+        </article>
         {% endfor %}
+    </section>
 
-        {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">{% trans "next" %}</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">{% trans "last" %} &raquo;</a>
-        {% endif %}
-    </span>
-</div>
+    <nav class="pagination" aria-label="{% trans 'Pagination' %}">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">{% trans "First" %}</a>
+                <a href="?page={{ page_obj.previous_page_number }}">{% trans "Previous" %}</a>
+            {% endif %}
+            {% for page in page_obj.paginator.page_range %}
+                {% if page == page_obj.number %}
+                    <span class="current" aria-current="page">{{ page }}</span>
+                {% else %}
+                    <a href="?page={{ page }}">{{ page }}</a>
+                {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">{% trans "Next" %}</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">{% trans "Last" %}</a>
+            {% endif %}
+        </span>
+    </nav>
+</main>
 {% endblock content %}

@@ -1,92 +1,81 @@
-<!-- templates/view_cart.html -->
 {% extends 'base.html' %}
 {% load static i18n %}
 
 {% block content %}
-<head>
-    <link rel="stylesheet" href="{% static 'css/shoppingcart.css' %}">
-    <style>
-        .popup-message {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #f44336;
-            color: #ffffff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            z-index: 1000;
-            display: none;
-        }
-        .popup-message.success {
-            background-color: #4CAF50;
-        }
-        .popup-message.error {
-            background-color: #f44336;
-        }
-        .popup-message .message {
-            margin: 0;
-            padding: 0;
-        }
-    </style>
-</head>
+<main role="main" aria-label="{% trans 'Shopping Cart Page' %}">
+    <head>
+        <link rel="stylesheet" href="{% static 'css/shoppingcart.css' %}">
+    </head>
 
-<body>
     <h2>{% trans "Your Shopping Cart" %}</h2>
 
     {% if messages %}
-        <div class="popup-message" id="popup-message">
-            {% for message in messages %}
-                <p class="message {{ message.tags }}">{{ message }}</p>
-            {% endfor %}
-        </div>
+    <div class="popup-message" id="popup-message" role="alert" aria-live="polite">
+        {% for message in messages %}
+            <p class="message {{ message.tags }}">{{ message }}</p>
+        {% endfor %}
+    </div>
     {% endif %}
 
     {% if cart_items %}
-        <table>
-            <thead>
-                <tr>
-                    <th>{% trans "Product" %}</th>
-                    <th>{% trans "Price" %}</th>
-                    <th>{% trans "Quantity" %}</th>
-                    <th>{% trans "Total" %}</th>
-                    <th>{% trans "Actions" %}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in cart_items %}
+        <section aria-label="{% trans 'Cart Items Table' %}">
+            <table role="table">
+                <thead>
                     <tr>
-                        <td><a href="{% url 'product_detail' item.product.product_id %}">{{ item.product.product_name }}</a></td>
-                        <td>{{ item.product.price }}</td>        
+                        <th scope="col">{% trans "Product" %}</th>
+                        <th scope="col">{% trans "Price" %}</th>
+                        <th scope="col">{% trans "Quantity" %}</th>
+                        <th scope="col">{% trans "Total" %}</th>
+                        <th scope="col">{% trans "Actions" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart_items %}
+                    <tr>
                         <td>
-                            <form method="POST" action="{% url 'update_cart' item.id %}" class="quantity-form">
+                            <a href="{% url 'product_detail' item.product.product_id %}" aria-label="{% trans 'View product details' %} {{ item.product.product_name }}">
+                                {{ item.product.product_name }}
+                            </a>
+                        </td>
+                        <td aria-label="{% trans 'Price per item' %}">${{ item.product.price }}</td>
+                        <td>
+                            <form method="POST" action="{% url 'update_cart' item.id %}" class="quantity-form" aria-label="{% trans 'Update quantity for' %} {{ item.product.product_name }}">
                                 {% csrf_token %}
-                                <button type="submit" name="action" value="decrease" class="quantity-button">-</button>
-                                <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="quantity-input" required>
-                                <button type="submit" name="action" value="increase" class="quantity-button">+</button>
+                                <button type="submit" name="action" value="decrease" class="quantity-button"
+                                        aria-label="{% trans 'Decrease quantity of' %} {{ item.product.product_name }}">−</button>
+                                <input type="number" name="quantity" value="{{ item.quantity }}" min="1"
+                                       class="quantity-input" required aria-label="{% trans 'Current quantity' %}">
+                                <button type="submit" name="action" value="increase" class="quantity-button"
+                                        aria-label="{% trans 'Increase quantity of' %} {{ item.product.product_name }}">+</button>
                             </form>
                         </td>
-                        <td>${{ item.total_price }}</td>
+                        <td aria-label="{% trans 'Subtotal for this product' %}">${{ item.total_price }}</td>
                         <td>
                             <form method="POST" action="{% url 'remove_from_cart' item.id %}">
                                 {% csrf_token %}
-                                <button type="submit" class="remove-button">{% trans "Remove" %}</button>
+                                <button type="submit" class="remove-button"
+                                        aria-label="{% trans 'Remove' %} {{ item.product.product_name }}">{% trans "Remove" %}</button>
                             </form>
                         </td>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
 
-        <h3>{% trans "Total" %}: ${{ total_amount }}</h3>
+        <section aria-label="{% trans 'Cart Summary and Checkout' %}">
+            <h3 aria-label="{% trans 'Cart Total Amount' %}">{% trans "Total" %}: ${{ total_amount }}</h3>
 
-        <form action="{% url 'checkout' %}" method="post">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-success">{% trans "Checkout" %}</button>
-        </form>
+            <form action="{% url 'checkout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success"
+                        aria-label="{% trans 'Proceed to checkout, total amount' %} ${{ total_amount }}">
+                    {% trans "Checkout" %}
+                </button>
+            </form>
+        </section>
     {% else %}
-        <p>{% trans "Your cart is empty." %}</p>
+        <p role="alert" aria-live="polite">{% trans "Your cart is empty." %}</p>
     {% endif %}
 
     <script>
@@ -97,10 +86,9 @@
                 popupMessage.style.display = 'block';
                 setTimeout(function() {
                     popupMessage.style.display = 'none';
-                }, 5000); // Hide after 5 seconds
+                }, 5000);
             }
         });
     </script>
-    
-</body>
+</main>
 {% endblock %}

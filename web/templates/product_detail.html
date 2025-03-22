@@ -2,43 +2,46 @@
 {% load i18n %}
 
 {% block content %}
-<div class="product-detail-container">
-    <!-- Main Content Area -->
+<main class="product-detail-container" role="main" aria-label="{% trans 'Product Detail Page' %}">
+
+    <!-- 主图和信息区域 -->
     <div class="main-content">
-        <!-- Image Gallery Section -->
-        <div class="gallery-section">
-            <!-- Main Image -->
+
+        <!-- 图像区域 -->
+        <section class="gallery-section" aria-label="{% trans 'Product Images' %}">
             <div class="main-gallery">
-                <img class="main-image" 
-                     src="{{ product.thumbnail_image.url }}" 
-                     alt="{{ product.product_name }}">
+                <img class="main-image"
+                     src="{{ product.thumbnail_image.url }}"
+                     alt="{% trans 'Main image of' %} {{ product.product_name }}">
             </div>
-            
-            <!-- Thumbnail Horizontal Scroll -->
-            <div class="thumbnail-scroll">
+
+            <div class="thumbnail-scroll" role="list" aria-label="{% trans 'Additional Product Images' %}">
                 <div class="thumbnail-list">
-                    <div class="thumbnail-item active">
-                        <img src="{{ product.thumbnail_image.url }}" 
+                    <div class="thumbnail-item active" role="listitem">
+                        <img src="{{ product.thumbnail_image.url }}"
+                             alt="{% trans 'Thumbnail image of' %} {{ product.product_name }}"
                              onclick="switchImage('{{ product.thumbnail_image.url }}', this)">
                     </div>
                     {% for photo in product.photos.all %}
-                    <div class="thumbnail-item">
-                        <img src="{{ photo.photo.url }}" 
+                    <div class="thumbnail-item" role="listitem">
+                        <img src="{{ photo.photo.url }}"
+                             alt="{% trans 'Extra image of' %} {{ product.product_name }}"
                              onclick="switchImage('{{ photo.photo.url }}', this)">
                     </div>
                     {% endfor %}
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Product Information Section -->
-        <div class="info-section">
+        <!-- 产品信息 -->
+        <section class="info-section" aria-label="{% trans 'Product Information' %}">
             <h1 class="product-title">{{ product.product_name|default:product.product_name_en }}</h1>
+
             <div class="price-section">
                 <span class="price-label">{% trans "Price" %}</span>
-                <span class="price">¥{{ product.price }}</span>
+                <span class="price" aria-label="{% trans 'Product price' %}">¥{{ product.price }}</span>
             </div>
- 
+
             <div class="specs">
                 <div class="spec-item">
                     <span class="spec-label">{% trans "Age Range" %}:</span>
@@ -46,7 +49,8 @@
                 </div>
                 <div class="spec-item">
                     <span class="spec-label">{% trans "Stock" %}:</span>
-                    <span class="stock-status {% if product.stock_quantity == 0 %}out-of-stock{% else %}in-stock{% endif %}">
+                    <span class="stock-status {% if product.stock_quantity == 0 %}out-of-stock{% else %}in-stock{% endif %}" 
+                          aria-label="{% if product.stock_quantity > 0 %}{% trans 'In Stock' %} {{ product.stock_quantity }}{% else %}{% trans 'Out of Stock' %}{% endif %}">
                         {% if product.stock_quantity > 0 %}
                             🟢 In Stock ({{ product.stock_quantity }} Available)
                         {% else %}
@@ -54,28 +58,62 @@
                         {% endif %}
                     </span>
                 </div>
-                
             </div>
 
             <div class="action-buttons">
                 <form method="POST" action="{% url 'add_to_cart' product.product_id %}">
                     {% csrf_token %}
-                    <button type="submit" class="buy-btn" {% if product.stock_quantity == 0 %}disabled{% endif %}>
+                    <button type="submit"
+                            class="buy-btn"
+                            aria-label="{% trans 'Add to cart' %} {{ product.product_name }}"
+                            {% if product.stock_quantity == 0 %}disabled{% endif %}>
                         🛒 {% trans "Add to Cart" %}
                     </button>
                 </form>
             </div>
-        </div>
+        </section>
     </div>
 
-    <!-- Product Description Section -->
-    <div class="description-section">
-        <h3>{% trans "Product Details" %}</h3>
+    <!-- 产品描述 -->
+    <section class="description-section" aria-label="{% trans 'Product Description' %}">
+        <h2>{% trans "Product Details" %}</h2>
         <div class="description-content">
-            <span title="{{ product.description|default:product.description_en }}">{{ product.description|default:product.description_en|linebreaksbr }}</span>
+            <span title="{{ product.description|default:product.description_en }}">
+                {{ product.description|default:product.description_en|linebreaksbr }}
+            </span>
         </div>
-    </div>    
-</div>
+    </section>
+
+    <!-- 用户评论 -->
+    <section class="reviews-section" aria-label="{% trans 'Customer Reviews Section' %}">
+        <h2>{% trans "Customer Reviews" %}</h2>
+
+        {% if reviews %}
+            <ul class="reviews-list" role="list">
+                {% for review in reviews %}
+                    <li class="review-item" role="listitem" aria-label="{% trans 'User Review by' %} {{ review.user.username }}">
+                        <strong>{{ review.user.username }}</strong>
+                        {% trans "rated this" %} <strong>{{ review.rating }}/5</strong>
+                        <p>{{ review.comment }}</p>
+
+                        {% if review.image %}
+                            <img src="{{ review.image.url }}" alt="{% trans 'User review image' %}" style="max-width: 200px;">
+                        {% endif %}
+                        {% if review.video %}
+                            <video controls style="max-width: 200px;">
+                                <source src="{{ review.video.url }}" type="video/mp4">
+                                {% trans "Your browser does not support the video tag." %}
+                            </video>
+                        {% endif %}
+                        <small>{% trans "Reviewed on" %} {{ review.created_at|date:"Y-m-d H:i" }}</small>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>{% trans "No reviews yet. Be the first to review this product!" %}</p>
+        {% endif %}
+    </section>
+</main>
 
 <script>
     function switchImage(newSrc, element) {
@@ -86,35 +124,6 @@
         element.parentElement.classList.add('active');
     }
 </script>
-
-<!-- Customer Reviews Section -->
-<div class="reviews-section">
-    <h3>{% trans "Customer Reviews" %}</h3>
-
-    {% if reviews %}
-        <ul class="reviews-list">
-            {% for review in reviews %}
-                <li class="review-item">
-                    <strong>{{ review.user.username }}</strong> rated this 
-                    <strong>{{ review.rating }}/5</strong>
-                    <p>{{ review.comment }}</p>
-                    {% if review.image %}
-                        <img src="{{ review.image.url }}" alt="Review Image" style="max-width: 200px; max-height: 200px;">
-                    {% endif %}
-                    {% if review.video %}
-                        <video controls style="max-width: 200px; max-height: 200px;">
-                            <source src="{{ review.video.url }}" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                    {% endif %}
-                    <small>{% trans "Reviewed on" %} {{ review.created_at|date:"Y-m-d H:i" }}</small>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>{% trans "No reviews yet. Be the first to review this product!" %}</p>
-    {% endif %}
-</div>
 
 <style>
     .product-detail-container {
