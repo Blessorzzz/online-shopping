@@ -7,7 +7,7 @@ from .models import ShoppingCart, Order, OrderItem
 from django.contrib import messages
 from user.models import UserProfile
 from django.utils.timezone import now
-
+from review.models import Review
 import logging
 
 logger = logging.getLogger(__name__)
@@ -136,9 +136,15 @@ def order_detail(request, order_id):
         key=lambda x: x[1]
     )
 
+    # Fetch reviews for the current order and user
+    reviews = Review.objects.filter(user=request.user, order=order)
+    product_reviews = {str(review.product.product_id): review for review in reviews}  # Ensure keys are strings
+
+
     return render(request, 'order_detail.html', {
         'order': order,
-        'sorted_status_dates': sorted_status_dates
+        'sorted_status_dates': sorted_status_dates,
+        'product_reviews': product_reviews,  # Pass reviews to the template
     })
 
 @login_required

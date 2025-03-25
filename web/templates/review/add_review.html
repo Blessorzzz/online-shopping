@@ -18,14 +18,10 @@
 
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-
-            <div class="form-group">
-                <label>{% trans "Product:" %}</label>
-                <select name="product" class="input-field">
-                    {% for item in products %}
-                        <option value="{{ item.product.product_id }}">{{ item.product.product_name }}</option>
-                    {% endfor %}
-                </select>
+            
+            <div class="mb-3">
+                <label class="form-label">{% trans "Product:" %}</label>
+                <p class="fw-bold">{{ product.product_name }}</p>
             </div>
 
             <div class="form-group">
@@ -39,9 +35,9 @@
                 </div>
                 <input type="hidden" name="rating" id="rating" value="5">
             </div>
-
-            <div class="form-group">
-                <label>{% trans "Comment:" %}</label>
+            
+            <div class="mb-3">
+                <label class="form-label">{% trans "Comment:" %}</label>
                 {{ form.comment }}
             </div>
 
@@ -59,114 +55,5 @@
         </form>
     </div>
 </div>
-
-<style>
-    /* General Container */
-    .review-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        background-color: #f8f9fa;
-    }
-
-    .review-card {
-        background: #fff;
-        padding: 25px;
-        width: 400px;
-        border-radius: 12px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        text-align: center;
-    }
-
-    h2 {
-        color: #333;
-        margin-bottom: 20px;
-        font-size: 1.8rem;
-    }
-
-    /* Message Box */
-    .message-box {
-        margin-bottom: 15px;
-    }
-
-    .message {
-        padding: 10px;
-        border-radius: 5px;
-        font-size: 0.9rem;
-    }
-
-    .error {
-        background-color: #f8d7da;
-        color: #721c24;
-    }
-
-    .success {
-        background-color: #d4edda;
-        color: #155724;
-    }
-
-    /* Form Fields */
-    .form-group {
-        text-align: left;
-        margin-bottom: 15px;
-    }
-
-    label {
-        font-weight: bold;
-        display: block;
-        margin-bottom: 5px;
-        color: #555;
-    }
-
-    .input-field {
-        width: 100%;
-        padding: 8px;
-        border-radius: 6px;
-        border: 1px solid #ddd;
-        font-size: 1rem;
-    }
-
-    /* Star Rating */
-    .star-rating {
-        display: flex;
-        justify-content: center;
-        font-size: 2rem;
-        margin-bottom: 10px;
-    }
-
-    .star {
-        color: #bbb;
-        padding: 5px;
-        transition: color 0.3s;
-    }
-
-    .star.selected {
-        color: gold;
-    }
-</style>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const stars = document.querySelectorAll(".star");
-        const ratingInput = document.getElementById("rating");
-
-        stars.forEach(star => {
-            star.addEventListener("click", function () {
-                let value = this.getAttribute("data-value");
-                ratingInput.value = value;
-                
-                // Highlight all stars up to the clicked one
-                stars.forEach(s => {
-                    if (s.getAttribute("data-value") <= value) {
-                        s.classList.add("selected");
-                    } else {
-                        s.classList.remove("selected");
-                    }
-                });
-            });
-        });
-    });
-</script>
 
 {% endblock %}

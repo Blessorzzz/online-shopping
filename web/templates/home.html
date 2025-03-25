@@ -1,8 +1,7 @@
-<!-- filepath: /c:/Users/Josh/ISI/django_projects/online-shopping/web/templates/home.html -->
+<!-- filepath: c:\Users\Josh\ISI\django_projects\online-shopping\web\templates\home.html -->
 {% extends 'base.html' %}
 {% load i18n %}
 {% block content %}
-{# home.html 修改部分 #}
 <div class="product-list">
     {% for product in products %}
     <div class="product-card">
@@ -31,6 +30,15 @@
                     {{ product.stock_quantity|default:"0" }} Left
                 </span>
             </div>
+
+            <div class="average-rating">
+                {% if product.average_rating %}
+                    <span class="star-rating" data-rating="{{ product.average_rating }}"></span>
+                    <span class="average-rating-text">({{ product.average_rating|floatformat:1 }} / 5)</span>
+                {% else %}
+                    <span class="no-rating">{% trans "No reviews yet" %}</span>
+                {% endif %}
+            </div>
         </div>
     </div>
     {% endfor %}
@@ -57,4 +65,37 @@
         {% endif %}
     </span>
 </div>
+
+<!-- JavaScript to render stars -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll('.star-rating').forEach(function (element) {
+        let rating = parseFloat(element.getAttribute('data-rating'));
+        let fullStars = Math.floor(rating); // Count of full stars
+        let hasHalfStar = rating % 1 >= 0.5; // Check if there is a half star
+        let starHtml = '';
+
+        // Add full stars
+        for (let i = 0; i < fullStars; i++) {
+            starHtml += '<i class="fas fa-star custom-star"></i>';
+        }
+
+        // Add half star if needed
+        if (hasHalfStar) {
+            starHtml += '<i class="fas fa-star-half-alt custom-star"></i>';
+        }
+
+        // Add empty stars to complete 5 stars
+        while (starHtml.split('fa-star').length - 1 < 5) {
+            starHtml += '<i class="far fa-star custom-star"></i>';
+        }
+
+        element.innerHTML = starHtml;
+    });
+});
+</script>
+
+<!-- Include FontAwesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
 {% endblock content %}

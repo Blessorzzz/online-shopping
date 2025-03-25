@@ -80,4 +80,30 @@
     background-color: #e2e3e5;
 }
 
- */
+/* Verified Purchase styles */
+.verified-label {
+    color: #28a745;
+    font-weight: bold;
+    background-color: #d4edda;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.not-verified-label {
+    color: #dc3545;
+    font-weight: bold;
+    background-color: #f8d7da;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+/* Styling for review buttons */
+.btn-secondary {
+    background-color: #6c757d;
+    border: 1px solid #5a6268;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
