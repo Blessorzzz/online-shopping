@@ -169,7 +169,24 @@
 
 <!-- Customer Reviews Section -->
 <div class="reviews-section">
-    <h3>{% trans "Customer Reviews" %}</h3>
+    <div class="reviews-header">
+        <h3>{% trans "Customer Reviews" %}</h3>
+        <div class="sort-controls">
+            <form method="get" class="sort-form">
+                <div class="select-wrapper">
+                    <select name="sort" id="sort" class="styled-select" onchange="this.form.submit()">
+                        <option value="recent" {% if current_sort == 'recent' %}selected{% endif %}>
+                            {% trans "Most Recent" %}
+                        </option>
+                        <option value="helpful" {% if current_sort == 'helpful' %}selected{% endif %}>
+                            {% trans "Most Helpful" %}
+                        </option>
+                    </select>
+                    <span class="select-arrow"></span>
+                </div>
+            </form>
+        </div>
+    </div>
 
     {% if reviews %}
         <ul class="reviews-list">
@@ -201,7 +218,7 @@
                                 data-vote-type="true">
                             👍 <span class="like-count">{{ review.like_count }}</span>
                         </button>
-    
+
                         <button class="vote-btn dislike-btn {% if request.user.id in review.disliked_users_ids %}active{% endif %}" 
                                 data-review-id="{{ review.id }}"
                                 data-vote-type="false">
@@ -544,6 +561,73 @@
     .like-count, .dislike-count {
         font-size: 0.9em;
         color: #666;
+    }
+
+    /* Sorting Controls */
+    .reviews-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+        gap: 20px;
+    }
+
+    .sort-controls {
+        flex-shrink: 0;
+    }
+
+    .select-wrapper {
+        position: relative;
+        width: 200px;
+    }
+
+    .styled-select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        width: 100%;
+        padding: 10px 35px 10px 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        background-color: white;
+        font-size: 14px;
+        color: #333;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .styled-select:hover {
+        border-color: #007bff;
+    }
+
+    .styled-select:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+    }
+
+    .select-arrow {
+        position: absolute;
+        top: 50%;
+        right: 12px;
+        transform: translateY(-50%);
+        pointer-events: none;
+        width: 0;
+        height: 0;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-top: 6px solid #666;
+    }
+
+    @media (max-width: 768px) {
+        .reviews-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .select-wrapper {
+            width: 100%;
+        }
     }
 
 </style>

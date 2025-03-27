@@ -49,17 +49,23 @@ class ProductDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         product = self.get_object()
-        
-        # Annotate reviews with vote counts
+        sort_by = self.request.GET.get('sort', 'recent')
+
+        # Always annotate with vote counts
         reviews = Review.objects.filter(product=product, is_approved=True).annotate(
             like_count=Count('votes', filter=Q(votes__vote_type=True)),
             dislike_count=Count('votes', filter=Q(votes__vote_type=False))
-        ).order_by("-created_at")
-        
+        )
+
+        if sort_by == 'helpful':
+            reviews = reviews.order_by('-like_count', '-created_at')
+        else:
+            reviews = reviews.order_by('-created_at')
+
         context['reviews'] = reviews
+        context['current_sort'] = sort_by
         return context
-
-
+    
 # 购物车页面视图
 class CartView(ListView):
     model = ShoppingCart
