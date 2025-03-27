@@ -1,52 +1,52 @@
 {% extends "base.html" %}
 {% load static i18n %}
-{% block content %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% block head %}
     <title>{% trans "Order Details" %}</title>
     <link rel="stylesheet" href="{% static 'css/order_detail.css' %}">
-</head>
-<body>
+{% endblock %}
+
+
+{% block content %}
+
+<main role="main" aria-label="{% trans 'Order Detail Page' %}">
 
 <div class="order-container">
+
     <h2>{% trans "Order Details" %}</h2>
-    
-    <div class="order-info">
+
+    <!-- 订单信息 -->
+    <section class="order-info" aria-label="{% trans 'Order Information Section' %}">
         <p><strong>{% trans "P.O. Number:" %}</strong> {{ order.po_number }}</p>
         <p><strong>{% trans "Purchase Date:" %}</strong> {{ order.purchase_date|date:"DATETIME_FORMAT" }}</p>
         <p><strong>{% trans "Shipping Address:" %}</strong> {{ order.shipping_address }}</p>
-        <p><strong>{% trans "Total Amount:" %}</strong> <span class="total-amount">${{ order.total_amount }}</span></p>
-        <p><strong>{% trans "Status:" %}</strong>
-            {% if order.status == 'pending' %}
-                <span class="status-label status-pending">⏳ {% trans "Pending" %}</span>
-            {% elif order.status == 'shipped' %}
-                <span class="status-label status-shipped">📦 {% trans "Shipped" %}</span>
-            {% elif order.status == 'cancelled' %}
-                <span class="status-label status-cancelled">❌ {% trans "Cancelled" %}</span>
-            {% elif order.status == 'hold' %}
-                <span class="status-label status-hold">⏸️ {% trans "Hold" %}</span>
-            {% elif order.status == 'ticket-issued' %}
-                <span class="status-label status-ticket">🎫 {% trans "Ticket Issued" %}</span>
-            {% elif order.status == 'complete' %}
-                <span class="status-label status-complete">✅ {% trans "Complete" %}</span>
-            {% elif order.status == 'refunded' %}
-                <span class="status-label status-refunded">💰 {% trans "Refunded" %}</span>
-            {% elif order.status == 'delivered' %}
-                <span class="status-label status-delivered">📬 {% trans "Delivered" %}</span>
-            {% endif %}
+        <p>
+            <strong>{% trans "Total Amount:" %}</strong>
+            <span class="total-amount" aria-label="{% trans 'Total amount' %}">${{ order.total_amount }}</span>
         </p>
-    </div>
+        <p>
+            <strong>{% trans "Status:" %}</strong>
+            <span class="status-label status-{{ order.status }}" aria-label="{% trans 'Current order status is' %} {{ order.status|capfirst }}">
+                {% if order.status == 'pending' %}⏳ {% trans "Pending" %}
+                {% elif order.status == 'shipped' %}📦 {% trans "Shipped" %}
+                {% elif order.status == 'cancelled' %}❌ {% trans "Cancelled" %}
+                {% elif order.status == 'hold' %}⏸️ {% trans "Hold" %}
+                {% elif order.status == 'ticket-issued' %}🎫 {% trans "Ticket Issued" %}
+                {% elif order.status == 'complete' %}✅ {% trans "Complete" %}
+                {% elif order.status == 'refunded' %}💰 {% trans "Refunded" %}
+                {% elif order.status == 'delivered' %}📬 {% trans "Delivered" %}
+                {% endif %}
+            </span>
+        </p>
+    </section>
 
-    <div class="status-dates">
-        <h4>{% trans "Status History" %}</h4>
-        <div class="timeline">
+    <!-- 状态时间线 -->
+    <section class="status-dates" aria-label="{% trans 'Order Status Timeline' %}">
+        <h3>{% trans "Status History" %}</h3>
+        <div class="timeline" role="list">
             {% for status, date in sorted_status_dates %}
-            <div class="timeline-item">
-                <div class="timeline-marker"></div>
+            <div class="timeline-item" role="listitem" aria-label="{% trans status|capfirst %} on {{ date|date:'Y-m-d H:i' }}">
+                <div class="timeline-marker" aria-hidden="true"></div>
                 <div class="timeline-content">
                     <div class="status-card">
                         <span class="status-label">{{ status|title }}:</span>
@@ -55,57 +55,68 @@
                 </div>
             </div>
             {% empty %}
-            <p class="no-history">{% trans "No status history available" %}</p>
+            <p class="no-history" role="note">{% trans "No status history available" %}</p>
             {% endfor %}
         </div>
-    </div>
-    
-    <h3>{% trans "Items in this order:" %}</h3>
-    
-    <table class="order-table">
-        <thead>
-            <tr>
-                <th>{% trans "Actions" %}</th>
-                <th>{% trans "Product" %}</th>
-                <th>{% trans "Quantity" %}</th>
-                <th>{% trans "Unit Price" %}</th>
-                <th>{% trans "Subtotal" %}</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in order.items.all %}
-            <tr>
-                <td>
-                    {% if order.status in "complete refunded delivered" %}
-                        {% with product_reviews.items as reviews %}
-                            {% for key, review in reviews %}
-                                {% if key == item.product.product_id|stringformat:"s" %}
-                                    <a href="{% url 'edit_review' review.pk %}" class="btn btn-secondary">
-                                        {% trans "Edit Review" %}
+    </section>
+
+    <!-- 商品明细 + 评论按钮 -->
+    <section aria-label="{% trans 'Items in This Order' %}">
+        <h3>{% trans "Items in this order:" %}</h3>
+
+        <table class="order-table" role="table">
+            <thead>
+                <tr>
+                    <th scope="col">{% trans "Actions" %}</th>
+                    <th scope="col">{% trans "Product" %}</th>
+                    <th scope="col">{% trans "Quantity" %}</th>
+                    <th scope="col">{% trans "Unit Price" %}</th>
+                    <th scope="col">{% trans "Subtotal" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in order.items.all %}
+                <tr>
+                    <td>
+                        {% if order.status in "complete refunded delivered" %}
+                            {% with product_reviews.items as reviews %}
+                                {% for key, review in reviews %}
+                                    {% if key == item.product.product_id|stringformat:"s" %}
+                                        <a href="{% url 'edit_review' review.pk %}" class="btn btn-secondary" aria-label="{% trans 'Edit your review for' %} {{ item.product.product_name }}">
+                                            {% trans "Edit Review" %}
+                                        </a>
+                                    {% endif %}
+                                {% empty %}
+                                    <a href="{% url 'add_review' order.id item.product.product_id %}" class="btn btn-primary" aria-label="{% trans 'Add a review for' %} {{ item.product.product_name }}">
+                                        {% trans "Add Review" %}
                                     </a>
-                                {% endif %}
-                            {% empty %}
-                                <a href="{% url 'add_review' order.id item.product.product_id %}" class="btn btn-primary">
-                                    {% trans "Add Review" %}
-                                </a>
-                            {% endfor %}
-                        {% endwith %}
-                    {% endif %}
-                </td>
-                <td>
-                    <a href="{% url 'product_detail' item.product.product_id %}">
-                        {{ item.product.product_name }}
-                    </a>
-                </td>
-                <td>{{ item.quantity }}</td>
-                <td>${{ item.price }}</td>
-                <td>${{ item.subtotal }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    
-    <a href="{% url 'order_list' %}" class="back-button">{% trans "Back to Orders" %}</a>
+                                {% endfor %}
+                            {% endwith %}
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'product_detail' item.product.product_id %}" aria-label="{% trans 'View product detail for' %} {{ item.product.product_name }}">
+                            {{ item.product.product_name }}
+                        </a>
+                    </td>
+                    <td>{{ item.quantity }}</td>
+                    <td>${{ item.price }}</td>
+                    <td>${{ item.subtotal }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    <!-- 返回按钮 -->
+    <div class="back-link">
+        <a href="{% url 'order_list' %}" class="back-button" aria-label="{% trans 'Back to order list' %}">
+            {% trans "Back to Orders" %}
+        </a>
+    </div>
+
 </div>
+
+</main>
 
 {% endblock %}

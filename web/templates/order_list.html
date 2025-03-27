@@ -1,15 +1,10 @@
-<!-- filepath: c:\Users\Josh\ISI\django_projects\online-shopping\web\templates\order_list.html -->
 {% extends "base.html" %}
-{% block content %}
-
 {% load static i18n %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+{% block head %}
     <title>{% trans "My Orders" %}</title>
     <link rel="stylesheet" href="{% static 'css/order_list.css' %}">
+
     {% comment %} <style>
         .popup-message {
             position: fixed;
@@ -72,14 +67,18 @@
             background-color: #003d80;
         }
     </style> {% endcomment %}
-</head>
-<body>
+{% endblock %}
+
+{% block content %}
+
+<main role="main" aria-label="{% trans 'Order List Page' %}">
 
     <h2>{% trans "My Orders" %}</h2>
 
-    <form method="get" action="." class="filter-form">
+    <!-- 筛选器 -->
+    <form method="get" action="." class="filter-form" role="search" aria-label="{% trans 'Filter Orders By Status' %}">
         <label for="status">{% trans "Filter by status:" %}</label>
-        <select name="status" id="status">
+        <select name="status" id="status" aria-label="{% trans 'Order Status' %}">
             <option value="" {% if not request.GET.status %}selected{% endif %}>{% trans "All" %}</option>
             <option value="pending" {% if request.GET.status == "pending" %}selected{% endif %}>{% trans "Pending" %}</option>
             <option value="shipped" {% if request.GET.status == "shipped" %}selected{% endif %}>{% trans "Shipped" %}</option>
@@ -90,95 +89,109 @@
             <option value="refunded" {% if request.GET.status == "refunded" %}selected{% endif %}>{% trans "Refunded" %}</option>
             <option value="delivered" {% if request.GET.status == "delivered" %}selected{% endif %}>{% trans "Delivered" %}</option>
         </select>
-        <button type="submit">{% trans "Filter" %}</button>
+        <button type="submit" aria-label="{% trans 'Filter Orders' %}">{% trans "Filter" %}</button>
     </form>
-    
-    <table class="order-table">
-        <thead>
-            <tr>
-                <th>{% trans "P.O. Number" %}</th>
-                <th>{% trans "Purchase Date" %}</th>
-                <th>{% trans "Total Amount" %}</th>
-                <th>{% trans "Status" %}</th>
-                <th>{% trans "Verified Purchase" %}</th>
-                <th>{% trans "Actions" %}</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for order in orders %}
-            <tr class="clickable-row" data-href="{% url 'order_detail' order.id %}">
-                <td>{{ order.po_number }}</td>
-                <td>{{ order.purchase_date|date:"DATETIME_FORMAT" }}</td>
-                <td>${{ order.total_amount }}</td>
-                <td class="status">
-                    {% if order.status == 'pending' %}
-                        <span class="status-label status-pending">⏳ {% trans "Pending" %}</span>
-                    {% elif order.status == 'shipped' %}
-                        <span class="status-label status-shipped">📦 {% trans "Shipped" %}</span>
-                    {% elif order.status == 'cancelled' %}
-                        <span class="status-label status-cancelled">❌ {% trans "Cancelled" %}</span>
-                    {% elif order.status == 'hold' %}
-                        <span class="status-label status-hold">⏸️ {% trans "Hold" %}</span>
-                    {% elif order.status == 'ticket-issued' %}
-                        <span class="status-label status-ticket">🎫 {% trans "Ticket Issued" %}</span>
-                    {% elif order.status == 'complete' %}
-                        <span class="status-label status-complete">✅ {% trans "Complete" %}</span>
-                    {% elif order.status == 'refunded' %}
-                        <span class="status-label status-refunded">💰 {% trans "Refunded" %}</span>
-                    {% elif order.status == 'delivered' %}
-                        <span class="status-label status-delivered">📬 {% trans "Delivered" %}</span>
-                    {% endif %}
-                </td>
 
-                <td class="verified-purchase">
-                    {% if order.verified_purchase %}
-                        <span class="verified-label">{% trans "Verified Purchase" %}</span>
-                    {% else %}
-                        <span class="not-verified-label">{% trans "Not Verified" %}</span>
-                    {% endif %}
-                </td>
-                
-                <td>
-                    {% if order.status == 'pending' or order.status == 'hold' %}
-                    <form method="post" action="{% url 'cancel_order' order.id %}" style="display:inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-danger">{% trans "Cancel" %}</button>
-                    </form>
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <!-- 订单表格 -->
+    <section aria-label="{% trans 'Order Table' %}">
+        <table class="order-table" role="table">
+            <thead>
+                <tr>
+                    <th scope="col">{% trans "P.O. Number" %}</th>
+                    <th scope="col">{% trans "Purchase Date" %}</th>
+                    <th scope="col">{% trans "Total Amount" %}</th>
+                    <th scope="col">{% trans "Status" %}</th>
+                    <th scope="col">{% trans "Verified Purchase" %}</th>
+                    <th scope="col">{% trans "Actions" %}</th>
+                    <th scope="col">{% trans "Reviews" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr class="clickable-row" data-href="{% url 'order_detail' order.id %}" tabindex="0"
+                    role="button" aria-label="{% trans 'View details for order' %} {{ order.po_number }}">
+                    <td>{{ order.po_number }}</td>
+                    <td>{{ order.purchase_date|date:"DATETIME_FORMAT" }}</td>
+                    <td>${{ order.total_amount }}</td>
+                    <td class="status">
+                        <span class="status-label status-{{ order.status }}" aria-label="{{ order.status|capfirst }}">
+                            {% if order.status == 'pending' %}⏳ {% trans "Pending" %}
+                            {% elif order.status == 'shipped' %}📦 {% trans "Shipped" %}
+                            {% elif order.status == 'cancelled' %}❌ {% trans "Cancelled" %}
+                            {% elif order.status == 'hold' %}⏸️ {% trans "Hold" %}
+                            {% elif order.status == 'ticket-issued' %}🎫 {% trans "Ticket Issued" %}
+                            {% elif order.status == 'complete' %}✅ {% trans "Complete" %}
+                            {% elif order.status == 'refunded' %}💰 {% trans "Refunded" %}
+                            {% elif order.status == 'delivered' %}📬 {% trans "Delivered" %}
+                            {% endif %}
+                        </span>
+                    </td>
+
+                    <td class="verified-purchase">
+                        {% if order.verified_purchase %}
+                            <span class="verified-label">{% trans "Verified Purchase" %}</span>
+                        {% else %}
+                            <span class="not-verified-label">{% trans "Not Verified" %}</span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if order.status == 'pending' or order.status == 'hold' %}
+                        <form method="post" action="{% url 'cancel_order' order.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger"
+                                    aria-label="{% trans 'Cancel order' %} {{ order.po_number }}">
+                                {% trans "Cancel" %}
+                            </button>
+                        </form>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if order.status in "complete refunded delivered" %}
+                        <a href="{% url 'add_review' order.id %}" class="btn btn-primary"
+                           aria-label="{% trans 'Add a review for order' %} {{ order.po_number }}">
+                            {% trans "Add a Review" %}
+                        </a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
 
     {% if messages %}
-        <div class="popup-message" id="popup-message">
-            {% for message in messages %}
-                <p class="message {{ message.tags }}">{{ message }}</p>
-            {% endfor %}
-        </div>
+    <div class="popup-message" id="popup-message" role="alert" aria-live="polite">
+        {% for message in messages %}
+            <p class="message {{ message.tags }}">{{ message }}</p>
+        {% endfor %}
+    </div>
     {% endif %}
 
     <script>
-        // Make the entire row clickable
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
+            // 行点击 & 键盘可访问
             document.querySelectorAll(".clickable-row").forEach(row => {
-                row.addEventListener("click", function() {
+                row.addEventListener("click", function () {
                     window.location.href = this.dataset.href;
+                });
+                row.addEventListener("keypress", function (e) {
+                    if (e.key === "Enter" || e.key === " ") {
+                        this.click();
+                    }
                 });
             });
 
-            // Show popup message
-            var popupMessage = document.getElementById('popup-message');
+            // 弹窗消息提示
+            const popupMessage = document.getElementById('popup-message');
             if (popupMessage) {
                 popupMessage.style.display = 'block';
-                setTimeout(function() {
-                    popupMessage.style.display = 'none';
-                }, 5000); // Hide after 5 seconds
+                setTimeout(() => popupMessage.style.display = 'none', 5000);
             }
         });
     </script>
 
-</body>
-</html>
+</main>
+
 {% endblock %}

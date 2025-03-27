@@ -37,6 +37,39 @@ document.addEventListener("DOMContentLoaded", function () {
         if (stickyBtn) {
             stickyBtn.classList.add("active");
         }
+
+        const infoButton = document.getElementById("accessibility-info-button");
+        if (infoButton) {
+            infoButton.addEventListener("click", function () {
+                const url = this.getAttribute("data-href");
+                if (url) window.location.href = url;
+            });
+        }
+
+        // 恢复屏幕阅读器和十字线状态（如果之前启用过）
+        const savedScreenReader = localStorage.getItem("screenReaderOn") === "true";
+        if (savedScreenReader && !isScreenReaderOn) {
+            isScreenReaderOn = true;
+            document.addEventListener("mouseover", debouncedScreenReaderHandler);
+            document.addEventListener("focusin", debouncedScreenReaderHandler, true);
+            const srButton = document.querySelector('button[onclick="toggleScreenReader()"]');
+            if (srButton) srButton.setAttribute("aria-pressed", "true");
+            speak("Screen reader turned on");
+        }
+        const savedCrosshair = localStorage.getItem("crosshairOn") === "true";
+        if (savedCrosshair && !isCrosshairModeActive) {
+            isCrosshairModeActive = true;
+            const body = document.body;
+            body.classList.add("crosshair-mode-active");
+            const crosshairBtn = document.querySelector('button[onclick="toggleCrosshair()"]');
+            if (crosshairBtn) crosshairBtn.setAttribute("aria-pressed", "true");
+            if (!crosshairElement) {
+                crosshairElement = document.createElement('div');
+                crosshairElement.classList.add('crosshair');
+                body.appendChild(crosshairElement);
+            }
+            document.addEventListener('mousemove', moveCrosshair);
+        }
     }
 
     // 点击 Web Accessibility 按钮，显示工具栏及调整页面布局
@@ -75,34 +108,28 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-// 关闭工具栏（同时恢复页面位置）
-function closeToolbar() {
-    const toolbar = document.getElementById("accessibility-toolbar");
-    const menu = document.getElementById("menu");
-    const contentWrapper = document.getElementById("content-wrapper");
-    const accessibilityBtn = document.getElementById("accessibility-btn");
-
-    resetAccessibility();
-
-    toolbar.style.display = "none";
-
-    menu.style.top = "0";  // 让菜单回到顶部
-    menu.style.position = "fixed";  
-    menu.style.display = "flex";  
-    menu.style.visibility = "visible";  
-    menu.style.opacity = "1";  
-    menu.style.zIndex = "10000";
-
-    document.body.style.marginTop = "10px"; // 让整个页面回归正常
-    contentWrapper.style.paddingTop = "40px"; // 让内容恢复
-    accessibilityBtn.style.display = "block"; // 重新显示 Web Accessibility 按钮
-
-    window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
+// 全局变量声明
 let zoomLevel = 1.0;
 let targetZoomLevel = 1.0;
 let animationFrameId = null;
+let isScreenReaderOn = false;
+let isCrosshairModeActive = false;
+let crosshairElement = null;
+let largeCaptionEnabled = false;
+
+// 防抖函数
+function debounce(func, delay) {
+    let timeoutId;
+    return function(...args) {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+            func.apply(this, args);
+        }, delay);
+    };
+}
+
+// 创建防抖版本的屏幕阅读器处理函数，延迟300毫秒
+const debouncedScreenReaderHandler = debounce(screenReaderHandler, 300);
 
 function smoothZoom() {
     if (animationFrameId) {
@@ -209,8 +236,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-// Declare isLargeCursorActive before using it
-let isLargeCursorActive = false;
 // ---------------------- 固定模式功能 ----------------------
 function toggleStickyMode() {
     const stickyActive = localStorage.getItem("stickyMode") === "true";
@@ -230,6 +255,30 @@ function toggleStickyMode() {
 function resetAccessibility() {
     console.log("🔄 Resetting accessibility settings...");
 
+    // 关闭屏幕阅读器功能
+    if (isScreenReaderOn) {
+        speak("Screen reader turned off");
+        document.removeEventListener("mouseover", debouncedScreenReaderHandler);
+        document.removeEventListener("focusin", debouncedScreenReaderHandler, true);
+        const srButton = document.querySelector('button[onclick="toggleScreenReader()"]');
+        if (srButton) srButton.setAttribute("aria-pressed", "false");
+        isScreenReaderOn = false;
+        localStorage.removeItem("screenReaderOn");
+    }
+
+    // 关闭十字线功能
+    if (isCrosshairModeActive) {
+        document.removeEventListener('mousemove', moveCrosshair);
+        if (crosshairElement) {
+            crosshairElement.remove();
+            crosshairElement = null;
+        }
+        const crosshairBtn = document.querySelector('button[onclick="toggleCrosshair()"]');
+        if (crosshairBtn) crosshairBtn.setAttribute("aria-pressed", "false");
+        isCrosshairModeActive = false;
+        localStorage.removeItem("crosshairOn");
+    }
+
     // 1) 重置缩放
     zoomLevel = 1.0;
     targetZoomLevel = 1.0;
@@ -238,11 +287,10 @@ function resetAccessibility() {
         element.style.transformOrigin = "top left";
     });
 
-    // Reset cursor mode
+    // Reset 大光标功能（若启用）
     const body = document.body;
-    if (isLargeCursorActive) {
+    if (body.classList.contains('large-cursor')) {
         body.classList.remove('large-cursor');
-        isLargeCursorActive = false;
         const button = document.querySelector('button[onclick="toggleCursorMode()"]');
         if (button) button.setAttribute("aria-pressed", "false");
     }
@@ -282,20 +330,20 @@ function resetAccessibility() {
     console.log("✅ Accessibility settings reset!");
 }
 
-// Cursor Mode Functionality
-let isCursorModeActive = false;
+// ---------------------- 光标模式功能 ----------------------
 function toggleCursorMode() {
     const body = document.body;
-    if (isLargeCursorActive) {
+    if (body.classList.contains('large-cursor')) {
         body.classList.remove('large-cursor');
+        const button = document.querySelector('button[onclick="toggleCursorMode()"]');
+        if (button) button.setAttribute("aria-pressed", "false");
     } else {
         body.classList.add('large-cursor');
-    }
-    isLargeCursorActive = !isLargeCursorActive;
-        // 更新 ARIA 属性以提高可访问性
         const button = document.querySelector('button[onclick="toggleCursorMode()"]');
-        button.setAttribute("aria-pressed", isLargeCursorActive ? "true" : "false");
+        if (button) button.setAttribute("aria-pressed", "true");
     }
+}
+
 // ---------------------- 关闭工具栏功能（退出服务） ----------------------
 function closeToolbar() {
     console.log("🔒 Closing accessibility toolbar...");
@@ -317,8 +365,6 @@ function closeToolbar() {
 }
 
 // ---------------------- 大字幕功能 ----------------------
-let largeCaptionEnabled = false;
-
 function toggleLargeCaptions() {
     largeCaptionEnabled = !largeCaptionEnabled;
     localStorage.setItem("largeCaptionEnabled", largeCaptionEnabled);
@@ -358,17 +404,14 @@ function updateCaption(event) {
         captionBox.classList.remove("multiline");
         return;
     }
-    // 如果文本较长，启用多行显示；这里阈值可根据实际情况调整
     if (text.length > 100) {
         captionBox.classList.add("multiline");
-        // 清除之前设置的内联样式，确保 .multiline 样式生效
         captionBox.style.whiteSpace = "";
         captionBox.style.height = "";
         captionBox.style.lineHeight = "";
         captionBox.style.overflowY = "";
     } else {
         captionBox.classList.remove("multiline");
-        // 单行模式下设置内联样式
         captionBox.style.whiteSpace = "nowrap";
         captionBox.style.height = "100px";
         captionBox.style.lineHeight = "90px";
@@ -377,45 +420,136 @@ function updateCaption(event) {
     captionBox.innerText = text;
 }
 
+// ---------------------- 屏幕阅读器朗读功能 ----------------------
+function screenReaderHandler(event) {
+    const el = event.target;
+    let text = el.getAttribute("aria-label") ||
+               el.getAttribute("alt") ||
+               el.innerText || "";
+    text = text.trim();
+    if (text.length > 0) {
+        speak(text);
+    }
+}
 
+function speak(text) {
+    if (!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    const lang = document.documentElement.lang || 'en';
+    utterance.lang = lang;
+    utterance.rate = 1;
+    setTimeout(() => {
+        window.speechSynthesis.speak(utterance);
+    }, 100);
+}
 
+function toggleScreenReader() {
+    isScreenReaderOn = !isScreenReaderOn;
+    const btn = document.querySelector('button[onclick="toggleScreenReader()"]');
+    if (btn) {
+        btn.setAttribute("aria-pressed", isScreenReaderOn.toString());
+    }
+    if (isScreenReaderOn) {
+        speak("Screen reader turned on");
+        document.addEventListener("mouseover", debouncedScreenReaderHandler);
+        document.addEventListener("focusin", debouncedScreenReaderHandler, true);
+    } else {
+        speak("Screen reader turned off");
+        document.removeEventListener("mouseover", debouncedScreenReaderHandler);
+        document.removeEventListener("focusin", debouncedScreenReaderHandler, true);
+    }
+    if (localStorage.getItem("stickyMode") === "true") {
+         localStorage.setItem("screenReaderOn", isScreenReaderOn.toString());
+    }
+}
 
-let isCrosshairModeActive = false;
-let crosshairElement = null;
-
+// ---------------------- 十字线功能 ----------------------
 function toggleCrosshair() {
     const body = document.body;
     isCrosshairModeActive = !isCrosshairModeActive;
-
+    const crosshairBtn = document.querySelector('button[onclick="toggleCrosshair()"]');
     if (isCrosshairModeActive) {
-        // 不隐藏默认光标，保留鼠标可见性
         body.classList.add("crosshair-mode-active");
-        document.querySelector('button[onclick="toggleCrosshair()"]').setAttribute("aria-pressed", "true");
-
-        // 创建十字线元素
+        if (crosshairBtn) crosshairBtn.setAttribute("aria-pressed", "true");
         crosshairElement = document.createElement('div');
         crosshairElement.classList.add('crosshair');
         body.appendChild(crosshairElement);
-
-        // 添加鼠标移动事件监听
         document.addEventListener('mousemove', moveCrosshair);
     } else {
         body.classList.remove("crosshair-mode-active");
-        document.querySelector('button[onclick="toggleCrosshair()"]').setAttribute("aria-pressed", "false");
-
-        // 移除十字线元素和事件监听
+        if (crosshairBtn) crosshairBtn.setAttribute("aria-pressed", "false");
         if (crosshairElement) {
             crosshairElement.remove();
             crosshairElement = null;
         }
         document.removeEventListener('mousemove', moveCrosshair);
     }
+    if (localStorage.getItem("stickyMode") === "true") {
+         localStorage.setItem("crosshairOn", isCrosshairModeActive.toString());
+    }
 }
 
-// 动态更新十字线位置
 function moveCrosshair(event) {
     if (crosshairElement) {
         crosshairElement.style.left = `${event.clientX}px`;
         crosshairElement.style.top = `${event.clientY}px`;
+    }
+}
+
+document.addEventListener("keydown", function (e) {
+    if (!e.altKey) return;
+    if (e.key.toLowerCase() === 'w') {
+        toggleAccessibilityToolbar();
+        return;
+    }
+    const toolbar = document.getElementById("accessibility-toolbar");
+    if (toolbar && toolbar.style.display !== "flex") return;
+    switch (e.key.toLowerCase()) {
+        case 'r': toggleScreenReader(); break;
+        case '=': increaseZoom(); break;
+        case '-': decreaseZoom(); break;
+        case 'm': toggleCursorMode(); break;
+        case 'x': toggleCrosshair(); break;
+        case 'l': toggleLargeCaptions(); break;
+        case 'c': toggleColorScheme(); break;
+        case 's': toggleStickyMode(); break;
+        case '0': resetAccessibility(); break;
+        case 'q': closeToolbar(); break;
+        case 'h': window.location.href = "/accessibility-info/"; break;
+    }
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const infoButton = document.getElementById("accessibility-info-button");
+    if (infoButton) {
+        infoButton.addEventListener("click", function () {
+            const url = this.getAttribute("data-href");
+            if (url) window.location.href = url;
+        });
+    }
+});
+
+function toggleAccessibilityToolbar() {
+    const toolbar = document.getElementById("accessibility-toolbar");
+    const menu = document.getElementById("menu");
+    const contentWrapper = document.getElementById("content-wrapper");
+    const accessibilityBtn = document.getElementById("accessibility-btn");
+    if (!toolbar || !menu || !contentWrapper || !accessibilityBtn) return;
+    const isHidden = toolbar.style.display === "none" || !toolbar.style.display;
+    if (isHidden) {
+        toolbar.style.display = "flex";
+        accessibilityBtn.style.display = "none";
+        menu.style.position = "fixed";
+        menu.style.top = "103px";
+        menu.style.height = "80px";
+        menu.style.zIndex = "10000";
+        contentWrapper.style.paddingTop = "160px";
+    } else {
+        toolbar.style.display = "none";
+        accessibilityBtn.style.display = "block";
+        menu.style.position = "fixed";
+        menu.style.top = "0";
+        contentWrapper.style.paddingTop = "40px";
     }
 }

@@ -71,91 +71,99 @@
     </style>
 </head>
 <body>
-    <!-- Web Accessibility 工具栏 -->
-    <div id="accessibility-toolbar" style="display: none;">
-        <button onclick="increaseZoom()" title="{% trans 'Zoom In' %}">
-            <span>➕</span><small>{% trans 'Zoom In' %}</small>
+    <div id="accessibility-toolbar" role="region" aria-label="{% trans 'Accessibility Toolbar' %}" style="display: none;">
+        <button onclick="toggleScreenReader()" aria-pressed="false" aria-label="{% trans 'Toggle screen reader mode' %}">
+            🗣️ <small>{% trans "Reading Mode" %}</small>
         </button>
-        <button onclick="decreaseZoom()" title="{% trans 'Zoom Out' %}">
-            <span>➖</span><small>{% trans 'Zoom Out' %}</small>
+        <button onclick="increaseZoom()" title="{% trans 'Zoom In' %}" aria-label="{% trans 'Zoom In' %}">
+            <span aria-hidden="true">➕</span><small>{% trans 'Zoom In' %}</small>
         </button>
-        <button onclick="toggleCursorMode()" title="{% trans 'Cursor Mode' %}" aria-label="{% trans 'Toggle Cursor Mode' %}" aria-pressed="false">
+        <button onclick="decreaseZoom()" title="{% trans 'Zoom Out' %}" aria-label="{% trans 'Zoom Out' %}">
+            <span aria-hidden="true">➖</span><small>{% trans 'Zoom Out' %}</small>
+        </button>
+        <button onclick="toggleCursorMode()" title="{% trans 'Cursor Mode' %}" aria-pressed="false" aria-label="{% trans 'Toggle Cursor Mode' %}">
             <span aria-hidden="true">🖱️</span><small>{% trans 'Cursor Mode' %}</small>
         </button>
-        <button onclick="toggleCrosshair()" title="{% trans 'Crosshair Mode' %}" aria-label="{% trans 'Toggle Crosshair Mode' %}" aria-pressed="false">
+        <button onclick="toggleCrosshair()" title="{% trans 'Crosshair Mode' %}" aria-pressed="false" aria-label="{% trans 'Toggle Crosshair Mode' %}">
             <span aria-hidden="true">🎯</span><small>{% trans 'Crosshair Mode' %}</small>
         </button>
-        <button onclick="toggleLargeCaptions()" title="{% trans 'Large Captions' %}">
-            <span>🔠</span><small>{% trans 'Large Captions' %}</small>
+        <button onclick="toggleLargeCaptions()" title="{% trans 'Large Captions' %}" aria-label="{% trans 'Toggle Large Captions' %}">
+            <span aria-hidden="true">🔠</span><small>{% trans 'Large Captions' %}</small>
         </button>
-        <button onclick="toggleColorScheme()" title="{% trans 'Color Settings' %}">
-            <span>🎨</span><small>{% trans 'Color Settings' %}</small>
+        <button onclick="toggleColorScheme()" title="{% trans 'Color Settings' %}" aria-label="{% trans 'Change Color Scheme' %}">
+            <span aria-hidden="true">🎨</span><small>{% trans 'Color Settings' %}</small>
         </button>
-        <button onclick="resetAccessibility()" title="{% trans 'Reset' %}">
-            <span>🔄</span><small>{% trans 'Reset' %}</small>
+        <button onclick="resetAccessibility()" title="{% trans 'Reset' %}" aria-label="{% trans 'Reset Accessibility Settings' %}">
+            <span aria-hidden="true">🔄</span><small>{% trans 'Reset' %}</small>
         </button>
-        <button onclick="toggleStickyMode()" title="{% trans 'Sticky Mode' %}">
-            <span>📌</span><small>{% trans 'Sticky Mode' %}</small>
+        <button onclick="toggleStickyMode()" title="{% trans 'Sticky Mode' %}" aria-label="{% trans 'Toggle Sticky Mode' %}">
+            <span aria-hidden="true">📌</span><small>{% trans 'Sticky Mode' %}</small>
         </button>
-        <button onclick="closeToolbar()" title="{% trans 'Exit Service' %}" class="exit">
-            <span>⏻</span><small>{% trans 'Exit Service' %}</small>
+        <button
+          id="accessibility-info-button"
+          data-href="{% url 'accessibility_info' %}"
+          aria-label="{% trans 'Accessibility Info Page' %}"
+          title="{% trans 'Keyboard Shortcuts' %}">
+          ℹ️ <small>{% trans 'Info' %}</small>
+        </button>
+        <button onclick="closeToolbar()" title="{% trans 'Exit Service' %}" class="exit" aria-label="{% trans 'Exit Accessibility Service' %}">
+            <span aria-hidden="true">⏻</span><small>{% trans 'Exit Service' %}</small>
         </button>
     </div>
-
-    <!-- 导航菜单 -->
-    <div id="menu" class="nav-container">
-        <div class="user nav-left">
+    
+    <!-- 导航栏 -->
+    <nav id="menu" class="nav-container" role="navigation" aria-label="{% trans 'Main Navigation' %}">
         <ul>
             <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
             {% if user.is_authenticated %}
                 <li><a href="{% url 'shopping_cart' %}">{% trans "Cart" %}</a></li>
                 <li><a href="{% url 'order_list' %}">{% trans "Orders" %}</a></li>
-                <li><a href="{% url 'my_reviews' %}">{% trans "Reviews" %}</a></li>
-                <li><a href="{% url 'register' %}">{% trans "Register" %}</a></li>       
+                <li><a href="{% url 'my_reviews' %}">{% trans "My Reviews" %}</a></li>
+                <li><a href="{% url 'register' %}">{% trans "Register" %}</a></li>
             {% else %}
                 <li><a href="{% url 'shopping_cart' %}">{% trans "Cart" %}</a></li>
                 <li><a href="{% url 'order_list' %}">{% trans "Orders" %}</a></li>
                 <li><a href="{% url 'login' %}">{% trans "Login" %}</a></li>
                 <li><a href="{% url 'register' %}">{% trans "Register" %}</a></li>
             {% endif %}
-            <li><a href="#" id="accessibility-btn">{% trans "Accessibility" %}</a></li>
+            <li><a href="#" id="accessibility-btn" aria-label="{% trans 'Open Web Accessibility Toolbar' %}">{% trans "Web Accessibility" %}</a></li>
         </ul>
-    </div>
+    
         <div class="user nav-right">
-            <form method="get" action="{% url 'home' %}">
-                <input type="text" name="q" placeholder="{% trans 'Search product' %}">
-                <button type="submit">{% trans 'Search' %}</button>
+            <form method="get" action="{% url 'home' %}" role="search" aria-label="{% trans 'Search Products' %}">
+                <input type="text" name="q" placeholder="{% trans 'Search product' %}" aria-label="{% trans 'Search product' %}">
+                <button type="submit" aria-label="{% trans 'Submit search' %}">{% trans 'Search' %}</button>
             </form>
-            <form method="post" action="{% url 'set_language' %}">
+    
+            <form method="post" action="{% url 'set_language' %}" aria-label="{% trans 'Language Selector' %}">
                 {% csrf_token %}
-                <select name="language" onchange="this.form.submit()" style="font-size: 0.875rem;">
+                <label for="language-select" class="sr-only">{% trans "Select Language" %}</label>
+                <select id="language-select" name="language" onchange="this.form.submit()" aria-label="{% trans 'Language selection' %}">
                     <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
-                    <option value="es" {% if LANGUAGE_CODE == 'es' %}selected{% endif %}>Español</option>
                     <option value="ja" {% if LANGUAGE_CODE == 'ja' %}selected{% endif %}>日本語</option>
-                    <option value="ko" {% if LANGUAGE_CODE == 'ko' %}selected{% endif %}>한국어</option>
                     <option value="zh-hans" {% if LANGUAGE_CODE == 'zh-hans' %}selected{% endif %}>简体中文</option>
-                </select>  
-            </form>            
-            {% if request.user.is_authenticated %}
-            <p>{% trans "Hi" %} {{ user.username }}!</p>
-            <form action="{% url 'logout' %}" method="post">
-                {% csrf_token %}
-                <button type="submit">{% trans "Logout" %}</button>
+                </select>
             </form>
+    
+            {% if request.user.is_authenticated %}
+                <p>{% trans "Hi" %} {{ user.username }}!</p>
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" aria-label="{% trans 'Logout' %}">{% trans "Logout" %}</button>
+                </form>
             {% endif %}
         </div>
-    </div>
-
-    <div id="content-wrapper">
-        {% block content %}
-        {% endblock content %}
+    </nav>
+    
+    <main id="content-wrapper" role="main" aria-label="{% trans 'Page Content' %}">
+        {% block content %}{% endblock content %}
         {% if not request.user.is_authenticated and request.path == '/' %}
-            <a href="{% url 'vendor_login' %}" class="vendor-login-button">{% trans "Log in as Vendor" %}</a>
+            <a href="{% url 'vendor_login' %}" class="vendor-login-button" aria-label="{% trans 'Log in as Vendor' %}">{% trans "Log in as Vendor" %}</a>
         {% endif %}
-    </div>
-
+    </main>
+    
     <script src="{% static 'js/accessibility.js' %}"></script>
-    <div id="large-caption"></div>
-
+    <div id="large-caption" role="status" aria-live="polite"></div>
+    
 </body>
 </html>
