@@ -152,7 +152,7 @@ function decreaseZoom() {
 let currentTheme = null;
 
 function toggleColorScheme() {
-    const themes = ['high-contrast', 'protanopia', 'deuteranopia', 'tritanopia', 'grayscale', null];
+    const themes = ['high-contrast', 'protanopia', 'tritanopia', 'grayscale', null];
     let savedTheme = localStorage.getItem('accessibilityTheme');
     let currentIndex = themes.indexOf(savedTheme);
     if (currentIndex === -1) {
@@ -292,7 +292,10 @@ function toggleCursorMode() {
         body.classList.add('large-cursor');
     }
     isLargeCursorActive = !isLargeCursorActive;
-}
+        // 更新 ARIA 属性以提高可访问性
+        const button = document.querySelector('button[onclick="toggleCursorMode()"]');
+        button.setAttribute("aria-pressed", isLargeCursorActive ? "true" : "false");
+    }
 // ---------------------- 关闭工具栏功能（退出服务） ----------------------
 function closeToolbar() {
     console.log("🔒 Closing accessibility toolbar...");
@@ -372,12 +375,9 @@ function updateCaption(event) {
         captionBox.style.overflowY = "hidden";
     }
     captionBox.innerText = text;
-
-
-    // 更新 ARIA 属性以提高可访问性
-    const button = document.querySelector('button[onclick="toggleCursorMode()"]');
-    button.setAttribute("aria-pressed", isLargeCursorActive ? "true" : "false");
 }
+
+
 
 
 let isCrosshairModeActive = false;

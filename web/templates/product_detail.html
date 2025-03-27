@@ -33,7 +33,7 @@
 
         <!-- Product Information Section -->
         <div class="info-section">
-            <h1 class="product-title">{{ product.product_name|default:product.product_name_en }}</h1>
+            <h1 class="product-title2">{{ product.product_name|default:product.product_name_en }}</h1>
             <div class="price-section">
                 <span class="price-label">{% trans "Price" %}</span>
                 <span class="price">¥{{ product.price }}</span>
@@ -123,51 +123,36 @@
     <h3>{% trans "Customer Reviews" %}</h3>
 
     {% if reviews %}
-        <div class="reviews-container">
+        <ul class="reviews-list">
             {% for review in reviews %}
                 <li class="review-item">
-                    <!-- Review Header -->
-                    <div class="review-header">
-                        <strong>{{ review.user.username }}</strong>
-                        <span class="star-rating" data-rating="{{ review.rating }}"></span>
-                        <span class="review-date">{% trans "Reviewed on" %} {{ review.created_at|date:"Y-m-d H:i" }}</span>
-                    </div>
-
-                    <!-- Verified Purchase Badge -->
-                    {% if review.order and review.order.verified_purchase %}
-                        <div class="verified-purchase">
-                            <span class="verified-label">{% trans "Verified Purchase" %}</span>
-                        </div>
-                    {% endif %}
-
-                    <!-- Review Content -->
-                    <div class="review-content">
-                        <p>{{ review.comment }}</p>
-                    </div>
-
-                    <!-- Review Media (Images/Video) -->
+                    <strong>{{ review.user.username }}</strong> rated this 
+                    <span class="star-rating" data-rating="{{ review.rating }}"></span>
+                    <p>{{ review.comment }}</p>
                     {% if review.image %}
-                        <div class="review-media">
-                            <img src="{{ review.image.url }}" alt="Review Image" class="review-image">
-                        </div>
+                        <img src="{{ review.image.url }}" alt="Review Image" class="review-image">
                     {% endif %}
-
                     {% if review.video %}
-                        <div class="review-media">
-                            <video controls class="review-video">
-                                <source src="{{ review.video.url }}" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
-                        </div>
+                        <video controls class="review-video">
+                            <source src="{{ review.video.url }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    {% endif %}
+                    <small>{% trans "Reviewed on" %} {{ review.created_at|date:"Y-m-d H:i" }}</small>
+
+                    <!-- Verified Purchase -->
+                    {% if review.order and review.order.verified_purchase %}
+                        <span class="verified-purchase">
+                            <span class="verified-label">{% trans "Verified Purchase" %}</span>
+                        </span>
                     {% endif %}
                 </li>
             {% endfor %}
-        </div>
+        </ul>
     {% else %}
-        <p class="no-reviews-message">{% trans "No reviews yet. Be the first to review this product!" %}</p>
+        <p>{% trans "No reviews yet. Be the first to review this product!" %}</p>
     {% endif %}
 </div>
-
 
 <style>
     .product-detail-container {
@@ -186,18 +171,18 @@
     }
 
     .gallery-section, .info-section {
-        width: 48%;
-        margin-bottom: 30px;
+        width: auto;
+        {% comment %} margin-bottom: 30px; {% endcomment %}
     }
 
     .main-gallery {
-        margin-bottom: 20px;
+        {% comment %} margin-bottom: 20px; {% endcomment %}
     }
 
     .main-image {
         width: 100%;
         max-height: 500px;
-        object-fit: cover;
+        object-fit: fill;
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
@@ -371,13 +356,19 @@
         color: #333;
     }
 
-    .review-header .star-rating {
-        font-size: 1.2rem;
-        color: #FFD700;
+    .review-item p {
+        margin: 5px 0;
+        color: #555;
     }
 
-    .review-header .review-date {
-        font-size: 0.9rem;
+    .review-item img, .review-item video {
+        display: block;
+        margin-top: 10px;
+        max-width: 300px;
+        border-radius: 5px;
+    }
+
+    .review-item small {
         color: #888;
     }
 
