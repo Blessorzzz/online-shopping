@@ -159,6 +159,14 @@
                             </video>
                         </div>
                     {% endif %}
+
+                    <!-- Vendor's Response (if exists) -->
+                    {% if review.vendor_response %}
+                        <div class="vendor-response">
+                            <h4>{% trans "Vendor Response" %}</h4>
+                            <p>{{ review.vendor_response }}</p>
+                        </div>
+                    {% endif %}
                 </li>
             {% endfor %}
         </ul>

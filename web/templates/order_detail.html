@@ -65,7 +65,6 @@
     <table class="order-table">
         <thead>
             <tr>
-                <th>{% trans "Actions" %}</th>
                 <th>{% trans "Product" %}</th>
                 <th>{% trans "Quantity" %}</th>
                 <th>{% trans "Unit Price" %}</th>
@@ -75,23 +74,6 @@
         <tbody>
             {% for item in order.items.all %}
             <tr>
-                <td>
-                    {% if order.status in "complete refunded delivered" %}
-                        {% with product_reviews.items as reviews %}
-                            {% for key, review in reviews %}
-                                {% if key == item.product.product_id|stringformat:"s" %}
-                                    <a href="{% url 'edit_review' review.pk %}" class="btn btn-secondary">
-                                        {% trans "Edit Review" %}
-                                    </a>
-                                {% endif %}
-                            {% empty %}
-                                <a href="{% url 'add_review' order.id item.product.product_id %}" class="btn btn-primary">
-                                    {% trans "Add Review" %}
-                                </a>
-                            {% endfor %}
-                        {% endwith %}
-                    {% endif %}
-                </td>
                 <td>
                     <a href="{% url 'product_detail' item.product.product_id %}">
                         {{ item.product.product_name }}
