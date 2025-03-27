@@ -3,6 +3,137 @@
 <!-- Include the specific CSS file for My Reviews -->
 <link rel="stylesheet" href="{% static 'css/my_reviews.css' %}">
 {% block content %}
+
+<div class="container-fluid mt-5 my-reviews-page">
+    <h2 class="text-center mb-4">{% trans "My Reviews" %}</h2>
+    
+    <!-- Filter Buttons -->
+    <div class="text-center mb-4">
+        <button id="pending-btn" class="btn btn-primary">{% trans "⏳ Pending Reviews" %}</button>
+        <button id="done-btn" class="btn btn-secondary">{% trans "✔️ Reviews Done" %}</button>
+    </div>
+
+    <div class="card p-4 shadow-sm">
+        <!-- Pending Reviews -->
+        <div id="pending-reviews" class="review-section">
+            {% if pending_reviews %}
+                <table class="review-table">
+                    <thead>
+                        <tr>
+                            <th>{% trans "Order ID" %}</th>
+                            <th>{% trans "Product" %}</th>
+                            <th>{% trans "Action" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order_id, data in pending_reviews.items %}
+                            {% for product in data.products %}
+                                <tr>
+                                    <td>{{ data.order.po_number }}</td>
+                                    <td>
+                                        <a href="{% url 'product_detail' product.product_id %}" class="product-link">
+                                            {{ product.product_name }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'add_review' data.order.id product.product_id %}" class="btn btn-primary">
+                                            {% trans "Add Review" %}
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="text-center no-reviews-message">{% trans "No pending reviews available." %}</p>
+            {% endif %}
+        </div>
+
+        <!-- Reviews Done -->
+        <div id="done-reviews" class="review-section" style="display: none;">
+            {% if done_reviews %}
+                <table class="review-table">
+                    <thead>
+                        <tr>
+                            <th>{% trans "Order ID" %}</th>
+                            <th>{% trans "Product" %}</th>
+                            <th>{% trans "Rating" %}</th>
+                            <th>{% trans "Comment" %}</th>
+                            <th>{% trans "Action" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order_id, data in done_reviews.items %}
+                            {% for product_review in data.reviews %}
+                                <tr>
+                                    <td>{{ data.order.po_number }}</td>
+                                    <td>
+                                        <a href="{% url 'product_detail' product_review.product.product_id %}" class="product-link">
+                                            {{ product_review.product.product_name }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        {% for product_review in data.reviews %}
+                                            <div class="star-rating" data-rating="{{ product_review.review.rating }}"></div>
+                                            <span class="average-rating-text">({{ product_review.review.rating|floatformat:1 }} / 5)</span>
+                                        {% endfor %}
+                                    </td>
+                                    <td>{{ product_review.review.comment }}</td>
+                                    <td>
+                                        <a href="{% url 'edit_review' product_review.review.pk %}" class="btn btn-secondary">
+                                            {% trans "Edit Review" %}
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="text-center no-reviews-message">{% trans "No completed reviews available." %}</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById("pending-btn").addEventListener("click", function () {
+        document.getElementById("pending-reviews").style.display = "block";
+        document.getElementById("done-reviews").style.display = "none";
+    });
+
+    document.getElementById("done-btn").addEventListener("click", function () {
+        document.getElementById("done-reviews").style.display = "block";
+        document.getElementById("pending-reviews").style.display = "none";
+    });
+
+    // Handle star rendering for reviews done
+    document.querySelectorAll('.star-rating').forEach(function (element) {
+        let rating = parseFloat(element.getAttribute('data-rating'));
+        let fullStars = Math.floor(rating); // Count of full stars
+        let hasHalfStar = rating % 1 >= 0.5; // Check if there is a half star
+        let starHtml = '';
+
+        // Add full stars
+        for (let i = 0; i < fullStars; i++) {
+            starHtml += '<i class="fas fa-star custom-star"></i>';
+        }
+
+        // Add half star if needed
+        if (hasHalfStar) {
+            starHtml += '<i class="fas fa-star-half-alt custom-star"></i>';
+        }
+
+        // Add empty stars to complete 5 stars
+        while (starHtml.split('fa-star').length - 1 < 5) {
+            starHtml += '<i class="far fa-star custom-star"></i>';
+        }
+
+        element.innerHTML = starHtml;
+    });
+</script>
+
 <style>
     /* my_reviews.css */
 
@@ -257,97 +388,49 @@
         opacity: 1;
     }
 }
+
+/* Container for buttons */
+.text-center.mb-4 {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+/* Styling for buttons */
+.btn-filter {
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 25px;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    background: linear-gradient(145deg, #4caf50, #45a049); /* Gradient effect */
+    color: white;
+}
+
+/* Hover effect for buttons */
+.btn-filter:hover {
+    background: linear-gradient(145deg, #45a049, #4caf50); /* Reverse gradient on hover */
+    transform: scale(1.05); /* Slight zoom effect */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Soft shadow effect */
+    border-color: #4caf50; /* Green border on hover */
+}
+
+/* Active state for buttons */
+.btn-filter:active {
+    background: #45a049; /* Slightly darker shade when clicked */
+    transform: scale(1); /* Reset zoom effect */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Slight shadow when clicked */
+}
+
+/* Focus state for buttons */
+.btn-filter:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(72, 186, 72, 0.6); /* Green outline when focused */
+}
+
 </style>
-
-<div class="container-fluid mt-5 my-reviews-page">
-    <h2 class="text-center mb-4">{% trans "My Reviews" %}</h2>
-    
-    <div class="card p-4 shadow-sm">
-        {% if orders_with_reviews %}
-            <table class="review-table">
-                <thead>
-                    <tr>
-                        <th>{% trans "Order ID" %}</th>
-                        <th>{% trans "Products" %}</th>
-                        <th>{% trans "Rating" %}</th>
-                        <th>{% trans "Comment" %}</th>
-                        <th>{% trans "Created At" %}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for order_id, data in orders_with_reviews.items %}
-                        <tr class="clickable-row" data-href="{% url 'order_detail' data.order.id %}">
-                            <td>{{ data.order.po_number }}</td>
-                            <td>
-                                <div class="product-list">
-                                    {% for product_review in data.reviews %}
-                                        <a href="{% url 'product_detail' product_review.product.product_id %}" class="product-link">
-                                            {{ product_review.product.product_name }}
-                                        </a>
-                                    {% endfor %}
-                                </div>
-                            </td>
-                            <td>
-                                {% for product_review in data.reviews %}
-                                    <div class="star-rating" data-rating="{{ product_review.review.rating }}"></div>
-                                    <span class="average-rating-text">({{ product_review.review.rating|floatformat:1 }} / 5)</span>
-                                {% endfor %}
-                            </td>
-                            <td>
-                                {% for product_review in data.reviews %}
-                                    <p>{{ product_review.review.comment }}</p>
-                                {% endfor %}
-                            </td>
-                            <td>
-                                {% for product_review in data.reviews %}
-                                    <p class="created-at">{{ product_review.review.created_at|date:"Y-m-d H:i" }}</p>
-                                {% endfor %}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% else %}
-            <p class="text-center no-reviews-message">{% trans "You have no reviews yet." %}</p>
-        {% endif %}
-    </div>
-</div>
-
-<script>
-    // Make the entire row clickable
-    document.addEventListener("DOMContentLoaded", function() {
-        document.querySelectorAll(".clickable-row").forEach(row => {
-            row.addEventListener("click", function() {
-                window.location.href = this.dataset.href;
-            });
-        });
-
-        // Handle star rendering
-        document.querySelectorAll('.star-rating').forEach(function (element) {
-            let rating = parseFloat(element.getAttribute('data-rating'));
-            let fullStars = Math.floor(rating); // Count of full stars
-            let hasHalfStar = rating % 1 >= 0.5; // Check if there is a half star
-            let starHtml = '';
-
-            // Add full stars
-            for (let i = 0; i < fullStars; i++) {
-                starHtml += '<i class="fas fa-star custom-star"></i>';
-            }
-
-            // Add half star if needed
-            if (hasHalfStar) {
-                starHtml += '<i class="fas fa-star-half-alt custom-star"></i>';
-            }
-
-            // Add empty stars to complete 5 stars
-            while (starHtml.split('fa-star').length - 1 < 5) {
-                starHtml += '<i class="far fa-star custom-star"></i>';
-            }
-
-            element.innerHTML = starHtml;
-        });
-    });
-</script>
 
 <!-- Include FontAwesome for icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">

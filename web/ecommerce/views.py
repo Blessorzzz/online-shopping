@@ -1,7 +1,7 @@
 # ecommerce/views.py
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, DetailView, UpdateView
-from django.db.models import Q, Avg
+from django.db.models import Q, Avg, Count
 from .models import Product
 from shoppingcart.models import ShoppingCart  # 引用购物车模型
 from review.models import Review
@@ -49,7 +49,13 @@ class ProductDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         product = self.get_object()
-        reviews = Review.objects.filter(product=product, is_approved=True).order_by("-created_at")
+        
+        # Annotate reviews with vote counts
+        reviews = Review.objects.filter(product=product, is_approved=True).annotate(
+            like_count=Count('votes', filter=Q(votes__vote_type=True)),
+            dislike_count=Count('votes', filter=Q(votes__vote_type=False))
+        ).order_by("-created_at")
+        
         context['reviews'] = reviews
         return context
 
