@@ -5,6 +5,8 @@ from .models import Review
 from ecommerce.models import Product
 from shoppingcart.models import Order
 from .forms import ReviewForm
+from django.http import JsonResponse
+from review.models import Vote
 import uuid
 
 @login_required
@@ -94,3 +96,32 @@ def edit_review(request, review_id):
         form = ReviewForm(instance=review)
 
     return render(request, "review/edit_review.html", {"form": form, "product": review.product, "order": review.order})
+
+@login_required
+def vote_review(request):
+    if request.method == 'POST':
+        review_id = request.POST.get('review_id')
+        vote_type = request.POST.get('vote_type') == 'true'
+        
+        try:
+            review = Review.objects.get(id=review_id)
+            vote, created = Vote.objects.update_or_create(
+                user=request.user,
+                review=review,
+                defaults={'vote_type': vote_type}
+            )
+            
+            # Get fresh counts from database
+            like_count = Vote.objects.filter(review=review, vote_type=True).count()
+            dislike_count = Vote.objects.filter(review=review, vote_type=False).count()
+            
+            return JsonResponse({
+                'status': 'success',
+                'like_count': like_count,
+                'dislike_count': dislike_count
+            })
+            
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)})
+    
+    return JsonResponse({'status': 'error', 'message': 'Invalid request'})

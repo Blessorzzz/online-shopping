@@ -24,3 +24,28 @@ class Review(models.Model):
     def is_verified_purchase(self):
         """Return whether the review is a verified purchase based on the order status."""
         return self.order.status in ['complete', 'refunded', 'delivered']
+    
+    def liked_users_ids(self):
+        return list(self.votes.filter(vote_type=True).values_list('user__id', flat=True))
+    
+    def disliked_users_ids(self):
+        return list(self.votes.filter(vote_type=False).values_list('user__id', flat=True))
+    
+class Vote(models.Model):
+    LIKE = True
+    DISLIKE = False
+    VOTE_CHOICES = (
+        (LIKE, 'Like'),
+        (DISLIKE, 'Dislike'),
+    )
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    review = models.ForeignKey(Review, on_delete=models.CASCADE, related_name='votes')
+    vote_type = models.BooleanField(choices=VOTE_CHOICES)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'review')  # Prevent duplicate votes
+
+    def __str__(self):
+        return f"{self.user} voted {self.get_vote_type_display()} on {self.review}"

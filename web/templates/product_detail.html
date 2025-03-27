@@ -116,6 +116,55 @@
             element.innerHTML = renderStars(rating);
         });
     });
+
+    // Replace the existing voting script with this updated version
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.vote-btn').forEach(button => {
+            button.addEventListener('click', async (e) => {
+                e.preventDefault();
+                
+                {% if not request.user.is_authenticated %}
+                    window.location.href = "{% url 'login' %}?next={{ request.path }}";
+                    return;
+                {% endif %}
+
+                const reviewId = button.dataset.reviewId;
+                const voteType = button.dataset.voteType;
+                const reviewItem = button.closest('.review-item');  // Get parent review item
+                
+                try {
+                    const response = await fetch('{% url "vote_review" %}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        body: new URLSearchParams({
+                            'review_id': reviewId,
+                            'vote_type': voteType
+                        })
+                    });
+
+                    const data = await response.json();
+                    
+                    if (data.status === 'success') {
+                        // Update counts for this specific review only
+                        reviewItem.querySelector('.like-count').textContent = data.like_count;
+                        reviewItem.querySelector('.dislike-count').textContent = data.dislike_count;
+                        
+                        // Update active states
+                        reviewItem.querySelectorAll('.vote-btn').forEach(btn => {
+                            btn.classList.remove('active');
+                        });
+                        button.classList.add('active');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('{% trans "Failed to submit vote. Please try again." %}');
+                }
+            });
+        });
+    });
 </script>
 
 <!-- Customer Reviews Section -->
@@ -143,6 +192,21 @@
                     <!-- Review Content -->
                     <div class="review-content">
                         <p>{{ review.comment }}</p>
+                    </div>
+
+                    <!-- Voting Section -->
+                    <div class="vote-section">
+                        <button class="vote-btn like-btn {% if request.user.id in review.liked_users_ids %}active{% endif %}" 
+                                data-review-id="{{ review.id }}"
+                                data-vote-type="true">
+                            👍 <span class="like-count">{{ review.like_count }}</span>
+                        </button>
+    
+                        <button class="vote-btn dislike-btn {% if request.user.id in review.disliked_users_ids %}active{% endif %}" 
+                                data-review-id="{{ review.id }}"
+                                data-vote-type="false">
+                            👎 <span class="dislike-count">{{ review.dislike_count }}</span>
+                        </button>
                     </div>
 
                     <!-- Review Media (Images/Video) -->
@@ -443,5 +507,44 @@
         border-radius: 8px;
         border: 1px solid #ddd;
     }
+
+    /* Voting Section Styles */
+    .vote-section {
+        margin-top: 15px;
+        display: flex;
+        gap: 10px;
+    }
+
+    .vote-btn {
+        padding: 5px 12px;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        background: white;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .vote-btn:hover {
+        background: #f8f9fa;
+    }
+
+    .like-btn.active {
+        background: #e8f5e9;
+        border-color: #28a745;
+    }
+
+    .dislike-btn.active {
+        background: #ffeef0;
+        border-color: #dc3545;
+    }
+
+    .like-count, .dislike-count {
+        font-size: 0.9em;
+        color: #666;
+    }
+
 </style>
 {% endblock %}
