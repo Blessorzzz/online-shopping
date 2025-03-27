@@ -3,12 +3,11 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-22 22:07+0800\n"
+"POT-Creation-Date: 2025-03-23 18:32+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,7 +23,7 @@ msgid "Stock"
 msgstr "在庫"
 
 #: .\ecommerce\models.py:11 .\ecommerce\models.py:37
-#: .\templates\product_detail.html:58
+#: .\templates\product_detail.html:64 .\templates\product_detail.html:71
 #: .\templates\vendor\vendor_product_detail.html:18
 msgid "Out of Stock"
 msgstr "在庫切れ"
@@ -60,10 +59,8 @@ msgid "Maximum age suitable for the product"
 msgstr "製品に適した最大年齢"
 
 #: .\ecommerce\models.py:30
-#, fuzzy
-#| msgid "Product Name"
 msgid "Product Type"
-msgstr "製品名"
+msgstr "製品タイプ"
 
 #: .\ecommerce\models.py:37 .\templates\vendor\vendor_product_detail.html:16
 msgid "Available"
@@ -73,15 +70,134 @@ msgstr "利用可能"
 msgid "years old"
 msgstr "歳"
 
+#: .\templates\accessibility_info.html:4
+msgid "Accessibility Keyboard Shortcuts"
+msgstr "ウェブアクセシビリティ"
+
+#: .\templates\accessibility_info.html:66
+msgid "Web Accessibility Statement and Shortcut Instructions"
+msgstr "Web アクセシビリティに関する声明とショートカットの説明"
+
+#: .\templates\accessibility_info.html:68
+msgid "Part 1: Web Accessibility Service Statement"
+msgstr "パート 1: Web アクセシビリティ サービス ステートメント"
+
+#: .\templates\accessibility_info.html:70
+msgid ""
+"This website is committed to the principles of inclusivity and equal access "
+"to information. We strive to provide a smart, efficient, and user-friendly "
+"experience for all users, including persons with disabilities. Our "
+"accessibility features are available across desktop, mobile web, and app "
+"platforms, in accordance with the Chinese government’s Web Accessibility "
+"Standards and the international WCAG 2.0 guidelines."
+msgstr ""
+"このウェブサイトは、包括性と情報への平等なアクセスの原則に取り組んでいま"
+"す。\n"
+"私たちは、すべてのユーザー、特に障害のあるユーザーに、スマートで効率的、そし"
+"てユーザーフレンドリーなエクスペリエンスを提供するよう努めています。\n"
+"当社のアクセシビリティ機能は、デスクトップ、モバイル Web サイト、アプリなどの"
+"プラットフォームをカバーし、中国政府のアクセシビリティ サービス標準と国際的に"
+"認められた WCAG 2.0 ガイドラインに準拠しています。"
+
+#: .\templates\accessibility_info.html:72
+msgid ""
+"We have carefully designed this site to serve blind users and others who "
+"rely on accessible technologies, by supporting full keyboard navigation, "
+"screen reader compatibility, and alternative interaction methods such as "
+"voice assistance and gesture controls. We also provide adjustable color "
+"schemes, font sizing, audio descriptions, and large caption overlays to "
+"support users with low vision, cognitive challenges, and elderly users."
+msgstr ""
+"このウェブサイトは、視覚障碍者やアクセス可能な技術を必要とするその他のユー"
+"ザーがアクセスできるように設計されました。\n"
+"完全なキーボード ナビゲーション、スクリーン リーダーの互換性、音声アシスタン"
+"トやジェスチャなどの代替操作方法をサポートします。\n"
+"視覚障害、認知障害、高齢者がコンテンツにアクセスしやすいように、配色の調整、"
+"フォント サイズの設定、音声による説明、大きな字幕オーバーレイも提供されていま"
+"す。"
+
+#: .\templates\accessibility_info.html:74
+msgid ""
+"All desktop and mobile pages support full keyboard operations, and all UI "
+"elements such as images and buttons are accompanied by descriptive text "
+"labels. The interface is equipped with smart guidance, color contrast "
+"options, and text-to-speech capabilities to help users access content more "
+"easily and independently."
+msgstr ""
+"すべてのデスクトップ ページとモバイル ページは完全にキーボード対応で、画像や"
+"ボタンなどのすべての UI 要素には説明的なテキストのラベルが付けられていま"
+"す。\n"
+"「このインターフェースには、インテリジェントなガイダンス、カラーコントラスト"
+"のオプション、テキスト読み上げ機能が搭載されており、ユーザーがより簡単に、独"
+"立して情報を入手できるようになります。」"
+
+#: .\templates\accessibility_info.html:77
+msgid "Part 2: Instructions for using the voice website shortcut keys"
+msgstr "第2部：音声ウェブサイトのショートカットキー使用方法"
+
+#: .\templates\accessibility_info.html:79
+msgid "Toggle Accessibility Toolbar"
+msgstr "アクセシビリティツールバーを切り替える"
+
+#: .\templates\accessibility_info.html:80
+msgid "Toggle Reading Mode"
+msgstr "読み取りモードを切り替える"
+
+#: .\templates\accessibility_info.html:81 .\templates\base.html:60
+#: .\templates\base.html:61
+msgid "Zoom In"
+msgstr "拡大する"
+
+#: .\templates\accessibility_info.html:82 .\templates\base.html:63
+#: .\templates\base.html:64
+msgid "Zoom Out"
+msgstr "ズームアウト"
+
+#: .\templates\accessibility_info.html:83 .\templates\base.html:66
+msgid "Toggle Cursor Mode"
+msgstr "カーソルモードを切り替える"
+
+#: .\templates\accessibility_info.html:84 .\templates\base.html:69
+msgid "Toggle Crosshair Mode"
+msgstr "クロスヘアモードを切り替える"
+
+#: .\templates\accessibility_info.html:85 .\templates\base.html:72
+msgid "Toggle Large Captions"
+msgstr "大きなキャプションを切り替える"
+
+#: .\templates\accessibility_info.html:86 .\templates\base.html:75
+msgid "Change Color Scheme"
+msgstr "配色を変更する"
+
+#: .\templates\accessibility_info.html:87 .\templates\base.html:81
+msgid "Toggle Sticky Mode"
+msgstr "修理スティッキーモードを切り替える済み"
+
+#: .\templates\accessibility_info.html:88 .\templates\base.html:78
+msgid "Reset Accessibility Settings"
+msgstr "アクセシビリティ設定をリセットする"
+
+#: .\templates\accessibility_info.html:89 .\templates\base.html:91
+#: .\templates\base.html:92
+msgid "Exit Service"
+msgstr "退出サービス"
+
+#: .\templates\accessibility_info.html:90
+msgid "Show this Help Page"
+msgstr "このヘルプページを表示"
+
+#: .\templates\accessibility_info.html:93
+#: .\templates\registration\vendor_login.html:105
+msgid "Back to Home"
+msgstr "ホームに戻る"
+
 #: .\templates\base.html:7 .\templates\vendor\vendor_base.html:7
 msgid "My Online Shop"
 msgstr "私のオンラインショップ"
 
 #: .\templates\base.html:56
-#, fuzzy
-#| msgid "Web Accessibility"
 msgid "Accessibility Toolbar"
-msgstr "ウェブアクセシビリティ"
+msgstr "アクセシビリティ ツールバー"
 
 #: .\templates\base.html:57
 msgid "Toggle screen reader mode"
@@ -91,196 +207,146 @@ msgstr "スクリーンリーダーモードを切り替える"
 msgid "Reading Mode"
 msgstr "読書モード"
 
-#: .\templates\base.html:60 .\templates\base.html:61
-msgid "Zoom In"
-msgstr "拡大する"
-
-#: .\templates\base.html:63 .\templates\base.html:64
-msgid "Zoom Out"
-msgstr "ズームアウト"
-
 #: .\templates\base.html:66 .\templates\base.html:67
 msgid "Cursor Mode"
-msgstr "マウススタイル"
-
-#: .\templates\base.html:66
-#, fuzzy
-#| msgid "Cursor Mode"
-msgid "Toggle Cursor Mode"
 msgstr "マウススタイル"
 
 #: .\templates\base.html:69 .\templates\base.html:70
 msgid "Crosshair Mode"
 msgstr "十字線"
 
-#: .\templates\base.html:69
-#, fuzzy
-#| msgid "Crosshair Mode"
-msgid "Toggle Crosshair Mode"
-msgstr "十字線"
-
 #: .\templates\base.html:72 .\templates\base.html:73
 msgid "Large Captions"
-msgstr "大きな字幕"
-
-#: .\templates\base.html:72
-#, fuzzy
-#| msgid "Large Captions"
-msgid "Toggle Large Captions"
 msgstr "大きな字幕"
 
 #: .\templates\base.html:75 .\templates\base.html:76
 msgid "Color Settings"
 msgstr "色"
 
-#: .\templates\base.html:75
-msgid "Change Color Scheme"
-msgstr "配色を変更する"
-
 #: .\templates\base.html:78 .\templates\base.html:79
 #: .\templates\vendor\vendor_base.html:24
 msgid "Reset"
 msgstr "リセット"
 
-#: .\templates\base.html:78
-#, fuzzy
-#| msgid "Web Accessibility"
-msgid "Reset Accessibility Settings"
-msgstr "ウェブアクセシビリティ"
-
 #: .\templates\base.html:81 .\templates\base.html:82
 msgid "Sticky Mode"
 msgstr "修理済み"
 
-#: .\templates\base.html:81
-#, fuzzy
-#| msgid "Sticky Mode"
-msgid "Toggle Sticky Mode"
-msgstr "修理済み"
+#: .\templates\base.html:87
+msgid "Accessibility Info Page"
+msgstr "アクセシビリティ情報ページ"
 
-#: .\templates\base.html:84 .\templates\base.html:85
-msgid "Exit Service"
-msgstr "退出サービス"
+#: .\templates\base.html:88
+msgid "Keyboard Shortcuts"
+msgstr "キーボードショートカット"
 
-#: .\templates\base.html:84
-#, fuzzy
-#| msgid "Web Accessibility"
+#: .\templates\base.html:89
+msgid "Info"
+msgstr "情報"
+
+#: .\templates\base.html:91
 msgid "Exit Accessibility Service"
-msgstr "ウェブアクセシビリティ"
+msgstr "アクセシビリティサービスを終了する"
 
-#: .\templates\base.html:90
+#: .\templates\base.html:97
 msgid "Main Navigation"
 msgstr "メインナビゲーション"
 
-#: .\templates\base.html:92
+#: .\templates\base.html:99
 msgid "Home"
 msgstr "ホーム"
 
-#: .\templates\base.html:94 .\templates\base.html:99
+#: .\templates\base.html:101 .\templates\base.html:106
 msgid "My Cart"
 msgstr "マイカート"
 
-#: .\templates\base.html:95 .\templates\base.html:100
+#: .\templates\base.html:102 .\templates\base.html:107
 #: .\templates\order_list.html:7
 msgid "My Orders"
 msgstr "注文履歴"
 
-#: .\templates\base.html:96 .\templates\review\my_reviews.html:7
+#: .\templates\base.html:103 .\templates\review\my_reviews.html:7
 msgid "My Reviews"
 msgstr "私のレビュー"
 
-#: .\templates\base.html:97 .\templates\base.html:102
+#: .\templates\base.html:104 .\templates\base.html:109
 #: .\templates\register.html:12
 msgid "Register"
 msgstr "登録"
 
-#: .\templates\base.html:101 .\templates\registration\login.html:7
+#: .\templates\base.html:108 .\templates\registration\login.html:7
 #: .\templates\registration\login.html:28
-#: .\templates\registration\vendor_login.html:100
+#: .\templates\registration\vendor_login.html:102
 msgid "Login"
 msgstr "ログイン"
 
-#: .\templates\base.html:104
-#, fuzzy
-#| msgid "Web Accessibility"
+#: .\templates\base.html:111
 msgid "Open Web Accessibility Toolbar"
-msgstr "ウェブアクセシビリティ"
+msgstr "Web アクセシビリティ ツールバーを開く"
 
-#: .\templates\base.html:104
+#: .\templates\base.html:111
 msgid "Web Accessibility"
 msgstr "ウェブアクセシビリティ"
 
-#: .\templates\base.html:108
-#, fuzzy
-#| msgid "Search product"
+#: .\templates\base.html:115
 msgid "Search Products"
 msgstr "商品を検索"
 
-#: .\templates\base.html:109 .\templates\vendor\vendor_base.html:20
+#: .\templates\base.html:116 .\templates\vendor\vendor_base.html:20
 msgid "Search product"
 msgstr "商品を検索"
 
-#: .\templates\base.html:110
-#, fuzzy
-#| msgid "Search"
+#: .\templates\base.html:117
 msgid "Submit search"
-msgstr "検索"
+msgstr "検索を送信"
 
-#: .\templates\base.html:110 .\templates\vendor\vendor_base.html:21
+#: .\templates\base.html:117 .\templates\vendor\vendor_base.html:21
 msgid "Search"
 msgstr "検索"
 
-#: .\templates\base.html:113
+#: .\templates\base.html:120
 msgid "Language Selector"
 msgstr "言語セレクター"
 
-#: .\templates\base.html:115
+#: .\templates\base.html:122
 msgid "Select Language"
 msgstr "言語を選択"
 
-#: .\templates\base.html:116
+#: .\templates\base.html:123
 msgid "Language selection"
 msgstr "言語を選択"
 
-#: .\templates\base.html:124 .\templates\vendor\vendor_base.html:30
+#: .\templates\base.html:131 .\templates\vendor\vendor_base.html:30
 msgid "Hi"
 msgstr "こんにちは"
 
-#: .\templates\base.html:127 .\templates\vendor\vendor_base.html:33
+#: .\templates\base.html:134 .\templates\vendor\vendor_base.html:33
 msgid "Logout"
 msgstr "ログアウト"
 
-#: .\templates\base.html:133
+#: .\templates\base.html:140
 msgid "Page Content"
 msgstr "ページコンテンツ"
 
-#: .\templates\base.html:136
+#: .\templates\base.html:143
 msgid "Log in as Vendor"
 msgstr "ベンダーとしてログイン"
 
 #: .\templates\home.html:5
-#, fuzzy
-#| msgid "Product ID"
 msgid "Product List"
-msgstr "商品ID"
+msgstr "製品リスト"
 
 #: .\templates\home.html:10
-#, fuzzy
-#| msgid "View Details"
 msgid "View details for"
-msgstr "詳細を見る"
+msgstr "詳細を表示"
 
 #: .\templates\home.html:12 .\templates\product_detail.html:22
-#, fuzzy
-#| msgid "Thumbnail"
 msgid "Thumbnail image of"
-msgstr "サムネイル"
+msgstr "サムネイル画像"
 
 #: .\templates\home.html:15
-#, fuzzy
-#| msgid "Zoom Out"
 msgid "Sold Out"
-msgstr "ズームアウト"
+msgstr "完売"
 
 #: .\templates\home.html:24 .\templates\product_detail.html:41
 #: .\templates\vendor\dashboard.html:11
@@ -311,8 +377,6 @@ msgid "First"
 msgstr "初め"
 
 #: .\templates\home.html:41
-#, fuzzy
-#| msgid "previous"
 msgid "Previous"
 msgstr "前へ"
 
@@ -325,20 +389,16 @@ msgid "Last"
 msgstr "最後"
 
 #: .\templates\order_detail.html:5
-#, fuzzy
-#| msgid "Order Details"
 msgid "Order Detail Page"
-msgstr "注文詳細"
+msgstr "注文詳細ページ"
 
 #: .\templates\order_detail.html:9
 msgid "Order Details"
 msgstr "注文詳細"
 
 #: .\templates\order_detail.html:12
-#, fuzzy
-#| msgid "Information"
 msgid "Order Information Section"
-msgstr "説明する"
+msgstr "注文情報セクション"
 
 #: .\templates\order_detail.html:13
 msgid "P.O. Number:"
@@ -359,8 +419,6 @@ msgid "Total Amount:"
 msgstr "合計金額:"
 
 #: .\templates\order_detail.html:18
-#, fuzzy
-#| msgid "Total Amount"
 msgid "Total amount"
 msgstr "合計金額"
 
@@ -370,10 +428,8 @@ msgid "Status:"
 msgstr "ステータス:"
 
 #: .\templates\order_detail.html:22
-#, fuzzy
-#| msgid "Change Order Status:"
 msgid "Current order status is"
-msgstr "注文ステータスを変更:"
+msgstr "注文ステー現在の注文状況はタスを変更:"
 
 #: .\templates\order_detail.html:37
 msgid "Order Status Timeline"
@@ -381,21 +437,15 @@ msgstr "注文状況のタイムライン"
 
 #: .\templates\order_detail.html:38
 #: .\templates\vendor\vendor_order_detail.html:65
-#, fuzzy
-#| msgid "Status"
 msgid "Status History"
-msgstr "ステータス"
+msgstr "ステータス履歴"
 
 #: .\templates\order_detail.html:51
 #: .\templates\vendor\vendor_order_detail.html:78
-#, fuzzy
-#| msgid "No purchase orders available."
 msgid "No status history available"
-msgstr "購入注文はありません。"
+msgstr "ステータス履歴はありません"
 
 #: .\templates\order_detail.html:57
-#, fuzzy
-#| msgid "Items in this order:"
 msgid "Items in This Order"
 msgstr "この注文のアイテム:"
 
@@ -424,10 +474,8 @@ msgid "Subtotal"
 msgstr "小計"
 
 #: .\templates\order_detail.html:84
-#, fuzzy
-#| msgid "Back to Orders"
 msgid "Back to order list"
-msgstr "注文一覧に戻る"
+msgstr "注文リストに戻る"
 
 #: .\templates\order_detail.html:85
 #: .\templates\vendor\vendor_order_detail.html:85
@@ -435,26 +483,20 @@ msgid "Back to Orders"
 msgstr "注文一覧に戻る"
 
 #: .\templates\order_list.html:5
-#, fuzzy
-#| msgid "Order Items"
 msgid "Order List Page"
-msgstr "注文アイテム"
+msgstr "注文リストページ"
 
 #: .\templates\order_list.html:10
-#, fuzzy
-#| msgid "Filter by status:"
 msgid "Filter Orders By Status"
-msgstr "ステータスでフィルタ"
+msgstr "ステータスで注文をフィルタリング"
 
 #: .\templates\order_list.html:11
 msgid "Filter by status:"
 msgstr "ステータスでフィルタ"
 
 #: .\templates\order_list.html:12
-#, fuzzy
-#| msgid "Change Order Status:"
 msgid "Order Status"
-msgstr "注文ステータスを変更:"
+msgstr "注文状況"
 
 #: .\templates\order_list.html:13
 msgid "All"
@@ -494,20 +536,16 @@ msgid "Delivered"
 msgstr "配達済み"
 
 #: .\templates\order_list.html:23
-#, fuzzy
-#| msgid "My Orders"
 msgid "Filter Orders"
-msgstr "注文履歴"
+msgstr "フィルター注文"
 
 #: .\templates\order_list.html:23
 msgid "Filter"
 msgstr "フィルター"
 
 #: .\templates\order_list.html:27
-#, fuzzy
-#| msgid "Order Details"
 msgid "Order Table"
-msgstr "注文詳細"
+msgstr "注文表"
 
 #: .\templates\order_list.html:31 .\templates\vendor\vendor_orders.html:10
 msgid "P.O. Number"
@@ -537,20 +575,14 @@ msgid "Reviews"
 msgstr "レビュー"
 
 #: .\templates\order_list.html:42
-#, fuzzy
-#| msgid "View Details"
 msgid "View details for order"
-msgstr "詳細を見る"
+msgstr "注文の詳細を見る"
 
 #: .\templates\order_list.html:65
-#, fuzzy
-#| msgid "Cancelled"
 msgid "Cancel order"
-msgstr "キャンセル"
+msgstr "注文をキャンセル"
 
 #: .\templates\order_list.html:66
-#, fuzzy
-#| msgid "Cancelled"
 msgid "Cancel"
 msgstr "キャンセル"
 
@@ -563,107 +595,99 @@ msgid "Add a Review"
 msgstr "レビューを追加する"
 
 #: .\templates\product_detail.html:5
-#, fuzzy
-#| msgid "Product ID"
 msgid "Product Detail Page"
-msgstr "商品ID"
+msgstr "製品詳細ページ"
 
 #: .\templates\product_detail.html:11
-#, fuzzy
-#| msgid "Product Name"
 msgid "Product Images"
-msgstr "製品名"
+msgstr "製品画像"
 
 #: .\templates\product_detail.html:15
 msgid "Main image of"
 msgstr "メイン画像"
 
 #: .\templates\product_detail.html:18
-#, fuzzy
-#| msgid "Add Product"
 msgid "Additional Product Images"
-msgstr "商品を追加"
+msgstr "追加の製品画像"
 
 #: .\templates\product_detail.html:28
 msgid "Extra image of"
 msgstr "追加画像"
 
 #: .\templates\product_detail.html:37
-#, fuzzy
-#| msgid "Information"
 msgid "Product Information"
-msgstr "説明する"
+msgstr "製品情報"
 
 #: .\templates\product_detail.html:43
-#, fuzzy
-#| msgid "Product Name"
 msgid "Product price"
-msgstr "製品名"
+msgstr "商品価格"
 
 #: .\templates\product_detail.html:52
 #: .\templates\vendor\vendor_product_detail.html:11
 msgid "Age Range"
 msgstr "年齢層"
 
-#: .\templates\product_detail.html:58
-#, fuzzy
-#| msgid "Stock"
-msgid "In Stock"
-msgstr "在庫"
+#: .\templates\product_detail.html:60
+#, python-format
+msgid ""
+"\n"
+"                                            In Stock %(qty)s\n"
+"                                        "
+msgstr ""
 
-#: .\templates\product_detail.html:73
-#, fuzzy
-#| msgid "Add to Cart"
+#: .\templates\product_detail.html:67
+#, python-format
+msgid ""
+"\n"
+"                                    In Stock (%(qty)s Available)\n"
+"                                "
+msgstr ""
+
+#: .\templates\product_detail.html:83
 msgid "Add to cart"
 msgstr "カートに追加"
 
-#: .\templates\product_detail.html:75
+#: .\templates\product_detail.html:85
 msgid "Add to Cart"
 msgstr "カートに追加"
 
-#: .\templates\product_detail.html:83
-#, fuzzy
-#| msgid "Description"
-msgid "Product Description"
-msgstr "説明する"
-
-#: .\templates\product_detail.html:84
-#, fuzzy
-#| msgid "Product ID"
-msgid "Product Details"
-msgstr "商品ID"
-
 #: .\templates\product_detail.html:93
+msgid "Product Description"
+msgstr "製品説明"
+
+#: .\templates\product_detail.html:94
+msgid "Product Details"
+msgstr "製品詳細"
+
+#: .\templates\product_detail.html:103
 msgid "Customer Reviews Section"
 msgstr "顧客レビューセクション"
 
-#: .\templates\product_detail.html:94
-#, fuzzy
-#| msgid "Customer Name"
+#: .\templates\product_detail.html:104
 msgid "Customer Reviews"
-msgstr "顧客名"
+msgstr "顧客レビュー"
 
-#: .\templates\product_detail.html:99
+#: .\templates\product_detail.html:109
 msgid "User Review by"
 msgstr "ユーザーレビュー"
 
-#: .\templates\product_detail.html:101
+#: .\templates\product_detail.html:111
 msgid "rated this"
 msgstr "これを評価した"
 
-#: .\templates\product_detail.html:105
+#: .\templates\product_detail.html:115
 msgid "User review image"
 msgstr "ユーザーレビュー画像"
 
-#: .\templates\product_detail.html:110
+#: .\templates\product_detail.html:120
 msgid "Your browser does not support the video tag."
 msgstr "お使いのブラウザはビデオタグをサポートしていません。"
 
-#: .\templates\product_detail.html:113
+#: .\templates\product_detail.html:123
 msgid "Reviewed on"
 msgstr "レビュー日"
 
-#: .\templates\product_detail.html:118
+#: .\templates\product_detail.html:128
 msgid "No reviews yet. Be the first to review this product!"
 msgstr "まだレビューはありません。この商品を最初にレビューしてください。"
 
@@ -684,10 +708,8 @@ msgid "Sign up"
 msgstr "サインアップ"
 
 #: .\templates\registration\login.html:4
-#, fuzzy
-#| msgid "Login"
 msgid "Login Page"
-msgstr "ログイン"
+msgstr "ログインページ"
 
 #: .\templates\registration\login.html:27
 msgid "Submit login form"
@@ -705,21 +727,13 @@ msgstr "登録ページへ"
 msgid "Sign Up here."
 msgstr "ここでサインアップ"
 
-#: .\templates\registration\vendor_login.html:103
-#, fuzzy
-#| msgid "Back to Login"
-msgid "Back to Home"
-msgstr "ログインに戻る"
-
 #: .\templates\review\add_review.html:6
 msgid "Add a Review for Your Order"
 msgstr "ご注文のレビューを追加する"
 
 #: .\templates\review\add_review.html:13
-#, fuzzy
-#| msgid "Product"
 msgid "Product:"
-msgstr "商品"
+msgstr "商品："
 
 #: .\templates\review\add_review.html:20
 msgid "Rating (1-5):"
@@ -750,10 +764,8 @@ msgid "Comment"
 msgstr "コメント"
 
 #: .\templates\review\my_reviews.html:16 .\templates\review\my_reviews.html:39
-#, fuzzy
-#| msgid "View Purchase Orders"
 msgid "Verified Purchase"
-msgstr "購入注文を表示"
+msgstr "確認済みの購入"
 
 #: .\templates\review\my_reviews.html:18
 msgid "Created At"
@@ -886,10 +898,8 @@ msgid "Access Denied"
 msgstr "アクセス拒否"
 
 #: .\templates\vendor\not_a_vendor.html:36
-#, fuzzy
-#| msgid "Please log in as a vendor to access this page."
 msgid "You do not have permission to access this page."
-msgstr "このページにアクセスするには、ベンダーとしてログインしてください。"
+msgstr "このページにアクセスする権限がありません。"
 
 #: .\templates\vendor\vendor_base.html:13
 msgid "Vendor Dashboard"
@@ -940,10 +950,8 @@ msgid "No purchase orders available."
 msgstr "購入注文はありません。"
 
 #: .\templates\view_cart.html:5
-#, fuzzy
-#| msgid "Your Shopping Cart"
 msgid "Shopping Cart Page"
-msgstr "あなたのショッピングカート"
+msgstr "ショッピングカートページ"
 
 #: .\templates\view_cart.html:10
 msgid "Your Shopping Cart"
@@ -958,10 +966,8 @@ msgid "Total"
 msgstr "合計"
 
 #: .\templates\view_cart.html:36
-#, fuzzy
-#| msgid "Product ID"
 msgid "View product details"
-msgstr "商品ID"
+msgstr "製品の詳細を見る"
 
 #: .\templates\view_cart.html:42
 msgid "Price per item"
@@ -976,10 +982,8 @@ msgid "Decrease quantity of"
 msgstr "数量を減らす"
 
 #: .\templates\view_cart.html:52
-#, fuzzy
-#| msgid "Stock Quantity"
 msgid "Current quantity"
-msgstr "在庫数量"
+msgstr "現在の数量"
 
 #: .\templates\view_cart.html:54
 msgid "Increase quantity of"
@@ -994,10 +998,8 @@ msgid "Cart Summary and Checkout"
 msgstr "カートの概要とチェックアウト"
 
 #: .\templates\view_cart.html:76
-#, fuzzy
-#| msgid "Total Amount"
 msgid "Cart Total Amount"
-msgstr "合計金額"
+msgstr "カートの合計金額"
 
 #: .\templates\view_cart.html:81
 msgid "Proceed to checkout, total amount"
@@ -1028,10 +1030,8 @@ msgid "Please enter your full name."
 msgstr "フルネームを入力してください。"
 
 #: .\user\form.py:12
-#, fuzzy
-#| msgid "Shipping Address:"
 msgid "Shipping address"
-msgstr "配送先住所:"
+msgstr "配送先住所"
 
 #: .\user\form.py:12
 msgid "Please enter your shipping address."
@@ -1049,10 +1049,11 @@ msgstr "日本語"
 msgid "Simplified Chinese"
 msgstr "中国語（簡体字）"
 
-#, fuzzy
-#~| msgid "View Purchase Orders"
+#~ msgid "In Stock"
+#~ msgstr "在庫あり"
+
 #~ msgid "✔ Verified Purchase"
-#~ msgstr "購入注文を表示"
+#~ msgstr "✔ 検証済み購入"
 
 #~ msgid "home"
 #~ msgstr "ホーム"

@@ -3,12 +3,11 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-22 22:07+0800\n"
+"POT-Creation-Date: 2025-03-23 18:32+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,7 +23,7 @@ msgid "Stock"
 msgstr "库存"
 
 #: .\ecommerce\models.py:11 .\ecommerce\models.py:37
-#: .\templates\product_detail.html:58
+#: .\templates\product_detail.html:64 .\templates\product_detail.html:71
 #: .\templates\vendor\vendor_product_detail.html:18
 msgid "Out of Stock"
 msgstr "缺货"
@@ -60,10 +59,8 @@ msgid "Maximum age suitable for the product"
 msgstr "该商品适用的最大年龄"
 
 #: .\ecommerce\models.py:30
-#, fuzzy
-#| msgid "Product Name"
 msgid "Product Type"
-msgstr "商品名称"
+msgstr "商品类型"
 
 #: .\ecommerce\models.py:37 .\templates\vendor\vendor_product_detail.html:16
 msgid "Available"
@@ -73,15 +70,127 @@ msgstr "可购买"
 msgid "years old"
 msgstr "岁"
 
+#: .\templates\accessibility_info.html:4
+msgid "Accessibility Keyboard Shortcuts"
+msgstr "辅助功能键盘快捷键"
+
+#: .\templates\accessibility_info.html:66
+msgid "Web Accessibility Statement and Shortcut Instructions"
+msgstr "网站可访问性声明和快捷方式说明"
+
+#: .\templates\accessibility_info.html:68
+msgid "Part 1: Web Accessibility Service Statement"
+msgstr "第1部分：网站无障碍服务声明"
+
+#: .\templates\accessibility_info.html:70
+msgid ""
+"This website is committed to the principles of inclusivity and equal access "
+"to information. We strive to provide a smart, efficient, and user-friendly "
+"experience for all users, including persons with disabilities. Our "
+"accessibility features are available across desktop, mobile web, and app "
+"platforms, in accordance with the Chinese government’s Web Accessibility "
+"Standards and the international WCAG 2.0 guidelines."
+msgstr ""
+"本网站致力于包容性原则和信息平等获取。\n"
+"我们努力为所有用户，尤其是残障人士，提供智能、高效且用户友好的使用体验。\n"
+"我们的无障碍功能覆盖桌面端、移动网站和 App 等平台，符合中国政府的无障碍服务标"
+"准以及国际通用的 WCAG 2.0 指南。"
+
+#: .\templates\accessibility_info.html:72
+msgid ""
+"We have carefully designed this site to serve blind users and others who "
+"rely on accessible technologies, by supporting full keyboard navigation, "
+"screen reader compatibility, and alternative interaction methods such as "
+"voice assistance and gesture controls. We also provide adjustable color "
+"schemes, font sizing, audio descriptions, and large caption overlays to "
+"support users with low vision, cognitive challenges, and elderly users."
+msgstr ""
+"我们精心设计本网站，以服务于盲人用户及其他依赖无障碍技术的用户，\n"
+"支持完整的键盘导航、屏幕阅读器兼容性，以及语音辅助与手势操作等替代交互方"
+"式。\n"
+"同时也提供颜色方案调整、字体大小设置、语音描述和大字幕覆盖，以帮助低视力者、"
+"认知障碍用户以及老年人更好地访问内容。"
+
+#: .\templates\accessibility_info.html:74
+msgid ""
+"All desktop and mobile pages support full keyboard operations, and all UI "
+"elements such as images and buttons are accompanied by descriptive text "
+"labels. The interface is equipped with smart guidance, color contrast "
+"options, and text-to-speech capabilities to help users access content more "
+"easily and independently."
+msgstr ""
+"所有桌面端和移动端页面均支持完整的键盘操作，所有图像与按钮等用户界面元素均配"
+"有描述性文字标签。\n"
+"界面配备智能引导、色彩对比选项和文字转语音功能，帮助用户更轻松、自主地获取信"
+"息。"
+
+#: .\templates\accessibility_info.html:77
+msgid "Part 2: Instructions for using the voice website shortcut keys"
+msgstr "第二部分：语音网站快捷键使用说明"
+
+#: .\templates\accessibility_info.html:79
+msgid "Toggle Accessibility Toolbar"
+msgstr "切换辅助功能工具栏"
+
+#: .\templates\accessibility_info.html:80
+msgid "Toggle Reading Mode"
+msgstr "切换阅读模式"
+
+#: .\templates\accessibility_info.html:81 .\templates\base.html:60
+#: .\templates\base.html:61
+msgid "Zoom In"
+msgstr "放大"
+
+#: .\templates\accessibility_info.html:82 .\templates\base.html:63
+#: .\templates\base.html:64
+msgid "Zoom Out"
+msgstr "缩小"
+
+#: .\templates\accessibility_info.html:83 .\templates\base.html:66
+msgid "Toggle Cursor Mode"
+msgstr "切换鼠标样式"
+
+#: .\templates\accessibility_info.html:84 .\templates\base.html:69
+msgid "Toggle Crosshair Mode"
+msgstr "切换十字线"
+
+#: .\templates\accessibility_info.html:85 .\templates\base.html:72
+msgid "Toggle Large Captions"
+msgstr "切换大字幕"
+
+#: .\templates\accessibility_info.html:86 .\templates\base.html:75
+msgid "Change Color Scheme"
+msgstr "更改颜色方案"
+
+#: .\templates\accessibility_info.html:87 .\templates\base.html:81
+msgid "Toggle Sticky Mode"
+msgstr "切换固定模式"
+
+#: .\templates\accessibility_info.html:88 .\templates\base.html:78
+msgid "Reset Accessibility Settings"
+msgstr "重置辅助功能设置"
+
+#: .\templates\accessibility_info.html:89 .\templates\base.html:91
+#: .\templates\base.html:92
+msgid "Exit Service"
+msgstr "退出服务"
+
+#: .\templates\accessibility_info.html:90
+msgid "Show this Help Page"
+msgstr "显示此帮助页面"
+
+#: .\templates\accessibility_info.html:93
+#: .\templates\registration\vendor_login.html:105
+msgid "Back to Home"
+msgstr "返回首页"
+
 #: .\templates\base.html:7 .\templates\vendor\vendor_base.html:7
 msgid "My Online Shop"
 msgstr "我的在线商店"
 
 #: .\templates\base.html:56
-#, fuzzy
-#| msgid "Web Accessibility"
 msgid "Accessibility Toolbar"
-msgstr "网页无障碍"
+msgstr "辅助功能工具栏"
 
 #: .\templates\base.html:57
 msgid "Toggle screen reader mode"
@@ -91,196 +200,146 @@ msgstr "切换屏幕阅读器模式"
 msgid "Reading Mode"
 msgstr "阅读模式"
 
-#: .\templates\base.html:60 .\templates\base.html:61
-msgid "Zoom In"
-msgstr "放大"
-
-#: .\templates\base.html:63 .\templates\base.html:64
-msgid "Zoom Out"
-msgstr "缩小"
-
 #: .\templates\base.html:66 .\templates\base.html:67
 msgid "Cursor Mode"
-msgstr "鼠标样式"
-
-#: .\templates\base.html:66
-#, fuzzy
-#| msgid "Cursor Mode"
-msgid "Toggle Cursor Mode"
 msgstr "鼠标样式"
 
 #: .\templates\base.html:69 .\templates\base.html:70
 msgid "Crosshair Mode"
 msgstr "十字线"
 
-#: .\templates\base.html:69
-#, fuzzy
-#| msgid "Crosshair Mode"
-msgid "Toggle Crosshair Mode"
-msgstr "十字线"
-
 #: .\templates\base.html:72 .\templates\base.html:73
 msgid "Large Captions"
-msgstr "大字幕"
-
-#: .\templates\base.html:72
-#, fuzzy
-#| msgid "Large Captions"
-msgid "Toggle Large Captions"
 msgstr "大字幕"
 
 #: .\templates\base.html:75 .\templates\base.html:76
 msgid "Color Settings"
 msgstr "配色"
 
-#: .\templates\base.html:75
-msgid "Change Color Scheme"
-msgstr "更改颜色方案"
-
 #: .\templates\base.html:78 .\templates\base.html:79
 #: .\templates\vendor\vendor_base.html:24
 msgid "Reset"
 msgstr "重置"
 
-#: .\templates\base.html:78
-#, fuzzy
-#| msgid "Web Accessibility"
-msgid "Reset Accessibility Settings"
-msgstr "网页无障碍"
-
 #: .\templates\base.html:81 .\templates\base.html:82
 msgid "Sticky Mode"
 msgstr "固定"
 
-#: .\templates\base.html:81
-#, fuzzy
-#| msgid "Sticky Mode"
-msgid "Toggle Sticky Mode"
-msgstr "固定"
+#: .\templates\base.html:87
+msgid "Accessibility Info Page"
+msgstr "无障碍信息页面"
 
-#: .\templates\base.html:84 .\templates\base.html:85
-msgid "Exit Service"
-msgstr "退出服务"
+#: .\templates\base.html:88
+msgid "Keyboard Shortcuts"
+msgstr "键盘快捷键"
 
-#: .\templates\base.html:84
-#, fuzzy
-#| msgid "Web Accessibility"
+#: .\templates\base.html:89
+msgid "Info"
+msgstr "说明"
+
+#: .\templates\base.html:91
 msgid "Exit Accessibility Service"
 msgstr "网页无障碍"
 
-#: .\templates\base.html:90
+#: .\templates\base.html:97
 msgid "Main Navigation"
 msgstr "主导航"
 
-#: .\templates\base.html:92
+#: .\templates\base.html:99
 msgid "Home"
 msgstr "首页"
 
-#: .\templates\base.html:94 .\templates\base.html:99
+#: .\templates\base.html:101 .\templates\base.html:106
 msgid "My Cart"
 msgstr "我的购物车"
 
-#: .\templates\base.html:95 .\templates\base.html:100
+#: .\templates\base.html:102 .\templates\base.html:107
 #: .\templates\order_list.html:7
 msgid "My Orders"
 msgstr "我的订单"
 
-#: .\templates\base.html:96 .\templates\review\my_reviews.html:7
+#: .\templates\base.html:103 .\templates\review\my_reviews.html:7
 msgid "My Reviews"
 msgstr "我的评论"
 
-#: .\templates\base.html:97 .\templates\base.html:102
+#: .\templates\base.html:104 .\templates\base.html:109
 #: .\templates\register.html:12
 msgid "Register"
 msgstr "注册"
 
-#: .\templates\base.html:101 .\templates\registration\login.html:7
+#: .\templates\base.html:108 .\templates\registration\login.html:7
 #: .\templates\registration\login.html:28
-#: .\templates\registration\vendor_login.html:100
+#: .\templates\registration\vendor_login.html:102
 msgid "Login"
 msgstr "登录"
 
-#: .\templates\base.html:104
-#, fuzzy
-#| msgid "Web Accessibility"
+#: .\templates\base.html:111
 msgid "Open Web Accessibility Toolbar"
-msgstr "网页无障碍"
+msgstr "打开网页辅助功能工具栏"
 
-#: .\templates\base.html:104
+#: .\templates\base.html:111
 msgid "Web Accessibility"
 msgstr "网页无障碍"
 
-#: .\templates\base.html:108
-#, fuzzy
-#| msgid "Search product"
+#: .\templates\base.html:115
 msgid "Search Products"
 msgstr "搜索商品"
 
-#: .\templates\base.html:109 .\templates\vendor\vendor_base.html:20
+#: .\templates\base.html:116 .\templates\vendor\vendor_base.html:20
 msgid "Search product"
 msgstr "搜索商品"
 
-#: .\templates\base.html:110
-#, fuzzy
-#| msgid "Search"
+#: .\templates\base.html:117
 msgid "Submit search"
-msgstr "搜索"
+msgstr "提交搜索"
 
-#: .\templates\base.html:110 .\templates\vendor\vendor_base.html:21
+#: .\templates\base.html:117 .\templates\vendor\vendor_base.html:21
 msgid "Search"
 msgstr "搜索"
 
-#: .\templates\base.html:113
+#: .\templates\base.html:120
 msgid "Language Selector"
 msgstr "语言选择器"
 
-#: .\templates\base.html:115
+#: .\templates\base.html:122
 msgid "Select Language"
 msgstr "选择语言"
 
-#: .\templates\base.html:116
+#: .\templates\base.html:123
 msgid "Language selection"
 msgstr "语言选择"
 
-#: .\templates\base.html:124 .\templates\vendor\vendor_base.html:30
+#: .\templates\base.html:131 .\templates\vendor\vendor_base.html:30
 msgid "Hi"
 msgstr "你好"
 
-#: .\templates\base.html:127 .\templates\vendor\vendor_base.html:33
+#: .\templates\base.html:134 .\templates\vendor\vendor_base.html:33
 msgid "Logout"
 msgstr "退出登录"
 
-#: .\templates\base.html:133
+#: .\templates\base.html:140
 msgid "Page Content"
 msgstr "页面内容"
 
-#: .\templates\base.html:136
+#: .\templates\base.html:143
 msgid "Log in as Vendor"
 msgstr "以商家身份登录"
 
 #: .\templates\home.html:5
-#, fuzzy
-#| msgid "Product Details"
 msgid "Product List"
-msgstr "商品详情"
+msgstr "产品列表"
 
 #: .\templates\home.html:10
-#, fuzzy
-#| msgid "View Details"
 msgid "View details for"
-msgstr "查看详情"
+msgstr "查看详细信息"
 
 #: .\templates\home.html:12 .\templates\product_detail.html:22
-#, fuzzy
-#| msgid "Thumbnail"
 msgid "Thumbnail image of"
 msgstr "缩略图"
 
 #: .\templates\home.html:15
-#, fuzzy
-#| msgid "Zoom Out"
 msgid "Sold Out"
-msgstr "缩小"
+msgstr "售罄"
 
 #: .\templates\home.html:24 .\templates\product_detail.html:41
 #: .\templates\vendor\dashboard.html:11
@@ -311,8 +370,6 @@ msgid "First"
 msgstr "第一的"
 
 #: .\templates\home.html:41
-#, fuzzy
-#| msgid "previous"
 msgid "Previous"
 msgstr "上一页"
 
@@ -325,20 +382,16 @@ msgid "Last"
 msgstr "最后的"
 
 #: .\templates\order_detail.html:5
-#, fuzzy
-#| msgid "Order Details"
 msgid "Order Detail Page"
-msgstr "订单详情"
+msgstr "订单详情页面"
 
 #: .\templates\order_detail.html:9
 msgid "Order Details"
 msgstr "订单详情"
 
 #: .\templates\order_detail.html:12
-#, fuzzy
-#| msgid "Information"
 msgid "Order Information Section"
-msgstr "说明"
+msgstr "订单信息部分"
 
 #: .\templates\order_detail.html:13
 msgid "P.O. Number:"
@@ -359,8 +412,6 @@ msgid "Total Amount:"
 msgstr "总金额："
 
 #: .\templates\order_detail.html:18
-#, fuzzy
-#| msgid "Total Amount"
 msgid "Total amount"
 msgstr "总金额"
 
@@ -370,10 +421,8 @@ msgid "Status:"
 msgstr "状态："
 
 #: .\templates\order_detail.html:22
-#, fuzzy
-#| msgid "Change Order Status:"
 msgid "Current order status is"
-msgstr "更改订单状态："
+msgstr "当前订单状态为"
 
 #: .\templates\order_detail.html:37
 msgid "Order Status Timeline"
@@ -390,8 +439,6 @@ msgid "No status history available"
 msgstr "无状态历史记录"
 
 #: .\templates\order_detail.html:57
-#, fuzzy
-#| msgid "Items in this order:"
 msgid "Items in This Order"
 msgstr "订单中的商品："
 
@@ -420,8 +467,6 @@ msgid "Subtotal"
 msgstr "小计"
 
 #: .\templates\order_detail.html:84
-#, fuzzy
-#| msgid "Back to Orders"
 msgid "Back to order list"
 msgstr "返回订单列表"
 
@@ -431,26 +476,20 @@ msgid "Back to Orders"
 msgstr "返回订单列表"
 
 #: .\templates\order_list.html:5
-#, fuzzy
-#| msgid "Order Items"
 msgid "Order List Page"
-msgstr "订单商品"
+msgstr "订单列表页面"
 
 #: .\templates\order_list.html:10
-#, fuzzy
-#| msgid "Filter by status:"
 msgid "Filter Orders By Status"
-msgstr "按状态筛选："
+msgstr "按状态过滤订单"
 
 #: .\templates\order_list.html:11
 msgid "Filter by status:"
 msgstr "按状态筛选："
 
 #: .\templates\order_list.html:12
-#, fuzzy
-#| msgid "Change Order Status:"
 msgid "Order Status"
-msgstr "更改订单状态："
+msgstr "订单状态："
 
 #: .\templates\order_list.html:13
 msgid "All"
@@ -490,20 +529,16 @@ msgid "Delivered"
 msgstr "发表"
 
 #: .\templates\order_list.html:23
-#, fuzzy
-#| msgid "My Orders"
 msgid "Filter Orders"
-msgstr "我的订单"
+msgstr "过滤订单"
 
 #: .\templates\order_list.html:23
 msgid "Filter"
 msgstr "筛选"
 
 #: .\templates\order_list.html:27
-#, fuzzy
-#| msgid "Order Details"
 msgid "Order Table"
-msgstr "订单详情"
+msgstr "订单表"
 
 #: .\templates\order_list.html:31 .\templates\vendor\vendor_orders.html:10
 msgid "P.O. Number"
@@ -533,22 +568,16 @@ msgid "Reviews"
 msgstr "评论"
 
 #: .\templates\order_list.html:42
-#, fuzzy
-#| msgid "View Details"
 msgid "View details for order"
-msgstr "查看详情"
+msgstr "查看订单详情"
 
 #: .\templates\order_list.html:65
-#, fuzzy
-#| msgid "Cancelled"
 msgid "Cancel order"
-msgstr "已取消"
+msgstr "取消订单"
 
 #: .\templates\order_list.html:66
-#, fuzzy
-#| msgid "Cancelled"
 msgid "Cancel"
-msgstr "已取消"
+msgstr "取消"
 
 #: .\templates\order_list.html:74
 msgid "Add a review for order"
@@ -559,105 +588,99 @@ msgid "Add a Review"
 msgstr "添加一条评论"
 
 #: .\templates\product_detail.html:5
-#, fuzzy
-#| msgid "Product Details"
 msgid "Product Detail Page"
-msgstr "商品详情"
+msgstr "商品详情界面"
 
 #: .\templates\product_detail.html:11
-#, fuzzy
-#| msgid "Product Name"
 msgid "Product Images"
-msgstr "商品名称"
+msgstr "商品图片"
 
 #: .\templates\product_detail.html:15
 msgid "Main image of"
 msgstr "主要图片"
 
 #: .\templates\product_detail.html:18
-#, fuzzy
-#| msgid "Add Product"
 msgid "Additional Product Images"
-msgstr "添加商品"
+msgstr "更多产品图片"
 
 #: .\templates\product_detail.html:28
 msgid "Extra image of"
 msgstr "附加图像"
 
 #: .\templates\product_detail.html:37
-#, fuzzy
-#| msgid "Information"
 msgid "Product Information"
-msgstr "说明"
+msgstr "商品说明"
 
 #: .\templates\product_detail.html:43
-#, fuzzy
-#| msgid "Product Name"
 msgid "Product price"
-msgstr "商品名称"
+msgstr "商品价格"
 
 #: .\templates\product_detail.html:52
 #: .\templates\vendor\vendor_product_detail.html:11
 msgid "Age Range"
 msgstr "年龄范围"
 
-#: .\templates\product_detail.html:58
-#, fuzzy
-#| msgid "Stock"
-msgid "In Stock"
-msgstr "库存"
+#: .\templates\product_detail.html:60
+#, python-format
+msgid ""
+"\n"
+"                                            In Stock %(qty)s\n"
+"                                        "
+msgstr ""
 
-#: .\templates\product_detail.html:73
-#, fuzzy
-#| msgid "Add to Cart"
+#: .\templates\product_detail.html:67
+#, python-format
+msgid ""
+"\n"
+"                                    In Stock (%(qty)s Available)\n"
+"                                "
+msgstr ""
+
+#: .\templates\product_detail.html:83
 msgid "Add to cart"
 msgstr "加入购物车"
 
-#: .\templates\product_detail.html:75
+#: .\templates\product_detail.html:85
 msgid "Add to Cart"
 msgstr "加入购物车"
 
-#: .\templates\product_detail.html:83
-#, fuzzy
-#| msgid "Description"
+#: .\templates\product_detail.html:93
 msgid "Product Description"
-msgstr "描述"
+msgstr "商品描述"
 
-#: .\templates\product_detail.html:84
+#: .\templates\product_detail.html:94
 msgid "Product Details"
 msgstr "商品详情"
 
-#: .\templates\product_detail.html:93
+#: .\templates\product_detail.html:103
 msgid "Customer Reviews Section"
 msgstr "客户评论部分"
 
-#: .\templates\product_detail.html:94
-#, fuzzy
-#| msgid "Customer Name"
+#: .\templates\product_detail.html:104
 msgid "Customer Reviews"
-msgstr "客户姓名"
+msgstr "客户评价"
 
-#: .\templates\product_detail.html:99
+#: .\templates\product_detail.html:109
 msgid "User Review by"
 msgstr "用户评论"
 
-#: .\templates\product_detail.html:101
+#: .\templates\product_detail.html:111
 msgid "rated this"
 msgstr "评价这个"
 
-#: .\templates\product_detail.html:105
+#: .\templates\product_detail.html:115
 msgid "User review image"
 msgstr "用户评论图片"
 
-#: .\templates\product_detail.html:110
+#: .\templates\product_detail.html:120
 msgid "Your browser does not support the video tag."
 msgstr "您的浏览器不支持视频标签。"
 
-#: .\templates\product_detail.html:113
+#: .\templates\product_detail.html:123
 msgid "Reviewed on"
 msgstr "评价"
 
-#: .\templates\product_detail.html:118
+#: .\templates\product_detail.html:128
 msgid "No reviews yet. Be the first to review this product!"
 msgstr "尚无评论。成为第一个评论该产品的人！"
 
@@ -678,10 +701,8 @@ msgid "Sign up"
 msgstr "注册"
 
 #: .\templates\registration\login.html:4
-#, fuzzy
-#| msgid "Login"
 msgid "Login Page"
-msgstr "登录"
+msgstr "登录界面"
 
 #: .\templates\registration\login.html:27
 msgid "Submit login form"
@@ -699,21 +720,13 @@ msgstr "前往注册页面"
 msgid "Sign Up here."
 msgstr "请在此注册。"
 
-#: .\templates\registration\vendor_login.html:103
-#, fuzzy
-#| msgid "Back to Login"
-msgid "Back to Home"
-msgstr "返回首页"
-
 #: .\templates\review\add_review.html:6
 msgid "Add a Review for Your Order"
 msgstr "为您的订单添加评论"
 
 #: .\templates\review\add_review.html:13
-#, fuzzy
-#| msgid "Product"
 msgid "Product:"
-msgstr "商品"
+msgstr "商品："
 
 #: .\templates\review\add_review.html:20
 msgid "Rating (1-5):"
@@ -744,10 +757,8 @@ msgid "Comment"
 msgstr "评论"
 
 #: .\templates\review\my_reviews.html:16 .\templates\review\my_reviews.html:39
-#, fuzzy
-#| msgid "View Purchase Orders"
 msgid "Verified Purchase"
-msgstr "查看采购订单"
+msgstr "已验证购买"
 
 #: .\templates\review\my_reviews.html:18
 msgid "Created At"
@@ -880,10 +891,8 @@ msgid "Access Denied"
 msgstr "访问被拒绝"
 
 #: .\templates\vendor\not_a_vendor.html:36
-#, fuzzy
-#| msgid "Please log in as a vendor to access this page."
 msgid "You do not have permission to access this page."
-msgstr "请以商家身份登录以访问此页面。"
+msgstr "您无权访问此页面。"
 
 #: .\templates\vendor\vendor_base.html:13
 msgid "Vendor Dashboard"
@@ -934,10 +943,8 @@ msgid "No purchase orders available."
 msgstr "没有可用的采购订单。"
 
 #: .\templates\view_cart.html:5
-#, fuzzy
-#| msgid "Your Shopping Cart"
 msgid "Shopping Cart Page"
-msgstr "您的购物车"
+msgstr "购物车页面"
 
 #: .\templates\view_cart.html:10
 msgid "Your Shopping Cart"
@@ -952,10 +959,8 @@ msgid "Total"
 msgstr "总计"
 
 #: .\templates\view_cart.html:36
-#, fuzzy
-#| msgid "Product Details"
 msgid "View product details"
-msgstr "商品详情"
+msgstr "查看产品详情"
 
 #: .\templates\view_cart.html:42
 msgid "Price per item"
@@ -970,10 +975,8 @@ msgid "Decrease quantity of"
 msgstr "减少"
 
 #: .\templates\view_cart.html:52
-#, fuzzy
-#| msgid "Stock Quantity"
 msgid "Current quantity"
-msgstr "库存数量"
+msgstr "当前数量"
 
 #: .\templates\view_cart.html:54
 msgid "Increase quantity of"
@@ -988,10 +991,8 @@ msgid "Cart Summary and Checkout"
 msgstr "购物车摘要和结帐"
 
 #: .\templates\view_cart.html:76
-#, fuzzy
-#| msgid "Total Amount"
 msgid "Cart Total Amount"
-msgstr "总金额"
+msgstr "购物车总金额"
 
 #: .\templates\view_cart.html:81
 msgid "Proceed to checkout, total amount"
@@ -1041,10 +1042,11 @@ msgstr "日语"
 msgid "Simplified Chinese"
 msgstr "简体中文"
 
-#, fuzzy
-#~| msgid "View Purchase Orders"
+#~ msgid "In Stock"
+#~ msgstr "有存货"
+
 #~ msgid "✔ Verified Purchase"
-#~ msgstr "查看采购订单"
+#~ msgstr "✔ 已验证购买"
 
 #~ msgid "Korean"
 #~ msgstr "韩语"

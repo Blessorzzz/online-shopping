@@ -81,6 +81,13 @@
         <button onclick="toggleStickyMode()" title="{% trans 'Sticky Mode' %}" aria-label="{% trans 'Toggle Sticky Mode' %}">
             <span aria-hidden="true">📌</span><small>{% trans 'Sticky Mode' %}</small>
         </button>
+        <button
+          id="accessibility-info-button"
+          data-href="{% url 'accessibility_info' %}"
+          aria-label="{% trans 'Accessibility Info Page' %}"
+          title="{% trans 'Keyboard Shortcuts' %}">
+          ℹ️ <small>{% trans 'Info' %}</small>
+        </button>
         <button onclick="closeToolbar()" title="{% trans 'Exit Service' %}" class="exit" aria-label="{% trans 'Exit Accessibility Service' %}">
             <span aria-hidden="true">⏻</span><small>{% trans 'Exit Service' %}</small>
         </button>

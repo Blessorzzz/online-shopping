@@ -233,12 +233,13 @@ function resetColorScheme() {
 }
 
 
-window.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", function () {
     const toolbar = document.getElementById("accessibility-toolbar");
     const accessibilityBtn = document.getElementById("accessibility-btn");
     const menu = document.getElementById("menu");
     const contentWrapper = document.getElementById("content-wrapper");
     const stickyActive = localStorage.getItem("stickyMode") === "true";
+
     if (stickyActive) {
         toolbar.style.display = "flex";
         accessibilityBtn.style.display = "none";
@@ -252,6 +253,7 @@ window.addEventListener("DOMContentLoaded", () => {
         const stickyBtn = document.querySelector("#accessibility-toolbar button[onclick='toggleStickyMode()']");
         if (stickyBtn) stickyBtn.classList.add("active");
     }
+
     accessibilityBtn.addEventListener("click", () => {
         toolbar.style.display = "flex";
         accessibilityBtn.style.display = "none";
@@ -262,4 +264,72 @@ window.addEventListener("DOMContentLoaded", () => {
         menu.style.zIndex = "10000";
         contentWrapper.style.paddingTop = "160px";
     });
+
+    // ✅ ✅ 绑定 info 按钮点击事件
+    const infoButton = document.getElementById("accessibility-info-button");
+    if (infoButton) {
+        infoButton.addEventListener("click", function () {
+            const url = this.getAttribute("data-href");
+            if (url) window.location.href = url;
+        });
+    }
 });
+
+
+document.addEventListener("keydown", function (e) {
+    if (!e.altKey) return;
+
+    // ✅ 新增：按 Alt + W 开启/关闭工具栏
+    if (e.key.toLowerCase() === 'w') {
+        toggleAccessibilityToolbar();
+        return;
+    }
+
+    // ✅ 限制：只有工具栏开启时才能使用其他功能
+    const toolbar = document.getElementById("accessibility-toolbar");
+    if (toolbar && toolbar.style.display !== "flex") return;
+
+    switch (e.key.toLowerCase()) {
+        case 'r': toggleScreenReader(); break;
+        case '=': increaseZoom(); break;
+        case '-': decreaseZoom(); break;
+        case 'm': toggleCursorMode(); break;
+        case 'x': toggleCrosshair(); break;
+        case 'l': toggleLargeCaptions(); break;
+        case 'c': toggleColorScheme(); break;
+        case 's': toggleStickyMode(); break;
+        case '0': resetAccessibility(); break;
+        case 'q': closeToolbar(); break;
+        case 'h': window.location.href = "/accessibility-info/"; break;
+    }
+});
+
+function toggleAccessibilityToolbar() {
+    const toolbar = document.getElementById("accessibility-toolbar");
+    const accessibilityBtn = document.getElementById("accessibility-btn");
+    const menu = document.getElementById("menu");
+    const contentWrapper = document.getElementById("content-wrapper");
+
+    const isVisible = toolbar.style.display === "flex";
+
+    if (isVisible) {
+        // 关闭工具栏
+        toolbar.style.display = "none";
+        accessibilityBtn.style.display = "block";
+        menu.style.position = "relative";
+        menu.style.top = "";
+        menu.style.height = "";
+        menu.style.zIndex = "";
+        contentWrapper.style.paddingTop = "40px";
+    } else {
+        // 打开工具栏
+        toolbar.style.display = "flex";
+        accessibilityBtn.style.display = "none";
+        menu.style.position = "fixed";
+        menu.style.top = "103px";
+        menu.style.height = "80px";
+        menu.style.display = "flex";
+        menu.style.zIndex = "10000";
+        contentWrapper.style.paddingTop = "160px";
+    }
+}

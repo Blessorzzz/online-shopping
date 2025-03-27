@@ -119,3 +119,6 @@ def product_list(request):
         )
     
     return render(request, 'product_list.html', {'products': products})
+
+def accessibility_info(request):
+    return render(request, 'accessibility_info.html')
