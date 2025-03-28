@@ -68,6 +68,26 @@
         .vendor-login-button:hover {
             background-color: #0056b3;
         }
+        .font-size-controls {
+            display: flex;
+            gap: 5px;
+            margin-left: 10px;
+        }
+
+        .font-size-controls button {
+            padding: 5px 8px;
+            font-size: 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .font-size-controls button:hover {
+            background-color: #218838;
+        }
+
     </style>
 </head>
 <body>
@@ -134,6 +154,12 @@
                 <input type="text" name="q" placeholder="{% trans 'Search product' %}" aria-label="{% trans 'Search product' %}">
                 <button type="submit" aria-label="{% trans 'Submit search' %}">{% trans 'Search' %}</button>
             </form>
+
+            <div class="font-size-controls" role="group" aria-label="{% trans 'Font Size Controls' %}">
+                <button type="button" onclick="increaseFontSize()" aria-label="{% trans 'Increase font size' %}">A+</button>
+                <button type="button" onclick="decreaseFontSize()" aria-label="{% trans 'Decrease font size' %}">A−</button>
+            </div>
+        
     
             <form method="post" action="{% url 'set_language' %}" aria-label="{% trans 'Language Selector' %}">
                 {% csrf_token %}
@@ -163,6 +189,7 @@
     </main>
     
     <script src="{% static 'js/accessibility.js' %}"></script>
+    <script src="{% static 'js/font-size-control.js' %}"></script>
     <div id="large-caption" role="status" aria-live="polite"></div>
     
 </body>
