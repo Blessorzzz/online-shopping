@@ -21,3 +21,9 @@ function decreaseFontSize() {
 }
 
 document.addEventListener("DOMContentLoaded", applyFontSize);
+
+function resetFontSize() {
+    fontSizeLevel = 1.0;
+    localStorage.setItem("fontSizeLevel", fontSizeLevel);
+    applyFontSize();
+}

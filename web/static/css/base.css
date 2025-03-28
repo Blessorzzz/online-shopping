@@ -263,7 +263,7 @@ form.nav-right button:hover {
 /* User section styles */
 .user {
     color: white; /* Set the text color of the user section */
-    font-size: 15px; /* Set the font size of the user section */
+    font-size: 0.9375rem; /* Set the font size of the user section */
     display: flex; /* Use flexbox for layout */
     align-items: center; /* Align items vertically in the center */
     gap: 10px;
@@ -273,7 +273,7 @@ form.nav-right button:hover {
 
 .user p {
     margin: 0 10px 0 0; /* Add margin to the right of the user name */
-    font-size: 14px; 
+    font-size: 0.875rem; 
     color: white;
 }
 
