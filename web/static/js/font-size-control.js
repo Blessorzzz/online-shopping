@@ -1,7 +1,7 @@
 let fontSizeLevel = parseFloat(localStorage.getItem("fontSizeLevel")) || 1.0;
 
 function applyFontSize() {
-    document.body.style.fontSize = `${fontSizeLevel}em`;
+    document.documentElement.style.fontSize = `${fontSizeLevel}em`;
 }
 
 function increaseFontSize() {
