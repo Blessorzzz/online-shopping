@@ -90,3 +90,26 @@ class ProductVideo(models.Model):
 
     def __str__(self):
         return f"Video for {self.product.product_name}"
+    
+
+from django.db import models
+
+class SynonymCache(models.Model):
+    word = models.CharField(max_length=100, unique=True)
+    synonyms = models.TextField()  # 存储JSON字符串
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.word
+
+class KeywordSearchHistory(models.Model):
+    """记录用户搜索历史，用于分析和优化关键词提取"""
+    original_text = models.TextField()
+    extracted_keywords = models.TextField()  # 存储JSON字符串
+    expanded_keywords = models.TextField()  # 存储JSON字符串
+    successful_search = models.BooleanField(default=False)  # 搜索是否返回结果
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.original_text[:50]

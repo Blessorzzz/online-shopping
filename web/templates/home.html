@@ -2,6 +2,37 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% block content %}
+    <!-- 新增：语音识别详细过程展示区域 -->
+    <div id="voice-recognition-details" class="recognition-details" style="display: none;">
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">语音识别过程</h5>
+            <button type="button" class="btn-close" aria-label="关闭" id="close-recognition-details"></button>
+          </div>
+          <div class="card-body">
+            <div class="process-step">
+              <h6>1. 语音识别结果</h6>
+              <div id="original-text" class="process-result"></div>
+            </div>
+            <div class="process-step">
+              <h6>2. 分词结果</h6>
+              <div id="segmented-text" class="process-result"></div>
+            </div>
+            <div class="process-step">
+              <h6>3. 提取的关键词</h6>
+              <div id="keywords" class="process-result"></div>
+            </div>
+            <div class="process-step">
+              <h6>4. 扩展的关键词</h6>
+              <div id="expanded-keywords" class="process-result"></div>
+            </div>
+            <div class="process-step">
+              <h6>5. 最终搜索查询</h6>
+              <div id="final-query" class="process-result"></div>
+            </div>
+          </div>
+        </div>
+      </div>
 <div class="product-list">
     {% for product in products %}
     <div class="product-card">
