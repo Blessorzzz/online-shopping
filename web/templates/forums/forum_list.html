@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load i18n%}
+{% block content %}
+<h1>Forums</h1>
+
+<!-- Link to create a new post -->
+<p><a href="{% url 'select_product_for_forum' %}" class="btn btn-primary">Start a New Discussion</a></p>
+
+<ul>
+    {% for post in posts %}
+    <li>
+        <a href="{% url 'forum_detail' post.id %}">{{ post.title }}</a> - {{ post.created_at|date:"Y-m-d" }}
+    </li>
+    {% empty %}
+    <li>No posts yet.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

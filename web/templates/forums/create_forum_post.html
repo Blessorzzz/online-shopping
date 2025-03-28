@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load i18n%}
+{% block content %}
+<h2>Create a Forum Post for {{ product.name }}</h2>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Create Post</button>
+</form>
+{% endblock %}
