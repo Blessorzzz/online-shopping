@@ -1,5 +1,6 @@
 # ecommerce/views.py
 from glob import escape
+from itertools import product
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
@@ -105,7 +106,7 @@ def search_products(request):
     all_search_terms_json = request.GET.get('all_search_terms', '[]')
     
     # 初始化
-    products = Product.objects.filter(is_active=True)
+    
     search_context = {
         'query': query,
         'products': [],
@@ -115,11 +116,9 @@ def search_products(request):
     # 如果有搜索查询
     if query:
         # 执行搜索
-        search_results = products.filter(
+        search_results = product.filter(
             Q(product_name__icontains=query) | 
-            Q(description__icontains=query) | 
-            Q(category__name__icontains=query) | 
-            Q(tags__icontains=query)
+            Q(description__icontains=query)
         ).distinct()
         
         # 添加到上下文
@@ -247,7 +246,7 @@ def extract_keywords(request):
         nouns = []
         for word, flag in words_with_pos:
             print(f"分词: {word}, 词性: {flag}")
-            if flag.startswith('n') and len(word) > 1:  # 名词且长度大于1
+            if flag.startswith('n') or flag.startswith('t'):  # 名词且长度大于1
                 nouns.append(word)
         
         print("提取的名词:", nouns)
@@ -368,3 +367,23 @@ def extract_keywords(request):
             'success': False,
             'error': str(e)
         })
+
+from django.http import JsonResponse
+from django.template.loader import render_to_string
+from django.db.models import Q
+from .models import Product  
+def ajax_search_products(request):
+    query = request.GET.get('q', '')
+    products = Product.objects.filter(is_active=True)
+
+    if query:
+        products = products.filter(
+            Q(product_name__icontains=query) |
+            Q(description__icontains=query) 
+        ).distinct()
+    else:
+        products = Product.objects.none()
+
+    # 渲染产品列表的 HTML 片段
+    html = render_to_string('product_list_partial.html', {'products': products}, request=request)
+    return JsonResponse({'html': html})

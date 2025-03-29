@@ -862,52 +862,56 @@ function getCSRFToken() {
     return tokenElement ? tokenElement.value : '';
 }
 // 添加新函数：用于处理序列搜索
-function setupSequentialSearch(searchData) {
+let searchData = {
+    allSearchTerms: [],
+    currentSearchIndex: -1,
+    originalText: '',
+    keywords: [],
+    expandedKeywords: [],
+    searchQuery: '',
+    searchMode: ''
+};
+
+// 找到 setupSequentialSearch 函数并替换为以下内容
+function setupSequentialSearch(searchDataInput) {
+    // 处理传入的数据
+    if (typeof searchDataInput === 'object' && searchDataInput !== null) {
+        Object.assign(searchData, {
+            allSearchTerms: searchDataInput.allSearchTerms || [],
+            currentSearchIndex: 0,
+            originalText: searchDataInput.originalText || '',
+            keywords: searchDataInput.keywords || [],
+            expandedKeywords: searchDataInput.expandedKeywords || [],
+            searchQuery: searchDataInput.searchQuery || '',
+            searchMode: searchDataInput.searchMode || 'sequential'
+        });
+    } else {
+        return;
+    }
+
     // 获取DOM元素
     const searchInput = document.getElementById("search-input");
     const searchForm = document.getElementById("search-form");
     const detailsContainer = document.getElementById('voice-recognition-details');
     
-    // 检查是否有之前保存的搜索状态
-    const savedSearchState = sessionStorage.getItem('sequentialSearchState');
-    
-    // 如果有新的搜索数据，使用新数据；否则尝试使用保存的状态
-    if (!searchData || !searchData.allSearchTerms || searchData.allSearchTerms.length === 0) {
-        if (savedSearchState) {
-            try {
-                searchData = JSON.parse(savedSearchState);
-            } catch (e) {
-                console.error("无法解析保存的搜索状态:", e);
-                return;
-            }
-        } else {
-            return; // 如果没有搜索数据也没有保存状态，退出
-        }
-    }
-    
-    // 创建或获取序列搜索界面元素
+    // 创建或获取序列搜索容器
     let sequentialSearchContainer = document.getElementById('sequential-search-container');
     if (!sequentialSearchContainer) {
         sequentialSearchContainer = document.createElement('div');
         sequentialSearchContainer.id = 'sequential-search-container';
         sequentialSearchContainer.className = 'sequential-search mt-3';
-        
-        // 添加固定模式样式
         sequentialSearchContainer.classList.add('sticky-search-container');
         
-        // 把序列搜索界面添加到适当位置
         if (detailsContainer && detailsContainer.style.display !== 'none') {
             detailsContainer.appendChild(sequentialSearchContainer);
         } else {
-            // 如果详情容器不存在或隐藏，添加到页面顶部的固定位置
             document.body.insertBefore(sequentialSearchContainer, document.body.firstChild);
         }
     }
     
-    // 清空容器
     sequentialSearchContainer.innerHTML = '';
     
-    // 创建序列搜索界面
+    // 创建头部
     const headerDiv = document.createElement('div');
     headerDiv.className = 'sequential-search-header';
     headerDiv.innerHTML = `
@@ -932,7 +936,6 @@ function setupSequentialSearch(searchData) {
     const termsList = document.createElement('div');
     termsList.className = 'sequential-terms-list';
     
-    // 添加所有搜索词
     searchData.allSearchTerms.forEach((item, index) => {
         const termEl = document.createElement('div');
         termEl.className = `search-term-item ${item.type === 'expanded' ? 'expanded' : 'original'} ${index === searchData.currentSearchIndex ? 'current' : ''}`;
@@ -942,16 +945,67 @@ function setupSequentialSearch(searchData) {
             ${index === searchData.currentSearchIndex ? '<span class="current-indicator">当前</span>' : ''}
         `;
         
-        // 点击关键词直接搜索
-        termEl.addEventListener('click', () => {
-            searchWithTerm(index);
+        // 修改点击事件，使用 AJAX
+        termEl.addEventListener('click', async () => {
+            searchData.currentSearchIndex = index;
+            if (searchInput) {
+                searchInput.value = item.term;
+            }
+            updateSequentialSearchUI();
+            
+            const productListContainer = document.getElementById('product-list-container');
+            if (!productListContainer) {
+                console.error("未找到产品列表容器");
+                return;
+            }
+            
+            productListContainer.innerHTML = '<p>加载产品中...</p>';
+            
+            try {
+                const response = await fetch(`/api/ajax-search-products/?q=${encodeURIComponent(item.term)}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP错误！状态码: ${response.status}`);
+                }
+                const data = await response.json();
+                
+                productListContainer.innerHTML = data.html;
+                // 重新渲染星级评分
+                document.querySelectorAll('.star-rating').forEach(element => {
+                    let rating = parseFloat(element.getAttribute('data-rating'));
+                    let fullStars = Math.floor(rating);
+                    let hasHalfStar = rating % 1 >= 0.5;
+                    let starHtml = '';
+                    for (let i = 0; i < fullStars; i++) {
+                        starHtml += '<i class="fas fa-star custom-star"></i>';
+                    }
+                    if (hasHalfStar) {
+                        starHtml += '<i class="fas fa-star-half-alt custom-star"></i>';
+                    }
+                    while (starHtml.split('fa-star').length - 1 < 5) {
+                        starHtml += '<i class="far fa-star custom-star"></i>';
+                    }
+                    element.innerHTML = starHtml;
+                });
+                
+                // 更新浏览器历史记录
+                history.pushState(
+                    { searchTerm: item.term, index: index },
+                    `Search results for ${item.term}`,
+                    `/?q=${encodeURIComponent(item.term)}&sequential_search=true&search_index=${index}&all_search_terms=${encodeURIComponent(JSON.stringify(searchData.allSearchTerms))}`
+                );
+                
+                sessionStorage.setItem('sequentialSearchState', JSON.stringify(searchData));
+            } catch (error) {
+                console.error("搜索产品失败:", error);
+                productListContainer.innerHTML = `<p>加载产品失败: ${error.message}</p>`;
+            }
         });
         
         termsList.appendChild(termEl);
     });
     sequentialSearchContainer.appendChild(termsList);
     
-    // 显示当前搜索词说明
+    // 当前搜索词说明
     const currentTermInfo = document.createElement('div');
     currentTermInfo.className = 'current-term-info';
     currentTermInfo.innerHTML = `
@@ -963,28 +1017,26 @@ function setupSequentialSearch(searchData) {
     `;
     sequentialSearchContainer.appendChild(currentTermInfo);
     
-    // 设置按钮点击事件处理
+    // 设置按钮事件
     const prevButton = document.getElementById('prev-search-term');
     const nextButton = document.getElementById('next-search-term');
     const closeButton = document.getElementById('close-sequential-search');
     
     prevButton.addEventListener('click', () => {
         if (searchData.currentSearchIndex > 0) {
-            searchWithTerm(searchData.currentSearchIndex - 1);
+            termsList.children[searchData.currentSearchIndex - 1].click();
         }
     });
     
     nextButton.addEventListener('click', () => {
         if (searchData.currentSearchIndex < searchData.allSearchTerms.length - 1) {
-            searchWithTerm(searchData.currentSearchIndex + 1);
+            termsList.children[searchData.currentSearchIndex + 1].click();
         }
     });
     
     closeButton.addEventListener('click', () => {
-        // 关闭序列搜索并清除状态
         sequentialSearchContainer.style.display = 'none';
         sessionStorage.removeItem('sequentialSearchState');
-        // 重置URL，移除序列搜索相关参数
         if (window.history && window.history.pushState) {
             const url = new URL(window.location.href);
             url.searchParams.delete('sequential_search');
@@ -993,102 +1045,53 @@ function setupSequentialSearch(searchData) {
             window.history.pushState({}, '', url.toString());
         }
     });
-    function searchWithTerm(index) {
-        // 更新当前索引
-        searchData.currentSearchIndex = index;
-        
-        // 更新搜索框内容
-        if (searchInput) {
-            searchInput.value = searchData.allSearchTerms[index].term;
-        }
-        
-        // 保存搜索状态到会话存储
-        sessionStorage.setItem('sequentialSearchState', JSON.stringify(searchData));
-        
-        // 更新UI状态
-        updateSequentialSearchUI();
-        
-        // 执行搜索 - 添加一个标记表明这是序列搜索中的一个步骤
-        const sequentialSearchForm = searchForm ? searchForm.cloneNode(true) : document.createElement('form');
-        
-        // 设置表单属性
-        sequentialSearchForm.method = 'get';
-        sequentialSearchForm.action = '/';  // 指向搜索页面的URL
-        
-        // 添加搜索词
-        const queryInput = document.createElement('input');
-        queryInput.type = 'hidden';
-        queryInput.name = 'q';
-        queryInput.value = searchData.allSearchTerms[index].term;
-        sequentialSearchForm.appendChild(queryInput);
-        
-        // 添加序列搜索标记
-        const hiddenInput = document.createElement('input');
-        hiddenInput.type = 'hidden';
-        hiddenInput.name = 'sequential_search';
-        hiddenInput.value = 'true';
-        sequentialSearchForm.appendChild(hiddenInput);
-        
-        // 添加当前索引
-        const indexInput = document.createElement('input');
-        indexInput.type = 'hidden';
-        indexInput.name = 'search_index';
-        indexInput.value = index;
-        sequentialSearchForm.appendChild(indexInput);
-        
-        // 添加所有关键词列表，用于后端渲染界面
-        const allTermsInput = document.createElement('input');
-        allTermsInput.type = 'hidden';
-        allTermsInput.name = 'all_search_terms';
-        allTermsInput.value = JSON.stringify(searchData.allSearchTerms);
-        sequentialSearchForm.appendChild(allTermsInput);
-        
-        // 提交表单
-        document.body.appendChild(sequentialSearchForm);
-        sequentialSearchForm.submit();
-        document.body.removeChild(sequentialSearchForm);
+    
+    // 更新UI
+    updateSequentialSearchUI();
+    
+    // 自动触发第一个关键词
+    if (searchData.allSearchTerms.length > 0) {
+        termsList.children[0].click();
     }
+}
+
     
     // 更新序列搜索UI状态
     function updateSequentialSearchUI() {
-        // 更新按钮状态
-        if (prevButton) {
-            prevButton.disabled = searchData.currentSearchIndex <= 0;
-        }
-        if (nextButton) {
-            nextButton.disabled = searchData.currentSearchIndex >= searchData.allSearchTerms.length - 1;
-        }
+        const termsList = document.querySelector('#sequential-search-container .sequential-terms-list');
+        if (!termsList) return;
         
-        // 更新关键词列表高亮
-        const termItems = document.querySelectorAll('.search-term-item');
-        termItems.forEach((item, idx) => {
-            if (idx === searchData.currentSearchIndex) {
-                item.classList.add('current');
-                item.innerHTML = `
-                    <span class="term-text">${searchData.allSearchTerms[idx].term}</span>
-                    <span class="current-indicator">当前</span>
+        Array.from(termsList.children).forEach((termEl, index) => {
+            termEl.classList.toggle('current', index === searchData.currentSearchIndex);
+            const indicator = termEl.querySelector('.current-indicator');
+            if (index === searchData.currentSearchIndex && !indicator) {
+                const span = document.createElement('span');
+                span.className = 'current-indicator';
+                span.textContent = '当前';
+                termEl.appendChild(span);
+            } else if (index !== searchData.currentSearchIndex && indicator) {
+                indicator.remove();
+            }
+            
+            const prevBtn = document.getElementById('prev-search-term');
+            const nextBtn = document.getElementById('next-search-term');
+            prevBtn.disabled = searchData.currentSearchIndex <= 0;
+            nextBtn.disabled = searchData.currentSearchIndex >= searchData.allSearchTerms.length - 1;
+            
+            const info = document.querySelector('.current-term-info p');
+            if (info) {
+                info.innerHTML = `
+                    正在搜索: <strong>${searchData.allSearchTerms[searchData.currentSearchIndex].term}</strong> 
+                    <span class="term-type ${searchData.allSearchTerms[searchData.currentSearchIndex].type === 'expanded' ? 'expanded' : 'original'}">
+                      (${searchData.allSearchTerms[searchData.currentSearchIndex].type === 'expanded' ? '扩展关键词' : '原始关键词'})
+                    </span>
                 `;
-            } else {
-                item.classList.remove('current');
-                item.innerHTML = `<span class="term-text">${searchData.allSearchTerms[idx].term}</span>`;
             }
         });
-        
-        // 更新当前搜索词信息
-        const currentTermInfo = document.querySelector('.current-term-info');
-        if (currentTermInfo) {
-            currentTermInfo.innerHTML = `
-                <p>正在搜索: <strong>${searchData.allSearchTerms[searchData.currentSearchIndex].term}</strong> 
-                   <span class="term-type ${searchData.allSearchTerms[searchData.currentSearchIndex].type === 'expanded' ? 'expanded' : 'original'}">
-                     (${searchData.allSearchTerms[searchData.currentSearchIndex].type === 'expanded' ? '扩展关键词' : '原始关键词'})
-                   </span>
-                </p>
-            `;
-        }
     }
     
     // 显示序列搜索容器
-    sequentialSearchContainer.style.display = 'block';
+    // sequentialSearchContainer.style.display = 'block';
     document.addEventListener("DOMContentLoaded", function() {
         // 检查URL参数是否包含序列搜索信息
         const urlParams = new URLSearchParams(window.location.search);
@@ -1132,7 +1135,7 @@ function setupSequentialSearch(searchData) {
             }
         }
     });
-}
+
 
 // 本地关键词提取
 function extractKeywordsLocally(text) {
@@ -1166,14 +1169,6 @@ function extractKeywordsLocally(text) {
     for (const word of words) {
         if (!word) continue;
         
-        // 检查是否为产品类别
-        for (const category of productCategories) {
-            if (word.includes(category)) {
-                if (!keywords.includes(category)) {
-                    keywords.push(category);
-                }
-            }
-        }
         
         // 检查是否为属性
         for (const attr of attributes) {
@@ -1209,11 +1204,6 @@ function extractKeywordsLocally(text) {
             const intentIndex = text.indexOf(intent) + intent.length;
             const textAfterIntent = text.substring(intentIndex);
             
-            for (const category of productCategories) {
-                if (textAfterIntent.includes(category) && !keywords.includes(category)) {
-                    keywords.push(category);
-                }
-            }
         }
     }
     
