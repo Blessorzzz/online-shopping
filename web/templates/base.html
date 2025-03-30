@@ -88,6 +88,139 @@
             background-color: #218838;
         }
 
+
+        .voice-search-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            color: #555;
+            border-radius: 50%;
+            font-size: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 5px;
+            transition: all 0.2s ease;
+        }
+        
+        .voice-search-btn:hover {
+            background-color: rgba(0, 123, 255, 0.1);
+            color: #007bff;
+        }
+        
+        .voice-search-btn.listening {
+            color: #f44336;
+            background-color: rgba(244, 67, 54, 0.1);
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        /* 语音状态显示区域 */
+        .voice-status {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 10px;
+            background-color: #fff;
+            padding: 8px 12px;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            font-size: 14px;
+            color: #333;
+            z-index: 1001;
+            max-width: 250px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .voice-status.error {
+            background-color: #fff3f3;
+            color: #e53935;
+        } 
+        .recognition-details {
+            margin-top: 15px;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+          }
+          
+          .process-step {
+            margin-bottom: 12px;
+          }
+          
+          .process-step h6 {
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+          }
+          
+          .process-result {
+            padding: 8px 12px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            border-left: 3px solid #007bff;
+            font-family: monospace;
+            word-break: break-all;
+            min-height: 36px;
+          }
+          
+          .voice-status {
+            display: none;
+            margin-top: 10px;
+            padding: 8px 15px;
+            border-radius: 4px;
+            background-color: #e9f5ff;
+            color: #0066cc;
+            transition: all 0.3s ease;
+          }
+          
+          .voice-status.error {
+            background-color: #ffe9e9;
+            color: #cc0000;
+          }
+          
+          /* 语音按钮样式 */
+          #voice-search-button {
+            transition: all 0.3s ease;
+          }
+          
+          #voice-search-button.listening {
+            background-color: #ff4d4d;
+            color: white;
+            animation: pulse 1.5s infinite;
+          }
+          
+          /* 脉冲动画 */
+          @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+          }
+          
+          /* 关键词标签样式 */
+          .keyword-tag {
+            display: inline-block;
+            background-color: #e0f7fa;
+            color: #00838f;
+            border-radius: 16px;
+            padding: 2px 10px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+          }
+          
+          .expanded-keyword-tag {
+            background-color: #ede7f6;
+            color: #5e35b1;
+          }
     </style>
 </head>
 <body>
@@ -149,21 +282,27 @@
             {% endif %}
             <li><a href="#" id="accessibility-btn" aria-label="{% trans 'Open Web Accessibility Toolbar' %}">{% trans "Web Accessibility" %}</a></li>
         </ul>
+    </div>
+    <div class="user nav-right">
+        <form method="get" action="{% url 'home' %}"role="search" aria-label="{% trans 'Search Products' %}">
+            <input type="text" name="q" id="search-input" placeholder="{% trans 'Search product' %}" aria-label="{% trans 'Search product' %}">
+            <button type="submit" aria-label="{% trans 'Submit search' %}">{% trans 'Search' %}</button>
+            <!-- 添加语音搜索按钮 -->
+            <button type="button" id="voice-search-button" class="voice-search-btn" aria-label="{% trans 'Voice Search' %}">
+                <i class="fas fa-microphone"></i>
+            </button>
+        </form>
+            <!-- 语音识别状态显示 -->
+            <div id="voice-status" class="voice-status"></div>
+    </div>
     
-        <div class="user nav-right">
-            <form method="get" action="{% url 'home' %}" role="search" aria-label="{% trans 'Search Products' %}">
-                <input type="text" name="q" placeholder="{% trans 'Search product' %}" aria-label="{% trans 'Search product' %}">
-                <button type="submit" aria-label="{% trans 'Submit search' %}">{% trans 'Search' %}</button>
-            </form>
-
-            <div class="font-size-controls" role="group" aria-label="{% trans 'Font Size Controls' %}">
-                <button type="button" onclick="increaseFontSize()" aria-label="{% trans 'Increase font size' %}">A+</button>
-                <button type="button" onclick="decreaseFontSize()" aria-label="{% trans 'Decrease font size' %}">A−</button>
-                <button type="button" onclick="resetFontSize()" aria-label="{% trans 'Reset font size' %}">Reset</button>
-            </div>
-        
+    <div class="font-size-controls" role="group" aria-label="{% trans 'Font Size Controls' %}">
+        <button type="button" onclick="increaseFontSize()" aria-label="{% trans 'Increase font size' %}">A+</button>
+        <button type="button" onclick="decreaseFontSize()" aria-label="{% trans 'Decrease font size' %}">A−</button>
+        <button type="button" onclick="resetFontSize()" aria-label="{% trans 'Reset font size' %}">Reset</button>
+    </div>
     
-            <form method="post" action="{% url 'set_language' %}" aria-label="{% trans 'Language Selector' %}">
+            <form method="post" action="{% url 'set_language' %}">
                 {% csrf_token %}
                 <label for="language-select" class="sr-only">{% trans "Select Language" %}</label>
                 <select id="language-select" name="language" onchange="this.form.submit()" aria-label="{% trans 'Language selection' %}">
