@@ -3,7 +3,7 @@
 {% load i18n %}
 {% block content %}
     <!-- 新增：语音识别详细过程展示区域 -->
-    <div id="voice-recognition-details" class="recognition-details" style="display: none;">
+    {% comment %} <div id="voice-recognition-details" class="recognition-details" style="display: none;">
         <div class="card">
           <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="mb-0">语音识别过程</h5>
@@ -32,7 +32,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> {% endcomment %}
       <div id="product-list-container" class="product-list">
     {% for product in products %}
     <div class="product-card">

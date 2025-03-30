@@ -1080,6 +1080,7 @@ closeButton.addEventListener('click', () => {
         url.searchParams.delete('all_search_terms');
         window.history.pushState({}, '', url.toString());
     }
+    window.location.href = '';
 });
     // 更新UI
     updateSequentialSearchUI();
