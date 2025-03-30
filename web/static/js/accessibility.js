@@ -960,15 +960,7 @@ function setupSequentialSearch(searchDataInput) {
     headerDiv.innerHTML = `
         <h6>按顺序搜索以下关键词:</h6>
         <div class="controls-wrapper">
-            <div class="btn-group">
-                <button type="button" id="prev-search-term" class="btn btn-sm btn-outline-secondary" ${searchData.currentSearchIndex <= 0 ? 'disabled' : ''}>
-                    <i class="fa fa-arrow-left"></i> 上一个
-                </button>
-                <button type="button" id="next-search-term" class="btn btn-sm btn-outline-primary" ${searchData.currentSearchIndex >= searchData.allSearchTerms.length - 1 ? 'disabled' : ''}>
-                    下一个 <i class="fa fa-arrow-right"></i>
-                </button>
-            </div>
-            <button type="button" id="close-sequential-search" class="btn btn-sm btn-outline-danger">
+            <button type="button" id="close-sequential-search" class="btn btn-sm btn-outline-danger close-btn">
                 <i class="fa fa-times"></i> 关闭
             </button>
         </div>
@@ -1060,35 +1052,35 @@ function setupSequentialSearch(searchDataInput) {
     `;
     sequentialSearchContainer.appendChild(currentTermInfo);
     
-    // 设置按钮事件
-    const prevButton = document.getElementById('prev-search-term');
-    const nextButton = document.getElementById('next-search-term');
-    const closeButton = document.getElementById('close-sequential-search');
-    
-    prevButton.addEventListener('click', () => {
-        if (searchData.currentSearchIndex > 0) {
-            termsList.children[searchData.currentSearchIndex - 1].click();
-        }
-    });
-    
-    nextButton.addEventListener('click', () => {
-        if (searchData.currentSearchIndex < searchData.allSearchTerms.length - 1) {
-            termsList.children[searchData.currentSearchIndex + 1].click();
-        }
-    });
-    
-    closeButton.addEventListener('click', () => {
-        sequentialSearchContainer.style.display = 'none';
-        sessionStorage.removeItem('sequentialSearchState');
-        if (window.history && window.history.pushState) {
-            const url = new URL(window.location.href);
-            url.searchParams.delete('sequential_search');
-            url.searchParams.delete('search_index');
-            url.searchParams.delete('all_search_terms');
-            window.history.pushState({}, '', url.toString());
-        }
-    });
-    
+// 设置按钮事件
+// const prevButton = document.getElementById('prev-search-term');
+// const nextButton = document.getElementById('next-search-term');
+const closeButton = document.getElementById('close-sequential-search');
+
+// 删除或注释掉这些事件监听器
+// prevButton.addEventListener('click', () => {
+//     if (searchData.currentSearchIndex > 0) {
+//         termsList.children[searchData.currentSearchIndex - 1].click();
+//     }
+// });
+
+// nextButton.addEventListener('click', () => {
+//     if (searchData.currentSearchIndex < searchData.allSearchTerms.length - 1) {
+//         termsList.children[searchData.currentSearchIndex + 1].click();
+//     }
+// });
+
+closeButton.addEventListener('click', () => {
+    sequentialSearchContainer.style.display = 'none';
+    sessionStorage.removeItem('sequentialSearchState');
+    if (window.history && window.history.pushState) {
+        const url = new URL(window.location.href);
+        url.searchParams.delete('sequential_search');
+        url.searchParams.delete('search_index');
+        url.searchParams.delete('all_search_terms');
+        window.history.pushState({}, '', url.toString());
+    }
+});
     // 更新UI
     updateSequentialSearchUI();
     
@@ -1116,10 +1108,11 @@ function setupSequentialSearch(searchDataInput) {
                 indicator.remove();
             }
             
-            const prevBtn = document.getElementById('prev-search-term');
-            const nextBtn = document.getElementById('next-search-term');
-            prevBtn.disabled = searchData.currentSearchIndex <= 0;
-            nextBtn.disabled = searchData.currentSearchIndex >= searchData.allSearchTerms.length - 1;
+            // 移除这部分代码或用条件检查替代
+            // const prevBtn = document.getElementById('prev-search-term');
+            // const nextBtn = document.getElementById('next-search-term');
+            // prevBtn.disabled = searchData.currentSearchIndex <= 0;
+            // nextBtn.disabled = searchData.currentSearchIndex >= searchData.allSearchTerms.length - 1;
             
             const info = document.querySelector('.current-term-info p');
             if (info) {
@@ -1132,7 +1125,6 @@ function setupSequentialSearch(searchDataInput) {
             }
         });
     }
-    
     // 显示序列搜索容器
     // sequentialSearchContainer.style.display = 'block';
     document.addEventListener("DOMContentLoaded", function() {
