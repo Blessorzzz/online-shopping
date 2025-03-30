@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views.generic import ListView, DetailView, UpdateView
-from django.db.models import Q, Avg
+from django.db.models import Q, Avg, Count
 import requests
 from .models import KeywordSearchHistory, Product, SynonymCache
 from shoppingcart.models import ShoppingCart  # 引用购物车模型
