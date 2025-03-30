@@ -92,129 +92,6 @@
         </div>
     </section>
 
-    <!-- 用户评论 -->
-    <section class="reviews-section" aria-label="{% trans 'Customer Reviews Section' %}">
-        <h2>{% trans "Customer Reviews" %}</h2>
-
-        {% if reviews %}
-        <ul class="reviews-list" role="list">
-            {% for review in reviews %}
-            <li class="review-item" role="listitem" aria-label="{% trans 'User Review by' %} {{ review.user.username }}">
-                <strong>{{ review.user.username }}</strong>
-                {% trans "rated this" %} 
-                <span class="star-rating" data-rating="{{ review.rating }}"></span>
-                <p>{{ review.comment }}</p>
-
-                {% if review.image %}
-                <img src="{{ review.image.url }}" alt="{% trans 'User review image' %}" class="review-image">
-                {% endif %}
-                {% if review.video %}
-                <video controls class="review-video">
-                    <source src="{{ review.video.url }}" type="video/mp4">
-                    {% trans "Your browser does not support the video tag." %}
-                </video>
-                {% endif %}
-                <small>{% trans "Reviewed on" %} {{ review.created_at|date:"Y-m-d H:i" }}</small>
-
-                {% if review.order and review.order.verified_purchase %}
-                <span class="verified-purchase">
-                    <span class="verified-label">{% trans "Verified Purchase" %}</span>
-                </span>
-                {% endif %}
-            </li>
-            {% endfor %}
-        </ul>
-        {% else %}
-        <p>{% trans "No reviews yet. Be the first to review this product!" %}</p>
-        {% endif %}
-    </section>
-
-</main>
-
-<!-- JS: 图片切换 + 星级渲染 -->
-<script>
-    function switchImage(newSrc, element) {
-        document.querySelector('.main-image').src = newSrc;
-        document.querySelectorAll('.thumbnail-item').forEach(item => {
-            item.classList.remove('active');
-        });
-        element.parentElement.classList.add('active');
-    }
-
-    function renderStars(rating) {
-        let fullStars = Math.floor(rating);
-        let halfStar = rating % 1 >= 0.5;
-        let starHtml = '';
-
-        for (let i = 0; i < fullStars; i++) {
-            starHtml += '<i class="fas fa-star custom-star"></i>';
-        }
-        if (halfStar) {
-            starHtml += '<i class="fas fa-star-half-alt custom-star"></i>';
-        }
-        while (starHtml.split('fa-star').length - 1 < 5) {
-            starHtml += '<i class="far fa-star custom-star"></i>';
-        }
-        return starHtml;
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('.star-rating').forEach(function(element) {
-            const rating = parseFloat(element.getAttribute('data-rating'));
-            element.innerHTML = renderStars(rating);
-        });
-    });
-
-    // Replace the existing voting script with this updated version
-    document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('.vote-btn').forEach(button => {
-            button.addEventListener('click', async (e) => {
-                e.preventDefault();
-                
-                {% if not request.user.is_authenticated %}
-                    window.location.href = "{% url 'login' %}?next={{ request.path }}";
-                    return;
-                {% endif %}
-
-                const reviewId = button.dataset.reviewId;
-                const voteType = button.dataset.voteType;
-                const reviewItem = button.closest('.review-item');  // Get parent review item
-                
-                try {
-                    const response = await fetch('{% url "vote_review" %}', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                            'X-CSRFToken': '{{ csrf_token }}'
-                        },
-                        body: new URLSearchParams({
-                            'review_id': reviewId,
-                            'vote_type': voteType
-                        })
-                    });
-
-                    const data = await response.json();
-                    
-                    if (data.status === 'success') {
-                        // Update counts for this specific review only
-                        reviewItem.querySelector('.like-count').textContent = data.like_count;
-                        reviewItem.querySelector('.dislike-count').textContent = data.dislike_count;
-                        
-                        // Update active states
-                        reviewItem.querySelectorAll('.vote-btn').forEach(btn => {
-                            btn.classList.remove('active');
-                        });
-                        button.classList.add('active');
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                    alert('{% trans "Failed to submit vote. Please try again." %}');
-                }
-            });
-        });
-    });
-</script>
-
 <!-- Customer Reviews Section -->
 <div class="reviews-section">
     <div class="reviews-header">
@@ -303,6 +180,94 @@
         <p class="no-reviews-message">{% trans "No reviews yet. Be the first to review this product!" %}</p>
     {% endif %}
 </div>
+
+    </section>
+
+</main>
+
+<!-- JS: 图片切换 + 星级渲染 -->
+<script>
+    function switchImage(newSrc, element) {
+        document.querySelector('.main-image').src = newSrc;
+        document.querySelectorAll('.thumbnail-item').forEach(item => {
+            item.classList.remove('active');
+        });
+        element.parentElement.classList.add('active');
+    }
+
+    function renderStars(rating) {
+        let fullStars = Math.floor(rating);
+        let halfStar = rating % 1 >= 0.5;
+        let starHtml = '';
+
+        for (let i = 0; i < fullStars; i++) {
+            starHtml += '<i class="fas fa-star custom-star"></i>';
+        }
+        if (halfStar) {
+            starHtml += '<i class="fas fa-star-half-alt custom-star"></i>';
+        }
+        while (starHtml.split('fa-star').length - 1 < 5) {
+            starHtml += '<i class="far fa-star custom-star"></i>';
+        }
+        return starHtml;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.star-rating').forEach(function(element) {
+            const rating = parseFloat(element.getAttribute('data-rating'));
+            element.innerHTML = renderStars(rating);
+        });
+    });
+
+    // Replace the existing voting script with this updated version
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.vote-btn').forEach(button => {
+            button.addEventListener('click', async (e) => {
+                e.preventDefault();
+                
+                {% if not request.user.is_authenticated %}
+                    window.location.href = "{% url 'login' %}?next={{ request.path }}";
+                    return;
+                {% endif %}
+
+                const reviewId = button.dataset.reviewId;
+                const voteType = button.dataset.voteType;
+                const reviewItem = button.closest('.review-item');  // Get parent review item
+                
+                try {
+                    const response = await fetch('{% url "vote_review" %}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        body: new URLSearchParams({
+                            'review_id': reviewId,
+                            'vote_type': voteType
+                        })
+                    });
+
+                    const data = await response.json();
+                    
+                    if (data.status === 'success') {
+                        // Update counts for this specific review only
+                        reviewItem.querySelector('.like-count').textContent = data.like_count;
+                        reviewItem.querySelector('.dislike-count').textContent = data.dislike_count;
+                        
+                        // Update active states
+                        reviewItem.querySelectorAll('.vote-btn').forEach(btn => {
+                            btn.classList.remove('active');
+                        });
+                        button.classList.add('active');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('{% trans "Failed to submit vote. Please try again." %}');
+                }
+            });
+        });
+    });
+</script>
 
 <style>
     .product-detail-container {

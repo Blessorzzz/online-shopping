@@ -102,8 +102,6 @@
                     <th scope="col">{% trans "Total Amount" %}</th>
                     <th scope="col">{% trans "Status" %}</th>
                     <th scope="col">{% trans "Verified Purchase" %}</th>
-                    <th scope="col">{% trans "Actions" %}</th>
-                    <th scope="col">{% trans "Reviews" %}</th>
                 </tr>
             </thead>
             <tbody>
@@ -134,31 +132,27 @@
                             <span class="not-verified-label">{% trans "Not Verified" %}</span>
                         {% endif %}
                     </td>
-
+                    
                     <td>
                         {% if order.status == 'pending' or order.status == 'hold' %}
                         <form method="post" action="{% url 'cancel_order' order.id %}" style="display:inline;">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-danger"
-                                    aria-label="{% trans 'Cancel order' %} {{ order.po_number }}">
-                                {% trans "Cancel" %}
-                            </button>
+                            <button type="submit" class="btn btn-danger">{% trans "Cancel" %}</button>
                         </form>
-                        {% endif %}
-                    </td>
-
-                    <td>
-                        {% if order.status in "complete refunded delivered" %}
-                        <a href="{% url 'add_review' order.id %}" class="btn btn-primary"
-                           aria-label="{% trans 'Add a review for order' %} {{ order.po_number }}">
-                            {% trans "Add a Review" %}
-                        </a>
                         {% endif %}
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+    
+        {% if messages %}
+            <div class="popup-message" id="popup-message">
+                {% for message in messages %}
+                    <p class="message {{ message.tags }}">{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
     </section>
 
     {% if messages %}
@@ -170,24 +164,20 @@
     {% endif %}
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // 行点击 & 键盘可访问
+        document.addEventListener("DOMContentLoaded", function() {
             document.querySelectorAll(".clickable-row").forEach(row => {
-                row.addEventListener("click", function () {
+                row.addEventListener("click", function() {
                     window.location.href = this.dataset.href;
-                });
-                row.addEventListener("keypress", function (e) {
-                    if (e.key === "Enter" || e.key === " ") {
-                        this.click();
-                    }
                 });
             });
 
-            // 弹窗消息提示
-            const popupMessage = document.getElementById('popup-message');
+            // Show popup message
+            var popupMessage = document.getElementById('popup-message');
             if (popupMessage) {
                 popupMessage.style.display = 'block';
-                setTimeout(() => popupMessage.style.display = 'none', 5000);
+                setTimeout(function() {
+                    popupMessage.style.display = 'none';
+                }, 5000); // Hide after 5 seconds
             }
         });
     </script>
