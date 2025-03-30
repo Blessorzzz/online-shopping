@@ -871,9 +871,52 @@ let searchData = {
     searchQuery: '',
     searchMode: ''
 };
+// 新功能：检测当前是否在支持序列搜索的页面上
+function isSequentialSearchEnabledPage() {
+    const path = window.location.pathname;
+    return path === '/' || path.includes('/products/');
+  }
+// 新功能：保存搜索状态到sessionStorage
+sessionStorage.setItem('pendingSequentialSearch', JSON.stringify(searchData));
+
+// 新功能：页面加载时检查并恢复搜索状态
+document.addEventListener("DOMContentLoaded", function() {
+  // 检查是否从产品详情页返回继续序列搜索
+  const urlParams = new URLSearchParams(window.location.search);
+  const sequentialReturn = urlParams.get('sequential_return');
+  
+  if (sequentialReturn === 'true' && sessionStorage.getItem('pendingSequentialSearch')) {
+    try {
+      const savedSearchData = JSON.parse(sessionStorage.getItem('pendingSequentialSearch'));
+      setupSequentialSearch(savedSearchData);
+    } catch (e) {
+      console.error('Failed to restore sequential search:', e);
+    }
+  }
+});
+// 新功能：在产品详情页添加返回按钮
+if (window.location.pathname.includes('/products/')) {
+    const returnButton = document.createElement('button');
+    returnButton.id = 'return-to-search';
+    returnButton.className = 'return-button';
+    returnButton.innerHTML = '&larr; 返回继续搜索';
+    returnButton.addEventListener('click', () => {
+      window.location.href = '/?sequential_return=true';
+    });
+    
+    // 在内容顶部插入返回按钮
+    contentWrapper.insertBefore(returnButton, contentWrapper.firstChild);
+  }
 
 // 找到 setupSequentialSearch 函数并替换为以下内容
 function setupSequentialSearch(searchDataInput) {
+    searchData = searchDataInput;
+    if (!isSequentialSearchEnabledPage()) {
+        // 如果不在支持的页面上，保存搜索数据并重定向到首页
+        sessionStorage.setItem('pendingSequentialSearch', JSON.stringify(searchData));
+        window.location.href = '/';
+        return;
+      }
     // 处理传入的数据
     if (typeof searchDataInput === 'object' && searchDataInput !== null) {
         Object.assign(searchData, {
