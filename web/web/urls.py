@@ -35,6 +35,7 @@ urlpatterns = [
     path('jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'),
     path("reviews/", include("review.urls")),
     path('accessibility-info/', ecommerce_views.accessibility_info, name='accessibility_info'),  # ✅ 新增路由
+    path('forums/', include('forums.urls')),
 ]
 
 if settings.DEBUG:

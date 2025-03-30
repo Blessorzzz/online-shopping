@@ -108,13 +108,21 @@
             }
             .image-preview button {
                 position: absolute;
-                top: 5px;
-                right: 5px;
+                top: 0;
+                right: 0;
                 background: red;
                 color: white;
                 border: none;
                 border-radius: 50%;
                 cursor: pointer;
+                padding: 5px;
+                font-size: 14px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 25px;
+                height: 25px;
+                z-index: 10; /* Ensure it appears above the image */
             }
         </style>
         <script>
@@ -163,7 +171,7 @@
                     thumbnailError.style.display = "block";
                     return false;
                 }
-
+        
                 if (parseInt(minAge.value) > parseInt(maxAge.value)) {
                     ageError.style.display = "block";
                     return false;
@@ -171,7 +179,7 @@
                 
                 return true;
             }
-
+        
             function previewThumbnail(event) {
                 const reader = new FileReader();
                 reader.onload = function() {
@@ -181,40 +189,56 @@
                 }
                 reader.readAsDataURL(event.target.files[0]);
             }
-
+        
             function openModal() {
                 document.getElementById('imageModal').style.display = "block";
                 document.getElementById('modalImage').src = document.getElementById('thumbnail-preview').src;
             }
-
+        
             function closeModal() {
                 document.getElementById('imageModal').style.display = "none";
             }
-
+        
             function previewImages() {
                 let previewContainer = document.getElementById('image-preview-container');
                 let files = document.getElementById('additional_images').files;
-                previewContainer.innerHTML = ''; // Clear the container before adding new images
+                
+                // Loop through the selected files and add them as previews
                 for (let i = 0; i < files.length; i++) {
                     let file = files[i];
                     let reader = new FileReader();
                     reader.onload = function(e) {
                         let img = document.createElement('img');
                         img.src = e.target.result;
+        
+                        // Create a new div to contain the image and the remove button
                         let div = document.createElement('div');
                         div.className = 'image-preview';
+        
+                        // Add image to the div
                         div.appendChild(img);
+                        
+                        // Create remove button for each image preview
+                        let button = document.createElement('button');
+                        button.innerText = 'X';
+                        button.onclick = function() {
+                            div.remove(); // Remove the image preview when the button is clicked
+                        };
+                        div.appendChild(button);
+        
+                        // Append the div (containing image and button) to the preview container
                         previewContainer.appendChild(div);
-                    }
+                    };
                     reader.readAsDataURL(file);
                 }
             }
-
+        
             document.addEventListener('DOMContentLoaded', function() {
                 const thumbnailInput = document.querySelector("input[name='thumbnail_image']");
                 thumbnailInput.addEventListener('change', previewThumbnail);
             });
         </script>
+        
         <div style="width: 100%; text-align: left;">
             <span id="empty-error" class="error-message">{% trans "All fields must be filled out." %}</span>
             <span id="price-error" class="error-message">{% trans "Price must be greater than zero." %}</span>

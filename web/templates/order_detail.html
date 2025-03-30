@@ -58,63 +58,36 @@
             <p class="no-history" role="note">{% trans "No status history available" %}</p>
             {% endfor %}
         </div>
-    </section>
-
-    <!-- 商品明细 + 评论按钮 -->
-    <section aria-label="{% trans 'Items in This Order' %}">
-        <h3>{% trans "Items in this order:" %}</h3>
-
-        <table class="order-table" role="table">
-            <thead>
-                <tr>
-                    <th scope="col">{% trans "Actions" %}</th>
-                    <th scope="col">{% trans "Product" %}</th>
-                    <th scope="col">{% trans "Quantity" %}</th>
-                    <th scope="col">{% trans "Unit Price" %}</th>
-                    <th scope="col">{% trans "Subtotal" %}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in order.items.all %}
-                <tr>
-                    <td>
-                        {% if order.status in "complete refunded delivered" %}
-                            {% with product_reviews.items as reviews %}
-                                {% for key, review in reviews %}
-                                    {% if key == item.product.product_id|stringformat:"s" %}
-                                        <a href="{% url 'edit_review' review.pk %}" class="btn btn-secondary" aria-label="{% trans 'Edit your review for' %} {{ item.product.product_name }}">
-                                            {% trans "Edit Review" %}
-                                        </a>
-                                    {% endif %}
-                                {% empty %}
-                                    <a href="{% url 'add_review' order.id item.product.product_id %}" class="btn btn-primary" aria-label="{% trans 'Add a review for' %} {{ item.product.product_name }}">
-                                        {% trans "Add Review" %}
-                                    </a>
-                                {% endfor %}
-                            {% endwith %}
-                        {% endif %}
-                    </td>
-                    <td>
-                        <a href="{% url 'product_detail' item.product.product_id %}" aria-label="{% trans 'View product detail for' %} {{ item.product.product_name }}">
-                            {{ item.product.product_name }}
-                        </a>
-                    </td>
-                    <td>{{ item.quantity }}</td>
-                    <td>${{ item.price }}</td>
-                    <td>${{ item.subtotal }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </section>
-
-    <!-- 返回按钮 -->
-    <div class="back-link">
-        <a href="{% url 'order_list' %}" class="back-button" aria-label="{% trans 'Back to order list' %}">
-            {% trans "Back to Orders" %}
-        </a>
     </div>
-
+    
+    <h3>{% trans "Items in this order:" %}</h3>
+    
+    <table class="order-table">
+        <thead>
+            <tr>
+                <th>{% trans "Product" %}</th>
+                <th>{% trans "Quantity" %}</th>
+                <th>{% trans "Unit Price" %}</th>
+                <th>{% trans "Subtotal" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in order.items.all %}
+            <tr>
+                <td>
+                    <a href="{% url 'product_detail' item.product.product_id %}">
+                        {{ item.product.product_name }}
+                    </a>
+                </td>
+                <td>{{ item.quantity }}</td>
+                <td>${{ item.price }}</td>
+                <td>${{ item.subtotal }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <a href="{% url 'order_list' %}" class="back-button">{% trans "Back to Orders" %}</a>
 </div>
 
 </main>

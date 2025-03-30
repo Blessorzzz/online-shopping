@@ -9,17 +9,16 @@
     --hover-bg: #a75b5b;
     --hover-text: #FFFFFF;
 }
+
 body {
-    cursor:auto; 
-    font-family: Arial, Helvetica, sans-serif; /* Set the font family for the entire page */
-    font-size: 1rem; /* Set the base font size */
-    
-    color: var(--text-color) !important; /* ensure high contrast for text */
-     /* Set the base text color */
-    margin: 0; /* Remove default margin */
-    padding: 0; /* Remove default padding */
-    box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
-    transform-origin: top left; /* 确保缩放从顶部开始 */
+    cursor: auto;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1rem;
+    color: var(--text-color) !important;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    transform-origin: top left;
     width: auto;
     min-width: 100vw;
     background-color: var(--bg-color, #ffffff);
@@ -118,60 +117,53 @@ select, option {
 
 /* Form styles */
 form {
-    max-width: 400px; /* Set the maximum width of the form */
-    margin: 20px auto; /* Center the form horizontally and add vertical margin */
-    padding: auto; /* Add padding inside the form */
-    background-color:transparent; /* Set the background color of the form */
-    border-radius: 8px; /* Round the corners of the form */
+    max-width: 400px;
+    margin: 20px auto;
+    padding: auto;
+    background-color: transparent;
+    border-radius: 8px;
 }
 
-input,
-button {
-    width: 100%; /* Make the input and button elements take up the full width of their container */
-    padding: 10px; /* Add padding inside the input and button elements */
-    margin-top:10px;
-    margin-bottom: 10px; /* Add margin below the input and button elements */
-    border: 1px solid #ccc; /* Add a border to the input and button elements */
-    border-radius: 5px; /* Round the corners of the input and button elements */
-    font-size: 0.875rem; /* 14px */
+input, button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 0.875rem;
     padding: 0.5rem 1rem;
 }
 
 button {
-    background-color: #004c99; /* Set the background color of the button */
-    color: white; /* Set the text color of the button */
-    border: none; /* Remove the default border of the button */
-    cursor: pointer; /* Change the cursor to a pointer when hovering over the button */
-    transition: background-color 0.3s ease; /* Add a transition effect to the background color */
+    background-color: #004c99;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 button:hover {
-    
-    background-color: var(--border-color) !important; /* Change hover to ensure visibility */
+    background-color: var(--border-color) !important;
     color: var(--button-bg) !important;
-     /* Change the background color when hovering over the button */
 }
 
 /* Navigation menu styles */
+#menu, .product-info, button, body {
+    background-color: var(--bg-color) !important;
+    color: var(--text-color) !important;
+}
 
-    #menu, /* unify background for menu */
-    .product-info, /* unify background for product info */
-    button, /* unify button background */
-    body { /* unify page background */
-        background-color: var(--bg-color) !important;
-        color: var(--text-color) !important;
-    }
-    #menu {
-    background-color: var(--border-color) !important; /* Change hover to ensure visibility */
+#menu {
+    background-color: var(--border-color) !important;
     color: var(--button-bg) !important;
-     /* Set the background color of the navigation menu */
-    overflow: hidden; /* Prevent content from overflowing */
-    margin: 0; /* Remove default margin */
-    display: flex; /* Use flexbox for layout */
-    justify-content: space-between; /* Distribute space between the items */
-    align-items: center; /* Align items vertically in the center */
-    padding: 10px 20px; /* Add padding inside the navigation menu */
-    height:auto;
+    overflow: hidden;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    height: auto;
     flex-wrap: nowrap;
     width: 100%;
     position: fixed;
@@ -180,18 +172,13 @@ button:hover {
 }
 
 #menu ul {
-    list-style: none; /* Remove default list styling */
-    margin: 0; /* Remove default margin */
-    padding: 0; /* Remove default padding */
-    display: flex; /* Use flexbox for layout */
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
     align-items: center;
-    flex-wrap: nowrap; /* 允许换行 */
-    gap: 8px; /* 元素间距 */
-}
-
-#menu ul.nav-center {
-    flex: 2;
-    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 8px;
 }
 
 #menu ul.nav-center {
@@ -200,33 +187,31 @@ button:hover {
 }
 
 #menu ul.nav-left {
-    flex: 1; /* Allow the left navigation items to take up available space */
+    flex: 1;
 }
 
 #menu ul li {
-    display: inline; /* Display list items inline */
-    margin-right: 15px; /* Add margin to the right of each list item */
+    display: inline;
+    margin-right: 15px;
 }
 
 #menu ul a {
-    text-decoration: none; /* Remove default link underline */
-    color: #454242; /* Set the text color of the links */
+    text-decoration: none;
+    color: #454242;
     height: 36px;
-    padding: 8px 16px; /* Add padding inside the links */
-    transition: background-color 0.3s ease; /* Add a transition effect to the background color */
-    border-radius: 5px; /* Round the corners of the links */
+    padding: 8px 16px;
+    transition: background-color 0.3s ease;
+    border-radius: 5px;
 }
 
 #menu ul a:hover {
-    
-    background-color: var(--border-color) !important; /* Change hover to ensure visibility */
+    background-color: var(--border-color) !important;
     color: var(--button-bg) !important;
-     /* Change the background color when hovering over the links */
 }
 
 /* Search bar styles */
 form.nav-right {
-    margin:10px;
+    margin: 10px;
     flex: 1;
     display: flex;
     justify-content: flex-end;
@@ -241,10 +226,10 @@ form.nav-right input[type="text"] {
 }
 
 form.nav-right button {
-    margin-top:10px;
+    margin-top: 10px;
     margin-bottom: 10px;
-    padding: 8px; 
-    border-radius: 0 5px 5px 0; 
+    padding: 8px;
+    border-radius: 0 5px 5px 0;
     border: 1px solid #ccc;
     background-color: #004c99;
     color: white;
@@ -254,10 +239,8 @@ form.nav-right button {
 }
 
 form.nav-right button:hover {
-    
-    background-color: var(--border-color) !important; /* Change hover to ensure visibility */
+    background-color: var(--border-color) !important;
     color: var(--button-bg) !important;
-    
 }
 
 /* User section styles */
@@ -268,7 +251,7 @@ form.nav-right button:hover {
     align-items: center; /* Align items vertically in the center */
     gap: 10px;
     height: 36px;
-    margin-left: 20px; /* Add space to the left of the user section */
+    margin-left: 20px;
 }
 
 .user p {
@@ -284,18 +267,16 @@ form.nav-right button:hover {
     height: 36px;
     align-items: center;
     display: flex;
-    
-    background-color: var(--border-color) !important; /* Change hover to ensure visibility */
+    background-color: var(--border-color) !important;
     color: var(--button-bg) !important;
-     /* Set the background color of the button */
-    border: none; /* Remove the default border of the button */
-    color: white; /* Set the text color of the button */
-    border-radius: 5px; /* Round the corners of the button */
-    cursor: pointer; /* Change the cursor to a pointer when hovering over the button */
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 .user button:hover {
-    background-color: #004c99; /* Change the background color when hovering over the button */
+    background-color: #004c99;
 }
 
 .user.nav-right {
@@ -306,31 +287,32 @@ form.nav-right button:hover {
 
 /* Product list styles */
 .product-list {
-    display: flex; /* Use flexbox for layout */
-    flex-wrap: wrap; /* Allow items to wrap to the next line */
-    gap: 20px; /* Add space between the items */
-    justify-content: flex-start;  /* Ensure items are evenly spaced */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
 }
 
 .product-item {
-    border: 1px solid #ddd; /* Add a border to the product item */
-    padding: 10px; /* Add padding inside the product item */
-    width: calc(20% - 20px); /* Adjust width to fit 5 items in one row, accounting for gap */
-    text-align: left; /* Center the text inside the product item */
-    box-sizing: border-box; /* Ensure padding and border are included in the width */
-    display: flex; /* Use flexbox for layout */
-    flex-direction: column; /* Arrange items in a column */
-    align-items: flex-start; /* Center items horizontally */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add transition for hover effect */
-    border-radius: 8px; 
+    border: 1px solid #ddd;
+    padding: 10px;
+    width: calc(20% - 20px);
+    text-align: left;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 8px;
     background-color: #fff;
-    transition: transform 0.3s ease-in-out; /* 平滑缩放效果 */
+    transition: transform 0.3s ease-in-out;
 }
 
 .product-item:hover {
-    transform: scale(1.05); /* Slightly scale up the product item */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow effect */
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
 .product-thumbnail {
     width: 100px;
     height: 100px;
@@ -344,18 +326,18 @@ form.nav-right button:hover {
 }
 
 .product-image {
-    width: 100%; /* Maximize the image size inside the box */
-    height: auto; /* Maintain the aspect ratio of the image */
-    object-fit: cover; /* Ensure the entire image is visible without cropping */
+    width: 100%;
+    height: auto;
+    object-fit: cover;
     border-radius: 8px;
-    background-color: #f9f9f9; /* Add a background color to fill the empty space */
+    background-color: #f9f9f9;
     max-height: 250px;
-    object-fit: contain; /* 确保完整显示 */
+    object-fit: contain;
 }
 
 .product-info {
-    flex: 2; /* Flex grows to 2/3 */
-    max-width: 66%; /* Max width of 2/3 */
+    flex: 2;
+    max-width: 66%;
     padding: 20px;
     background-color: #fff;
     border-radius: 10px;
@@ -363,11 +345,9 @@ form.nav-right button:hover {
 }
 
 .product-name-homepage {
-    font-size: 14px; /* Revert font size for homepage */
-    font-weight: normal; /* Revert font weight for homepage */
-    
-    color: var(--text-color) !important; /* ensure high contrast for text */
-     /* Set the text color */
+    font-size: 14px;
+    font-weight: normal;
+    color: var(--text-color) !important;
     line-height: 1.5;
 }
 
@@ -378,119 +358,113 @@ form.nav-right button:hover {
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: normal; /* Allow the text to wrap to the next line */
+    white-space: normal;
 }
 
 .product-name-detail {
-    font-size: 22px; /* Font size for product detail page */
-    font-weight: bold; /* Make the product name bold */
-    
-    color: var(--text-color) !important; /* ensure high contrast for text */
-     /* Set the text color */
+    font-size: 22px;
+    font-weight: bold;
+    color: var(--text-color) !important;
     line-height: 1.5;
-    overflow: visible; /* Ensure the text is fully visible */
+    overflow: visible;
     text-overflow: ellipsis;
-    white-space: normal; /* Allow the text to wrap to the next line */
+    white-space: normal;
 }
 
 .product-price {
-    color: #c0392b; /* Set the text color of the product price */
-    font-size: 22px; /* Increase the font size to match the status */
-    font-weight: bold; /* Make the product price bold */
-    margin-top:8px;
+    color: #c0392b;
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 8px;
 }
 
 .product-price-status {
-    display: flex; /* Use flexbox for layout */
-    gap: 20px; /* Add space between the price and status */
-    align-items: center; /* Align items vertically in the center */
+    display: flex;
+    gap: 20px;
+    align-items: center;
 }
 
 .product-status {
-    font-size: 22px; /* Set the font size of the product status */
-    font-weight: bold; /* Make the product status bold */
-    padding: 8px 12px; /* Add padding inside the product status */
-    display: inline-block; /* Display the product status as an inline block */
-    border-radius: 5px; /* Round the corners of the product status */
-    margin-bottom: 15px; /* Add margin to the bottom of the product status */
+    font-size: 22px;
+    font-weight: bold;
+    padding: 8px 12px;
+    display: inline-block;
+    border-radius: 5px;
+    margin-bottom: 15px;
 }
 
 .product-status.in-stock {
-    color: rgb(18, 226, 18); /* Set the text color for in-stock status */
-    background: #d4f8d4; /* Set the background color for in-stock status */
+    color: rgb(18, 226, 18);
+    background: #d4f8d4;
 }
 
 .product-status.out-of-stock {
-    color: red; /* Set the text color for out-of-stock status */
-    background: #f8d7da; /* Set the background color for out-of-stock status */
+    color: red;
+    background: #f8d7da;
 }
 
 /* Product detail styles */
 .product-detail {
     display: flex;
     justify-content: space-between;
-    gap: 40px; /* Increase gap for better separation */
-    margin: 40px auto; /* Center the container */
-    max-width: 1200px; /* Limit maximum width for better readability */
-    padding: 20px; /* Add padding for spacing */
-    align-items: flex-start; /* Align items to the top */
+    gap: 40px;
+    margin: 40px auto;
+    max-width: 1200px;
+    padding: 20px;
+    align-items: flex-start;
 }
 
 .product-stock {
-    font-size: 22px; /* Set the font size of the product stock */
-    font-weight: bold; /* Make the product stock bold */
-    padding: 8px 12px; /* Add padding inside the product stock */
-    display: inline-block; /* Display the product stock as an inline block */
-    border-radius: 5px; /* Round the corners of the product stock */
-    margin-bottom: 15px; /* Add margin to the bottom of the product stock */
-    color: rgb(18, 226, 18); /* Set the text color for in-stock */
-    background: #d4f8d4; /* Set the background color for in-stock */
+    font-size: 22px;
+    font-weight: bold;
+    padding: 8px 12px;
+    display: inline-block;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    color: rgb(18, 226, 18);
+    background: #d4f8d4;
 }
 
-/* Product Image Container */
 .product-detail .product-image-container {
-    flex: 1; /* Allow the image container to take up available space */
-    display: flex; /* Use flexbox for layout */
-    justify-content: center; /* Center the image horizontally */
-    align-items: center; /* Center the image vertically */
-    background-color: #f9f9f9; /* Optional: Add a background color to the image container */
-    border-radius: 5px; /* Round the corners of the image container */
-    padding: 5px; /* Add padding inside the image container */
-    max-width: 50%; /* Set the maximum width of the image container */
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    padding: 5px;
+    max-width: 50%;
 }
 
-/* Product Image Styling */
 .product-detail .product-image {
-    max-width: 100%; /* Ensure the image fills the container */
-    height: auto; /* Maintain the aspect ratio of the image */
-    border: 1px solid #ddd; /* Add a border to the image */
-    padding: 5px; /* Add padding inside the image */
-    background-color: #fff; /* Set the background color of the image */
-    transition: transform 0.3s ease-in-out; /* Add a transition effect to the transform property */
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ddd;
+    padding: 5px;
+    background-color: #fff;
+    transition: transform 0.3s ease-in-out;
 }
 
 .product-detail .product-image:hover {
-    transform: scale(1.03); /* Slight zoom effect when hovering over the image */
+    transform: scale(1.03);
 }
 
-/* Product-detail page */
 .product-detail .product-info {
-    flex: 1; /* Allow the product info to take up available space */
-    max-width: 45%; /* Set the maximum width of the product info */
+    flex: 1;
+    max-width: 45%;
 }
 
 .product-age-range {
     font-size: 16px;
     color: white;
-    
-    background-color: var(--border-color) !important; /* Change hover to ensure visibility */
+    background-color: var(--border-color) !important;
     color: var(--button-bg) !important;
-    
     padding: 5px 10px;
     border-radius: 15px;
     margin-top: 10px;
     display: inline-block;
 }
+
 .product-detail-container {
     max-width: 1200px;
     margin: 20px auto;
@@ -501,7 +475,7 @@ form.nav-right button:hover {
     display: flex;
     gap: 40px;
     margin-bottom: 40px;
-    transition: transform 0.3s ease-in-out; /* ✅ 平滑缩放动画 */
+    transition: transform 0.3s ease-in-out;
 }
 
 .gallery-section {
@@ -549,12 +523,11 @@ form.nav-right button:hover {
     object-fit: cover;
 }
 
+.info-section, .description-section {
+    background-color: var(--bg-color) !important;
+}
 
-    .info-section, .description-section { /* Make both sections follow the theme background */
-        background-color: var(--bg-color) !important;
-    }
-    .info-section {
-    
+.info-section {
     flex: 0 0 400px;
     padding: 20px;
     background: #ebebeb;
@@ -563,9 +536,7 @@ form.nav-right button:hover {
 
 .product-title {
     font-size: 1.4rem;
-    
-    color: var(--text-color) !important; /* ensure high contrast for text */
-    
+    color: var(--text-color) !important;
     margin-bottom: 20px;
 }
 
@@ -613,16 +584,17 @@ form.nav-right button:hover {
     border-radius: 4px;
     min-height: 500px;
 }
+
 /* Responsive Fix for Smaller Screens */
 @media (max-width: 768px) {
     .main-content {
         flex-direction: column;
     }
-    
+
     .gallery-section {
         min-width: unset;
     }
-    
+
     .main-image {
         height: 300px;
     }
@@ -646,17 +618,14 @@ form.nav-right button:hover {
 .pagination .current {
     padding: 5px 10px;
     border: 1px solid #0056b3;
-    
-    background-color: var(--border-color) !important; /* Change hover to ensure visibility */
+    background-color: var(--border-color) !important;
     color: var(--button-bg) !important;
-    
     color: white;
     border-radius: 4px;
     margin: 0 5px;
 }
 
-/*home page */
-/* base.css 新增样式 */
+/* Home page styles */
 .product-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -676,7 +645,7 @@ form.nav-right button:hover {
 
 .product-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .image-wrapper {
@@ -696,7 +665,7 @@ form.nav-right button:hover {
     position: absolute;
     top: 15px;
     right: 15px;
-    background: rgba(0,0,0,0.7);
+    background: rgba(0, 0, 0, 0.7);
     color: white;
     padding: 4px 8px;
     border-radius: 3px;
@@ -769,13 +738,13 @@ form.nav-right button:hover {
     color: #999;
 }
 
-/* 响应式调整 */
+/* Responsive adjustments */
 @media (max-width: 768px) {
     .product-list {
         grid-template-columns: repeat(2, 1fr);
         gap: 8px;
     }
-    
+
     .product-thumb {
         height: 180px;
     }
@@ -784,42 +753,39 @@ form.nav-right button:hover {
         font-size: 13px;
         height: 36px;
     }
-    
+
     .current-price {
         font-size: 18px;
     }
 }
 
-/* 让滚动条变大、更明显 */
+/* Scrollbar styles */
 ::-webkit-scrollbar {
-    width: 16px;  /* ✅ 增大垂直滚动条宽度 */
-    height: 16px; /* ✅ 增大水平滚动条高度 */
+    width: 16px;
+    height: 16px;
 }
 
-/* 滚动条滑块 */
 ::-webkit-scrollbar-thumb {
-    background: rgba(100, 100, 100, 0.8); /* ✅ 深灰色滚动条，增强可见性 */
+    background: rgba(100, 100, 100, 0.8);
     border-radius: 8px;
-    border: 3px solid rgba(255, 255, 255, 0.5); /* ✅ 给滚动条加点边框，提高辨识度 */
+    border: 3px solid rgba(255, 255, 255, 0.5);
 }
 
-/* 滚动条轨道 */
 ::-webkit-scrollbar-track {
-    background: #f1f1f1; /* ✅ 浅色背景，形成对比 */
+    background: #f1f1f1;
     border-radius: 10px;
 }
 
-/* 悬停时的滚动条 */
 ::-webkit-scrollbar-thumb:hover {
-    background: rgba(60, 60, 60, 0.9); /* ✅ 悬停时更暗 */
+    background: rgba(60, 60, 60, 0.9);
 }
 
-/* 确保导航栏不会换行 */
+/* Navigation container */
 .nav-container {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    flex-wrap: nowrap; /* 禁止换行 */
+    flex-wrap: nowrap;
     width: 100%;
     overflow: hidden;
     max-height: 60px;
@@ -842,19 +808,19 @@ form.nav-right button:hover {
 }
 
 html {
-    overflow-x: auto;  /* ✅ 确保始终显示水平滚动条 */
-    overflow-y: auto;  /* ✅ 允许垂直滚动 */
+    overflow-x: auto;
+    overflow-y: auto;
     width: 100%;
     min-width: 100vw;
 }
 
 #accessibility-toolbar {
     display: flex;
-    flex-wrap: nowrap; /* ✅ 让按钮自动换行，避免溢出 */
-    justify-content: center; /* ✅ 让按钮居中 */
-    align-items: center; /* ✅ 让按钮垂直居中 */
-    background-color: rgba(51, 51, 51, 0.8); /* ✅ 0.8 让颜色有轻微透明度 */
-    padding: 2px; /* ✅ 增加内边距，避免拥挤 */
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(51, 51, 51, 0.8);
+    padding: 2px;
     position: fixed;
     top: 0;
     left: 0;
@@ -864,47 +830,41 @@ html {
 }
 
 #accessibility-toolbar button {
-    width: 80px; /* ✅ 让按钮变宽，适应长文本 */
-    height: 80px; /* ✅ 增加按钮高度 */
-    font-size: 13px; /* ✅ 调整字体大小 */
-    padding: 10px 15px; /* ✅ 让按钮内部的文字更好显示 */
-    white-space: nowrap; /* ✅ 避免文本换行 */
+    width: 80px;
+    height: 80px;
+    font-size: 13px;
+    padding: 10px 15px;
+    white-space: nowrap;
     display: flex;
-    flex-direction: column; /* ✅ 让图标和文本垂直排列 */
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    text-align: center; /* ✅ 让文字居中 */
-    white-space: normal; /* ✅ 允许文本换行 */
-    gap: 5px; /* ✅ 增加图标和文本的间距 */
+    text-align: center;
+    white-space: normal;
+    gap: 5px;
 }
 
-
-/* 鼠标悬停时 */
 #accessibility-toolbar button:hover {
     background: #d6d6d6;
     transform: scale(1.05);
 }
 
-/* 选中状态（比如开启功能时高亮） */
 #accessibility-toolbar button.active {
     background: orange;
     color: white;
     border-color: orange;
 }
 
-/* 退出按钮的特殊样式 */
 #accessibility-toolbar button.exit {
     background: red;
     color: white;
     border-color: darkred;
 }
 
-/* 调整图标大小 */
 #accessibility-toolbar button i {
     font-size: 20px;
 }
 
-/* 小文字样式 */
 #accessibility-toolbar button small {
     font-size: 0.75rem;
     margin-top: 3px;
@@ -912,16 +872,15 @@ html {
     color: black;
 }
 
-
-/* 确保键盘导航焦点可见 */
+/* Ensure keyboard navigation focus is visible */
 button:focus, a:focus, input:focus, select:focus {
-    outline: 3px solid #ffcc00; /* 添加高可见度的焦点框 */
+    outline: 3px solid #ffcc00;
     outline-offset: 2px;
 }
 
-/* 确保禁用按钮不影响无障碍访问 */
+/* Ensure disabled buttons are accessible */
 button:disabled {
-    background-color: #cccccc !important;  /* 确保禁用状态可识别 */
+    background-color: #cccccc !important;
     color: #666666 !important;
     cursor: not-allowed;
 }
@@ -944,7 +903,6 @@ button:hover {
     color: var(--button-bg);
 }
 
-/* 链接颜色调整 */
 a {
     color: var(--text-color);
 }
@@ -953,22 +911,7 @@ a:hover {
     color: var(--border-color);
 }
 
-/* [data-theme] {
-    --bg-color: #ffffff;
-    --text-color: #000000;
-    --button-bg: #007bff;
-    --button-text: #ffffff;
-    --border-color: #000000;
-    --hover-bg: #f0f0f0;
-    --hover-text: #000000;
-    --table-header-bg: #007bff;
-    --table-header-text: #ffffff;
-    --status-bg: #f0f0f0;
-    --status-text: #000000;
-} */
-/* ======== 无障碍主题优化 ======== */
-
-/* 高对比度模式（黑底黄字） */
+/* High contrast theme */
 [data-theme="high contrast"] {
     --bg-color: #000000;
     --text-color: #FFFF00;
@@ -983,7 +926,7 @@ a:hover {
     --status-text: #FFFF00;
 }
 
-/* Protanopia（红色盲）& Deuteranopia 模式 */
+/* Protanopia theme */
 [data-theme="protanopia"] {
     --bg-color: #EAEAEA;
     --text-color: #000; 
@@ -995,24 +938,10 @@ a:hover {
     --hover-text: #242443;
 }
 
-/* Deuteranopia（绿色盲）模式 */
-/* [data-theme="deuteranopia"] {
-    --bg-color: #F5F5F5;
-    --text-color: #000; 
-    
-    --button-bg: #3366CC;
-    --button-text: #FFFFFF;
-    --border-color: #224499;
-    --link-color: #3366CC;
-    --hover-bg: #224499;
-    --hover-text: #FFFFFF;
-} */
-
-/* Tritanopia（蓝色盲）模式 */
+/* Tritanopia theme */
 [data-theme="tritanopia"] {
     --bg-color: #FAFAFA;
-    --text-color: #000; /* ensure high contrast for text */
-    
+    --text-color: #000;
     --button-bg: #AA5500;
     --button-text: #FFFFFF;
     --border-color: #774400;
@@ -1021,15 +950,15 @@ a:hover {
     --hover-text: #FFFFFF;
 }
 
-/* 灰度模式 */
+/* Grayscale theme */
 [data-theme="grayscale"] {
     filter: grayscale(100%);
 }
 
-/* 应用无障碍颜色变量 */
-body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
+/* Ensure menu colors follow the theme */
+[data-theme] #menu, .product-info, button, body {
+    background-color: var(--bg-color) !important;
+    color: var(--text-color) !important;
 }
 
 button, input, select {
@@ -1068,7 +997,6 @@ a:hover {
     color: var(--button-text);
 }
 
-/* 让导航栏链接颜色也随主题变化 */
 [data-theme] #menu ul a {
     color: var(--button-text);
 }
@@ -1078,7 +1006,6 @@ a:hover {
     color: var(--hover-text);
 }
 
-/* 让 product-card 颜色随主题变化 */
 [data-theme] .product-card {
     background: var(--bg-color);
     color: var(--text-color);
@@ -1089,7 +1016,6 @@ a:hover {
     box-shadow: 0 4px 12px var(--border-color);
 }
 
-/* 确保搜索按钮颜色随主题变化 */
 [data-theme] form.nav-right button {
     background-color: var(--button-bg);
     color: var(--button-text);
@@ -1101,54 +1027,40 @@ a:hover {
     color: var(--hover-text);
 }
 
-
-
-/* ======== 确保背景颜色填充整个页面 ======== */
+/* Ensure background color fills the entire page */
 body {
-    min-height: 100vh; /* 确保背景颜色填满整个屏幕 */
+    min-height: 100vh;
 }
 
-/* ======== 让价格区域背景颜色随主题变化 ======== */
+/* Ensure price area background color follows the theme */
 [data-theme] .product-price {
-    background-color: var(--button-bg); /* 让价格区域背景颜色随主题变化 */
-    color: var(--button-text); /* 确保价格文字颜色随主题变化 */
-    padding: 10px; /* 增加内边距，避免贴边 */
-    border-radius: 5px; /* 增加圆角 */
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    padding: 10px;
+    border-radius: 5px;
 }
 
-/* ======== 让所有非白色背景的文字默认使用白色 ======== */
-/* [data-theme]:not([data-theme="default"]) body, 
-[data-theme]:not([data-theme="default"]) button, 
-[data-theme]:not([data-theme="default"]) a, 
-[data-theme]:not([data-theme="default"]) input, 
-[data-theme]:not([data-theme="default"]) select {
-    color: var(--text-color); 
-} */
-
-/* ======== 让 Hover 颜色高对比度，提高可见性 ======== */
+/* Ensure hover colors are high contrast */
 button:hover, a:hover, .product-card:hover, form.nav-right button:hover {
     background-color: var(--hover-bg);
     color: var(--hover-text) !important;
 }
 
-/* ======== 让导航栏和主页背景颜色统一 ======== */
-
-/* ======== 确保菜单和搜索按钮的背景随主题变化 ======== */
-[data-theme] #menu, 
-[data-theme] form.nav-right button {
+/* Ensure menu and search button backgrounds follow the theme */
+[data-theme] #menu, [data-theme] form.nav-right button {
     background-color: var(--button-bg) !important;
     color: var(--button-text) !important;
     border-color: var(--border-color) !important;
 }
 
-/* ======== 让产品卡片背景随主题变化 ======== */
+/* Ensure product card background follows the theme */
 [data-theme] .product-card {
     background-color: var(--bg-color) !important;
     color: var(--text-color) !important;
     border-color: var(--border-color) !important;
 }
 
-/* 十字线样式：跟随鼠标的辅助定位 */
+/* Crosshair styles */
 .crosshair {
     position: fixed;
     top: 50%;
@@ -1157,25 +1069,24 @@ button:hover, a:hover, .product-card:hover, form.nav-right button:hover {
     height: 100vh;
     pointer-events: none;
     z-index: 9999;
-    transform: translate(-50%, -50%); /* 中心对齐鼠标位置 */
+    transform: translate(-50%, -50%);
 }
 
-.crosshair::before,
-.crosshair::after {
+.crosshair::before, .crosshair::after {
     content: "";
     position: absolute;
-    background-color: orange; /* 高对比度颜色 */
+    background-color: orange;
 }
 
 .crosshair::before {
-    width: 2px; /* 垂直线 */
+    width: 2px;
     height: 100%;
     left: 50%;
     transform: translateX(-50%);
 }
 
 .crosshair::after {
-    width: 100%; /* 水平线 */
+    width: 100%;
     height: 2px;
     top: 50%;
     transform: translateY(-50%);
@@ -1186,7 +1097,6 @@ body.large-cursor {
     cursor: url('../img/pointer.svg'), auto;
 }
 
-/* 确保子元素继承光标样式 */
 body.large-cursor * {
     cursor: inherit !important;
 }
@@ -1204,39 +1114,46 @@ body.large-cursor * {
     z-index: 1000;
     display: none;
 }
+
 .popup-message.success {
     background-color: #4CAF50;
 }
+
 .popup-message.error {
     background-color: #f44336;
 }
+
 .popup-message .message {
     margin: 0;
     padding: 0;
 }
+
 .filter-form {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 20px;
     padding: 10px;
-    background-color:var(--bg-color);
+    background-color: var(--bg-color);
     border-radius: 5px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    flex-wrap: wrap; /* Ensure elements wrap if they don't fit in one line */
+    flex-wrap: wrap;
 }
+
 .filter-form label {
     color: var(--text-color);
     margin-right: 10px;
     font-weight: bold;
-    white-space: nowrap; /* Prevent label from wrapping */
+    white-space: nowrap;
 }
+
 .filter-form select {
     padding: 5px;
     border-radius: 5px;
     border: 1px solid #ccc;
     margin-right: 10px;
 }
+
 .filter-form button {
     padding: 5px 10px;
     background-color: var(--bg-color);
@@ -1245,25 +1162,25 @@ body.large-cursor * {
     border-radius: 5px;
     cursor: pointer;
     transition: background 0.3s;
-    width: auto; /* Ensure the button width adjusts to the content */
-    white-space: nowrap; /* Prevent the text from wrapping */
+    width: auto;
+    white-space: nowrap;
 }
+
 .filter-form button:hover {
     background-color: var(--hover-bg);
 }
 
-
 .order-table {
     width: 100%;
-    border-collapse: collapse;  
+    border-collapse: collapse;
     margin-top: 20px;
     font-family: Arial, sans-serif;
     font-size: 14px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     overflow: hidden;
-    text-align: center;  
-    border: 1px solid #ddd; 
+    text-align: center;
+    border: 1px solid #ddd;
 }
 
 .order-table th {
@@ -1271,26 +1188,23 @@ body.large-cursor * {
     color: var(--button-text);
     padding: 12px;
     text-align: center;
-    border: 1px solid #ddd;  
+    border: 1px solid #ddd;
 }
-
 
 .order-table tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
 .order-table tr:hover {
-    background-color: #e3f2fd;  
-    cursor: pointer; 
+    background-color: #e3f2fd;
+    cursor: pointer;
 }
-
 
 .order-table td {
     padding: 12px;
-    border: 1px solid #ddd;  
+    border: 1px solid #ddd;
     text-align: center;
 }
-
 
 .status-label {
     font-weight: bold;
@@ -1331,40 +1245,39 @@ body.large-cursor * {
 
 .status-refunded {
     color: #6c757d;
-    background-color: #e2e3e5;}
+    background-color: #e2e3e5;
+}
+
 #large-caption {
     position: fixed;
-    bottom: 10px;  /* 保持距离底部 10px */
+    bottom: 10px;
     left: 50%;
-    transform: translateX(-50%); /* 居中 */
-    width: 90%;  /* 宽度保持 90% */
-    height: 100px; /* 🔥 增加高度 */
+    transform: translateX(-50%);
+    width: 90%;
+    height: 100px;
     background-color: rgba(0, 0, 0, 0.9);
     color: white;
     text-align: center;
-    font-size: 48px; /* 🔥 字体变大 */
+    font-size: 48px;
     padding: 10px;
-    display: none; /* 默认隐藏 */
+    display: none;
     z-index: 9999;
-    line-height: 90px; /* 🔥 让文字垂直居中 */
-    border-radius: 10px; /* 圆角 */
-    overflow: hidden; /* 防止文字溢出 */
-    white-space: nowrap; /* 让文本不换行 */
-    text-overflow: ellipsis; /* 过长时显示省略号 */
-    font-weight: bold; /* 🔥 加粗让文字更明显 */
+    line-height: 90px;
+    border-radius: 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-weight: bold;
 }
 
-/* 新增：多行字幕样式 */
 #large-caption.multiline {
-    white-space: normal !important;       /* 允许换行 */
-    text-overflow: unset !important;       /* 取消省略号 */
-    overflow-y: auto !important;           /* 出现滚动条显示多余内容 */
-    height: auto !important;               /* 高度自适应 */
-    line-height: 1.2 !important;           /* 调整行高 */
-    max-height: 200px !important;          /* 设置最大高度，防止过高 */
+    white-space: normal !important;
+    text-overflow: unset !important;
+    overflow-y: auto !important;
+    height: auto !important;
+    line-height: 1.2 !important;
+    max-height: 200px !important;
 }
-
-
 
 .order-container {
     max-width: 800px;
@@ -1382,7 +1295,6 @@ h2, h3 {
     background-color: var(--button-bg);
 }
 
-
 .order-info p {
     font-size: 16px;
     margin: 10px 0;
@@ -1391,13 +1303,11 @@ h2, h3 {
     border-radius: 5px;
 }
 
-
 .total-amount {
     font-size: 18px;
     font-weight: bold;
     color: var(--button-bg);
 }
-
 
 .status {
     font-weight: bold;
@@ -1417,7 +1327,6 @@ h2, h3 {
     color: #dc3545;
 }
 
-
 .order-table {
     width: 100%;
     border-collapse: collapse;
@@ -1425,6 +1334,7 @@ h2, h3 {
     font-size: 14px;
     text-align: center;
 }
+
 table.order-table thead {
     background-color: var(--bg-color);
     color: var(--text-color);
@@ -1440,6 +1350,7 @@ table.order-table thead {
     padding: 12px;
     border-bottom: 1px solid #ddd;
 }
+
 .order-table tbody tr {
     background-color: var(--bg-color);
     color: var(--text-color);
@@ -1449,7 +1360,6 @@ table.order-table thead {
     background-color: var(--hover-bg);
     color: var(--hover-text);
 }
-
 
 .back-button {
     display: block;
@@ -1469,8 +1379,6 @@ table.order-table thead {
     background-color: var(--hover-bg);
 }
 
-
-
 .timeline {
     position: relative;
     padding: 20px 0;
@@ -1484,7 +1392,7 @@ table.order-table thead {
     top: 0;
     bottom: 0;
     width: 2px;
-    background:var(--button-bg);
+    background: var(--button-bg);
 }
 
 .timeline-item {
@@ -1541,9 +1449,8 @@ table.order-table thead {
     font-size: 1.5rem;
 }
 
-/* Custom star color */
 .custom-star {
-    color: #FFD700; /* Lighter Gold color */
+    color: #FFD700;
 }
 
 /* Review Table Styles */
@@ -1601,11 +1508,10 @@ table.order-table thead {
     background-color: #fff3cd;
 }
 
-/* Product Grid Styling */
 .product-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px; /* Add spacing between product items */
+    gap: 20px;
     justify-content: flex-start;
 }
 
@@ -1614,7 +1520,7 @@ table.order-table thead {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    width: 120px; /* Adjust width for better spacing */
+    width: 120px;
     border: 1px solid #ddd;
     border-radius: 5px;
     padding: 10px;

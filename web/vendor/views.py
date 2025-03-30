@@ -9,6 +9,7 @@ from .forms import ProductForm
 from django.http import HttpResponseForbidden, JsonResponse
 from django.db.models import Q
 from django.utils.timezone import now
+from review.models import Review
 
 def vendor_login(request):
     if request.method == 'POST':
@@ -205,3 +206,14 @@ def vendor_product_detail(request, product_id):
     
     product = get_object_or_404(Product, pk=product_id)
     return render(request, 'vendor/vendor_product_detail.html', {'product': product})
+
+def vendor_respond_review(request, review_id):
+    review = get_object_or_404(Review, id=review_id)
+
+    if request.method == 'POST':
+        response_content = request.POST.get('response')
+        review.vendor_response = response_content
+        review.save()
+        return redirect('vendor_product_detail', product_id=review.product.product_id)  # Assuming a product_id is passed in the URL
+
+    return redirect('vendor_product_detail', product_id=review.product.product_id)

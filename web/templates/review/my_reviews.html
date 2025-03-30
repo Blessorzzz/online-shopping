@@ -1,96 +1,436 @@
 {% extends "base.html" %}
-{% load i18n %}
-
+{% load static i18n %}
+<!-- Include the specific CSS file for My Reviews -->
+<link rel="stylesheet" href="{% static 'css/my_reviews.css' %}">
 {% block content %}
-<div class="container-fluid mt-5">
+
+<div class="container-fluid mt-5 my-reviews-page">
     <h2 class="text-center mb-4">{% trans "My Reviews" %}</h2>
     
+    <!-- Filter Buttons -->
+    <div class="text-center mb-4">
+        <button id="pending-btn" class="btn btn-primary">{% trans "⏳ Pending Reviews" %}</button>
+        <button id="done-btn" class="btn btn-secondary">{% trans "✔️ Reviews Done" %}</button>
+    </div>
+
     <div class="card p-4 shadow-sm">
-        {% if orders_with_reviews %}
-            <table class="review-table">
-                <thead>
-                    <tr>
-                        <th>{% trans "Order ID" %}</th>
-                        <th>{% trans "Products" %}</th>
-                        <th>{% trans "Rating" %}</th>
-                        <th>{% trans "Comment" %}</th>
-                        <th>{% trans "Created At" %}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for order_id, data in orders_with_reviews.items %}
-                        <tr class="clickable-row" data-href="{% url 'order_detail' data.order.id %}">
-                            <td>{{ data.order.po_number }}</td>
-                            <td>
-                                <div class="product-list">
-                                    {% for product_review in data.reviews %}
+        <!-- Pending Reviews -->
+        <div id="pending-reviews" class="review-section">
+            {% if pending_reviews %}
+                <table class="review-table">
+                    <thead>
+                        <tr>
+                            <th>{% trans "Order ID" %}</th>
+                            <th>{% trans "Product" %}</th>
+                            <th>{% trans "Action" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order_id, data in pending_reviews.items %}
+                            {% for product in data.products %}
+                                <tr>
+                                    <td>{{ data.order.po_number }}</td>
+                                    <td>
+                                        <a href="{% url 'product_detail' product.product_id %}" class="product-link">
+                                            {{ product.product_name }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'add_review' data.order.id product.product_id %}" class="btn btn-primary">
+                                            {% trans "Add Review" %}
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="text-center no-reviews-message">{% trans "No pending reviews available." %}</p>
+            {% endif %}
+        </div>
+
+        <!-- Reviews Done -->
+        <div id="done-reviews" class="review-section" style="display: none;">
+            {% if done_reviews %}
+                <table class="review-table">
+                    <thead>
+                        <tr>
+                            <th>{% trans "Order ID" %}</th>
+                            <th>{% trans "Product" %}</th>
+                            <th>{% trans "Rating" %}</th>
+                            <th>{% trans "Comment" %}</th>
+                            <th>{% trans "Action" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order_id, data in done_reviews.items %}
+                            {% for product_review in data.reviews %}
+                                <tr>
+                                    <td>{{ data.order.po_number }}</td>
+                                    <td>
                                         <a href="{% url 'product_detail' product_review.product.product_id %}" class="product-link">
                                             {{ product_review.product.product_name }}
                                         </a>
-                                    {% endfor %}
-                                </div>
-                            </td>
-                            <td>
-                                {% for product_review in data.reviews %}
-                                    <span class="star-rating" data-rating="{{ product_review.review.rating }}"></span>
-                                    <span class="average-rating-text">({{ product_review.review.rating|floatformat:1 }} / 5)</span>
-                                {% endfor %}
-                            </td>
-                            <td>
-                                {% for product_review in data.reviews %}
-                                    <p>{{ product_review.review.comment }}</p>
-                                {% endfor %}
-                            </td>
-                            <td>
-                                {% for product_review in data.reviews %}
-                                    <p>{{ product_review.review.created_at|date:"Y-m-d H:i" }}</p>
-                                {% endfor %}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% else %}
-            <p class="text-center">{% trans "You have no reviews yet." %}</p>
-        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% for product_review in data.reviews %}
+                                            <div class="star-rating" data-rating="{{ product_review.review.rating }}"></div>
+                                            <span class="average-rating-text">({{ product_review.review.rating|floatformat:1 }} / 5)</span>
+                                        {% endfor %}
+                                    </td>
+                                    <td>{{ product_review.review.comment }}</td>
+                                    <td>
+                                        <a href="{% url 'edit_review' product_review.review.pk %}" class="btn btn-secondary">
+                                            {% trans "Edit Review" %}
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="text-center no-reviews-message">{% trans "No completed reviews available." %}</p>
+            {% endif %}
+        </div>
     </div>
 </div>
 
 <script>
-    // Make the entire row clickable
-    document.addEventListener("DOMContentLoaded", function() {
-        document.querySelectorAll(".clickable-row").forEach(row => {
-            row.addEventListener("click", function() {
-                window.location.href = this.dataset.href;
-            });
-        });
+    document.getElementById("pending-btn").addEventListener("click", function () {
+        document.getElementById("pending-reviews").style.display = "block";
+        document.getElementById("done-reviews").style.display = "none";
+    });
 
-        // Handle star rendering
-        document.querySelectorAll('.star-rating').forEach(function (element) {
-            let rating = parseFloat(element.getAttribute('data-rating'));
-            let fullStars = Math.floor(rating); // Count of full stars
-            let hasHalfStar = rating % 1 >= 0.5; // Check if there is a half star
-            let starHtml = '';
+    document.getElementById("done-btn").addEventListener("click", function () {
+        document.getElementById("done-reviews").style.display = "block";
+        document.getElementById("pending-reviews").style.display = "none";
+    });
 
-            // Add full stars
-            for (let i = 0; i < fullStars; i++) {
-                starHtml += '<i class="fas fa-star custom-star"></i>';
-            }
+    // Handle star rendering for reviews done
+    document.querySelectorAll('.star-rating').forEach(function (element) {
+        let rating = parseFloat(element.getAttribute('data-rating'));
+        let fullStars = Math.floor(rating); // Count of full stars
+        let hasHalfStar = rating % 1 >= 0.5; // Check if there is a half star
+        let starHtml = '';
 
-            // Add half star if needed
-            if (hasHalfStar) {
-                starHtml += '<i class="fas fa-star-half-alt custom-star"></i>';
-            }
+        // Add full stars
+        for (let i = 0; i < fullStars; i++) {
+            starHtml += '<i class="fas fa-star custom-star"></i>';
+        }
 
-            // Add empty stars to complete 5 stars
-            while (starHtml.split('fa-star').length - 1 < 5) {
-                starHtml += '<i class="far fa-star custom-star"></i>';
-            }
+        // Add half star if needed
+        if (hasHalfStar) {
+            starHtml += '<i class="fas fa-star-half-alt custom-star"></i>';
+        }
 
-            element.innerHTML = starHtml;
-        });
+        // Add empty stars to complete 5 stars
+        while (starHtml.split('fa-star').length - 1 < 5) {
+            starHtml += '<i class="far fa-star custom-star"></i>';
+        }
+
+        element.innerHTML = starHtml;
     });
 </script>
+
+<style>
+    /* my_reviews.css */
+
+/* Container for the My Reviews page */
+.my-reviews-page {
+    padding: 20px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Card styling for the reviews section */
+.my-reviews-page .card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-top: 20px;
+}
+
+/* Table styling for the reviews */
+.review-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.review-table th,
+.review-table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.review-table th {
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    font-weight: bold;
+    text-align: center;
+}
+
+.review-table tr:hover {
+    background-color: #f9f9f9;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+/* Product list styling */
+.product-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.product-link {
+    text-decoration: none;
+    color: var(--link-color);
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.product-link:hover {
+    color: var(--hover-bg);
+    text-decoration: underline;
+}
+
+/* Star rating styling */
+.star-rating {
+    font-size: 1.5rem;
+    color: #FFD700; /* Gold color for stars */
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.star-rating .far {
+    color: #ccc; /* Grey color for empty stars */
+}
+
+.average-rating-text {
+    font-size: 0.9rem;
+    color: #666;
+    margin-left: 5px;
+}
+
+/* Comment styling */
+.review-table td p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #555;
+}
+
+/* Created At styling */
+.review-table td p.created-at {
+    font-size: 12px;
+    color: #888;
+    font-style: italic;
+}
+
+/* No reviews message */
+.no-reviews-message {
+    text-align: center;
+    color: #666;
+    font-size: 1.2rem;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .review-table {
+        display: block;
+        overflow-x: auto;
+    }
+
+    .review-table th,
+    .review-table td {
+        white-space: nowrap;
+    }
+
+    .product-list {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .product-link {
+        font-size: 12px;
+    }
+
+    .star-rating {
+        font-size: 1.2rem;
+    }
+
+    .average-rating-text {
+        font-size: 0.8rem;
+    }
+}
+
+/* Hover effect for clickable rows */
+.clickable-row {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.clickable-row:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Add a subtle border to the table */
+.review-table {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Alternate row colors for better readability */
+.review-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Highlight the row when hovered */
+.review-table tbody tr:hover {
+    background-color: #e3f2fd;
+}
+
+/* Add a small animation to the star rating */
+.star-rating i {
+    transition: transform 0.2s ease;
+}
+
+.star-rating i:hover {
+    transform: scale(1.2);
+}
+
+/* Add a subtle shadow to the card */
+.my-reviews-page .card {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.2s ease;
+}
+
+.my-reviews-page .card:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Add a loading spinner for when reviews are being fetched */
+.loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.loading-spinner::after {
+    content: "";
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--button-bg);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Add a subtle border-radius to the product links */
+.product-link {
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    display: inline-block;
+    margin: 2px 0;
+}
+
+.product-link:hover {
+    background-color: #e3f2fd;
+}
+
+/* Add a small icon next to the order ID */
+.review-table td:first-child {
+    font-weight: bold;
+    color: var(--button-bg);
+}
+
+.review-table td:first-child::before {
+    content: "📦";
+    margin-right: 5px;
+}
+
+/* Add a subtle animation to the "No Reviews" message */
+.no-reviews-message {
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Container for buttons */
+.text-center.mb-4 {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+/* Styling for buttons */
+.btn-filter {
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 25px;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    background: linear-gradient(145deg, #4caf50, #45a049); /* Gradient effect */
+    color: white;
+}
+
+/* Hover effect for buttons */
+.btn-filter:hover {
+    background: linear-gradient(145deg, #45a049, #4caf50); /* Reverse gradient on hover */
+    transform: scale(1.05); /* Slight zoom effect */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Soft shadow effect */
+    border-color: #4caf50; /* Green border on hover */
+}
+
+/* Active state for buttons */
+.btn-filter:active {
+    background: #45a049; /* Slightly darker shade when clicked */
+    transform: scale(1); /* Reset zoom effect */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Slight shadow when clicked */
+}
+
+/* Focus state for buttons */
+.btn-filter:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(72, 186, 72, 0.6); /* Green outline when focused */
+}
+
+</style>
 
 <!-- Include FontAwesome for icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">

@@ -1,24 +1,34 @@
 {% extends 'vendor/vendor_base.html' %}
 {% load i18n %}
+
 {% block content %}
 <div class="product-detail">
-    <div class="product-image-container">
-        <img src="{{ product.thumbnail_image.url }}" alt="{{ product.product_name }}" class="product-image">
-    </div>
-    <div class="product-info">
-        <h1 class="product-name-detail">{{ product.product_name }}</h1>
-        <p class="product-age-range">
-            {% trans "Age Range" %}: {{ product.age_range }}
-        </p>
-        <div class="product-price-status">
-            <p class="product-price">{% trans "Price" %}: ${{ product.price }}</p>
-            {% if product.stock_quantity > 0 %}
-                <p class="product-stock">{% trans "Stock" %}: {{ product.stock_quantity }} {% trans "Available" %}</p>
-            {% else %}
-                <p class="product-status out-of-stock">{% trans "Status" %}: {% trans "Out of Stock" %}</p>
-            {% endif %}
+    <h1 class="product-name-detail">{{ product.product_name }}</h1>
+
+    <div class="reviews-container">
+        <h2>{% trans "Reviews" %}</h2>
+        
+        {% for review in product.reviews.all %}
+        <div class="review">
+            <p><strong>{{ review.user.username }}</strong> - {{ review.created_at|date:"Y-m-d" }}</p>
+            <p>{{ review.comment }}</p>
+
+            <div class="response">
+                <h4>{% trans "Vendor Response" %}</h4>
+                {% if review.vendor_response %}
+                    <p>{{ review.vendor_response }}</p>
+                {% else %}
+                    <form method="post" action="{% url 'vendor_respond_review' review.pk %}">
+                        {% csrf_token %}
+                        <textarea name="response" rows="3" placeholder="{% trans 'Enter your response...' %}"></textarea>
+                        <button type="submit">{% trans 'Submit Response' %}</button>
+                    </form>
+                {% endif %}
+            </div>
         </div>
-        <p class="product-description">{{ product.description|linebreaksbr }}</p>
+        {% empty %}
+            <p>{% trans "No reviews yet." %}</p>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}

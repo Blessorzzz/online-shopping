@@ -164,11 +164,145 @@
             element.innerHTML = renderStars(rating);
         });
     });
+
+    // Replace the existing voting script with this updated version
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.vote-btn').forEach(button => {
+            button.addEventListener('click', async (e) => {
+                e.preventDefault();
+                
+                {% if not request.user.is_authenticated %}
+                    window.location.href = "{% url 'login' %}?next={{ request.path }}";
+                    return;
+                {% endif %}
+
+                const reviewId = button.dataset.reviewId;
+                const voteType = button.dataset.voteType;
+                const reviewItem = button.closest('.review-item');  // Get parent review item
+                
+                try {
+                    const response = await fetch('{% url "vote_review" %}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        body: new URLSearchParams({
+                            'review_id': reviewId,
+                            'vote_type': voteType
+                        })
+                    });
+
+                    const data = await response.json();
+                    
+                    if (data.status === 'success') {
+                        // Update counts for this specific review only
+                        reviewItem.querySelector('.like-count').textContent = data.like_count;
+                        reviewItem.querySelector('.dislike-count').textContent = data.dislike_count;
+                        
+                        // Update active states
+                        reviewItem.querySelectorAll('.vote-btn').forEach(btn => {
+                            btn.classList.remove('active');
+                        });
+                        button.classList.add('active');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('{% trans "Failed to submit vote. Please try again." %}');
+                }
+            });
+        });
+    });
 </script>
 
-<!-- Font Awesome 用于星级图标 -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<!-- Customer Reviews Section -->
+<div class="reviews-section">
+    <div class="reviews-header">
+        <h3>{% trans "Customer Reviews" %}</h3>
+        <div class="sort-controls">
+            <form method="get" class="sort-form">
+                <div class="select-wrapper">
+                    <select name="sort" id="sort" class="styled-select" onchange="this.form.submit()">
+                        <option value="recent" {% if current_sort == 'recent' %}selected{% endif %}>
+                            {% trans "Most Recent" %}
+                        </option>
+                        <option value="helpful" {% if current_sort == 'helpful' %}selected{% endif %}>
+                            {% trans "Most Helpful" %}
+                        </option>
+                    </select>
+                    <span class="select-arrow"></span>
+                </div>
+            </form>
+        </div>
+    </div>
 
+    {% if reviews %}
+        <ul class="reviews-list">
+            {% for review in reviews %}
+                <li class="review-item">
+                    <!-- Review Header -->
+                    <div class="review-header">
+                        <strong>{{ review.user.username }}</strong>
+                        <span class="star-rating" data-rating="{{ review.rating }}"></span>
+                        <span class="review-date">{% trans "Reviewed on" %} {{ review.created_at|date:"Y-m-d H:i" }}</span>
+                    </div>
+
+                    <!-- Verified Purchase Badge -->
+                    {% if review.order and review.order.verified_purchase %}
+                        <div class="verified-purchase">
+                            <span class="verified-label">{% trans "Verified Purchase" %}</span>
+                        </div>
+                    {% endif %}
+
+                    <!-- Review Content -->
+                    <div class="review-content">
+                        <p>{{ review.comment }}</p>
+                    </div>
+
+                    <!-- Voting Section -->
+                    <div class="vote-section">
+                        <button class="vote-btn like-btn {% if request.user.id in review.liked_users_ids %}active{% endif %}" 
+                                data-review-id="{{ review.id }}"
+                                data-vote-type="true">
+                            👍 <span class="like-count">{{ review.like_count }}</span>
+                        </button>
+
+                        <button class="vote-btn dislike-btn {% if request.user.id in review.disliked_users_ids %}active{% endif %}" 
+                                data-review-id="{{ review.id }}"
+                                data-vote-type="false">
+                            👎 <span class="dislike-count">{{ review.dislike_count }}</span>
+                        </button>
+                    </div>
+
+                    <!-- Review Media (Images/Video) -->
+                    {% if review.image %}
+                        <div class="review-media">
+                            <img src="{{ review.image.url }}" alt="Review Image" class="review-image">
+                        </div>
+                    {% endif %}
+                    {% if review.video %}
+                        <div class="review-media">
+                            <video controls class="review-video">
+                                <source src="{{ review.video.url }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                    {% endif %}
+
+                    <!-- Vendor's Response (if exists) -->
+                    {% if review.vendor_response %}
+                        <div class="vendor-response">
+                            <h4>{% trans "Vendor Response" %}</h4>
+                            <p>{{ review.vendor_response }}</p>
+                        </div>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="no-reviews-message">{% trans "No reviews yet. Be the first to review this product!" %}</p>
+    {% endif %}
+</div>
 
 <style>
     .product-detail-container {
@@ -316,12 +450,24 @@
         color: #555;
     }
 
+    /* Reviews Section */
     .reviews-section {
         margin-top: 40px;
         background-color: white;
         padding: 20px;
         border-radius: 8px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        max-width: 800px; /* Limit width for better readability */
+        margin-left: auto;
+        margin-right: auto; /* Center the section */
+    }
+
+    .reviews-section h3 {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 20px;
+        text-align: center; /* Center the heading */
     }
 
     .reviews-list {
@@ -331,49 +477,198 @@
 
     .review-item {
         border-bottom: 1px solid #ddd;
-        padding: 10px 0;
+        padding: 20px 0;
         margin-bottom: 15px;
     }
 
-    .review-item strong {
+    .review-item:last-child {
+        border-bottom: none;
+    }
+
+    /* Review Header */
+    .review-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    .review-header strong {
         font-weight: bold;
         color: #333;
     }
 
-    .review-item p {
-        margin: 5px 0;
-        color: #555;
+    .review-header .star-rating {
+        font-size: 1.2rem;
+        color: #FFD700;
     }
 
-    .review-item img, .review-item video {
-        display: block;
-        margin-top: 10px;
-        max-width: 300px;
-        border-radius: 5px;
-    }
-
-    .review-item small {
+    .review-header .review-date {
+        font-size: 0.9rem;
         color: #888;
     }
 
-    .star-rating {
-        font-size: 1.5rem;
-        color: #FFD700; /* Lighter Gold color */
-    }
-
-    .custom-star {
-        margin-right: 5px;
-    }
-
+    /* Verified Purchase Badge */
     .verified-purchase {
-        font-size: 0.9rem;
-        margin-top: 10px;
-        display: inline-block;
+        margin-bottom: 10px;
     }
 
     .verified-label {
+        font-size: 0.9rem;
         color: #28a745;
         font-weight: bold;
+        background-color: #e8f5e9;
+        padding: 4px 8px;
+        border-radius: 4px;
+        display: inline-block;
     }
+
+    /* Review Content */
+    .review-content {
+        margin-bottom: 10px;
+    }
+
+    .review-content p {
+        margin: 0;
+        color: #555;
+        line-height: 1.5;
+    }
+
+    /* Review Media (Images/Video) */
+    .review-media {
+        margin-top: 10px;
+        text-align: center; /* Center media */
+    }
+
+    .review-image {
+        max-width: 100%;
+        max-height: 300px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .review-video {
+        max-width: 100%;
+        max-height: 300px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* No Reviews Message */
+    .no-reviews-message {
+        text-align: center;
+        color: #666;
+        font-size: 1.1rem;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+    }
+
+    /* Voting Section Styles */
+    .vote-section {
+        margin-top: 15px;
+        display: flex;
+        gap: 10px;
+    }
+
+    .vote-btn {
+        padding: 5px 12px;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        background: white;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .vote-btn:hover {
+        background: #f8f9fa;
+    }
+
+    .like-btn.active {
+        background: #e8f5e9;
+        border-color: #28a745;
+    }
+
+    .dislike-btn.active {
+        background: #ffeef0;
+        border-color: #dc3545;
+    }
+
+    .like-count, .dislike-count {
+        font-size: 0.9em;
+        color: #666;
+    }
+
+    /* Sorting Controls */
+    .reviews-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+        gap: 20px;
+    }
+
+    .sort-controls {
+        flex-shrink: 0;
+    }
+
+    .select-wrapper {
+        position: relative;
+        width: 200px;
+    }
+
+    .styled-select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        width: 100%;
+        padding: 10px 35px 10px 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        background-color: white;
+        font-size: 14px;
+        color: #333;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .styled-select:hover {
+        border-color: #007bff;
+    }
+
+    .styled-select:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+    }
+
+    .select-arrow {
+        position: absolute;
+        top: 50%;
+        right: 12px;
+        transform: translateY(-50%);
+        pointer-events: none;
+        width: 0;
+        height: 0;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-top: 6px solid #666;
+    }
+
+    @media (max-width: 768px) {
+        .reviews-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .select-wrapper {
+            width: 100%;
+        }
+    }
+
 </style>
 {% endblock %}

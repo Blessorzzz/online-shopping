@@ -1,0 +1,254 @@
+/* my_reviews.css */
+
+/* Container for the My Reviews page */
+
+.my-reviews-page {
+    padding: 20px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Card styling for the reviews section */
+.my-reviews-page .card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-top: 20px;
+}
+
+/* Table styling for the reviews */
+.review-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.review-table th,
+.review-table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.review-table th {
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    font-weight: bold;
+    text-align: center;
+}
+
+.review-table tr:hover {
+    background-color: #f9f9f9;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+/* Product list styling */
+.product-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.product-link {
+    text-decoration: none;
+    color: var(--link-color);
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.product-link:hover {
+    color: var(--hover-bg);
+    text-decoration: underline;
+}
+
+/* Star rating styling */
+.star-rating {
+    font-size: 1.5rem;
+    color: #FFD700; /* Gold color for stars */
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.star-rating .far {
+    color: #ccc; /* Grey color for empty stars */
+}
+
+.average-rating-text {
+    font-size: 0.9rem;
+    color: #666;
+    margin-left: 5px;
+}
+
+/* Comment styling */
+.review-table td p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #555;
+}
+
+/* Created At styling */
+.review-table td p.created-at {
+    font-size: 12px;
+    color: #888;
+    font-style: italic;
+}
+
+/* No reviews message */
+.no-reviews-message {
+    text-align: center;
+    color: #666;
+    font-size: 1.2rem;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .review-table {
+        display: block;
+        overflow-x: auto;
+    }
+
+    .review-table th,
+    .review-table td {
+        white-space: nowrap;
+    }
+
+    .product-list {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .product-link {
+        font-size: 12px;
+    }
+
+    .star-rating {
+        font-size: 1.2rem;
+    }
+
+    .average-rating-text {
+        font-size: 0.8rem;
+    }
+}
+
+/* Hover effect for clickable rows */
+.clickable-row {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.clickable-row:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Add a subtle border to the table */
+.review-table {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Alternate row colors for better readability */
+.review-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Highlight the row when hovered */
+.review-table tbody tr:hover {
+    background-color: #e3f2fd;
+}
+
+/* Add a small animation to the star rating */
+.star-rating i {
+    transition: transform 0.2s ease;
+}
+
+.star-rating i:hover {
+    transform: scale(1.2);
+}
+
+/* Add a subtle shadow to the card */
+.my-reviews-page .card {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.2s ease;
+}
+
+.my-reviews-page .card:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Add a loading spinner for when reviews are being fetched */
+.loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.loading-spinner::after {
+    content: "";
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--button-bg);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Add a subtle border-radius to the product links */
+.product-link {
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    display: inline-block;
+    margin: 2px 0;
+}
+
+.product-link:hover {
+    background-color: #e3f2fd;
+}
+
+/* Add a small icon next to the order ID */
+.review-table td:first-child {
+    font-weight: bold;
+    color: var(--button-bg);
+}
+
+.review-table td:first-child::before {
+    content: "📦";
+    margin-right: 5px;
+}
+
+/* Add a subtle animation to the "No Reviews" message */
+.no-reviews-message {
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
