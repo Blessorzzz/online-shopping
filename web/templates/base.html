@@ -271,7 +271,7 @@
             {% if user.is_authenticated %}
                 <li><a href="{% url 'shopping_cart' %}">{% trans "Cart" %}</a></li>
                 <li><a href="{% url 'order_list' %}">{% trans "Orders" %}</a></li>
-                <li><a href="{% url 'reviews' %}">{% trans "My Reviews" %}</a></li>
+                <li><a href="{% url 'my_reviews' %}">{% trans "My Reviews" %}</a></li>
                 <li><a href="{% url 'forums' %}">{% trans "Forums" %}</a></li>
                 <li><a href="{% url 'register' %}">{% trans "Register" %}</a></li>       
             {% else %}
