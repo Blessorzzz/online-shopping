@@ -1,0 +1,42 @@
+<!-- templates/product_list_partial.html -->
+{% load i18n %}
+{% for product in products %}
+<div class="product-card">
+    <div class="image-wrapper">
+        <a href="{% url 'product_detail' product.product_id %}">
+            <img src="{{ product.thumbnail_image.url }}" 
+                 alt="{{ product.product_name }}" 
+                 class="product-thumb">
+            {% if product.stock_quantity == 0 %}
+            <div class="sold-out-tag">SOLD OUT</div>
+            {% endif %}
+        </a>
+    </div>
+    <div class="product-meta">
+        <h3 class="product-title1">
+            <a href="{% url 'product_detail' product.product_id %}">
+                {{ product.product_name }}
+            </a>
+        </h3>
+        <div class="price-section">
+            <span class="current-price">¥{{ product.price }}</span>
+        </div>
+        <div class="sales-info">
+            <span class="sales-count">Sales: 999+</span>
+            <span class="stock-status {% if product.stock_quantity == 0 %}out-stock{% endif %}">
+                {{ product.stock_quantity|default:"0" }} Left
+            </span>
+        </div>
+        <div class="average-rating">
+            {% if product.average_rating %}
+                <span class="star-rating" data-rating="{{ product.average_rating }}"></span>
+                <span class="average-rating-text">({{ product.average_rating|floatformat:1 }} / 5)</span>
+            {% else %}
+                <span class="no-rating">{% trans "No reviews yet" %}</span>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% empty %}
+<p>{% trans "No products found matching your query." %}</p>
+{% endfor %}
