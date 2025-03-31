@@ -181,6 +181,40 @@
     {% endif %}
 </div>
 
+<!-- Forums Section -->
+<div id="featured-forums" class="forums-section">
+    <div class="forums-header">
+        <h3>{% trans "Featured Forum Discussions" %}</h3>
+    </div>
+
+    {% if featured_forums %}
+        <ul class="forums-list">
+            {% for forum in featured_forums %}
+                <li class="forum-item">
+                    <div class="forum-header">
+                        <h5 class="forum-title">
+                            <a href="{% url 'forum_detail' forum.id %}">{{ forum.title }}</a>
+                        </h5>
+                        <p class="forum-meta">
+                            {% trans "By" %} {{ forum.author.username }} | 
+                            {{ forum.created_at|date:"Y-m-d H:i" }} | 
+                            {{ forum.comments.count }} {% trans "comments" %}
+                        </p>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="no-forums-message">{% trans "No featured discussions available." %}</p>
+    {% endif %}
+
+    <div class="join-discussion">
+        <a href="{% url 'forum_list' %}" class="btn btn-prominent">
+            {% trans "Join the Discussion" %}
+        </a>
+    </div>
+</div>
+
     </section>
 
 </main>
@@ -651,6 +685,98 @@
             background-color: #e3f2fd;
         }
     }
+
+    /* Forums Section Styling */
+    .forums-section {
+        margin-top: 40px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto; /* Center the section */
+    }
+
+    .forums-header h3 {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .forums-list {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .forum-item {
+        border-bottom: 1px solid #ddd;
+        padding: 20px 0;
+        margin-bottom: 15px;
+    }
+
+    .forum-item:last-child {
+        border-bottom: none;
+    }
+
+    .forum-header {
+        margin-bottom: 10px;
+    }
+
+    .forum-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .forum-title a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    .forum-title a:hover {
+        text-decoration: underline;
+    }
+
+    .forum-meta {
+        font-size: 0.9rem;
+        color: #888;
+    }
+
+    .no-forums-message {
+        text-align: center;
+        color: #666;
+        font-size: 1.1rem;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+    }
+
+    .join-discussion {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .btn-prominent {
+        background-color: #007bff;
+        color: white;
+        font-size: 1rem;
+        font-weight: bold;
+        padding: 10px 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        text-decoration: none;
+    }
+
+    .btn-prominent:hover {
+        background-color: #0056b3;
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px);
 
 </style>
 {% endblock %}

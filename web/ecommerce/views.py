@@ -10,6 +10,7 @@ import requests
 from .models import KeywordSearchHistory, Product, SynonymCache
 from shoppingcart.models import ShoppingCart  # 引用购物车模型
 from review.models import Review
+from forums.models import ForumPost
 
 # 首页视图，显示商品列表
 class HomePageView(ListView):
@@ -76,9 +77,15 @@ class ProductDetailView(DetailView):
             except Review.DoesNotExist:
                 highlighted_review = None
 
+        # Fetch the top 2 forum threads with the most comments
+        featured_forums = ForumPost.objects.filter(product=product).annotate(
+            comment_count=Count('comments')
+        ).order_by('-comment_count')[:2]
+
         context['reviews'] = reviews
         context['current_sort'] = sort_by
         context['highlighted_review'] = highlighted_review  # Pass the highlighted review to the template
+        context['featured_forums'] = featured_forums  # Pass featured forums to the template
         return context
     
 # 购物车页面视图
