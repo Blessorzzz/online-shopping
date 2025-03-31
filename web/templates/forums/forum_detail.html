@@ -1,5 +1,6 @@
+<!-- filepath: /Users/williamchan/Desktop/ISI/django_project/online-shopping/web/templates/forums/forum_detail.html -->
 {% extends "base.html" %}
-{% load i18n%}
+{% load i18n %}
 {% block content %}
 <h2>{{ post.title }}</h2>
 <p>Posted on {{ post.created_at|date:"Y-m-d" }} by {{ post.author.username }}</p>
@@ -23,3 +24,216 @@
 <p><a href="{% url 'login' %}">Log in</a> to leave a comment.</p>
 {% endif %}
 {% endblock %}
+
+<style>
+/* General Page Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+}
+
+/* Post Title */
+h2 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+/* Comments Section */
+.comment {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.comment p {
+    margin: 5px 0;
+    color: #555;
+}
+
+.comment p:first-child {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Buttons */
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-right: 5px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+button.report-btn {
+    background-color: #dc3545;
+}
+
+button.report-btn:hover {
+    background-color: #a71d2a;
+}
+
+/* Modal Styling */
+#report-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    width: 300px;
+}
+
+#report-modal h3 {
+    margin-top: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+#report-modal form label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #555;
+}
+
+#report-modal button {
+    margin-top: 10px;
+    width: 100px;
+}
+
+#close-modal {
+    background-color: #6c757d;
+}
+
+#close-modal:hover {
+    background-color: #5a6268;
+}
+
+/* Page Background Overlay */
+#modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+</style>
+
+{% for comment in comments %}
+    <div class="comment">
+        <p>{{ comment.content }}</p>
+        <p>By {{ comment.author }} on {{ comment.created_at }}</p>
+        <button class="like-btn" data-id="{{ comment.id }}">
+            Like ({{ comment.like_count }})
+        </button>
+        <button class="dislike-btn" data-id="{{ comment.id }}">
+            Dislike ({{ comment.dislike_count }})
+        </button>
+        <button class="report-btn" data-id="{{ comment.id }}">Report</button>
+    </div>
+{% endfor %}
+
+<!-- Popup Modal -->
+<div id="report-modal">
+    <h3>Report Comment</h3>
+    <form id="report-form">
+        <label><input type="checkbox" name="reasons" value="misinformation"> Misinformation</label><br>
+        <label><input type="checkbox" name="reasons" value="sexual content"> Sexual Content</label><br>
+        <label><input type="checkbox" name="reasons" value="harassment or bullying"> Harassment or Bullying</label><br>
+        <button type="button" id="submit-report">Submit</button>
+        <button type="button" id="close-modal">Cancel</button>
+    </form>
+</div>
+
+<div id="modal-overlay"></div>
+
+<script>
+    document.querySelectorAll('.like-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            const commentId = button.getAttribute('data-id');
+            fetch(`/comment/${commentId}/like/`, { method: 'POST', headers: { 'X-CSRFToken': '{{ csrf_token }}' } })
+                .then(response => response.json())
+                .then(data => {
+                    button.textContent = `Like (${data.like_count})`;
+                    button.nextElementSibling.textContent = `Dislike (${data.dislike_count})`;
+                });
+        });
+    });
+
+    document.querySelectorAll('.dislike-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            const commentId = button.getAttribute('data-id');
+            fetch(`/comment/${commentId}/dislike/`, { method: 'POST', headers: { 'X-CSRFToken': '{{ csrf_token }}' } })
+                .then(response => response.json())
+                .then(data => {
+                    button.textContent = `Dislike (${data.dislike_count})`;
+                    button.previousElementSibling.textContent = `Like (${data.like_count})`;
+                });
+        });
+    });
+
+    document.querySelectorAll('.report-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            const commentId = button.getAttribute('data-id');
+            const modal = document.getElementById('report-modal');
+            const overlay = document.getElementById('modal-overlay');
+            modal.style.display = 'block';
+            overlay.style.display = 'block';
+            modal.setAttribute('data-comment-id', commentId);
+        });
+    });
+
+    document.getElementById('close-modal').addEventListener('click', () => {
+        const modal = document.getElementById('report-modal');
+        const overlay = document.getElementById('modal-overlay');
+        modal.style.display = 'none';
+        overlay.style.display = 'none';
+    });
+
+    document.getElementById('submit-report').addEventListener('click', () => {
+        const modal = document.getElementById('report-modal');
+        const overlay = document.getElementById('modal-overlay');
+        const commentId = modal.getAttribute('data-comment-id');
+        const form = document.getElementById('report-form');
+        const formData = new FormData(form);
+        formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+
+        fetch(`/comment/${commentId}/report/`, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+            } else {
+                alert('Failed to submit the report.');
+            }
+            modal.style.display = 'none';
+            overlay.style.display = 'none';
+        });
+    });
+</script>

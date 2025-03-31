@@ -3,6 +3,9 @@ from .models import ForumPost, Comment
 from .forms import ForumPostForm, CommentForm
 from django.contrib.auth.decorators import login_required
 from ecommerce.models import Product  # Import Product model
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
 
 def forum_list(request):
     posts = ForumPost.objects.all().order_by('-created_at')
@@ -48,3 +51,39 @@ def add_comment(request, post_id):
             comment.save()
             return redirect('forum_detail', post_id=post.id)
     return redirect('forum_detail', post_id=post.id)
+
+@login_required
+def like_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+    if request.user in comment.likes.all():
+        comment.likes.remove(request.user)
+        liked = False
+    else:
+        comment.likes.add(request.user)
+        comment.dislikes.remove(request.user)  # Ensure a user can't like and dislike at the same time
+        liked = True
+    return JsonResponse({'liked': liked, 'like_count': comment.like_count(), 'dislike_count': comment.dislike_count()})
+
+@login_required
+def dislike_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+    if request.user in comment.dislikes.all():
+        comment.dislikes.remove(request.user)
+        disliked = False
+    else:
+        comment.dislikes.add(request.user)
+        comment.likes.remove(request.user)  # Ensure a user can't like and dislike at the same time
+        disliked = True
+    return JsonResponse({'disliked': disliked, 'like_count': comment.like_count(), 'dislike_count': comment.dislike_count()})
+
+@login_required
+@csrf_exempt
+def report_comment(request, comment_id):
+    if request.method == 'POST':
+        comment = get_object_or_404(Comment, id=comment_id)
+        report_reasons = request.POST.getlist('reasons[]')  # Get the selected reasons
+        if report_reasons:
+            comment.reports.extend(report_reasons)  # Add the reasons to the reports field
+            comment.save()
+            return JsonResponse({'success': True, 'message': 'Report submitted successfully.'})
+    return JsonResponse({'success': False, 'message': 'Invalid request.'})
