@@ -1939,3 +1939,78 @@ table.order-table thead {
     font-size: 0.85rem;
     text-align: justify;
   }
+
+  .search-bar-wrapper {
+    position: fixed;
+    top: 60px; /* 确保在导航栏下方 */
+    z-index: 999;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 15px 0;
+    background-color: var(--bg-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.search-form {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    max-width: 100%;
+}
+
+/* ✅ 强制覆盖全局 input/button 的宽度 */
+.search-form input[type="text"],
+.search-form button,
+.search-form .voice-search-btn {
+    width: auto !important;
+    margin: 0;
+}
+
+/* 输入框 */
+.search-form input[type="text"] {
+    min-width: 250px;
+    padding: 8px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* Search 按钮 */
+.search-form button[type="submit"] {
+    padding: 8px 12px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.search-form button[type="submit"]:hover {
+    background-color: var(--hover-bg);
+    color: var(--hover-text);
+}
+
+/* 语音识别按钮 */
+.search-form .voice-search-btn {
+    font-size: 18px;
+    padding: 8px 10px;
+    border-radius: 50%;
+    background-color: transparent;
+    border: none;
+    color: var(--text-color);
+    transition: background 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-form .voice-search-btn:hover {
+    background-color: var(--hover-bg);
+    color: var(--hover-text);
+}

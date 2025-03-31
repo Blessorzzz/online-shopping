@@ -78,7 +78,12 @@ document.addEventListener("DOMContentLoaded", function () {
             menu.style.display = "flex";
             menu.style.zIndex = "10000";
 
-            contentWrapper.style.paddingTop = "160px";  // 确保内容不会被遮挡
+            contentWrapper.style.paddingTop = "260px";  // 确保内容不会被遮挡
+
+            const searchBar = document.querySelector(".search-bar-wrapper");
+            if (searchBar) {
+                searchBar.style.top = "183px"; // 103(menu) + 80(toolbar)
+            }
         }
     });
 
@@ -362,8 +367,13 @@ function closeToolbar() {
     menu.style.display = "flex";
     menu.style.zIndex = "10000";
     document.body.style.marginTop = "10px";
-    contentWrapper.style.paddingTop = "40px";
+    contentWrapper.style.paddingTop = "120px";
     window.scrollTo({ top: 0, behavior: "smooth" });
+    // ✅ 恢复搜索栏位置
+    const searchBar = document.querySelector(".search-bar-wrapper");
+    if (searchBar) {
+        searchBar.style.top = "60px";
+    }
     console.log("✅ Accessibility toolbar closed!");
 }
 
