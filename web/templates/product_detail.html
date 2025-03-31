@@ -165,10 +165,20 @@
             });
         });
     });
+    document.addEventListener('DOMContentLoaded', function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const reviewId = urlParams.get('review_id');
+        if (reviewId) {
+            const reviewElement = document.getElementById(`review-${reviewId}`);
+            if (reviewElement) {
+                reviewElement.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    });
 </script>
 
 <!-- Customer Reviews Section -->
-<div class="reviews-section">
+<div id="customer-reviews" class="reviews-section">
     <div class="reviews-header">
         <h3>{% trans "Customer Reviews" %}</h3>
         <div class="sort-controls">
@@ -191,7 +201,7 @@
     {% if reviews %}
         <ul class="reviews-list">
             {% for review in reviews %}
-                <li class="review-item">
+                <li id="review-{{ review.id }}" class="review-item {% if review == highlighted_review %}highlighted-review{% endif %}">
                     <!-- Review Header -->
                     <div class="review-header">
                         <strong>{{ review.user.username }}</strong>
@@ -627,6 +637,23 @@
         
         .select-wrapper {
             width: 100%;
+        }
+    }
+
+    .highlighted-review {
+        background-color: #e3f2fd; /* Light blue background */
+        border: 1px solid #90caf9; /* Blue border */
+        padding: 10px;
+        border-radius: 5px;
+        animation: highlight 2s ease-in-out;
+    }
+    
+    @keyframes highlight {
+        0% {
+            background-color: #bbdefb;
+        }
+        100% {
+            background-color: #e3f2fd;
         }
     }
 
