@@ -109,35 +109,11 @@ table tr:hover {
     border: 1px solid var(--border-color);
 }
 
-/* Font size controls */
-.font-size-controls {
-    display: flex;
-    gap: 5px;
-    align-items: center;
-    flex-shrink: 0;
+/* 让 <select> 字体大小随着 body 一起变化 */
+select, option {
+    font-size: inherit !important;
 }
 
-.font-size-controls button {
-    padding: 5px 10px;
-    border: 1px solid #ccc;
-    background-color: white;
-    color: var(--text-color) !important;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-    min-width: 40px;
-}
-
-.font-size-controls button:hover {
-    background-color: #f0f0f0;
-}
-
-.font-size-controls button.active {
-    background-color: var(--border-color) !important;
-    color: var(--button-bg) !important;
-    color: white;
-    border-color: #0056b3;
-}
 
 /* Form styles */
 form {
@@ -246,7 +222,7 @@ form.nav-right input[type="text"] {
     padding: 8px;
     border-radius: 5px 0 0 5px;
     border: 1px solid #ccc;
-    font-size: 14px;
+    font-size: 1rem;
 }
 
 form.nav-right button {
@@ -259,6 +235,7 @@ form.nav-right button {
     color: white;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    font-size: 1rem;
 }
 
 form.nav-right button:hover {
@@ -268,24 +245,25 @@ form.nav-right button:hover {
 
 /* User section styles */
 .user {
-    color: white;
-    font-size: 15px;
-    display: flex;
-    align-items: center;
+    color: white; /* Set the text color of the user section */
+    font-size: 0.9375rem; /* Set the font size of the user section */
+    display: flex; /* Use flexbox for layout */
+    align-items: center; /* Align items vertically in the center */
     gap: 10px;
     height: 36px;
     margin-left: 20px;
 }
 
 .user p {
-    margin: 0 10px 0 0;
-    font-size: 14px;
+    margin: 0 10px 0 0; /* Add margin to the right of the user name */
+    font-size: 0.875rem; 
     color: white;
 }
 
 .user button {
-    margin: 10px;
-    padding: 8px 16px !important;
+    white-space: nowrap;
+    /* margin:10px;
+    padding: 8px 16px !important; */
     height: 36px;
     align-items: center;
     display: flex;
@@ -506,8 +484,8 @@ form.nav-right button:hover {
 }
 
 .main-gallery {
-    border: 1px solid #eee;
-    padding: 15px;
+    /* border: 1px solid #eee;
+    padding: 15px; */
     margin-bottom: 20px;
 }
 
@@ -698,8 +676,9 @@ form.nav-right button:hover {
     padding: 12px;
 }
 
-.product-title {
-    font-size: 14px;
+.product-title1 {
+    color: var(--text-color) !important;
+    font-size: 1rem;
     line-height: 1.4;
     height: 40px;
     overflow: hidden;
@@ -708,9 +687,29 @@ form.nav-right button:hover {
     -webkit-box-orient: vertical;
     margin-bottom: 8px;
 }
-
-.product-title a {
+.product-title2 {
     color: var(--text-color) !important;
+    /* margin-top: 27px; */
+    /* padding-bottom: 100px; */
+    /* font-size: 14px; */
+    line-height: 1.4;
+    /* height: 40px; */
+    /* overflow: hidden; */
+    display: -webkit-box;
+    /* -webkit-line-clamp: 2; */
+    -webkit-box-orient: vertical;
+    /* margin-bottom: 8px; */
+}
+.product-title1 a {
+    
+    color: var(--text-color) !important; /* ensure high contrast for text */
+    
+    text-decoration: none;
+}
+.product-title2 a {
+    
+    color: var(--text-color) !important; /* ensure high contrast for text */
+    
     text-decoration: none;
 }
 
@@ -720,14 +719,14 @@ form.nav-right button:hover {
 
 .current-price {
     color: #b8321a;
-    font-size: 20px;
+    font-size: 1.25rem;
     font-weight: 700;
 }
 
 .sales-info {
     display: flex;
     justify-content: space-between;
-    font-size: 12px;
+    font-size: 0.875rem;
     color: #666;
 }
 
@@ -742,15 +741,15 @@ form.nav-right button:hover {
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .product-list {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(1, 1fr);
         gap: 8px;
     }
 
     .product-thumb {
         height: 180px;
     }
-
-    .product-title {
+    
+    .product-title1 .product-title2 {
         font-size: 13px;
         height: 36px;
     }
@@ -792,16 +791,16 @@ form.nav-right button:hover {
     max-height: 60px;
 }
 
-.search-container, .language-selector, .font-size-controls {
-    flex-shrink: 0;
-    white-space: nowrap;
-    min-width: auto;
-}
 
-.nav-container a, .nav-container button, .nav-container select {
+/* 让导航栏按钮有更好的间距 */
+.nav-container select {
+    margin-right: 25px;
+}
+.nav-container a,
+.nav-container button {
     margin-right: 10px;
 }
-
+/* 让搜索框适应大小变化，但不会太大 */
 .search-container input {
     max-width: 200px;
     min-width: 120px;
@@ -867,7 +866,7 @@ html {
 }
 
 #accessibility-toolbar button small {
-    font-size: 12px;
+    font-size: 0.75rem;
     margin-top: 3px;
     display: block;
     color: black;
@@ -886,7 +885,8 @@ button:disabled {
     cursor: not-allowed;
 }
 
-/* Apply theme variables globally */
+
+/* 使用变量应用到全局 */
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
@@ -904,7 +904,7 @@ button:hover {
 }
 
 a {
-    color: var(--button-bg);
+    color: var(--text-color);
 }
 
 a:hover {
@@ -929,7 +929,7 @@ a:hover {
 /* Protanopia theme */
 [data-theme="protanopia"] {
     --bg-color: #EAEAEA;
-    --text-color: #000;
+    --text-color: #000; 
     --button-bg: #0057B8;
     --button-text: #FFFFFF;
     --border-color: #003F88;
@@ -961,7 +961,38 @@ a:hover {
     color: var(--text-color) !important;
 }
 
-[data-theme] #menu {
+button, input, select {
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border: 2px solid var(--border-color);
+}
+
+button:hover, input:hover, select:hover {
+    background-color: var(--hover-bg);
+    color: var(--hover-text);
+}
+
+a {
+    color: var(--text-color);
+}
+
+a:hover {
+    color: var(--hover-bg);
+}
+
+
+
+/* 确保 menu 的颜色跟随主题变化 */
+[data-theme] 
+    #menu, /* unify background for menu */
+    .product-info, /* unify background for product info */
+    button, /* unify button background */
+    body { /* unify page background */
+        background-color: var(--bg-color) !important;
+        color: var(--text-color) !important;
+    }
+    #menu {
+    
     background-color: var(--button-bg);
     color: var(--button-text);
 }
@@ -1260,7 +1291,7 @@ body.large-cursor * {
 
 h2, h3 {
     text-align: center;
-    color: var(--text-color);
+    /* color: var(--text-color); */
     background-color: var(--button-bg);
 }
 
@@ -1422,6 +1453,44 @@ table.order-table thead {
     color: #FFD700;
 }
 
+/* Review Table Styles */
+.review-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.review-table th {
+    background-color: var(--button-bg);
+    color: white;
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.review-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.review-table tr:hover {
+    background-color: var(--button-bg);
+    cursor: pointer;
+}
+
+.review-table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+/* Status Labels */
 .status-label {
     font-weight: bold;
     padding: 5px 10px;
@@ -1474,7 +1543,7 @@ table.order-table thead {
 
 .product-name {
     font-size: 14px;
-    color: #333;
+    color: var(--text-color);
     font-weight: bold;
     text-decoration: none;
     margin-top: 5px;
@@ -1486,5 +1555,462 @@ table.order-table thead {
 }
 
 .product-link:hover .product-name {
-    color: #007bff;
+    color: var(--border-color); /* Bootstrap primary color */
+}
+
+
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+    /* Adjust Navigation Bar */
+    #menu {
+        flex-direction: column;  /* 垂直排列 */
+        align-items: center;
+    }
+    .nav-container {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+    .nav-left, 
+    .nav-right {
+        width: 100%;
+        text-align: center;
+    }
+    .nav-left {
+        white-space: nowrap !important;
+        margin-bottom: 10px; /* 分隔上下行 */
+    }
+    .nav-right {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    /* Product Grid */
+    .product-list {
+        /* grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); Adjust grid layout */
+        gap: 10px;
+    }
+
+    /* Product Cards */
+    .product-card {
+        width: 100%; /* Make each product card full-width */
+    }
+
+    /* Adjust Product Titles */
+    .product-title2 {
+        font-size: 28px;
+        height: auto;
+    }
+
+
+}
+
+/* For very small screens (below 480px), adjust more aggressively */
+@media (max-width: 480px) {
+    #menu {
+        padding: 5px; /* Further reduce padding */
+    }
+    .nav-left{
+        white-space: nowrap;
+    }
+    .nav-left ul,
+    .nav-right {
+        display: flex;
+        justify-content: flex-end;
+        flex-direction: column;
+    }
+    .nav-left ul li,
+    .nav-right > * {
+        margin: 5px 0;
+    }
+    .product-list {
+        grid-template-columns: 1fr; /* Display product items in a single column */
+    }
+
+    .product-thumb {
+        height: 150px; /* Make the product image smaller */
+    }
+
+    .product-title {
+        font-size: 12px; /* Further reduce font size */
+    }
+
+    .product-price {
+        font-size: 16px; /* Smaller font for the price */
+    }
+    
+    .nav-right form input[type="text"] {
+        width: 100%; /* Make the search input full-width */
+    }
+}
+
+/* 添加关键词优先级样式 */
+.keyword-priority {
+    font-size: 0.85rem;
+    color: #777;
+    margin-bottom: 5px;
+    font-style: italic;
+  }
+  
+  /* 修改关键词标签样式 */
+  .keyword-tag {
+    display: inline-block;
+    background-color: #e0f7fa;
+    color: #00838f;
+    border-radius: 16px;
+    padding: 2px 10px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+    position: relative;
+  }
+  
+  /* 扩展关键词标签使用不同颜色 */
+  .expanded-keyword-tag {
+    background-color: #ede7f6;
+    color: #5e35b1;
+  }
+  
+  /* 突出显示当前使用的搜索关键词 */
+  .search-info-box {
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    border-left: 3px solid #007bff;
+  }
+  
+  .search-info-box h6 {
+    margin-bottom: 8px;
+    color: #555;
+  }
+  
+  .search-info-box .search-method {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-right: 5px;
+    font-size: 0.8rem;
+  }
+  
+  .search-method.original {
+    background-color: #e0f7fa;
+    color: #00838f;
+  }
+  
+  .search-method.expanded {
+    background-color: #ede7f6;
+    color: #5e35b1;
+  }
+  
+  .search-method.fulltext {
+    background-color: #fff3e0;
+    color: #e65100;
+  }
+
+  /* 序列搜索样式 */
+  .sticky-search-container {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    padding: 15px;
+    transition: all 0.3s ease;
+  }
+  
+  /* 添加关闭按钮样式 */
+
+.sequential-search {
+    margin-top: 35px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+  }
+  
+  .sequential-search-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .sequential-search-header h6 {
+    margin: 0;
+    color: #555;
+  }
+  
+  .sequential-terms-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 15px;
+    max-height: 150px;
+    overflow-y: auto;
+    padding: 5px;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+  }
+  
+  .search-term-item {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 12px;
+    border-radius: 20px;
+    background-color: #e0f7fa;
+    color: #00838f;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+  }
+  
+  .search-term-item:hover {
+    background-color: #b2ebf2;
+  }
+  
+  .search-term-item.expanded {
+    background-color: #ede7f6;
+    color: #5e35b1;
+  }
+  
+  .search-term-item.expanded:hover {
+    background-color: #d1c4e9;
+  }
+  
+  .search-term-item.current {
+    transform: scale(1.05);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    border: 2px solid #007bff;
+  }
+  
+  .current-indicator {
+    display: inline-block;
+    margin-left: 6px;
+    font-size: 0.7rem;
+    padding: 1px 5px;
+    background-color: #0066cc;
+    color: white;
+    border-radius: 10px;
+  }
+  
+  .current-term-info {
+    padding: 10px;
+    background-color: #e3f2fd;
+    border-left: 3px solid #2196f3;
+    border-radius: 4px;
+    margin-top: 10px;
+  }
+  
+  .term-type {
+    display: inline-block;
+    font-size: 0.8rem;
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-left: 6px;
+  }
+  
+  .term-type.original {
+    background-color: #e0f7fa;
+    color: #00838f;
+  }
+  
+  .term-type.expanded {
+    background-color: #ede7f6;
+    color: #5e35b1;
+  }
+  
+  /* 搜索结果页面中显示当前搜索位置的样式 */
+  .search-progress {
+    margin-bottom: 20px;
+    padding: 12px 15px;
+    background-color: #f9f9f9;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+  }
+  
+  .search-progress-title {
+    margin-bottom: 10px;
+    font-weight: 500;
+    color: #555;
+  }
+  
+  .search-progress-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    padding: 0 20px;
+  }
+  
+  .search-progress-bar::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 40px;
+    right: 40px;
+    height: 2px;
+    background-color: #e0e0e0;
+    z-index: 0;
+  }
+  
+  .progress-point {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e0e0e0;
+    color: #555;
+    font-weight: bold;
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease;
+  }
+  
+  .progress-point.completed {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  .progress-point.current {
+    background-color: #2196f3;
+    color: white;
+    animation: pulse 1.5s infinite;
+  }
+  
+  .progress-label {
+    position: absolute;
+    top: 35px;
+    white-space: nowrap;
+    font-size: 0.8rem;
+    color: #555;
+  }
+  
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+  
+  @media (max-width: 768px) {
+    .sequential-search-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .controls-wrapper {
+      margin-top: 10px;
+      width: 100%;
+      justify-content: space-between;
+    }
+    
+    .sequential-terms-list {
+      max-height: 200px;
+    }
+  }
+
+  .controls-wrapper{
+    display: grid;
+  }
+
+  /* 新样式：返回按钮样式 */
+.return-button {
+    display: block;
+    margin: 20px 0;
+    padding: 10px 15px;
+    background-color: #e3f2fd;
+    color: #1976d2;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+  }
+  .controls-wrapper{
+    top:30px;
+    position:absolute;
+    left: 92%; /* 90% - 按钮宽度的一半 */
+    padding: 2px 8px;
+    font-size: 0.85rem;
+    text-align: justify;
+  }
+
+  .search-bar-wrapper {
+    position: fixed;
+    top: 60px; /* 确保在导航栏下方 */
+    z-index: 999;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 15px 0;
+    background-color: var(--bg-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.search-form {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    max-width: 100%;
+}
+
+/* ✅ 强制覆盖全局 input/button 的宽度 */
+.search-form input[type="text"],
+.search-form button,
+.search-form .voice-search-btn {
+    width: auto !important;
+    margin: 0;
+}
+
+/* 输入框 */
+.search-form input[type="text"] {
+    min-width: 250px;
+    padding: 8px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* Search 按钮 */
+.search-form button[type="submit"] {
+    padding: 8px 12px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.search-form button[type="submit"]:hover {
+    background-color: var(--hover-bg);
+    color: var(--hover-text);
+}
+
+/* 语音识别按钮 */
+.search-form .voice-search-btn {
+    font-size: 18px;
+    padding: 8px 10px;
+    border-radius: 50%;
+    background-color: transparent;
+    border: none;
+    color: var(--text-color);
+    transition: background 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-form .voice-search-btn:hover {
+    background-color: var(--hover-bg);
+    color: var(--hover-text);
 }

@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Accessibility Keyboard Shortcuts" %}{% endblock %}
+
+{% block content %}
+<style>
+    .accessibility-info {
+        font-size: 1.2rem;
+        line-height: 1.8;
+        font-family: Arial, sans-serif;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .accessibility-info h1 {
+        text-align: center;
+        margin-top: 50px;
+        font-size: 2rem;
+        font-weight: bold;
+    }
+    .accessibility-info h2 {
+        text-align: center;
+        margin-top: 30px;
+        font-size: 1.8rem;
+        font-weight: bold;
+    }
+
+    .accessibility-info ul {
+        margin-top: 20px;
+        padding-left: 30px;
+    }
+
+    .accessibility-info li {
+        margin-bottom: 10px;
+    }
+
+    .accessibility-info a.btn-home {
+        display: inline-block;
+        margin-top: 40px;
+        padding: 12px 24px;
+        background-color: #007bff;
+        color: white;
+        font-size: 1.1rem;
+        border: none;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+    }
+
+    .accessibility-info a.btn-home:hover {
+        background-color: #0056b3;
+        text-decoration: none;
+    }
+
+    .home-button-wrapper {
+        text-align: center;
+        margin-top: 40px;
+    }
+
+</style>
+
+<main class="accessibility-info" role="main" aria-labelledby="keyboard-help-title">
+
+    <h1 class="page-title">{% trans "Web Accessibility Statement and Shortcut Instructions" %}</h1>
+
+    <h2>{% trans "Part 1: Web Accessibility Service Statement" %}</h2>
+
+    <p>{% blocktrans %}This website is committed to the principles of inclusivity and equal access to information. We strive to provide a smart, efficient, and user-friendly experience for all users, including persons with disabilities. Our accessibility features are available across desktop, mobile web, and app platforms, in accordance with the Chinese government’s Web Accessibility Standards and the international WCAG 2.0 guidelines.{% endblocktrans %}</p>
+    
+    <p>{% blocktrans %}We have carefully designed this site to serve blind users and others who rely on accessible technologies, by supporting full keyboard navigation, screen reader compatibility, and alternative interaction methods such as voice assistance and gesture controls. We also provide adjustable color schemes, font sizing, audio descriptions, and large caption overlays to support users with low vision, cognitive challenges, and elderly users.{% endblocktrans %}</p>
+    
+    <p>{% blocktrans %}All desktop and mobile pages support full keyboard operations, and all UI elements such as images and buttons are accompanied by descriptive text labels. The interface is equipped with smart guidance, color contrast options, and text-to-speech capabilities to help users access content more easily and independently.{% endblocktrans %}</p>
+    
+
+    <h2 id="keyboard-help-title">{% trans "Part 2: Instructions for using the voice website shortcut keys" %}</h2>
+    <ul>
+        <li><kbd>Alt + W</kbd> — {% trans "Toggle Accessibility Toolbar" %}</li>
+        <li><kbd>Alt + R</kbd> – {% trans "Toggle Reading Mode" %}</li>
+        <li><kbd>Alt + T</kbd> – {% trans "Toggle Speech Speed" %}</li>
+        <li><kbd>Alt + =</kbd> – {% trans "Zoom In" %}</li>
+        <li><kbd>Alt + -</kbd> – {% trans "Zoom Out" %}</li>
+        <li><kbd>Alt + M</kbd> – {% trans "Toggle Cursor Mode" %}</li>
+        <li><kbd>Alt + X</kbd> – {% trans "Toggle Crosshair Mode" %}</li>
+        <li><kbd>Alt + L</kbd> – {% trans "Toggle Large Captions" %}</li>
+        <li><kbd>Alt + C</kbd> – {% trans "Change Color Scheme" %}</li>
+        <li><kbd>Alt + S</kbd> – {% trans "Toggle Sticky Mode" %}</li>
+        <li><kbd>Alt + 0</kbd> – {% trans "Reset Accessibility Settings" %}</li>
+        <li><kbd>Alt + Q</kbd> – {% trans "Exit Service" %}</li>
+        <li><kbd>Alt + H</kbd> – {% trans "Show this Help Page" %}</li>
+    </ul>
+    <div class="home-button-wrapper">
+        <a href="{% url 'home' %}" class="btn-home">{% trans "Back to Home" %}</a>
+      </div>
+      
+</main>
+{% endblock %}

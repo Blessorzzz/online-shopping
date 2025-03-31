@@ -107,3 +107,19 @@
     background-color: #5a6268;
 }
 
+/* 强制整个表格字体响应全局字体大小 */
+.order-table {
+    font-size: 1rem !important;
+}
+
+/* 表头与单元格继承 .order-table 的字体大小 */
+.order-table th,
+.order-table td,
+.order-table thead,
+.order-table thead th,
+.order-table .status-label,
+.order-table .verified-label,
+.order-table .not-verified-label {
+    font-size: inherit !important;
+}
+

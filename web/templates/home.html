@@ -1,93 +1,116 @@
-<!-- filepath: c:\Users\Josh\ISI\django_projects\online-shopping\web\templates\home.html -->
 {% extends 'base.html' %}
 {% load i18n %}
 {% block content %}
-<div class="product-list">
-    {% for product in products %}
-    <div class="product-card">
-        <div class="image-wrapper">
-            <a href="{% url 'product_detail' product.product_id %}">
-                <img src="{{ product.thumbnail_image.url }}" 
-                     alt="{{ product.product_name }}" 
-                     class="product-thumb">
-                {% if product.stock_quantity == 0 %}
-                <div class="sold-out-tag">SOLD OUT</div>
-                {% endif %}
-            </a>
+    <!-- 新增：语音识别详细过程展示区域 -->
+    {% comment %} <div id="voice-recognition-details" class="recognition-details" style="display: none;">
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">语音识别过程</h5>
+            <button type="button" class="btn-close" aria-label="关闭" id="close-recognition-details"></button>
+          </div>
+          <div class="card-body">
+            <div class="process-step">
+              <h6>1. 语音识别结果</h6>
+              <div id="original-text" class="process-result"></div>
+            </div>
+            <div class="process-step">
+              <h6>2. 分词结果</h6>
+              <div id="segmented-text" class="process-result"></div>
+            </div>
+            <div class="process-step">
+              <h6>3. 提取的关键词</h6>
+              <div id="keywords" class="process-result"></div>
+            </div>
+            <div class="process-step">
+              <h6>4. 扩展的关键词</h6>
+              <div id="expanded-keywords" class="process-result"></div>
+            </div>
+            <div class="process-step">
+              <h6>5. 最终搜索查询</h6>
+              <div id="final-query" class="process-result"></div>
+            </div>
+          </div>
         </div>
-        <div class="product-meta">
-            <h3 class="product-title">
-                <a href="{% url 'product_detail' product.product_id %}">
-                    {{ product.product_name }}
+      </div> {% endcomment %}
+      <section class="product-list">
+      <main id="product-list-container" class="product-list" role="main" aria-label="{% trans 'Product List' %}">
+            {% for product in products %}
+            <article class="product-card" role="group" aria-label="{{ product.product_name }}">
+                <div class="image-wrapper">
+                    <a href="{% url 'product_detail' product.product_id %}" aria-label="{% trans 'View details for' %} {{ product.product_name }}">
+                        <img src="{{ product.thumbnail_image.url }}"
+                             alt="{% trans 'Thumbnail image of' %} {{ product.product_name }}"
+                             class="product-thumb">
+                        {% if product.stock_quantity == 0 %}
+                        <div class="sold-out-tag" aria-label="{% trans 'Sold Out' %}">{% trans "SOLD OUT" %}</div>
+                        {% endif %}
+ 
                 </a>
-            </h3>
-            <div class="price-section">
-                <span class="current-price">¥{{ product.price }}</span>
             </div>
-            <div class="sales-info">
-                <span class="sales-count">Sales: 999+</span>
-                <span class="stock-status {% if product.stock_quantity == 0 %}out-stock{% endif %}">
-                    {{ product.stock_quantity|default:"0" }} Left
-                </span>
+            <div class="product-meta">
+                <h3 class="product-title1">
+                    <a href="{% url 'product_detail' product.product_id %}">{{ product.product_name }}</a>
+                </h3>
+                <div class="price-section">
+                    <span class="current-price" aria-label="{% trans 'Price' %} ¥{{ product.price }}">¥{{ product.price }}</span>
+                </div>
+                <div class="sales-info" aria-label="{% trans 'Sales and stock information' %}">
+                    <span class="sales-count">{% trans 'Sales' %}: 999+</span>
+                    <span class="stock-status {% if product.stock_quantity == 0 %}out-stock{% endif %}">
+                        {{ product.stock_quantity|default:"0" }} {% trans 'Left' %}
+                    </span>
+                </div>
+                <div class="average-rating">
+                    {% if product.average_rating %}
+                        <span class="star-rating" data-rating="{{ product.average_rating }}" aria-label="{% blocktrans %}Rated {{ product.average_rating|floatformat:1 }} out of 5{% endblocktrans %}"></span>
+                        <span class="average-rating-text">({{ product.average_rating|floatformat:1 }} / 5)</span>
+                    {% else %}
+                        <span class="no-rating">{% trans "No reviews yet" %}</span>
+                    {% endif %}
+                </div>
             </div>
-
-            <div class="average-rating">
-                {% if product.average_rating %}
-                    <span class="star-rating" data-rating="{{ product.average_rating }}"></span>
-                    <span class="average-rating-text">({{ product.average_rating|floatformat:1 }} / 5)</span>
-                {% else %}
-                    <span class="no-rating">{% trans "No reviews yet" %}</span>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-    {% endfor %}
-</div>
-
-<div class="pagination">
-    <span class="step-links">
-        {% if page_obj.has_previous %}
-            <a href="?page=1">&laquo; {% trans "home" %}</a>
-            <a href="?page={{ page_obj.previous_page_number }}">{% trans "previous" %}</a>
-        {% endif %}
-
-        {% for page in page_obj.paginator.page_range %}
-            {% if page == page_obj.number %}
-                <span class="current">{{ page }}</span>
-            {% else %}
-                <a href="?page={{ page }}">{{ page }}</a>
-            {% endif %}
+        </article>
         {% endfor %}
+    </section>
 
-        {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">{% trans "next" %}</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">{% trans "last" %} &raquo;</a>
-        {% endif %}
-    </span>
-</div>
+    <nav class="pagination" aria-label="{% trans 'Pagination' %}">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">{% trans "First" %}</a>
+                <a href="?page={{ page_obj.previous_page_number }}">{% trans "Previous" %}</a>
+            {% endif %}
+            {% for page in page_obj.paginator.page_range %}
+                {% if page == page_obj.number %}
+                    <span class="current" aria-current="page">{{ page }}</span>
+                {% else %}
+                    <a href="?page={{ page }}">{{ page }}</a>
+                {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">{% trans "Next" %}</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">{% trans "Last" %}</a>
+            {% endif %}
+        </span>
+    </nav>
+</main>
 
 <!-- JavaScript to render stars -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll('.star-rating').forEach(function (element) {
         let rating = parseFloat(element.getAttribute('data-rating'));
-        let fullStars = Math.floor(rating); // Count of full stars
-        let hasHalfStar = rating % 1 >= 0.5; // Check if there is a half star
+        let fullStars = Math.floor(rating);
+        let hasHalfStar = rating % 1 >= 0.5;
         let starHtml = '';
 
-        // Add full stars
         for (let i = 0; i < fullStars; i++) {
-            starHtml += '<i class="fas fa-star custom-star"></i>';
+            starHtml += '<i class="fas fa-star custom-star" aria-hidden="true"></i>';
         }
-
-        // Add half star if needed
         if (hasHalfStar) {
-            starHtml += '<i class="fas fa-star-half-alt custom-star"></i>';
+            starHtml += '<i class="fas fa-star-half-alt custom-star" aria-hidden="true"></i>';
         }
-
-        // Add empty stars to complete 5 stars
         while (starHtml.split('fa-star').length - 1 < 5) {
-            starHtml += '<i class="far fa-star custom-star"></i>';
+            starHtml += '<i class="far fa-star custom-star" aria-hidden="true"></i>';
         }
 
         element.innerHTML = starHtml;
@@ -97,5 +120,4 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <!-- Include FontAwesome for icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
 {% endblock content %}

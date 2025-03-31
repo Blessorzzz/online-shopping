@@ -1,14 +1,41 @@
-<!-- templates/registration/login.html -->
 {% extends 'base.html' %}
 {% load static i18n %}
 {% block content %}
-<div class="container">
-    <div class="login-box">
-        <h1>{% trans "Login" %}</h1>
-        <link rel="stylesheet" href="{% static 'css/login.css' %}">
-    <form method ="post">{% csrf_token %}{{ form.as_p}}
-        <button type="submit">{% trans "Login" %}</button>
-    </form>
-<p> {% trans "If you don't have an account" %} <a href="{% url 'register' %}">{% trans "Sign Up here." %}</a>
-</div>
+<main role="main" aria-label="{% trans 'Login Page' %}">
+    <div class="container">
+        <div class="login-box">
+            <h1 id="login-heading">{% trans "Login" %}</h1>
+            <link rel="stylesheet" href="{% static 'css/login.css' %}">
+
+            <form method="post" aria-labelledby="login-heading" role="form">
+                {% csrf_token %}
+                
+                {% for field in form %}
+                    <div class="form-group">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {% if field.errors %}
+                            <div class="error" role="alert" aria-live="polite">
+                                {% for error in field.errors %}
+                                    <p>{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                <button type="submit" aria-label="{% trans 'Submit login form' %}">
+                    {% trans "Login" %}
+                </button>
+            </form>
+
+            <p>
+                {% trans "If you don't have an account" %}
+                <a href="{% url 'register' %}" aria-label="{% trans 'Go to registration page' %}">
+                    {% trans "Sign Up here." %}
+                </a>
+            </p>
+        </div>
+    </div>
+</main>
 {% endblock content %}

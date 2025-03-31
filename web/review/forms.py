@@ -1,6 +1,7 @@
 from django import forms
 from decimal import Decimal
 from .models import Review
+from better_profanity import profanity
 
 class ReviewForm(forms.ModelForm):
     class Meta:
@@ -22,6 +23,18 @@ class ReviewForm(forms.ModelForm):
             'video': forms.FileInput(attrs={'class': 'form-control'}),
         }
 
+    def clean_comment(self):
+        comment = self.cleaned_data.get("comment")
+        if profanity.contains_profanity(comment):
+            raise forms.ValidationError("Your review contains inappropriate language. Please edit and try again.")
+        return comment
+
+class ReviewAdminForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = '__all__'
+
+    # You can also apply custom validation if needed
     def clean_rating(self):
         rating = self.cleaned_data.get('rating')
         try:

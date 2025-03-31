@@ -10,6 +10,22 @@
     
     <!-- Include Font Awesome for icons (such as stars) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script>
+        function adjustContentPadding() {
+          const menu = document.getElementById("menu");
+          const searchBar = document.querySelector(".search-bar-wrapper");
+          const contentWrapper = document.getElementById("content-wrapper");
+
+          const menuHeight = menu ? menu.offsetHeight : 0;
+          const searchHeight = searchBar ? searchBar.offsetHeight : 0;
+
+          contentWrapper.style.paddingTop = (menuHeight + searchHeight) + "px";
+        }
+
+    
+        window.addEventListener("load", adjustContentPadding);
+        window.addEventListener("resize", adjustContentPadding);
+    </script>    
     
     <style>
         .nav-container {
@@ -54,93 +70,275 @@
         .vendor-login-button:hover {
             background-color: #0056b3;
         }
+        .font-size-controls {
+            display: flex;
+            gap: 5px;
+            margin-left: 10px;
+        }
+
+        .font-size-controls button {
+            padding: 5px 8px;
+            font-size: 1rem;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .font-size-controls button:hover {
+            background-color: #218838;
+        }
+
+
+        .voice-search-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            color: #555;
+            border-radius: 50%;
+            font-size: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 5px;
+            transition: all 0.2s ease;
+        }
+        
+        .voice-search-btn:hover {
+            background-color: rgba(0, 123, 255, 0.1);
+            color: #007bff;
+        }
+        
+        .voice-search-btn.listening {
+            color: #f44336;
+            background-color: rgba(244, 67, 54, 0.1);
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        /* 语音状态显示区域 */
+        .voice-status {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 10px;
+            background-color: #fff;
+            padding: 8px 12px;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            font-size: 14px;
+            color: #333;
+            z-index: 1001;
+            max-width: 250px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .voice-status.error {
+            background-color: #fff3f3;
+            color: #e53935;
+        } 
+        .recognition-details {
+            margin-top: 15px;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+          }
+          
+          .process-step {
+            margin-bottom: 12px;
+          }
+          
+          .process-step h6 {
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+          }
+          
+          .process-result {
+            padding: 8px 12px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            border-left: 3px solid #007bff;
+            font-family: monospace;
+            word-break: break-all;
+            min-height: 36px;
+          }
+          
+          .voice-status {
+            display: none;
+            margin-top: 10px;
+            padding: 8px 15px;
+            border-radius: 4px;
+            background-color: #e9f5ff;
+            color: #0066cc;
+            transition: all 0.3s ease;
+          }
+          
+          .voice-status.error {
+            background-color: #ffe9e9;
+            color: #cc0000;
+          }
+          
+          /* 语音按钮样式 */
+          #voice-search-button {
+            transition: all 0.3s ease;
+          }
+          
+          #voice-search-button.listening {
+            background-color: #ff4d4d;
+            color: white;
+            animation: pulse 1.5s infinite;
+          }
+          
+          /* 脉冲动画 */
+          @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+          }
+          
+          /* 关键词标签样式 */
+          .keyword-tag {
+            display: inline-block;
+            background-color: #e0f7fa;
+            color: #00838f;
+            border-radius: 16px;
+            padding: 2px 10px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+          }
+          
+          .expanded-keyword-tag {
+            background-color: #ede7f6;
+            color: #5e35b1;
+          }
     </style>
 </head>
 <body>
-    <!-- Web Accessibility 工具栏 -->
-    <div id="accessibility-toolbar" style="display: none;">
-        <button onclick="increaseZoom()" title="{% trans 'Zoom In' %}">
-            <span>➕</span><small>{% trans 'Zoom In' %}</small>
+    <div id="accessibility-toolbar" role="region" aria-label="{% trans 'Accessibility Toolbar' %}" style="display: none;">
+        <button onclick="toggleScreenReader()" aria-pressed="false" aria-label="{% trans 'Toggle screen reader mode' %}">
+            🗣️ <small>{% trans "Reading Mode" %}</small>
         </button>
-        <button onclick="decreaseZoom()" title="{% trans 'Zoom Out' %}">
-            <span>➖</span><small>{% trans 'Zoom Out' %}</small>
+        <button onclick="toggleSpeechRate()" id="speech-rate-btn" title="{% trans 'Toggle Speech Rate' %}" aria-label="{% trans 'Toggle Speech Rate' %}">
+            🕐 <small>{% trans 'Speech Speed' %}</small>
+          </button>          
+        <button onclick="increaseZoom()" title="{% trans 'Zoom In' %}" aria-label="{% trans 'Zoom In' %}">
+            <span aria-hidden="true">➕</span><small>{% trans 'Zoom In' %}</small>
         </button>
-        <button onclick="toggleCursorMode()" title="{% trans 'Cursor Mode' %}" aria-label="{% trans 'Toggle Cursor Mode' %}" aria-pressed="false">
+        <button onclick="decreaseZoom()" title="{% trans 'Zoom Out' %}" aria-label="{% trans 'Zoom Out' %}">
+            <span aria-hidden="true">➖</span><small>{% trans 'Zoom Out' %}</small>
+        </button>
+        <button onclick="toggleCursorMode()" title="{% trans 'Cursor Mode' %}" aria-pressed="false" aria-label="{% trans 'Toggle Cursor Mode' %}">
             <span aria-hidden="true">🖱️</span><small>{% trans 'Cursor Mode' %}</small>
         </button>
-        <button onclick="toggleCrosshair()" title="{% trans 'Crosshair Mode' %}" aria-label="{% trans 'Toggle Crosshair Mode' %}" aria-pressed="false">
+        <button onclick="toggleCrosshair()" title="{% trans 'Crosshair Mode' %}" aria-pressed="false" aria-label="{% trans 'Toggle Crosshair Mode' %}">
             <span aria-hidden="true">🎯</span><small>{% trans 'Crosshair Mode' %}</small>
         </button>
-        <button onclick="toggleLargeCaptions()" title="{% trans 'Large Captions' %}">
-            <span>🔠</span><small>{% trans 'Large Captions' %}</small>
+        <button onclick="toggleLargeCaptions()" title="{% trans 'Large Captions' %}" aria-label="{% trans 'Toggle Large Captions' %}">
+            <span aria-hidden="true">🔠</span><small>{% trans 'Large Captions' %}</small>
         </button>
-        <button onclick="toggleColorScheme()" title="{% trans 'Color Settings' %}">
-            <span>🎨</span><small>{% trans 'Color Settings' %}</small>
+        <button onclick="toggleColorScheme()" title="{% trans 'Color Settings' %}" aria-label="{% trans 'Change Color Scheme' %}">
+            <span aria-hidden="true">🎨</span><small>{% trans 'Color Settings' %}</small>
         </button>
-        <button onclick="resetAccessibility()" title="{% trans 'Reset' %}">
-            <span>🔄</span><small>{% trans 'Reset' %}</small>
+        <button onclick="resetAccessibility()" title="{% trans 'Reset' %}" aria-label="{% trans 'Reset Accessibility Settings' %}">
+            <span aria-hidden="true">🔄</span><small>{% trans 'Reset' %}</small>
         </button>
-        <button onclick="toggleStickyMode()" title="{% trans 'Sticky Mode' %}">
-            <span>📌</span><small>{% trans 'Sticky Mode' %}</small>
+        <button onclick="toggleStickyMode()" title="{% trans 'Sticky Mode' %}" aria-label="{% trans 'Toggle Sticky Mode' %}">
+            <span aria-hidden="true">📌</span><small>{% trans 'Sticky Mode' %}</small>
         </button>
-        <button onclick="closeToolbar()" title="{% trans 'Exit Service' %}" class="exit">
-            <span>⏻</span><small>{% trans 'Exit Service' %}</small>
+        <button
+          id="accessibility-info-button"
+          data-href="{% url 'accessibility_info' %}"
+          aria-label="{% trans 'Accessibility Info Page' %}"
+          title="{% trans 'Keyboard Shortcuts' %}">
+          ℹ️ <small>{% trans 'Info' %}</small>
+        </button>
+        <button onclick="closeToolbar()" title="{% trans 'Exit Service' %}" class="exit" aria-label="{% trans 'Exit Accessibility Service' %}">
+            <span aria-hidden="true">⏻</span><small>{% trans 'Exit Service' %}</small>
         </button>
     </div>
-
-    <!-- 导航菜单 -->
-    <div id="menu" class="nav-container">
+    
+    <!-- 导航栏 -->
+    <nav id="menu" class="nav-container" role="navigation" aria-label="{% trans 'Main Navigation' %}">
         <ul>
             <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
             {% if user.is_authenticated %}
-                <li><a href="{% url 'shopping_cart' %}">{% trans "My Cart" %}</a></li>
-                <li><a href="{% url 'order_list' %}">{% trans "My Orders" %}</a></li>
+                <li><a href="{% url 'shopping_cart' %}">{% trans "Cart" %}</a></li>
+                <li><a href="{% url 'order_list' %}">{% trans "Orders" %}</a></li>
                 <li><a href="{% url 'my_reviews' %}">{% trans "My Reviews" %}</a></li>
                 <li><a href="{% url 'forums' %}">{% trans "Forums" %}</a></li>
                 <li><a href="{% url 'register' %}">{% trans "Register" %}</a></li>       
             {% else %}
-                <li><a href="{% url 'shopping_cart' %}">{% trans "My Cart" %}</a></li>
-                <li><a href="{% url 'order_list' %}">{% trans "My Orders" %}</a></li>
+                <li><a href="{% url 'shopping_cart' %}">{% trans "Cart" %}</a></li>
+                <li><a href="{% url 'order_list' %}">{% trans "Orders" %}</a></li>
                 <li><a href="{% url 'login' %}">{% trans "Login" %}</a></li>
                 <li><a href="{% url 'register' %}">{% trans "Register" %}</a></li>
             {% endif %}
-            <li><a href="#" id="accessibility-btn">{% trans "Web Accessibility" %}</a></li>
+            <li><a href="#" id="accessibility-btn" aria-label="{% trans 'Open Web Accessibility Toolbar' %}">{% trans "Web Accessibility" %}</a></li>
         </ul>
-        <div class="user nav-right">
-            <form method="get" action="{% url 'home' %}">
-                <input type="text" name="q" placeholder="{% trans 'Search product' %}">
-                <button type="submit">{% trans 'Search' %}</button>
-            </form>
+    </div>
+    
+    
+    <div class="font-size-controls" role="group" aria-label="{% trans 'Font Size Controls' %}">
+        <button type="button" onclick="increaseFontSize()" aria-label="{% trans 'Increase font size' %}">A+</button>
+        <button type="button" onclick="decreaseFontSize()" aria-label="{% trans 'Decrease font size' %}">A−</button>
+        <button type="button" onclick="resetFontSize()" aria-label="{% trans 'Reset font size' %}">Reset</button>
+    </div>
+    
             <form method="post" action="{% url 'set_language' %}">
                 {% csrf_token %}
-                <select name="language" onchange="this.form.submit()" style="font-size: 0.875rem;">
+                <label for="language-select" class="sr-only">{% trans "Select Language" %}</label>
+                <select id="language-select" name="language" onchange="this.form.submit()" aria-label="{% trans 'Language selection' %}">
                     <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
-                    <option value="es" {% if LANGUAGE_CODE == 'es' %}selected{% endif %}>Español</option>
                     <option value="ja" {% if LANGUAGE_CODE == 'ja' %}selected{% endif %}>日本語</option>
-                    <option value="ko" {% if LANGUAGE_CODE == 'ko' %}selected{% endif %}>한국어</option>
                     <option value="zh-hans" {% if LANGUAGE_CODE == 'zh-hans' %}selected{% endif %}>简体中文</option>
-                </select>  
-            </form>            
-            {% if request.user.is_authenticated %}
-            <p>{% trans "Hi" %} {{ user.username }}!</p>
-            <form action="{% url 'logout' %}" method="post">
-                {% csrf_token %}
-                <button type="submit">{% trans "Logout" %}</button>
+                </select>
             </form>
+    
+            {% if request.user.is_authenticated %}
+                <p>{% trans "Hi" %} {{ user.username }}!</p>
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" aria-label="{% trans 'Logout' %}">{% trans "Logout" %}</button>
+                </form>
             {% endif %}
         </div>
-    </div>
+    </nav>
 
-    <div id="content-wrapper">
-        {% block content %}
-        {% endblock content %}
+    <div class="search-bar-wrapper">
+        <form method="get" action="{% url 'home' %}" id="search-form" class="search-form" role="search" aria-label="{% trans 'Search Products' %}">
+            <input type="text" name="q" id="search-input" placeholder="{% trans 'Search product' %}" aria-label="{% trans 'Search product' %}">
+            <button type="submit" aria-label="{% trans 'Submit search' %}">{% trans 'Search' %}</button>
+            <!-- 添加语音搜索按钮 -->
+            <button type="button" id="voice-search-button" class="voice-search-btn" aria-label="{% trans 'Voice Search' %}">
+                <i class="fas fa-microphone"></i>
+            </button>
+        </form>
+            <!-- 语音识别状态显示 -->
+            <div id="voice-status" class="voice-status"></div>
+    </div>
+    
+    <main id="content-wrapper" role="main" aria-label="{% trans 'Page Content' %}">
+        {% block content %}{% endblock content %}
         {% if not request.user.is_authenticated and request.path == '/' %}
-            <a href="{% url 'vendor_login' %}" class="vendor-login-button">{% trans "Log in as Vendor" %}</a>
+            <a href="{% url 'vendor_login' %}" class="vendor-login-button" aria-label="{% trans 'Log in as Vendor' %}">{% trans "Log in as Vendor" %}</a>
         {% endif %}
-    </div>
-
+    </main>
+    
     <script src="{% static 'js/accessibility.js' %}"></script>
-    <div id="large-caption"></div>
-
+    <script src="{% static 'js/font-size-control.js' %}"></script>
+    <div id="large-caption" role="status" aria-live="polite"></div>
+    
 </body>
 </html>
