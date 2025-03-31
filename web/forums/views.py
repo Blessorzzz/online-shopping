@@ -3,10 +3,22 @@ from .models import ForumPost, Comment
 from .forms import ForumPostForm, CommentForm
 from django.contrib.auth.decorators import login_required
 from ecommerce.models import Product  # Import Product model
+from django.db.models import Q
 
 def forum_list(request):
-    posts = ForumPost.objects.all().order_by('-created_at')
-    return render(request, 'forums/forum_list.html', {'posts': posts})
+    query = request.GET.get('q', '')  # Get the search query from the request
+    posts = ForumPost.objects.all().order_by('-created_at')  # Get all posts
+
+    if query:
+        # Filter posts by title or author username
+        posts = posts.filter(
+            Q(title__icontains=query) | Q(author__username__icontains=query)
+        )
+
+    return render(request, 'forums/forum_list.html', {
+        'posts': posts,
+        'query': query,
+    })
 
 def forum_detail(request, post_id):
     post = get_object_or_404(ForumPost, id=post_id)
