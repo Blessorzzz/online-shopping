@@ -32,9 +32,8 @@
           </div>
         </div>
       </div> {% endcomment %}
-      <div id="product-list-container" class="product-list">
-      <main id="main-content" role="main" aria-label="{% trans 'Product List' %}">
-        <section class="product-list">
+      <section class="product-list">
+      <main id="product-list-container" class="product-list" role="main" aria-label="{% trans 'Product List' %}">
             {% for product in products %}
             <article class="product-card" role="group" aria-label="{{ product.product_name }}">
                 <div class="image-wrapper">
@@ -73,7 +72,7 @@
         </article>
         {% endfor %}
     </section>
-</div>
+
     <nav class="pagination" aria-label="{% trans 'Pagination' %}">
         <span class="step-links">
             {% if page_obj.has_previous %}
