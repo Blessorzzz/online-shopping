@@ -228,6 +228,9 @@
         <button onclick="toggleScreenReader()" aria-pressed="false" aria-label="{% trans 'Toggle screen reader mode' %}">
             🗣️ <small>{% trans "Reading Mode" %}</small>
         </button>
+        <button onclick="toggleSpeechRate()" id="speech-rate-btn" title="{% trans 'Toggle Speech Rate' %}" aria-label="{% trans 'Toggle Speech Rate' %}">
+            🕐 <small>{% trans 'Speech Speed' %}</small>
+          </button>          
         <button onclick="increaseZoom()" title="{% trans 'Zoom In' %}" aria-label="{% trans 'Zoom In' %}">
             <span aria-hidden="true">➕</span><small>{% trans 'Zoom In' %}</small>
         </button>
@@ -271,7 +274,7 @@
             {% if user.is_authenticated %}
                 <li><a href="{% url 'shopping_cart' %}">{% trans "Cart" %}</a></li>
                 <li><a href="{% url 'order_list' %}">{% trans "Orders" %}</a></li>
-                <li><a href="{% url 'reviews' %}">{% trans "My Reviews" %}</a></li>
+                <li><a href="{% url 'my_reviews' %}">{% trans "My Reviews" %}</a></li>
                 <li><a href="{% url 'forums' %}">{% trans "Forums" %}</a></li>
                 <li><a href="{% url 'register' %}">{% trans "Register" %}</a></li>       
             {% else %}

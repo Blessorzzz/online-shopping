@@ -38,13 +38,6 @@ document.addEventListener("DOMContentLoaded", function () {
             stickyBtn.classList.add("active");
         }
 
-        const infoButton = document.getElementById("accessibility-info-button");
-        if (infoButton) {
-            infoButton.addEventListener("click", function () {
-                const url = this.getAttribute("data-href");
-                if (url) window.location.href = url;
-            });
-        }
 
         // 恢复屏幕阅读器和十字线状态（如果之前启用过）
         const savedScreenReader = localStorage.getItem("screenReaderOn") === "true";
@@ -327,6 +320,16 @@ function resetAccessibility() {
     // 5) 回到页面顶部
     window.scrollTo({ top: 0, behavior: "smooth" });
 
+    currentSpeechRate = 1.0;
+    speechRateMode = 0;
+    localStorage.removeItem("speechRate");
+    localStorage.removeItem("speechRateMode");
+    const speechBtn = document.getElementById("speech-rate-btn");
+    if (speechBtn) {
+        speechBtn.setAttribute("aria-pressed", "false");
+        speechBtn.innerHTML = "🕐 <small>Normal</small>";
+    }
+
     console.log("✅ Accessibility settings reset!");
 }
 
@@ -438,7 +441,7 @@ function speak(text) {
     const utterance = new SpeechSynthesisUtterance(text);
     const lang = document.documentElement.lang || 'en';
     utterance.lang = lang;
-    utterance.rate = 1;
+    utterance.rate = currentSpeechRate || 1;
     setTimeout(() => {
         window.speechSynthesis.speak(utterance);
     }, 100);
@@ -507,6 +510,7 @@ document.addEventListener("keydown", function (e) {
     if (toolbar && toolbar.style.display !== "flex") return;
     switch (e.key.toLowerCase()) {
         case 'r': toggleScreenReader(); break;
+        case 't': toggleSpeechRate(); break;
         case '=': increaseZoom(); break;
         case '-': decreaseZoom(); break;
         case 'm': toggleCursorMode(); break;
@@ -521,12 +525,29 @@ document.addEventListener("keydown", function (e) {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-    const infoButton = document.getElementById("accessibility-info-button");
-    if (infoButton) {
-        infoButton.addEventListener("click", function () {
-            const url = this.getAttribute("data-href");
-            if (url) window.location.href = url;
-        });
+    const savedRate = localStorage.getItem("speechRate");
+    const savedMode = localStorage.getItem("speechRateMode");
+    const btn = document.getElementById("speech-rate-btn");
+
+    if (savedRate) {
+        currentSpeechRate = parseFloat(savedRate);
+    }
+    if (savedMode) {
+        speechRateMode = parseInt(savedMode);
+        if (btn) {
+            switch (speechRateMode) {
+                case 0:
+                    btn.innerHTML = "🕐 <small>Normal</small>";
+                    break;
+                case 1:
+                    btn.innerHTML = "⏩ <small>Fast</small>";
+                    break;
+                case 2:
+                    btn.innerHTML = "🐢 <small>Slow</small>";
+                    break;
+            }
+            btn.setAttribute("aria-pressed", "true");
+        }
     }
 });
 
@@ -553,6 +574,48 @@ function toggleAccessibilityToolbar() {
         contentWrapper.style.paddingTop = "40px";
     }
 }
+
+
+let currentSpeechRate = 1.0;
+let speechRateMode = 0; // 0 = normal, 1 = fast, 2 = slow
+
+function toggleSpeechRate() {
+    speechRateMode = (speechRateMode + 1) % 3;
+    const btn = document.getElementById("speech-rate-btn");
+
+    switch (speechRateMode) {
+        case 0:
+            currentSpeechRate = 1.0;
+            if (btn) btn.innerHTML = "🕐 <small>Normal</small>";
+            speak("Speech rate set to normal");
+            break;
+        case 1:
+            currentSpeechRate = 1.75;
+            if (btn) btn.innerHTML = "⏩ <small>Fast</small>";
+            speak("Speech rate set to fast");
+            break;
+        case 2:
+            currentSpeechRate = 0.5;
+            if (btn) btn.innerHTML = "🐢 <small>Slow</small>";
+            speak("Speech rate set to slow");
+            break;
+    }
+
+    localStorage.setItem("speechRate", currentSpeechRate);
+    localStorage.setItem("speechRateMode", speechRateMode);
+    if (btn) btn.setAttribute("aria-pressed", "true");
+}
+
+
+
+
+
+
+
+
+
+
+
 
 // --------------------- 语音搜索功能 ---------------------
 // 将扩展关键词添加到表单
