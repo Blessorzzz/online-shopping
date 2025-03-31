@@ -10,6 +10,8 @@ from django.http import HttpResponseForbidden, JsonResponse
 from django.db.models import Q
 from django.utils.timezone import now
 from review.models import Review
+from math import floor
+from decimal import Decimal
 
 def vendor_login(request):
     if request.method == 'POST':
@@ -25,7 +27,7 @@ def vendor_login(request):
         form = AuthenticationForm()
     return render(request, 'registration/vendor_login.html', {'form': form})
 
-# vendor search function
+# Vendor dashboard view
 @login_required
 def vendor_dashboard(request):
     if not hasattr(request.user, 'vendor'):
@@ -79,29 +81,17 @@ def edit_product(request, product_id):
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES, instance=product)
 
-        # Debugging: Check if stock_quantity is being received in POST data
-        print("Stock Quantity in POST data:", request.POST.get("stock_quantity"))
-
         if form.is_valid():
             product = form.save()
-
-            # Debugging: Check if stock_quantity is saved correctly
-            print("Saved product stock_quantity:", product.stock_quantity)
 
             for file in request.FILES.getlist('additional_images'):
                 ProductPhoto.objects.create(product=product, photo=file)
 
             return redirect('vendor_dashboard')
-        else:
-            # Debugging: Print form errors if the form is not valid
-            print("Form errors:", form.errors)
-            print("Form cleaned data:", form.cleaned_data)  # Check what data is being processed
-
     else:
         form = ProductForm(instance=product)
 
     return render(request, 'vendor/edit_product.html', {'form': form, 'product': product})
-
 
 @login_required
 def delete_product_photo(request, photo_id):
@@ -132,7 +122,6 @@ def vendor_order_detail(request, order_id):
         new_status = request.POST.get('status')
         product_type = order.items.first().product.product_type if order.items.exists() else 'tangible'
 
-        # Define allowed status transitions
         allowed_transitions = {
             'tangible': {
                 'pending': ['shipped', 'cancelled', 'hold'],
@@ -152,7 +141,6 @@ def vendor_order_detail(request, order_id):
         current_status = order.status
         if new_status in allowed_transitions[product_type].get(current_status, []):
             order.status = new_status
-            # Update the timestamp for the corresponding status
             status_date_map = {
                 'pending': 'pending_date',
                 'shipped': 'shipment_date',
@@ -166,7 +154,6 @@ def vendor_order_detail(request, order_id):
             
             if new_status in status_date_map:
                 setattr(order, status_date_map[new_status], now())
-                print(f"Updated {status_date_map[new_status]} timestamp for status: {new_status}")
 
             order.save()
             messages.success(request, "Order status updated successfully.")
@@ -174,7 +161,6 @@ def vendor_order_detail(request, order_id):
             messages.error(request, "Invalid status change.")
         return redirect('vendor_order_detail', order_id=order.id)
 
-    # Generate status timeline data
     status_date_map = {
         'pending': order.pending_date,
         'shipped': order.shipment_date,
@@ -191,8 +177,6 @@ def vendor_order_detail(request, order_id):
         key=lambda x: x[1]
     )
 
-    print("Sorted status dates:", sorted_status_dates)  # Debugging output
-
     return render(request, 'vendor/vendor_order_detail.html', {
         'order': order,
         'order_items': order_items,
@@ -205,7 +189,30 @@ def vendor_product_detail(request, product_id):
         return HttpResponseForbidden("You are not a vendor.")
     
     product = get_object_or_404(Product, pk=product_id)
-    return render(request, 'vendor/vendor_product_detail.html', {'product': product})
+    reviews = Review.objects.filter(product=product)
+
+    # Handle sorting
+    sort = request.GET.get('sort', 'highest')  # Default to 'highest'
+    if sort == 'highest':
+        reviews = reviews.order_by('-rating')  # Sort by highest rating
+    elif sort == 'lowest':
+        reviews = reviews.order_by('rating')  # Sort by lowest rating
+
+    # Preprocess star ratings for each review
+    for review in reviews:
+        rating = Decimal(review.rating)
+        full_stars = floor(rating)
+        half_star = 1 if (rating - full_stars) >= Decimal('0.5') else 0
+        empty_stars = 5 - full_stars - half_star
+        review.full_stars = range(full_stars)
+        review.half_star = half_star
+        review.empty_stars = range(empty_stars)
+
+    return render(request, 'vendor/vendor_product_detail.html', {
+        'product': product,
+        'reviews': reviews,
+        'current_sort': sort,  # Pass the current sort option to the template
+    })
 
 def vendor_respond_review(request, review_id):
     review = get_object_or_404(Review, id=review_id)
@@ -214,6 +221,6 @@ def vendor_respond_review(request, review_id):
         response_content = request.POST.get('response')
         review.vendor_response = response_content
         review.save()
-        return redirect('vendor_product_detail', product_id=review.product.product_id)  # Assuming a product_id is passed in the URL
+        return redirect('vendor_product_detail', product_id=review.product.product_id)
 
     return redirect('vendor_product_detail', product_id=review.product.product_id)
