@@ -53,6 +53,24 @@
     {% else %}
         <p class="no-forums-message">{% trans "No discussions yet. Be the first to start one!" %}</p>
     {% endif %}
+    
+    <!-- Pagination Controls -->
+    <div class="pagination" style="text-align: center; margin-top: 20px;">
+        {% if posts.has_previous %}
+            <a href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="page-link">{% trans "First" %}</a>
+            <a href="?page={{ posts.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="page-link">{% trans "Previous" %}</a>
+        {% endif %}
+        
+        <span class="current-page">
+            {% trans "Page" %} {{ posts.number }} {% trans "of" %} {{ posts.paginator.num_pages }}
+        </span>
+
+        {% if posts.has_next %}
+            <a href="?page={{ posts.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="page-link">{% trans "Next" %}</a>
+            <a href="?page={{ posts.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="page-link">{% trans "Last" %}</a>
+        {% endif %}
+    </div>
+
 </div>
 
 <style>
@@ -186,6 +204,33 @@
         background-color: #f9f9f9;
         border-radius: 8px;
         border: 1px solid #ddd;
+    }
+
+    /* Pagination Controls Styling */
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .page-link {
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        margin: 5px;
+    }
+
+    .page-link:hover {
+        background-color: #0056b3;
+    }
+
+    .current-page {
+        padding: 10px 15px;
+        background-color: #f1f1f1;
+        border-radius: 5px;
+        margin: 5px;
     }
 </style>
 {% endblock %}

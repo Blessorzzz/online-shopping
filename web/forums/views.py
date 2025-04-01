@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import ForumPost, Comment
 from .forms import ForumPostForm, CommentForm
@@ -33,12 +34,27 @@ def forum_detail(request, post_id):
     return render(request, 'forums/forum_detail.html', {
         'post': post, 'comments': comments, 'comment_form': comment_form
     })
-
 @login_required
 def select_product_for_forum(request):
+    # Get search term from query parameters
+    search_query = request.GET.get('search', '')
     products = Product.objects.all()
-    return render(request, 'forums/select_product.html', {'products': products})
 
+    if search_query:
+        # Filter products based on the search term
+        products = products.filter(Q(product_name__icontains=search_query))
+
+    # Pagination
+    paginator = Paginator(products, 10)  # Show 10 products per page
+    page_number = request.GET.get('page')
+    products_page = paginator.get_page(page_number)
+
+    return render(request, 'forums/select_product.html', {  # Corrected template name
+        'products': products_page,
+        'search_query': search_query,
+    })
+
+@login_required
 def create_forum_post(request, product_id=None):
     if product_id:
         product = get_object_or_404(Product, product_id=product_id)
