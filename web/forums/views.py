@@ -5,21 +5,27 @@ from django.contrib.auth.decorators import login_required
 from ecommerce.models import Product  # Import Product model
 from django.db.models import Q
 
+@login_required
 def forum_list(request):
-    query = request.GET.get('q', '')  # Get the search query from the request
-    posts = ForumPost.objects.all().order_by('-created_at')  # Get all posts
-
+    query = request.GET.get('q', '')  # Get search query
+    product_id = request.GET.get('product_id')  # Get product_id if provided
+    posts = ForumPost.objects.all().order_by('-created_at')  # Get all forum posts
+    
     if query:
         # Filter posts by title or author username
-        posts = posts.filter(
-            Q(title__icontains=query) | Q(author__username__icontains=query)
-        )
+        posts = posts.filter(Q(title__icontains=query) | Q(author__username__icontains=query))
 
+    product = None
+    if product_id:
+        product = get_object_or_404(Product, product_id=product_id)  # Get the related product
+    
     return render(request, 'forums/forum_list.html', {
         'posts': posts,
         'query': query,
+        'product': product,  # Pass the product to template
     })
 
+@login_required
 def forum_detail(request, post_id):
     post = get_object_or_404(ForumPost, id=post_id)
     comments = post.comments.filter(parent_comment__isnull=True).order_by('created_at')
@@ -33,20 +39,24 @@ def select_product_for_forum(request):
     products = Product.objects.all()
     return render(request, 'forums/select_product.html', {'products': products})
 
-@login_required
-def create_forum_post(request, product_id):
-    product = get_object_or_404(Product, product_id=product_id)
-    if request.method == 'POST':
+def create_forum_post(request, product_id=None):
+    if product_id:
+        product = get_object_or_404(Product, product_id=product_id)
+    else:
+        product = None  # Let the user select a product if none was provided
+
+    if request.method == "POST":
         form = ForumPostForm(request.POST)
         if form.is_valid():
-            forum_post = form.save(commit=False)
-            forum_post.author = request.user
-            forum_post.product = product
-            forum_post.save()
-            return redirect('forum_detail', post_id=forum_post.id)
+            post = form.save(commit=False)
+            post.author = request.user
+            post.product = product
+            post.save()
+            return redirect("forum_detail", post.id)
     else:
-        form = ForumPostForm()
-    return render(request, 'forums/create_forum_post.html', {'form': form, 'product': product})
+        form = ForumPostForm(initial={"product": product})
+    
+    return render(request, "forums/create_forum_post.html", {"form": form, "product": product})
 
 @login_required
 def add_comment(request, post_id):

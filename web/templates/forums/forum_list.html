@@ -6,9 +6,15 @@
     <!-- Forums Page Title -->
     <div class="forums-header">
         <h2>{% trans "Forums" %}</h2>
-        <a href="{% url 'select_product_for_forum' %}" class="btn btn-prominent">
-            <i class="fas fa-plus-circle"></i> {% trans "Start a New Discussion" %}
-        </a>
+        {% if product %}
+            <a href="{% url 'create_forum_post' product.product_id %}" class="btn btn-prominent">
+                <i class="fas fa-plus-circle"></i> {% trans "Start a New Discussion" %}
+            </a>
+        {% else %}
+            <a href="{% url 'select_product_for_forum' %}" class="btn btn-prominent">
+                <i class="fas fa-plus-circle"></i> {% trans "Start a New Discussion" %}
+            </a>
+        {% endif %}
     </div>
 
     <!-- Search Bar -->

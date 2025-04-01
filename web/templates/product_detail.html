@@ -209,9 +209,9 @@
     {% endif %}
 
     <div class="join-discussion">
-        <a href="{% url 'forum_list' %}" class="btn btn-prominent">
+        <a href="{% url 'forum_list' %}?product_id={{ product.product_id }}" class="btn btn-prominent">
             {% trans "Join the Discussion" %}
-        </a>
+        </a>        
     </div>
 </div>
 
