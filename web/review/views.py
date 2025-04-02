@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.utils.timezone import now
 from .models import Review
 from ecommerce.models import Product
 from shoppingcart.models import Order
@@ -35,7 +36,7 @@ def add_review(request, order_id, product_id):
 
             review.save()
             messages.success(request, "Review submitted successfully!")
-            return redirect("order_detail", order_id=order_id)
+            return redirect("my_reviews")
     else:
         form = ReviewForm()
 
@@ -104,7 +105,7 @@ def edit_review(request, review_id):
 
             updated_review.save()
             messages.success(request, "Review updated successfully!")
-            return redirect("order_detail", order_id=review.order.id)
+            return redirect("my_reviews")
     else:
         form = ReviewForm(instance=review)
 

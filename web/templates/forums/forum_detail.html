@@ -2,27 +2,172 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% block content %}
-<h2>{{ post.title }}</h2>
-<p>Posted on {{ post.created_at|date:"Y-m-d" }} by {{ post.author.username }}</p>
+<div class="forum-container">
+    <!-- Forum Post Details -->
+    <div class="forum-post">
+        <h2>{{ post.title }}</h2>
+        <p class="post-meta">Posted on {{ post.created_at|date:"Y-m-d" }} by {{ post.author.username }}</p>
+    </div>
 
-<h3>Comments</h3>
-<ul>
-    {% for comment in comments %}
-        <li>{{ comment.author.username }}: {{ comment.content }} ({{ comment.created_at|date:"Y-m-d" }})</li>
-    {% empty %}
-        <li>No comments yet.</li>
-    {% endfor %}
-</ul>
+    <!-- Comments Section -->
+    <div class="comments-section">
+        <h3>Comments</h3>
+        
+        <!-- Display Comments -->
+        {% if comments %}
+        <ul class="comment-list">
+            {% for comment in comments %}
+            <li class="comment-item">
+                <div class="comment-box">
+                    <p class="comment-author">{{ comment.author.username }} <span class="comment-date">{{ comment.created_at|date:"Y-m-d" }}</span></p>
+                    <p class="comment-content">{{ comment.content }}</p>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No comments yet. Be the first to share your thoughts!</p>
+        {% endif %}
+    </div>
 
-{% if user.is_authenticated %}
-<form method="POST" action="{% url 'add_comment' post.id %}">
-    {% csrf_token %}
-    {{ comment_form.as_p }}
-    <button type="submit">Post Comment</button>
-</form>
-{% else %}
-<p><a href="{% url 'login' %}">Log in</a> to leave a comment.</p>
-{% endif %}
+    <!-- Comment Form -->
+    {% if user.is_authenticated %}
+    <div class="comment-form">
+        <h4>Add Your Comment</h4>
+        <form method="POST" action="{% url 'add_comment' post.id %}">
+            {% csrf_token %}
+            {{ comment_form.as_p }}
+            <button type="submit" class="btn-submit">Post Comment</button>
+        </form>
+    </div>
+    {% else %}
+    <p>Please <a href="{% url 'login' %}">log in</a> to leave a comment.</p>
+    {% endif %}
+</div>
+
+<style>
+    /* General Layout and Container */
+    .forum-container {
+        width: 80%;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    /* Forum Post Section */
+    .forum-post {
+        margin-bottom: 30px;
+    }
+    
+    .forum-post h2 {
+        color: #1e3d58;
+        font-size: 2rem;
+        margin-bottom: 10px;
+    }
+
+    .post-meta {
+        font-size: 0.9rem;
+        color: #6c757d;
+    }
+
+    /* Comments Section */
+    .comments-section h3 {
+        font-size: 1.6rem;
+        color: #1e3d58;
+        margin-bottom: 20px;
+    }
+
+    .comment-list {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .comment-item {
+        margin-bottom: 20px;
+    }
+
+    .comment-box {
+        padding: 15px;
+        border: 1px solid #dcdcdc;
+        border-radius: 8px;
+        background-color: #f8f9fa;
+    }
+
+    .comment-author {
+        font-weight: bold;
+        color: #007bff;
+        margin-bottom: 5px;
+    }
+
+    .comment-date {
+        font-size: 0.9rem;
+        color: #6c757d;
+        margin-left: 10px;
+    }
+
+    .comment-content {
+        margin-top: 10px;
+        font-size: 1rem;
+        color: #333;
+    }
+
+    .comment-list .no-comments {
+        font-style: italic;
+        color: #6c757d;
+    }
+
+    /* Comment Form */
+    .comment-form {
+        background-color: #f1f1f1;
+        padding: 20px;
+        border-radius: 8px;
+        margin-top: 30px;
+    }
+
+    .comment-form h4 {
+        font-size: 1.4rem;
+        color: #1e3d58;
+        margin-bottom: 15px;
+    }
+
+    .comment-form form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .comment-form form p {
+        margin-bottom: 10px;
+    }
+
+    .btn-submit {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .btn-submit:hover {
+        background-color: #0056b3;
+    }
+
+    /* Login Reminder */
+    .login-reminder {
+        margin-top: 20px;
+        font-size: 1rem;
+    }
+
+    .login-reminder a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    .login-reminder a:hover {
+        text-decoration: underline;
+    }
+</style>
 {% endblock %}
 
 <style>

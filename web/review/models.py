@@ -15,6 +15,11 @@ class Review(models.Model):
     is_approved = models.BooleanField(default=False)
     image = models.ImageField(upload_to='review_images/', blank=True, null=True)
     video = models.FileField(upload_to='review_videos/', blank=True, null=True)
+    last_edited = models.DateTimeField(null=True, blank=True)
+
+    # New field to track edits
+    def is_edited(self):
+        return self.last_edited is not None
     
     # Vendor response field
     vendor_response = models.TextField(blank=True, null=True)
