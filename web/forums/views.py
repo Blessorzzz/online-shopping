@@ -46,26 +46,6 @@ def forum_detail(request, product_id, post_id):
     })
 
 @login_required
-def select_product_for_forum(request):
-    # Get search term from query parameters
-    search_query = request.GET.get('search', '')
-    products = Product.objects.all()
-
-    if search_query:
-        # Filter products based on the search term
-        products = products.filter(Q(product_name__icontains=search_query))
-
-    # Pagination
-    paginator = Paginator(products, 10)  # Show 10 products per page
-    page_number = request.GET.get('page')
-    products_page = paginator.get_page(page_number)
-
-    return render(request, 'forums/select_product.html', {  # Corrected template name
-        'products': products_page,
-        'search_query': search_query,
-    })
-
-@login_required
 def create_forum_post(request, product_id):
     # Get the product by product_id
     product = get_object_or_404(Product, product_id=product_id)
