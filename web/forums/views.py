@@ -5,6 +5,8 @@ from .forms import ForumPostForm, CommentForm
 from django.contrib.auth.decorators import login_required
 from ecommerce.models import Product  # Import Product model
 from django.db.models import Q
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 
 @login_required
 def forum_list(request):

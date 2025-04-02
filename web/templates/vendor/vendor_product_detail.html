@@ -77,7 +77,7 @@
                             <form method="post" action="{% url 'vendor_respond_review' review.pk %}?sort={{ current_sort }}" class="response-form">
                                 {% csrf_token %}
                                 <textarea name="response" rows="3" class="response-textarea" placeholder="{% trans 'Enter your response...' %}"></textarea>
-                                <button type="submit" class="response-submit">{% trans 'Submit Response' %}</button>
+                                <button type="submit" class="response-submit">{% trans "Submit Response" %}</button>
                             </form>
                         {% endif %}
                     </div>
@@ -87,6 +87,11 @@
                 {% endfor %}
             </div>
         </div>
+    </div>
+    <div style="display: flex; justify-content: center; margin-top: 20px;">
+        <a href="{% url 'vendor_dashboard' %}" class="back-to-dashboard-button" style="display: inline-block; padding: 10px 20px; background-color: #ED7014; color: white; text-decoration: none; border-radius: 5px; transition: background-color 0.3s ease;">
+            {% trans "Back to Dashboard" %}
+        </a>
     </div>
 </div>
 
@@ -354,6 +359,20 @@
         font-size: 1.1rem;
         color: #777;
         margin-top: 20px;
+    }
+
+    .back-to-dashboard-button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #ED7014;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+    
+    .back-to-dashboard-button:hover {
+        background-color: #d65c00;
     }
 </style>
 
