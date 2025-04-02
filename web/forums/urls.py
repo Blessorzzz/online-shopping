@@ -8,7 +8,6 @@ urlpatterns = [
     path('select-product/', select_product_for_forum, name='select_product_for_forum'),
     path('create/<uuid:product_id>/', create_forum_post, name='create_forum_post'),
     path('<uuid:post_id>/comment/', add_comment, name='add_comment'),
-    path('comment/<int:comment_id>/like/', views.like_comment, name='like_comment'),
-    path('comment/<int:comment_id>/dislike/', views.dislike_comment, name='dislike_comment'),
-    path('comment/<int:comment_id>/report/', views.report_comment, name='report_comment'),
+    path('vote_comment/', views.vote_comment, name='vote_comment'),
+    path('report_comment/<int:comment_id>/', views.report_comment, name='report_comment'),
 ]

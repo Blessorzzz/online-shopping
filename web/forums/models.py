@@ -29,5 +29,41 @@ class Comment(models.Model):
     def dislike_count(self):
         return self.dislikes.count()
 
+    def liked_users_ids(self):
+        return list(self.votes.filter(vote_type=True).values_list('user__id', flat=True))
+
+    def disliked_users_ids(self):
+        return list(self.votes.filter(vote_type=False).values_list('user__id', flat=True))
+
     def __str__(self):
         return f'Comment by {self.author.username if self.author else "Anonymous"}'
+
+# Proxy model for reported comments
+class ReportedComment(Comment):
+    class Meta:
+        proxy = True
+        verbose_name = "Reported Comment"
+        verbose_name_plural = "Reported Comments"
+
+class Vote(models.Model):
+    LIKE = True
+    DISLIKE = False
+    VOTE_CHOICES = (
+        (LIKE, 'Like'),
+        (DISLIKE, 'Dislike'),
+    )
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='forum_votes'  # Unique related_name for forums app
+    )
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name='votes')
+    vote_type = models.BooleanField(choices=VOTE_CHOICES)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'comment')  # Prevent duplicate votes
+
+    def __str__(self):
+        return f"{self.user} voted {self.get_vote_type_display()} on {self.comment}"

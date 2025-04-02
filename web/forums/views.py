@@ -1,11 +1,10 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import ForumPost, Comment
+from .models import ForumPost, Comment, Vote
 from .forms import ForumPostForm, CommentForm
 from django.contrib.auth.decorators import login_required
 from ecommerce.models import Product  # Import Product model
 from django.db.models import Q
-from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 
 @login_required
@@ -36,6 +35,7 @@ def forum_detail(request, post_id):
     return render(request, 'forums/forum_detail.html', {
         'post': post, 'comments': comments, 'comment_form': comment_form
     })
+
 @login_required
 def select_product_for_forum(request):
     # Get search term from query parameters
@@ -51,7 +51,7 @@ def select_product_for_forum(request):
     page_number = request.GET.get('page')
     products_page = paginator.get_page(page_number)
 
-    return render(request, 'forums/select_product.html', {  # Corrected template name
+    return render(request, 'forums/select_product.html', {
         'products': products_page,
         'search_query': search_query,
     })
@@ -90,37 +90,48 @@ def add_comment(request, post_id):
     return redirect('forum_detail', post_id=post.id)
 
 @login_required
-def like_comment(request, comment_id):
-    comment = get_object_or_404(Comment, id=comment_id)
-    if request.user in comment.likes.all():
-        comment.likes.remove(request.user)
-        liked = False
-    else:
-        comment.likes.add(request.user)
-        comment.dislikes.remove(request.user)  # Ensure a user can't like and dislike at the same time
-        liked = True
-    return JsonResponse({'liked': liked, 'like_count': comment.like_count(), 'dislike_count': comment.dislike_count()})
-
-@login_required
-def dislike_comment(request, comment_id):
-    comment = get_object_or_404(Comment, id=comment_id)
-    if request.user in comment.dislikes.all():
-        comment.dislikes.remove(request.user)
-        disliked = False
-    else:
-        comment.dislikes.add(request.user)
-        comment.likes.remove(request.user)  # Ensure a user can't like and dislike at the same time
-        disliked = True
-    return JsonResponse({'disliked': disliked, 'like_count': comment.like_count(), 'dislike_count': comment.dislike_count()})
-
-@login_required
-@csrf_exempt
-def report_comment(request, comment_id):
+def vote_comment(request):
     if request.method == 'POST':
-        comment = get_object_or_404(Comment, id=comment_id)
-        report_reasons = request.POST.getlist('reasons[]')  # Get the selected reasons
+        comment_id = request.POST.get('comment_id')
+        vote_type = request.POST.get('vote_type') == 'true' 
+
+        try:
+            comment = get_object_or_404(Comment, id=comment_id)
+            vote, created = Vote.objects.update_or_create(
+                user=request.user,
+                comment=comment,
+                defaults={'vote_type': vote_type}
+            )
+
+            # Get fresh counts from the database
+            like_count = Vote.objects.filter(comment=comment, vote_type=True).count()
+            dislike_count = Vote.objects.filter(comment=comment, vote_type=False).count()
+
+            return JsonResponse({
+                'status': 'success',
+                'like_count': like_count,
+                'dislike_count': dislike_count,
+            })
+
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)})
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request'})
+
+@login_required
+def report_comment(request, comment_id):
+    """
+    Allows users to report a comment with specific reasons.
+    """
+    comment = get_object_or_404(Comment, id=comment_id)
+    if request.method == 'POST':
+        report_reasons = request.POST.getlist('reasons')  # Get the selected reasons
         if report_reasons:
-            comment.reports.extend(report_reasons)  # Add the reasons to the reports field
+            # Ensure the reports field is updated correctly
+            comment.reports.extend(report_reasons)
+            comment.reports = list(set(comment.reports))  # Remove duplicate reasons
             comment.save()
             return JsonResponse({'success': True, 'message': 'Report submitted successfully.'})
+        else:
+            return JsonResponse({'success': False, 'message': 'No reasons provided.'})
     return JsonResponse({'success': False, 'message': 'Invalid request.'})

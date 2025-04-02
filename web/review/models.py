@@ -53,7 +53,11 @@ class Vote(models.Model):
         (DISLIKE, 'Dislike'),
     )
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='review_votes'  # Unique related_name for review app
+    )
     review = models.ForeignKey(Review, on_delete=models.CASCADE, related_name='votes')
     vote_type = models.BooleanField(choices=VOTE_CHOICES)
     created_at = models.DateTimeField(auto_now_add=True)
