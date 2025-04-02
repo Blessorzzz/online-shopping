@@ -93,7 +93,7 @@
     </section>
 
 <!-- Customer Reviews Section -->
-<div class="reviews-section">
+<div id="customer-reviews" class="reviews-section">
     <div class="reviews-header">
         <h3>{% trans "Customer Reviews" %}</h3>
         <div class="sort-controls">
@@ -116,7 +116,7 @@
     {% if reviews %}
         <ul class="reviews-list">
             {% for review in reviews %}
-                <li class="review-item">
+                <li id="review-{{ review.id }}" class="review-item {% if review == highlighted_review %}highlighted-review{% endif %}">
                     <!-- Review Header -->
                     <div class="review-header">
                         <strong>{{ review.user.username }}</strong>
@@ -153,15 +153,17 @@
 
                     <!-- Review Media (Images/Video) -->
                     {% if review.image %}
-                        <img src="{{ review.image.url }}" alt="Review Image" class="review-image">
+                        <div class="review-media">
+                            <img src="{{ review.image.url }}" alt="Review Image" class="review-image">
+                        </div>
                     {% endif %}
                     {% if review.video %}
-                    <div class="review-media">
-                        <video controls class="review-video">
-                            <source src="{{ review.video.url }}" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                    </div>
+                        <div class="review-media">
+                            <video controls class="review-video">
+                                <source src="{{ review.video.url }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
                     {% endif %}
 
                     <!-- Vendor's Response (if exists) -->
@@ -175,7 +177,7 @@
             {% endfor %}
         </ul>
     {% else %}
-        <p>{% trans "No reviews yet. Be the first to review this product!" %}</p>
+        <p class="no-reviews-message">{% trans "No reviews yet. Be the first to review this product!" %}</p>
     {% endif %}
 </div>
 
@@ -461,19 +463,13 @@
         color: #333;
     }
 
-    .review-item p {
-        margin: 5px 0;
-        color: #555;
+    .review-header .star-rating {
+        font-size: 1.2rem;
+        color: #FFD700;
     }
 
-    .review-item img, .review-item video {
-        display: block;
-        margin-top: 10px;
-        max-width: 300px;
-        border-radius: 5px;
-    }
-
-    .review-item small {
+    .review-header .review-date {
+        font-size: 0.9rem;
         color: #888;
     }
 
@@ -636,6 +632,23 @@
         
         .select-wrapper {
             width: 100%;
+        }
+    }
+
+    .highlighted-review {
+        background-color: #e3f2fd; /* Light blue background */
+        border: 1px solid #90caf9; /* Blue border */
+        padding: 10px;
+        border-radius: 5px;
+        animation: highlight 2s ease-in-out;
+    }
+    
+    @keyframes highlight {
+        0% {
+            background-color: #bbdefb;
+        }
+        100% {
+            background-color: #e3f2fd;
         }
     }
 

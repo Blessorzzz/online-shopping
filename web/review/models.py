@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from ecommerce.models import Product
 from shoppingcart.models import Order
 from decimal import Decimal
+from better_profanity import profanity  # Import the better_profanity library
 
 class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -30,7 +31,15 @@ class Review(models.Model):
     
     def disliked_users_ids(self):
         return list(self.votes.filter(vote_type=False).values_list('user__id', flat=True))
-    
+
+    def save(self, *args, **kwargs):
+        """Override save method to filter profanity in comment and vendor_response."""
+        if self.comment:
+            self.comment = profanity.censor(self.comment)  # Censor profanity in the comment
+        if self.vendor_response:
+            self.vendor_response = profanity.censor(self.vendor_response)  # Censor profanity in the vendor response
+        super().save(*args, **kwargs)  # Call the original save method
+
 class Vote(models.Model):
     LIKE = True
     DISLIKE = False
