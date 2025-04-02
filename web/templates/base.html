@@ -295,7 +295,15 @@
         <button type="button" onclick="decreaseFontSize()" aria-label="{% trans 'Decrease font size' %}">A−</button>
         <button type="button" onclick="resetFontSize()" aria-label="{% trans 'Reset font size' %}">Reset</button>
     </div>
+    <select id="user-profile-select" onchange="handleProfileSelect(this.value)" aria-label="{% trans 'Choose Accessibility Mode' %}">
+        <option value="" disabled selected hidden>{% trans "👤 User Mode" %}</option>
+        <option value="elder">👴 {% trans "Elder Mode" %}</option>
+        <!--<option value="lowVision">👁️ {% trans "Low Vision Mode" %}</option> -->
+        <option value="default">🧑 {% trans "Default Mode" %}</option>
+    </select>
     
+
+          
             <form method="post" action="{% url 'set_language' %}">
                 {% csrf_token %}
                 <label for="language-select" class="sr-only">{% trans "Select Language" %}</label>
@@ -316,18 +324,19 @@
         </div>
     </nav>
 
+    {% if request.path == '/' %}
     <div class="search-bar-wrapper">
         <form method="get" action="{% url 'home' %}" id="search-form" class="search-form" role="search" aria-label="{% trans 'Search Products' %}">
             <input type="text" name="q" id="search-input" placeholder="{% trans 'Search product' %}" aria-label="{% trans 'Search product' %}">
             <button type="submit" aria-label="{% trans 'Submit search' %}">{% trans 'Search' %}</button>
-            <!-- 添加语音搜索按钮 -->
             <button type="button" id="voice-search-button" class="voice-search-btn" aria-label="{% trans 'Voice Search' %}">
                 <i class="fas fa-microphone"></i>
             </button>
         </form>
-            <!-- 语音识别状态显示 -->
-            <div id="voice-status" class="voice-status"></div>
+        <div id="voice-status" class="voice-status"></div>
     </div>
+    {% endif %}
+    
     
     <main id="content-wrapper" role="main" aria-label="{% trans 'Page Content' %}">
         {% block content %}{% endblock content %}

@@ -4,42 +4,39 @@ document.addEventListener("DOMContentLoaded", function () {
     const menu = document.getElementById("menu");
     const contentWrapper = document.getElementById("content-wrapper");
 
-    // 默认隐藏工具栏
-    toolbar.style.display = "none";
-
-    // 检查 localStorage 是否开启了固定模式
     const stickyActive = localStorage.getItem("stickyMode") === "true";
-    if (stickyActive) {
-        // 固定模式开启时，显示工具栏、隐藏入口按钮
+    const isElderSticky = localStorage.getItem("isElderModeSticky") === "true";
+    const openedByUser = localStorage.getItem("accessibilityToolbarOpen") === "true";
+   
+    const shouldRestoreToolbar = stickyActive || isElderSticky || openedByUser;
+
+    if (shouldRestoreToolbar) {
+        // ✅ 显示工具栏
         toolbar.style.display = "flex";
         accessibilityBtn.style.display = "none";
 
-        // 固定导航菜单位置 + 下移以防止遮挡
+        // ✅ 布局调整
         menu.style.position = "fixed";
         menu.style.top = "103px";
         menu.style.height = "80px";
         menu.style.display = "flex";
         menu.style.zIndex = "10000";
-        contentWrapper.style.paddingTop = "160px";
+        contentWrapper.style.paddingTop = "260px";
 
-        // 恢复保存的缩放级别
-        const savedZoom = localStorage.getItem("savedZoomLevel");
-        if (savedZoom) {
-            zoomLevel = parseFloat(savedZoom);
-            targetZoomLevel = parseFloat(savedZoom);
-            menu.style.transform = `scale(${zoomLevel})`;
-            menu.style.transformOrigin = "top left";
-            contentWrapper.style.transform = `scale(${zoomLevel})`;
-            contentWrapper.style.transformOrigin = "top left";
+        const profile = localStorage.getItem("accessibilityProfile");
+        const isElder = profile === "elder";
+
+        const searchBar = document.querySelector(".search-bar-wrapper");
+    if (searchBar) {
+        if (!isElder) {
+            searchBar.style.top = "183px"; // 只有非老年人模式才设置这个偏移
+        } else {
+            searchBar.style.top = ""; // 老年人模式恢复默认
         }
-        // 激活固定模式按钮样式（高亮）
-        const stickyBtn = document.querySelector("#accessibility-toolbar button[onclick='toggleStickyMode()']");
-        if (stickyBtn) {
-            stickyBtn.classList.add("active");
-        }
+    }
 
 
-        // 恢复屏幕阅读器和十字线状态（如果之前启用过）
+        // ✅ 恢复屏幕阅读器
         const savedScreenReader = localStorage.getItem("screenReaderOn") === "true";
         if (savedScreenReader && !isScreenReaderOn) {
             isScreenReaderOn = true;
@@ -49,6 +46,19 @@ document.addEventListener("DOMContentLoaded", function () {
             if (srButton) srButton.setAttribute("aria-pressed", "true");
             speak("Screen reader turned on");
         }
+
+        // ✅ 恢复缩放
+        const savedZoom = localStorage.getItem("savedZoomLevel");
+        if (savedZoom) {
+            zoomLevel = parseFloat(savedZoom);
+            targetZoomLevel = zoomLevel;
+            menu.style.transform = `scale(${zoomLevel})`;
+            menu.style.transformOrigin = "top left";
+            contentWrapper.style.transform = `scale(${zoomLevel})`;
+            contentWrapper.style.transformOrigin = "top left";
+        }
+
+        // ✅ 恢复十字线
         const savedCrosshair = localStorage.getItem("crosshairOn") === "true";
         if (savedCrosshair && !isCrosshairModeActive) {
             isCrosshairModeActive = true;
@@ -63,48 +73,68 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             document.addEventListener('mousemove', moveCrosshair);
         }
-    }
 
-    // 点击 Web Accessibility 按钮，显示工具栏及调整页面布局
-    accessibilityBtn.addEventListener("click", function () {
-        if (toolbar.style.display === "none") {
-            toolbar.style.display = "flex";
-            accessibilityBtn.style.display = "none"; // 只隐藏按钮本身，不隐藏整个 <li> 元素
+        // ✅ 恢复颜色主题
+        const savedTheme = localStorage.getItem('accessibilityTheme');
+        if (savedTheme) {
+            applyColorScheme(savedTheme);
+        }
 
-            // 固定导航菜单位置 + 下移以防止遮挡
-            menu.style.position = "fixed";
-            menu.style.top = "103px";
-            menu.style.height = "80px";
-            menu.style.display = "flex";
-            menu.style.zIndex = "10000";
-
-            contentWrapper.style.paddingTop = "260px";  // 确保内容不会被遮挡
-
-            const searchBar = document.querySelector(".search-bar-wrapper");
-            if (searchBar) {
-                searchBar.style.top = "183px"; // 103(menu) + 80(toolbar)
+        // ✅ 恢复语速
+        const savedRate = localStorage.getItem("speechRate");
+        const savedMode = localStorage.getItem("speechRateMode");
+        const btn = document.getElementById("speech-rate-btn");
+        if (savedRate) {
+            currentSpeechRate = parseFloat(savedRate);
+        }
+        if (savedMode) {
+            speechRateMode = parseInt(savedMode);
+            if (btn) {
+                switch (speechRateMode) {
+                    case 0: btn.innerHTML = "🕐 <small>Normal</small>"; break;
+                    case 1: btn.innerHTML = "⏩ <small>Fast</small>"; break;
+                    case 2: btn.innerHTML = "🐢 <small>Slow</small>"; break;
+                }
+                btn.setAttribute("aria-pressed", "true");
             }
         }
-    });
 
-    // 针对固定模式下大字幕状态的恢复
-    if (stickyActive) {
+        // ✅ 修复：仅在大字幕明确开启时才恢复
         const largeCaptionSetting = localStorage.getItem("largeCaptionEnabled");
         if (largeCaptionSetting === "true") {
             largeCaptionEnabled = true;
             const captionBox = document.getElementById("large-caption");
             captionBox.style.display = "block";
-            // 检测是否为登录页（通过判断 .login-box 是否存在）
             const isLoginPage = document.querySelector('.login-box') !== null;
-            if (!isLoginPage) {
-                contentWrapper.style.paddingBottom = "120px";
-            } else {
-                contentWrapper.style.paddingBottom = "0";
-            }
+            contentWrapper.style.paddingBottom = isLoginPage ? "0" : "120px";
             document.addEventListener("mouseover", updateCaption);
+        } else {
+            localStorage.removeItem("largeCaptionEnabled");
         }
+
+    } else {
+        // ❌ 没开启固定/工具栏，清除辅助功能状态
+        toolbar.style.display = "none";
+        accessibilityBtn.style.display = "block";
+
+        localStorage.removeItem("screenReaderOn");
+        localStorage.removeItem("crosshairOn");
+        localStorage.removeItem("largeCaptionEnabled");
+        localStorage.removeItem("speechRate");
+        localStorage.removeItem("speechRateMode");
+        localStorage.removeItem("fontSizeLevel");
+        localStorage.removeItem("accessibilityToolbarOpen");
+        localStorage.removeItem("accessibilityTheme");
     }
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const accessibilityBtn = document.getElementById("accessibility-btn");
+    if (accessibilityBtn) {
+        accessibilityBtn.addEventListener("click", toggleAccessibilityToolbar);
+    }
+});
+
 
 // 全局变量声明
 let zoomLevel = 1.0;
@@ -239,22 +269,45 @@ function toggleStickyMode() {
     const stickyActive = localStorage.getItem("stickyMode") === "true";
     const stickyBtn = document.querySelector("#accessibility-toolbar button[onclick='toggleStickyMode()']");
     if (!stickyActive) {
+        // 开启 Sticky 模式
         localStorage.setItem("stickyMode", "true");
         localStorage.setItem("savedZoomLevel", zoomLevel);
+        localStorage.setItem("accessibilityToolbarOpen", "true");
         if (stickyBtn) stickyBtn.classList.add("active");
+        // 🟢 新增：保存当前启用的辅助功能状态，以便页面跳转后恢复
+        if (isScreenReaderOn) {
+            localStorage.setItem("screenReaderOn", "true");    // 保存屏幕阅读器状态
+        }
+        if (isCrosshairModeActive) {
+            localStorage.setItem("crosshairOn", "true");       // 保存十字线状态
+        }
+        if (largeCaptionEnabled) {
+            localStorage.setItem("largeCaptionEnabled", "true"); // 保存大字幕状态
+        }
+        // （语速和主题等在切换时已写入 localStorage，无需重复设置）
     } else {
+        // 关闭 Sticky 模式
         localStorage.removeItem("stickyMode");
         localStorage.removeItem("savedZoomLevel");
+        localStorage.removeItem("accessibilityToolbarOpen"); // ✅ 加这一行
         if (stickyBtn) stickyBtn.classList.remove("active");
+        // 🟢 新增：清除所有辅助功能状态，避免页面跳转后残留
+        localStorage.removeItem("screenReaderOn");       // 清除屏幕阅读器开启状态
+        localStorage.removeItem("largeCaptionEnabled");  // 清除大字幕开启状态
+        localStorage.removeItem("crosshairOn");          // 清除十字线开启状态
+        localStorage.removeItem("speechRate");           // 清除语速设置
+        localStorage.removeItem("speechRateMode");       // 清除语速模式（正常/慢速）
+        localStorage.removeItem("fontSizeLevel");        // 清除字体大小级别（若有）
     }
 }
+
 
 // ---------------------- 重置功能（仅重置功能，保持工具栏显示） ----------------------
 function resetAccessibility() {
     console.log("🔄 Resetting accessibility settings...");
 
-    // 关闭屏幕阅读器功能
-    if (isScreenReaderOn) {
+    // 关闭屏幕阅读器功能（但如果是老年人模式固定状态，不关闭）
+    if (isScreenReaderOn && localStorage.getItem("isElderModeSticky") !== "true") {
         speak("Screen reader turned off");
         document.removeEventListener("mouseover", debouncedScreenReaderHandler);
         document.removeEventListener("focusin", debouncedScreenReaderHandler, true);
@@ -263,6 +316,7 @@ function resetAccessibility() {
         isScreenReaderOn = false;
         localStorage.removeItem("screenReaderOn");
     }
+
 
     // 关闭十字线功能
     if (isCrosshairModeActive) {
@@ -296,18 +350,27 @@ function resetAccessibility() {
     document.body.style.marginTop = "5px";
     // 2) 恢复“工具栏已开启”时的布局，让菜单避免被遮挡
     const toolbar = document.getElementById("accessibility-toolbar");
-    toolbar.style.display = "flex";
-
     const menu = document.getElementById("menu");
     const contentWrapper = document.getElementById("content-wrapper");
-    menu.style.position = "fixed";
-    menu.style.top = "103px";
-    menu.style.height = "80px";
-    menu.style.display = "flex";
-    menu.style.zIndex = "10000";
-    contentWrapper.style.paddingTop = "160px";
+    const profile = localStorage.getItem("accessibilityProfile");
+    const shouldHideToolbar = !profile || ["default", "elder"].includes(profile);
+    toolbar.style.display = shouldHideToolbar ? "none" : "flex";
 
-    document.body.style.marginTop = "";
+    // ✅ 只有当显示了工具栏时，才调整 layout
+    if (!shouldHideToolbar) {
+        menu.style.position = "fixed";
+        menu.style.top = "103px";
+        menu.style.height = "80px";
+        menu.style.display = "flex";
+        menu.style.zIndex = "10000";
+        contentWrapper.style.paddingTop = "260px";
+    } else {
+    // 否则恢复正常布局
+        menu.style.position = "";
+        menu.style.top = "";
+        menu.style.height = "";
+        contentWrapper.style.paddingTop = "200px";
+    }
     
     // 3) 关闭“大字幕”功能，重置颜色主题
     const captionBox = document.getElementById("large-caption");
@@ -576,6 +639,8 @@ function toggleAccessibilityToolbar() {
         menu.style.height = "80px";
         menu.style.zIndex = "10000";
         contentWrapper.style.paddingTop = "160px";
+        localStorage.setItem("isElderModeSticky", "false");
+        localStorage.setItem("accessibilityToolbarOpen", "true");
     } else {
         toolbar.style.display = "none";
         accessibilityBtn.style.display = "block";
@@ -605,7 +670,7 @@ function toggleSpeechRate() {
             speak("Speech rate set to fast");
             break;
         case 2:
-            currentSpeechRate = 0.5;
+            currentSpeechRate = 0.65;
             if (btn) btn.innerHTML = "🐢 <small>Slow</small>";
             speak("Speech rate set to slow");
             break;
@@ -615,6 +680,218 @@ function toggleSpeechRate() {
     localStorage.setItem("speechRateMode", speechRateMode);
     if (btn) btn.setAttribute("aria-pressed", "true");
 }
+
+function handleProfileSelect(value) {
+    if (value) {
+        applyAccessibilityProfile(value);
+    }
+}
+
+
+  
+//老年人模式
+document.addEventListener("DOMContentLoaded", function () {
+    const savedProfile = localStorage.getItem("accessibilityProfile");
+    const select = document.getElementById("user-profile-select");
+    if (savedProfile && select) {
+      select.value = savedProfile;
+      applyAccessibilityProfile(savedProfile);
+    }
+  });
+
+  
+function handleProfileSelect(mode) {
+    if (!mode) return;
+    localStorage.setItem("accessibilityProfile", mode);
+    applyAccessibilityProfile(mode);
+  }
+  
+  function applyAccessibilityProfile(mode) {
+    resetAccessibility(); // 重置之前状态
+  
+    const captionBox = document.getElementById("large-caption");
+  
+    switch (mode) {
+      case "elder":
+        enableElderMode();
+        break;
+  
+      case "lowVision":
+        localStorage.setItem("isElderModeSticky", "true");
+        document.documentElement.style.fontSize = "1.5em";
+        localStorage.setItem("fontSizeLevel", 1.5);
+        applyColorScheme("high-contrast");
+        localStorage.setItem("accessibilityTheme", "high-contrast");
+        largeCaptionEnabled = true;
+        localStorage.setItem("largeCaptionEnabled", "true");
+        if (captionBox) {
+          captionBox.style.display = "block";
+          document.addEventListener("mouseover", updateCaption);
+        }
+        break;
+  
+      case "default":
+      default:
+        // 显式关闭工具栏 + 恢复布局
+        const toolbar = document.getElementById("accessibility-toolbar");
+        const accessibilityBtn = document.getElementById("accessibility-btn");
+        const menu = document.getElementById("menu");
+        const contentWrapper = document.getElementById("content-wrapper");
+
+        if (toolbar && accessibilityBtn) {
+            toolbar.style.display = "none";
+            accessibilityBtn.style.display = "block";
+        }
+        if (menu && contentWrapper) {
+            menu.style.position = "";
+            menu.style.top = "";
+            menu.style.height = "";
+            if (typeof adjustContentPadding === 'function') {
+                adjustContentPadding();
+            }
+            
+        }
+        // 清除所有无障碍设置缓存
+        localStorage.removeItem("accessibilityProfile");
+        localStorage.removeItem("isElderModeSticky");
+        localStorage.removeItem("fontSizeLevel");
+        localStorage.removeItem("accessibilityTheme");
+        localStorage.removeItem("screenReaderOn");
+        localStorage.removeItem("speechRate");
+        localStorage.removeItem("speechRateMode");
+        localStorage.removeItem("largeCaptionEnabled");
+        localStorage.removeItem("savedZoomLevel");
+        localStorage.removeItem("crosshairOn");
+        localStorage.removeItem("accessibilityToolbarOpen");
+  
+        // 重置页面设置
+        resetAccessibility();
+        document.documentElement.classList.remove("elder-theme");
+
+  
+        // 关闭屏幕阅读器
+        if (isScreenReaderOn) {
+          isScreenReaderOn = false;
+          document.removeEventListener("mouseover", debouncedScreenReaderHandler);
+          document.removeEventListener("focusin", debouncedScreenReaderHandler, true);
+          const srButton = document.querySelector('button[onclick="toggleScreenReader()"]');
+          if (srButton) srButton.setAttribute("aria-pressed", "false");
+        }
+  
+        // 恢复字体 & 配色
+        document.documentElement.style.fontSize = "";
+        applyColorScheme("default");
+  
+        // 隐藏大字幕
+        if (captionBox) {
+          captionBox.style.display = "none";
+          document.removeEventListener("mouseover", updateCaption);
+        }
+  
+        speak("Default mode restored");
+        break;
+    }
+  }
+  
+
+  function enableElderMode() {
+    localStorage.setItem("isElderModeSticky", "true");
+
+    // ✅ 字体变大
+    fontSizeLevel = 1.6;
+    document.documentElement.style.fontSize = `${fontSizeLevel}em`;
+    localStorage.setItem("fontSizeLevel", fontSizeLevel);
+
+    // ✅ 高对比色主题
+    //applyColorScheme("high-contrast");
+    localStorage.setItem("accessibilityTheme", "high-contrast");
+
+    // ✅ 慢速语音提示
+    currentSpeechRate = 0.8;
+    speechRateMode = 2;
+    localStorage.setItem("speechRate", currentSpeechRate);
+    localStorage.setItem("speechRateMode", speechRateMode);
+
+    // ✅ 自动启用屏幕阅读器
+    if (!isScreenReaderOn) {
+        isScreenReaderOn = true;
+        localStorage.setItem("screenReaderOn", "true");
+        document.addEventListener("mouseover", debouncedScreenReaderHandler);
+        document.addEventListener("focusin", debouncedScreenReaderHandler, true);
+        const srButton = document.querySelector('button[onclick="toggleScreenReader()"]');
+        if (srButton) srButton.setAttribute("aria-pressed", "true");
+        speak("Screen reader turned on");
+    }
+
+    // ✅ 语音反馈提示
+    speak("Elder mode enabled");
+
+    // 显式关闭工具栏
+    const toolbar = document.getElementById("accessibility-toolbar");
+    const accessibilityBtn = document.getElementById("accessibility-btn");
+    if (toolbar && accessibilityBtn) {
+        toolbar.style.display = "none";
+        accessibilityBtn.style.display = "block";
+    }
+
+    // ✅ 恢复布局，避免商品被遮挡   
+    const menu = document.getElementById("menu");
+    const contentWrapper = document.getElementById("content-wrapper");
+    if (menu && contentWrapper) {
+        menu.style.position = "";
+        menu.style.top = "";
+        menu.style.height = "";
+        if (typeof adjustContentPadding === 'function') {
+            adjustContentPadding();
+        }
+        
+    }
+
+    document.documentElement.classList.add("elder-theme");
+  }
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

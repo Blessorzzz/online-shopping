@@ -869,7 +869,7 @@ html {
     font-size: 0.75rem;
     margin-top: 3px;
     display: block;
-    color: black;
+    /* color: black; ❌ 删除或注释这一行 */
 }
 
 /* Ensure keyboard navigation focus is visible */
@@ -2014,3 +2014,73 @@ table.order-table thead {
     background-color: var(--hover-bg);
     color: var(--hover-text);
 }
+
+
+
+.elder-theme body {
+    background-color: #fff4ef !important;  /* 浅米色背景 */
+    color: #3c1e1e !important;             /* 深棕文字 */
+  }
+  
+  .elder-theme a,
+  .elder-theme button {
+    background-color: #921e1e !important;  /* 暗红按钮 */
+    color: white !important;
+    border-color: #921e1e !important;
+  }
+  
+  .elder-theme input,
+  .elder-theme select,
+  .elder-theme textarea {
+    border: 2px solid #921e1e !important;
+    background-color: #ffffff !important;
+    color: #3c1e1e !important;
+  }
+  
+  .elder-theme #menu {
+    background-color: #921e1e !important;
+    color: white !important;
+  }
+  
+  .elder-theme .product-card,
+  .elder-theme .product-info,
+  .elder-theme .description-section {
+    background-color: #fff4ef !important;
+    color: #3c1e1e !important;
+    border-color: #921e1e !important;
+  }
+  
+  .elder-theme .current-price {
+    color: #b8321a !important;
+  }
+  
+  /* 可选：你如果使用 CSS 变量也一并更新 */
+  .elder-theme {
+    --bg-color: #fff4ef;
+    --text-color: #3c1e1e;
+    --button-bg: #921e1e;
+    --button-text: #ffffff;
+    --border-color: #921e1e;
+    --hover-bg: #b8321a;
+    --hover-text: #ffffff;
+    --table-header-bg: #f0e6e6;
+    --table-header-text: #3c1e1e;
+    --status-bg: #f8dede;
+    --status-text: #3c1e1e;
+  }
+  
+.elder-theme .pagination .active a,
+.elder-theme .pagination .active span,
+.elder-theme .pagination li.active a {
+  color: white !important;               /* 保证当前页码字是白色 */
+  background-color: #b8321a !important;  /* 比普通按钮更亮一点的红 */
+  border-color: #b8321a !important;
+}
+
+.elder-theme .pagination .current {
+    color: white !important;
+    background-color: #b8321a !important;
+    border-color: #b8321a !important;
+  }
+  
+  
