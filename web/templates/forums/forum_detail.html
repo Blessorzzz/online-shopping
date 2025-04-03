@@ -31,17 +31,22 @@
 
     <!-- Comment Form -->
     {% if user.is_authenticated %}
-    <div class="comment-form">
-        <h4>Add Your Comment</h4>
-        <form method="POST" action="{% url 'add_comment' product.product_id post.id %}">
-            {% csrf_token %}
-            {{ comment_form.as_p }}
-            <button type="submit" class="btn-submit">Post Comment</button>
-        </form>
-    </div>
+        {% if user_has_purchased %}
+            <div class="comment-form">
+                <h4>Add Your Comment</h4>
+                <form method="POST" action="{% url 'add_comment' product.product_id post.id %}">
+                    {% csrf_token %}
+                    {{ comment_form.as_p }}
+                    <button type="submit" class="btn-submit">Post Comment</button>
+                </form>
+            </div>
+        {% else %}
+            <p>You must purchase this product to leave a comment.</p>
+        {% endif %}
     {% else %}
-    <p>Please <a href="{% url 'login' %}">log in</a> to leave a comment.</p>
+        <p>Please <a href="{% url 'login' %}">log in</a> to leave a comment.</p>
     {% endif %}
+
 </div>
 
 <style>
