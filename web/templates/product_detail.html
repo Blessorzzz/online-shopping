@@ -193,7 +193,7 @@
                 <li class="forum-item">
                     <div class="forum-header">
                         <h5 class="forum-title">
-                            <a href="{% url 'forum_detail' forum.id %}">{{ forum.title }}</a>
+                            <a href="{% url 'forum_detail' product.product_id forum.id %}">{{ forum.title }}</a>
                         </h5>
                         <p class="forum-meta">
                             {% trans "By" %} {{ forum.author.username }} | 
@@ -209,9 +209,9 @@
     {% endif %}
 
     <div class="join-discussion">
-        <a href="{% url 'forum_list' %}?product_id={{ product.product_id }}" class="btn btn-prominent">
+        <a href="{% url 'forum_list' product.product_id %}" class="btn btn-prominent">
             {% trans "Join the Discussion" %}
-        </a>        
+        </a>
     </div>
 </div>
 

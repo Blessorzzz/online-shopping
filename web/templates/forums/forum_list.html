@@ -19,7 +19,7 @@
     </div>
 
     <!-- Search Bar -->
-    <form method="get" action="{% url 'forum_list' %}" class="search-bar mb-4">
+    <form method="get" action="{% url 'forum_list' product.product_id %}" class="search-bar mb-4">
         <div class="input-group">
             <input type="text" name="q" class="form-control" placeholder="{% trans 'Search threads by title or author...' %}" value="{{ request.GET.q }}">
             <button type="submit" class="btn btn-primary">{% trans "Search" %}</button>
@@ -34,7 +34,7 @@
                     <!-- Forum Header -->
                     <div class="forum-header">
                         <h5 class="forum-title">
-                            <a href="{% url 'forum_detail' post.id %}">{{ post.title }}</a>
+                            <a href="{% url 'forum_detail' product.product_id post.id %}">{{ post.title }}</a>
                         </h5>
                         <p class="forum-meta">
                             {% trans "By" %} {{ post.author.username }} | 
