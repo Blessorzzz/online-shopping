@@ -2,140 +2,41 @@
 {% load i18n %}
 
 {% block content %}
-<div class="page-wrapper">
-    <div class="container">
-        <h2 class="text-center mb-4 text-primary">{% trans "Add a Review for Your Order" %}</h2>
-        
-        <div class="card p-4 shadow-sm">
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                
-                <div class="mb-3 product-container">
-                    <label class="form-label fw-bold">{% trans "Product:" %}</label>
-                    <p class="fw-bold text-secondary">{{ product.product_name }}</p>
-                </div>
-                
-                <div class="mb-3">
-                    <label class="form-label fw-bold">{% trans "Rating (1-5):" %}</label>
-                    <input type="number" step="0.1" name="rating" min="1" max="5" class="form-control" value="{{ form.rating.value|default:1 }}">
-                </div>
-                
-                <div class="mb-3">
-                    <label class="form-label fw-bold">{% trans "Comment:" %}</label>
-                    {{ form.comment }}
-                </div>
+<div class="container mt-5">
+    <h2 class="text-center mb-4">{% trans "Add a Review for Your Order" %}</h2>
+    
+    <div class="card p-4 shadow-sm">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label class="form-label">{% trans "Product:" %}</label>
+                <p class="fw-bold">{{ product.product_name }}</p>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">{% trans "Rating (1-5):" %}</label>
+                <input type="number" step="0.1" name="rating" min="1" max="5" class="form-control" value="{{ form.rating.value|default:1 }}">
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">{% trans "Comment:" %}</label>
+                {{ form.comment }}
+            </div>
 
-                <div class="mb-3">
-                    <label class="form-label fw-bold">{% trans "Upload Image:" %}</label>
-                    {{ form.image }}
-                </div>
+            <div class="mb-3">
+                <label class="form-label">{% trans "Upload Image:" %}</label>
+                {{ form.image }}
+            </div>
 
-                <div class="mb-3">
-                    <label class="form-label fw-bold">{% trans "Upload Video:" %}</label>
-                    {{ form.video }}
-                </div>
+            <div class="mb-3">
+                <label class="form-label">{% trans "Upload Video:" %}</label>
+                {{ form.video }}
+            </div>
 
-                <button type="submit" class="btn btn-primary">{% trans "Submit Review" %}</button>
-            </form>
-        </div>
+            <button type="submit" class="btn btn-primary w-100">{% trans "Submit Review" %}</button>
+        </form>
     </div>
 </div>
-
-<!-- JavaScript to display Django messages as popups -->
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const messages = {{ messages|safe }};
-        if (messages.length > 0) {
-            messages.forEach(message => {
-                alert(message.message); // Display each message as a popup
-            });
-        }
-    });
-</script>
-
-<style>
-    .page-wrapper {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        background-color: #f8f9fa;
-        padding: 20px;
-    }
-
-    .container {
-        max-width: 600px;
-        width: 100%;
-        background-color: #ffffff;
-        padding: 30px;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    h2 {
-        font-size: 1.8rem;
-        font-weight: bold;
-    }
-
-    .card {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        background-color: #ffffff;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-    }
-
-    .product-container {
-        text-align: center;
-        padding: 15px;
-        background-color: #f1f1f1;
-        border-radius: 8px;
-        margin-bottom: 20px;
-        width: 100%;
-        max-width: 500px;
-    }
-
-    .container form {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-    }
-
-    .form-label, .product-container p {
-        text-align: center;
-        width: 100%;
-    }
-
-    .form-control {
-        text-align: center;
-    }
-
-    .btn {
-        width: 100%;
-        max-width: 500px;
-        padding: 12px;
-        font-size: 1rem;
-        font-weight: bold;
-        text-align: center;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-    .btn-primary {
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        width: 100%;
-        max-width: 500px;
-    }
-
-    .btn-primary:hover {
-        background-color: #0056b3;
-    }
-</style>
 
 {% endblock %}
