@@ -40,7 +40,7 @@ class Product(models.Model):
         default="",
         help_text=_("Warnings or safety notes related to the product")
     )
-    
+
     # New materials field
     materials = models.CharField(
         max_length=255, 
@@ -52,9 +52,6 @@ class Product(models.Model):
     # Safety fields
     safety_score = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     safety_issues = models.JSONField(null=True, blank=True)  # Store issues like 'small_parts', 'sharp_edges'
-
-    def __str__(self):
-        return self.product_name
 
     def save(self, *args, **kwargs):
         translations = {
@@ -83,7 +80,7 @@ class Product(models.Model):
                     setattr(self, translated_field, translated_text)
                     updated = True
 
-        # Ensure stock quantity updates even if no translation changes
+        # ✅ Ensure stock quantity updates even if no translation changes
         super().save(*args, **kwargs)
 
         if updated:
@@ -93,11 +90,12 @@ class Product(models.Model):
             print("⚠️ No translation changes")
 
         # Perform toy safety evaluation here before saving the product
-        materials = self.materials.split(',') if self.materials else []  # Ensure materials is handled correctly
+        # Parse materials field and remove leading/trailing spaces from each material
+        materials = [material.strip() for material in self.materials.split(',')] if self.materials else []
         detected_hazards = ['small_parts']  # Example: detected hazards (this should come from image analysis or manual input)
 
         # Calculate MHI, ACR, VHD, ICS
-        mhi = calculate_material_risk(materials)
+        mhi = calculate_material_risk(materials)  # Make sure the materials are passed correctly
         acr = calculate_age_risk(detected_hazards, (self.min_age, self.max_age))
         vhd = 100  # Placeholder for Visual Hazard Detection score
         ics = calculate_info_score({'materials': self.materials, 'age_range': (self.min_age, self.max_age), 'warnings': self.warnings})
@@ -109,6 +107,7 @@ class Product(models.Model):
         self.safety_issues = detected_hazards  # This can be expanded to include all identified issues
 
         super().save(*args, **kwargs)
+
 
 class ProductPhoto(models.Model):
     photo_id = models.AutoField(primary_key=True)
@@ -151,26 +150,32 @@ class KeywordSearchHistory(models.Model):
     
 # Material Hazard Index Mapping
 MATERIAL_RISK = {
-    "cotton": 1,  # Low risk
-    "silicone": 2, 
-    "abs_plastic": 3, 
-    "pvc": 4,  # Medium risk
-    "metal": 5,  # High risk
-    "unknown": 6  # Maximum penalty
+    "cotton": 6,  # High safety, contributes more to the score
+    "silicone": 5,
+    "abs_plastic": 4,
+    "pvc": 3,  # Medium risk
+    "metal": 2,  # High risk, penalizes score
+    "unknown": 1  # Maximum penalty for unknown
 }
 
 def calculate_material_risk(materials):
     if not materials:  # If the materials list is empty, return a default risk value (e.g., 1)
-        return 1
+        return 6  # Safer materials contribute more to the score
     
     total_risk = 0
+    material_count = len(materials)  # Total number of materials
+
     # Calculate the total risk for the materials
     for material in materials:
         material_risk = MATERIAL_RISK.get(material.lower(), 1)  # Default to 1 if material is not in the dictionary
         total_risk += material_risk
     
-    # Prevent division by zero
-    return min(total_risk / len(materials), 6)  # Scale from 1 to 6
+    # Calculate the average material risk score
+    average_risk = total_risk / material_count
+
+    # Return the final average material risk, ensuring it stays within the safe range
+    return min(average_risk, 6)  # Cap it at a maximum of 6 for safety
+
 
 # Age Hazard Matrix: hazard type and threshold based on age
 AGE_HAZARD_MATRIX = {
