@@ -47,7 +47,7 @@
             <div class="specs">
                 <div class="spec-item">
                     <span class="spec-label">{% trans "Age Range" %}:</span>
-                    <span class="spec-value">{{ product.age_range }}</span>
+                    <span class="spec-value">{{ product.min_age }}-{{ product.max_age }}</span>
                 </div>
                 <div class="spec-item">
                     <span class="spec-label">{% trans "Stock" %}:</span>
@@ -66,7 +66,7 @@
                         {% endif %}
                     </span>
                 </div>
-            </div>
+            </div>            
 
             <div class="action-buttons">
                 <form method="POST" action="{% url 'add_to_cart' product.product_id %}">
