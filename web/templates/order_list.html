@@ -78,7 +78,7 @@
     <!-- 筛选器 -->
     <form method="get" action="." class="filter-form" role="search" aria-label="{% trans 'Filter Orders By Status' %}">
         <label for="status">{% trans "Filter by status:" %}</label>
-        <select name="status" id="status" aria-label="{% trans 'Order Status' %}">
+        <select name="status" class="mobility-control" id="status" aria-label="{% trans 'Order Status' %}">
             <option value="" {% if not request.GET.status %}selected{% endif %}>{% trans "All" %}</option>
             <option value="pending" {% if request.GET.status == "pending" %}selected{% endif %}>{% trans "Pending" %}</option>
             <option value="shipped" {% if request.GET.status == "shipped" %}selected{% endif %}>{% trans "Shipped" %}</option>
@@ -89,7 +89,7 @@
             <option value="refunded" {% if request.GET.status == "refunded" %}selected{% endif %}>{% trans "Refunded" %}</option>
             <option value="delivered" {% if request.GET.status == "delivered" %}selected{% endif %}>{% trans "Delivered" %}</option>
         </select>
-        <button type="submit" aria-label="{% trans 'Filter Orders' %}">{% trans "Filter" %}</button>
+        <button type="submit" class="mobility-btn" aria-label="{% trans 'Filter Orders' %}">{% trans "Filter" %}</button>
     </form>
 
     <!-- 订单表格 -->
@@ -137,7 +137,7 @@
                         {% if order.status == 'pending' or order.status == 'hold' %}
                         <form method="post" action="{% url 'cancel_order' order.id %}" style="display:inline;">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-danger">{% trans "Cancel" %}</button>
+                            <button type="submit" class="btn btn-danger mobility-btn">{% trans "Cancel" %}</button>
                         </form>
                         {% endif %}
                     </td>

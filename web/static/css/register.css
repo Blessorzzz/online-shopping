@@ -1,73 +1,65 @@
-body {
-    background: url('/static/img/register.') no-repeat center center fixed;
+/* ✅ 注册页面背景样式，仅限注册页面使用 */
+body.register-page {
+    background: url('/static/img/register-bg.jpg') no-repeat center center fixed;
     background-size: cover;
-    
+    backdrop-filter: blur(5px);
+    margin: 0;
+    padding: 0;
 }
 
-.register-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
+/* ✅ 注册盒子整体样式 */
 .register-box {
-    width: 400px;
-    padding: 30px;
-    background-color: rgba(255, 255, 255, 0.85);
-    border-radius: 15px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-    text-align: left; 
-    font-size: 14px; 
-}
-
-.register-box h1 {
-    margin-bottom: 20px;
-    font-size: 20px; 
+    max-width: 400px;
+    margin: 100px auto;
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    font-size: 1em; /* 相对单位，支持全局字体缩放 */
     color: #333;
+}
+
+/* ✅ 标题样式 */
+.register-box h2 {
     text-align: center;
+    margin-bottom: 30px;
+    font-size: 1.6em;
 }
 
-.register-box label {
-    display: block; 
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.register-box input[type="text"],
-.register-box input[type="password"] {
+/* ✅ 输入框样式 */
+.register-box input,
+.register-box select,
+.register-box textarea {
     width: 100%;
-    padding: 8px;
-    margin: 8px 0 16px 0; 
-    border: 1px solid #ddd;
-    border-radius: 5px;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1em; /* 避免写死 px */
     box-sizing: border-box;
-    font-size: 14px; 
 }
 
+/* ✅ 提交按钮样式 */
 .register-box button {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     background-color: #007bff;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
 }
 
 .register-box button:hover {
     background-color: #0056b3;
 }
 
-.register-box p {
-    font-size: 12px; 
-    color: #666;
-}
-
-ul {
-    margin: 10px 0 20px 20px; 
-    font-size: 12px;
-    color: #666;
+/* ✅ 响应式优化（可选） */
+@media screen and (max-width: 480px) {
+    .register-box {
+        margin: 50px 20px;
+        padding: 20px;
+    }
 }

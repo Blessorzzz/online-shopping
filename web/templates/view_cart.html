@@ -44,8 +44,8 @@
     {% endif %}
 
     {% if cart_items %}
-    <section aria-label="{% trans 'Cart Items Table' %}">
-        <table role="table">
+    <section aria-label="{% trans 'Cart Items Table' %}" style="overflow-x: auto;">
+        <table role="table" class="cart-table">
             <thead>
                 <tr>
                     <th scope="col">{% trans "Product" %}</th>
@@ -75,11 +75,11 @@
                               class="quantity-form"
                               aria-label="{% trans 'Update quantity for' %} {{ item.product.product_name }}">
                             {% csrf_token %}
-                            <button type="submit" name="action" value="decrease" class="quantity-button"
+                            <button type="submit" name="action" value="decrease" class="quantity-button mobility-btn"
                                     aria-label="{% trans 'Decrease quantity of' %} {{ item.product.product_name }}">−</button>
                             <input type="number" name="quantity" value="{{ item.quantity }}" min="1"
                                    class="quantity-input" required aria-label="{% trans 'Current quantity' %}">
-                            <button type="submit" name="action" value="increase" class="quantity-button"
+                            <button type="submit" name="action" value="increase" class="quantity-button mobility-btn"
                                     aria-label="{% trans 'Increase quantity of' %} {{ item.product.product_name }}">+</button>
                         </form>
                     </td>
@@ -91,7 +91,7 @@
                     <td>
                         <form method="POST" action="{% url 'remove_from_cart' item.id %}">
                             {% csrf_token %}
-                            <button type="submit" class="remove-button"
+                            <button type="submit" class="remove-button mobility-btn"
                                     aria-label="{% trans 'Remove' %} {{ item.product.product_name }}">
                                 {% trans "Remove" %}
                             </button>
@@ -108,7 +108,7 @@
 
         <form action="{% url 'checkout' %}" method="post">
             {% csrf_token %}
-            <button type="submit" class="btn btn-success"
+            <button type="submit" class="btn btn-success mobility-btn"
                     aria-label="{% trans 'Proceed to checkout, total amount' %} ${{ total_amount }}">
                 {% trans "Checkout" %}
             </button>

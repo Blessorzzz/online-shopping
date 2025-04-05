@@ -1,9 +1,10 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static i18n %}
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/register.css' %}">
-{% endblock extra_css %}
 
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/register.css' %}">
+{% endblock %}
+{% block body_class %}register-page{% endblock %}
 {% block content %}
 <main role="main" aria-label="{% trans 'User Registration Page' %}">
 <div class="register-container">

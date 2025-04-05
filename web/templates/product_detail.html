@@ -72,7 +72,7 @@
                 <form method="POST" action="{% url 'add_to_cart' product.product_id %}">
                     {% csrf_token %}
                     <button type="submit"
-                            class="buy-btn"
+                            class="buy-btn mobility-btn"
                             aria-label="{% trans 'Add to cart' %} {{ product.product_name }}"
                             {% if product.stock_quantity == 0 %}disabled{% endif %}>
                         🛒 {% trans "Add to Cart" %}
@@ -99,7 +99,7 @@
         <div class="sort-controls">
             <form method="get" class="sort-form">
                 <div class="select-wrapper">
-                    <select name="sort" id="sort" class="styled-select" onchange="this.form.submit()">
+                    <select name="sort" id="sort" class="styled-select mobility-control" onchange="this.form.submit()">
                         <option value="recent" {% if current_sort == 'recent' %}selected{% endif %}>
                             {% trans "Most Recent" %}
                         </option>
@@ -224,11 +224,6 @@
         document.querySelectorAll('.vote-btn').forEach(button => {
             button.addEventListener('click', async (e) => {
                 e.preventDefault();
-                
-                {% if not request.user.is_authenticated %}
-                    window.location.href = "{% url 'login' %}?next={{ request.path }}";
-                    return;
-                {% endif %}
 
                 const reviewId = button.dataset.reviewId;
                 const voteType = button.dataset.voteType;
