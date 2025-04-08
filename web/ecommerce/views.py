@@ -1,16 +1,26 @@
 # ecommerce/views.py
-from glob import escape
-from itertools import product
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views.generic import ListView, DetailView, UpdateView
 from django.db.models import Q, Avg, Count
-import requests
+from django.template.loader import render_to_string
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
+
 from .models import KeywordSearchHistory, Product, SynonymCache
-from shoppingcart.models import ShoppingCart  # 引用购物车模型
+from shoppingcart.models import ShoppingCart
 from review.models import Review
 from forums.models import ForumPost
+
+import requests
+import json
+import re
+import jieba
+import jieba.analyse
+import jieba.posseg as pseg
+from bs4 import BeautifulSoup
+from glob import escape
 
 # 首页视图，显示商品列表
 class HomePageView(ListView):
@@ -188,17 +198,6 @@ def search_products(request):
                 print(f"序列搜索处理错误: {e}")
     
     return render(request, 'search_results.html', search_context)
-
-import requests
-from bs4 import BeautifulSoup
-import json
-import re
-import jieba
-import jieba.analyse
-import jieba.posseg as pseg  # 导入词性标注模块
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_http_methods
 
 # 确保jieba加载完成
 jieba.initialize()
@@ -397,10 +396,6 @@ def extract_keywords(request):
             'error': str(e)
         })
 
-from django.http import JsonResponse
-from django.template.loader import render_to_string
-from django.db.models import Q
-from .models import Product  
 def ajax_search_products(request):
     query = request.GET.get('q', '')
     products = Product.objects.filter(is_active=True)
