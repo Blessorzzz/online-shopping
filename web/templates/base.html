@@ -223,21 +223,7 @@
             background-color: #ede7f6;
             color: #5e35b1;
           }
-          /* Filter Button */
-        .filter-btn {
-            padding: 8px 12px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-left: 10px;
-        }
-
-        .filter-btn:hover {
-            background-color: #0056b3;
-        }
-
+        
         /* Filter Pop-Up */
         .filter-popup {
             position: fixed;
@@ -249,36 +235,65 @@
             border-radius: 8px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             z-index: 1000;
-            width: 300px;
+            width: 500px; /* Expanded width */
             display: flex;
             flex-direction: column;
             gap: 15px;
         }
-
-        .filter-popup.hidden {
-            display: none;
+        
+        /* Flex container for sliders and calculation info */
+        .filter-options {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            align-items: flex-start;
         }
-
-        .filter-popup h3 {
-            margin: 0;
-            font-size: 1.5rem;
-            text-align: center;
+        
+        /* Weight Inputs Section */
+        .weight-inputs {
+            flex: 1;
+            max-width: 70%; /* Adjust as necessary */
         }
-
-        .filter-popup label {
-            font-size: 1rem;
-            margin-bottom: 5px;
+        
+        /* Calculation Info on the Right Side */
+        .calculation-info {
+            max-width: 30%; /* Adjust the width to take less space */
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
-
-        .filter-popup input[type="range"] {
-            width: 100%;
+        
+        .calculation-info h5 {
+            margin-top: 0;
         }
-
-        .filter-popup span {
-            font-size: 0.9rem;
-            color: #555;
+        
+        .calculation-info ul {
+            list-style: none;
+            padding-left: 0;
         }
-
+        
+        .calculation-info li {
+            margin-bottom: 8px;
+        }
+        
+        /* Filter Button */
+        .filter-btn {
+            padding: 8px 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        
+        .filter-btn:hover {
+            background-color: #0056b3;
+        }
+        
+        /* Apply Filter Button */
         .apply-filter-btn {
             padding: 10px;
             background-color: #28a745;
@@ -287,11 +302,12 @@
             border-radius: 5px;
             cursor: pointer;
         }
-
+        
         .apply-filter-btn:hover {
             background-color: #218838;
         }
-
+        
+        /* Close Filter Button */
         .close-filter-btn {
             padding: 10px;
             background-color: #dc3545;
@@ -300,9 +316,13 @@
             border-radius: 5px;
             cursor: pointer;
         }
-
+        
         .close-filter-btn:hover {
             background-color: #c82333;
+        }
+        
+        .hidden {
+            display: none;
         }
     </style>
 </head>
@@ -398,73 +418,127 @@
 
     <div class="search-bar-wrapper">
         <form method="get" action="{% url 'home' %}" id="search-form" class="search-form" role="search" aria-label="{% trans 'Search Products' %}">
+            <!-- Product Search Input -->
             <input type="text" name="q" id="search-input" placeholder="{% trans 'Search product' %}" aria-label="{% trans 'Search product' %}">
+        
+            <!-- Submit Search Button -->
             <button type="submit" aria-label="{% trans 'Submit search' %}">{% trans 'Search' %}</button>
-            <!-- 添加语音搜索按钮 -->
+        
+            <!-- Voice Search Button -->
             <button type="button" id="voice-search-button" class="voice-search-btn" aria-label="{% trans 'Voice Search' %}">
                 <i class="fas fa-microphone"></i>
             </button>
-            <!-- Add Open Filter Button -->
+        
+            <!-- Open Filter Button -->
             <button type="button" id="open-filter-button" class="filter-btn" aria-label="{% trans 'Open Filter' %}">{% trans 'Open Filter' %}</button>
         </form>
-            <!-- 语音识别状态显示 -->
-            <div id="voice-status" class="voice-status"></div>
+        <!-- Voice Status Display -->
+        <div id="voice-status" class="voice-status"></div>
     </div>
+    
     <!-- Filter Pop-Up Menu -->
     <div id="filter-popup" class="filter-popup hidden">
         <h3>{% trans "Search by Safety Metrics" %}</h3>
         <form id="filter-form" method="get" action="{% url 'home' %}">
-            <label for="mhi-weight">{% trans "Material Hazard Index (MHI)" %}</label>
-            <input type="range" id="mhi-weight" name="mhi_weight" min="0" max="100" value="{{ mhi_weight|default:25 }}">
-            <span id="mhi-value">{{ mhi_weight|default:25 }}</span>%
-
-            <label for="acr-weight">{% trans "Age Compliance Risk (ACR)" %}</label>
-            <input type="range" id="acr-weight" name="acr_weight" min="0" max="100" value="{{ acr_weight|default:35 }}">
-            <span id="acr-value">{{ acr_weight|default:35 }}</span>%
-
-            <label for="vhd-weight">{% trans "Visual Hazard Detection (VHD)" %}</label>
-            <input type="range" id="vhd-weight" name="vhd_weight" min="0" max="100" value="{{ vhd_weight|default:30 }}">
-            <span id="vhd-value">{{ vhd_weight|default:30 }}</span>%
-
-            <label for="ics-weight">{% trans "Information Completeness Score (ICS)" %}</label>
-            <input type="range" id="ics-weight" name="ics_weight" min="0" max="100" value="{{ ics_weight|default:10 }}">
-            <span id="ics-value">{{ ics_weight|default:10 }}</span>%
-
+            <!-- Filter Options and Sliders Section -->
+            <div class="filter-options">
+                <!-- Sliders for MHI, ACR, VHD, ICS -->
+                <div class="weight-inputs">
+                    <label for="mhi-weight">{% trans "Material Hazard Index (MHI)" %}</label>
+                    <input type="range" id="mhi-weight" name="mhi_weight" min="0" max="100" value="{{ mhi_weight|default:25 }}" oninput="updateWeightValue('mhi-weight', 'mhi-value')">
+                    <span id="mhi-value">{{ mhi_weight|default:25 }}</span>%
+        
+                    <label for="acr-weight">{% trans "Age Compliance Risk (ACR)" %}</label>
+                    <input type="range" id="acr-weight" name="acr_weight" min="0" max="100" value="{{ acr_weight|default:35 }}" oninput="updateWeightValue('acr-weight', 'acr-value')">
+                    <span id="acr-value">{{ acr_weight|default:35 }}</span>%
+        
+                    <label for="vhd-weight">{% trans "Visual Hazard Detection (VHD)" %}</label>
+                    <input type="range" id="vhd-weight" name="vhd_weight" min="0" max="100" value="{{ vhd_weight|default:30 }}" oninput="updateWeightValue('vhd-weight', 'vhd-value')">
+                    <span id="vhd-value">{{ vhd_weight|default:30 }}</span>%
+        
+                    <label for="ics-weight">{% trans "Information Completeness Score (ICS)" %}</label>
+                    <input type="range" id="ics-weight" name="ics_weight" min="0" max="100" value="{{ ics_weight|default:10 }}" oninput="updateWeightValue('ics-weight', 'ics-value')">
+                    <span id="ics-value">{{ ics_weight|default:10 }}</span>%
+                </div>
+    
+                <!-- Calculation Info Positioned on the Right -->
+                <div class="calculation-info">
+                    <h5>{% trans 'How Search Results are Calculated' %}</h5>
+                    <p>{% trans 'The search results are calculated based on the following weighted metrics:' %}</p>
+                    <ul>
+                        <li>{% trans 'Material Hazard Index (MHI)' %}: <span id="calculated-mhi">{{ mhi_weight }}%</span></li>
+                        <li>{% trans 'Age Compliance Risk (ACR)' %}: <span id="calculated-acr">{{ acr_weight }}%</span></li>
+                        <li>{% trans 'Visual Hazard Detection (VHD)' %}: <span id="calculated-vhd">{{ vhd_weight }}%</span></li>
+                        <li>{% trans 'Information Completeness Score (ICS)' %}: <span id="calculated-ics">{{ ics_weight }}%</span></li>
+                    </ul>
+                </div>
+            </div>
+    
+            <!-- Child Age Inputs -->
+            <div class="child-age-inputs">
+                <label for="child_min_age">{% trans 'Child Min Age' %}</label>
+                <input type="number" id="child_min_age" name="child_min_age" min="0" max="100" placeholder="{% trans 'Enter Min Age' %}">
+                <label for="child_max_age">{% trans 'Child Max Age' %}</label>
+                <input type="number" id="child_max_age" name="child_max_age" min="0" max="100" placeholder="{% trans 'Enter Max Age' %}">
+            </div>
+        
+            <!-- Special Needs Input -->
+            <div class="special-needs-input">
+                <label for="special_needs">{% trans 'Special Needs' %}</label>
+                <textarea id="special_needs" name="special_needs" rows="3" placeholder="{% trans 'Specify any special needs' %}"></textarea>
+            </div>
+        
+            <!-- Submit Filter Button -->
             <button type="submit" class="apply-filter-btn">{% trans "Search" %}</button>
+        
+            <!-- Close Filter Button -->
             <button type="button" id="close-filter-button" class="close-filter-btn">{% trans "Close" %}</button>
         </form>
     </div>
+    
+    
     <main id="content-wrapper" role="main" aria-label="{% trans 'Page Content' %}">
         {% block content %}{% endblock content %}
+    
+        <!-- Vendor Login Button if not authenticated -->
         {% if not request.user.is_authenticated and request.path == '/' %}
             <a href="{% url 'vendor_login' %}" class="vendor-login-button" aria-label="{% trans 'Log in as Vendor' %}">{% trans "Log in as Vendor" %}</a>
         {% endif %}
     </main>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const filterPopup = document.getElementById("filter-popup");
-            const openFilterButton = document.getElementById("open-filter-button");
-            const closeFilterButton = document.getElementById("close-filter-button");
-        
-            // Show the filter pop-up
-            openFilterButton.addEventListener("click", function () {
-                filterPopup.classList.remove("hidden");
-            });
-        
-            // Hide the filter pop-up
-            closeFilterButton.addEventListener("click", function () {
-                filterPopup.classList.add("hidden");
-            });
-        
-            // Update the displayed value for each slider
-            const sliders = document.querySelectorAll("input[type='range']");
-            sliders.forEach(slider => {
-                const valueDisplay = document.getElementById(`${slider.id}-value`);
-                slider.addEventListener("input", function () {
-                    valueDisplay.textContent = slider.value;
-                });
-            });
+        // Real-time update of weight sliders
+        function updateWeightValue(sliderId, displayId) {
+            const slider = document.getElementById(sliderId);
+            const display = document.getElementById(displayId);
+            display.textContent = slider.value; // Update the value in real-time
+            updateCalculation(); // Update the displayed calculation
+        }
+
+        // Update the calculation display dynamically
+        function updateCalculation() {
+            const mhi = document.getElementById('mhi-weight').value;
+            const acr = document.getElementById('acr-weight').value;
+            const vhd = document.getElementById('vhd-weight').value;
+            const ics = document.getElementById('ics-weight').value;
+
+            document.getElementById('calculated-mhi').textContent = mhi + '%';
+            document.getElementById('calculated-acr').textContent = acr + '%';
+            document.getElementById('calculated-vhd').textContent = vhd + '%';
+            document.getElementById('calculated-ics').textContent = ics + '%';
+        }
+
+        // Show filter popup when the user clicks the filter button
+        document.getElementById("open-filter-button").addEventListener("click", function() {
+            document.getElementById("filter-popup").classList.remove("hidden");
         });
+
+        // Close the filter popup
+        document.getElementById("close-filter-button").addEventListener("click", function() {
+            document.getElementById("filter-popup").classList.add("hidden");
+        });
+
+        // Call updateCalculation on page load to initialize the values
+        document.addEventListener("DOMContentLoaded", updateCalculation);
     </script>
     <script src="{% static 'js/accessibility.js' %}"></script>
     <script src="{% static 'js/font-size-control.js' %}"></script>

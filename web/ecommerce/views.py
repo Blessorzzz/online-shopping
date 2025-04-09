@@ -43,6 +43,17 @@ class HomePageView(ListView):
         vhd_weight = self.request.GET.get('vhd_weight')
         ics_weight = self.request.GET.get('ics_weight')
 
+        # Retrieve the child's age range
+        child_min_age = self.request.GET.get('child_min_age')
+        child_max_age = self.request.GET.get('child_max_age')
+
+        # Filter based on child's age range if both are provided
+        if child_min_age and child_max_age:
+            queryset = queryset.filter(
+                min_age__lte=child_max_age, 
+                max_age__gte=child_min_age
+            )
+
         # If weights are provided, perform a safety score search
         if mhi_weight and acr_weight and vhd_weight and ics_weight:
             try:
@@ -73,21 +84,28 @@ class HomePageView(ListView):
         for product in products:
             # Get reviews for the product
             reviews = Review.objects.filter(product=product, is_approved=True)
+            
             # Calculate the average rating for the product
             if reviews.exists():
                 average_rating = reviews.aggregate(Avg('rating'))['rating__avg']
             else:
                 average_rating = None
+            
             # Add the average rating to the product object for template use
             product.average_rating = average_rating
-        
+
         context['products'] = products
 
-        # Pass weights to the template for reuse
+        # Pass the weights to the template for reuse
         context['mhi_weight'] = self.request.GET.get('mhi_weight', '')
         context['acr_weight'] = self.request.GET.get('acr_weight', '')
         context['vhd_weight'] = self.request.GET.get('vhd_weight', '')
         context['ics_weight'] = self.request.GET.get('ics_weight', '')
+
+        # Pass the child's age range values to the template
+        context['child_min_age'] = self.request.GET.get('child_min_age', '')
+        context['child_max_age'] = self.request.GET.get('child_max_age', '')
+
         return context
 
 
