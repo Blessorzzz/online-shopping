@@ -223,6 +223,87 @@
             background-color: #ede7f6;
             color: #5e35b1;
           }
+          /* Filter Button */
+        .filter-btn {
+            padding: 8px 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .filter-btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Filter Pop-Up */
+        .filter-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .filter-popup.hidden {
+            display: none;
+        }
+
+        .filter-popup h3 {
+            margin: 0;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        .filter-popup label {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .filter-popup input[type="range"] {
+            width: 100%;
+        }
+
+        .filter-popup span {
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .apply-filter-btn {
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .apply-filter-btn:hover {
+            background-color: #218838;
+        }
+
+        .close-filter-btn {
+            padding: 10px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .close-filter-btn:hover {
+            background-color: #c82333;
+        }
     </style>
 </head>
 <body>
@@ -323,18 +404,68 @@
             <button type="button" id="voice-search-button" class="voice-search-btn" aria-label="{% trans 'Voice Search' %}">
                 <i class="fas fa-microphone"></i>
             </button>
+            <!-- Add Open Filter Button -->
+            <button type="button" id="open-filter-button" class="filter-btn" aria-label="{% trans 'Open Filter' %}">{% trans 'Open Filter' %}</button>
         </form>
             <!-- 语音识别状态显示 -->
             <div id="voice-status" class="voice-status"></div>
     </div>
-    
+    <!-- Filter Pop-Up Menu -->
+    <div id="filter-popup" class="filter-popup hidden">
+        <h3>{% trans "Search by Safety Metrics" %}</h3>
+        <form id="filter-form" method="get" action="{% url 'home' %}">
+            <label for="mhi-weight">{% trans "Material Hazard Index (MHI)" %}</label>
+            <input type="range" id="mhi-weight" name="mhi_weight" min="0" max="100" value="{{ mhi_weight|default:25 }}">
+            <span id="mhi-value">{{ mhi_weight|default:25 }}</span>%
+
+            <label for="acr-weight">{% trans "Age Compliance Risk (ACR)" %}</label>
+            <input type="range" id="acr-weight" name="acr_weight" min="0" max="100" value="{{ acr_weight|default:35 }}">
+            <span id="acr-value">{{ acr_weight|default:35 }}</span>%
+
+            <label for="vhd-weight">{% trans "Visual Hazard Detection (VHD)" %}</label>
+            <input type="range" id="vhd-weight" name="vhd_weight" min="0" max="100" value="{{ vhd_weight|default:30 }}">
+            <span id="vhd-value">{{ vhd_weight|default:30 }}</span>%
+
+            <label for="ics-weight">{% trans "Information Completeness Score (ICS)" %}</label>
+            <input type="range" id="ics-weight" name="ics_weight" min="0" max="100" value="{{ ics_weight|default:10 }}">
+            <span id="ics-value">{{ ics_weight|default:10 }}</span>%
+
+            <button type="submit" class="apply-filter-btn">{% trans "Search" %}</button>
+            <button type="button" id="close-filter-button" class="close-filter-btn">{% trans "Close" %}</button>
+        </form>
+    </div>
     <main id="content-wrapper" role="main" aria-label="{% trans 'Page Content' %}">
         {% block content %}{% endblock content %}
         {% if not request.user.is_authenticated and request.path == '/' %}
             <a href="{% url 'vendor_login' %}" class="vendor-login-button" aria-label="{% trans 'Log in as Vendor' %}">{% trans "Log in as Vendor" %}</a>
         {% endif %}
     </main>
-    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const filterPopup = document.getElementById("filter-popup");
+            const openFilterButton = document.getElementById("open-filter-button");
+            const closeFilterButton = document.getElementById("close-filter-button");
+        
+            // Show the filter pop-up
+            openFilterButton.addEventListener("click", function () {
+                filterPopup.classList.remove("hidden");
+            });
+        
+            // Hide the filter pop-up
+            closeFilterButton.addEventListener("click", function () {
+                filterPopup.classList.add("hidden");
+            });
+        
+            // Update the displayed value for each slider
+            const sliders = document.querySelectorAll("input[type='range']");
+            sliders.forEach(slider => {
+                const valueDisplay = document.getElementById(`${slider.id}-value`);
+                slider.addEventListener("input", function () {
+                    valueDisplay.textContent = slider.value;
+                });
+            });
+        });
+    </script>
     <script src="{% static 'js/accessibility.js' %}"></script>
     <script src="{% static 'js/font-size-control.js' %}"></script>
     <div id="large-caption" role="status" aria-live="polite"></div>

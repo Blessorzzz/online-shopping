@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views.generic import ListView, DetailView, UpdateView
-from django.db.models import Q, Avg, Count
+from django.db.models import Q, Avg, Count, F, ExpressionWrapper, FloatField
 from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
@@ -31,9 +31,38 @@ class HomePageView(ListView):
 
     def get_queryset(self):
         queryset = Product.objects.filter(is_active=True)
+
+        # Retrieve search query
         query = self.request.GET.get('q')
         if query:
             queryset = queryset.filter(product_name__icontains=query)
+
+        # Retrieve weights for the four metrics
+        mhi_weight = self.request.GET.get('mhi_weight')
+        acr_weight = self.request.GET.get('acr_weight')
+        vhd_weight = self.request.GET.get('vhd_weight')
+        ics_weight = self.request.GET.get('ics_weight')
+
+        # If weights are provided, perform a safety score search
+        if mhi_weight and acr_weight and vhd_weight and ics_weight:
+            try:
+                mhi_weight = int(mhi_weight)
+                acr_weight = int(acr_weight)
+                vhd_weight = int(vhd_weight)
+                ics_weight = int(ics_weight)
+
+                # Calculate weighted safety score dynamically
+                queryset = sorted(queryset, key=lambda product: (
+                    product.get_mhi_score() * mhi_weight / 100 +
+                    product.get_acr_score() * acr_weight / 100 +
+                    product.get_vhd_score() * vhd_weight / 100 +
+                    product.get_ics_score() * ics_weight / 100
+                ), reverse=True)
+
+            except ValueError:
+                # If weights are invalid, return an empty queryset
+                queryset = Product.objects.none()
+
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -53,6 +82,12 @@ class HomePageView(ListView):
             product.average_rating = average_rating
         
         context['products'] = products
+
+        # Pass weights to the template for reuse
+        context['mhi_weight'] = self.request.GET.get('mhi_weight', '')
+        context['acr_weight'] = self.request.GET.get('acr_weight', '')
+        context['vhd_weight'] = self.request.GET.get('vhd_weight', '')
+        context['ics_weight'] = self.request.GET.get('ics_weight', '')
         return context
 
 
