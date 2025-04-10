@@ -3,7 +3,7 @@ import uuid
 from vendor.models import Vendor
 from django.utils.translation import gettext_lazy as _
 from deep_translator import GoogleTranslator
-
+from django.conf import settings
 
 class Product(models.Model):
     STATUS_CHOICES = [
@@ -88,6 +88,12 @@ class Product(models.Model):
             'age_range': (self.min_age, self.max_age),
             'warnings': self.warnings
         })
+
+        # Get weights from settings (with defaults if not defined)
+        mhi_weight = getattr(settings, 'MHI_WEIGHT', 25) / 100
+        acr_weight = getattr(settings, 'ACR_WEIGHT', 35) / 100
+        vhd_weight = getattr(settings, 'VHD_WEIGHT', 30) / 100
+        ics_weight = getattr(settings, 'ICS_WEIGHT', 10) / 100
 
         # Final Safety Score
         self.safety_score = (

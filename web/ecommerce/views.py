@@ -7,6 +7,7 @@ from django.db.models import Q, Avg, Count, F, ExpressionWrapper, FloatField
 from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
+from django.conf import settings
 
 from .models import KeywordSearchHistory, Product, SynonymCache
 from shoppingcart.models import ShoppingCart
@@ -96,11 +97,11 @@ class HomePageView(ListView):
 
         context['products'] = products
 
-        # Pass the weights to the template for reuse
-        context['mhi_weight'] = self.request.GET.get('mhi_weight', '')
-        context['acr_weight'] = self.request.GET.get('acr_weight', '')
-        context['vhd_weight'] = self.request.GET.get('vhd_weight', '')
-        context['ics_weight'] = self.request.GET.get('ics_weight', '')
+        # Pass the weights to the template, using default values if not provided in the request
+        context['mhi_weight'] = self.request.GET.get('mhi_weight', getattr(settings, 'MHI_WEIGHT', 25))
+        context['acr_weight'] = self.request.GET.get('acr_weight', getattr(settings, 'ACR_WEIGHT', 35))
+        context['vhd_weight'] = self.request.GET.get('vhd_weight', getattr(settings, 'VHD_WEIGHT', 30))
+        context['ics_weight'] = self.request.GET.get('ics_weight', getattr(settings, 'ICS_WEIGHT', 10))
 
         # Pass the child's age range values to the template
         context['child_min_age'] = self.request.GET.get('child_min_age', '')
@@ -150,6 +151,51 @@ class ProductDetailView(DetailView):
         context['highlighted_review'] = highlighted_review  # Pass the highlighted review to the template
         context['featured_forums'] = featured_forums  # Pass featured forums to the template
         return context
+
+@require_http_methods(["POST"])
+def apply_custom_safety_filters(request):
+    """Handle the custom safety filter requests"""
+    if request.method == 'POST' and request.content_type == 'application/json':
+        try:
+            # Extract the weight profile from the form data
+            weight_profile = json.loads(request.POST.get('weight_profile', '{}'))
+            min_safety_score = float(request.POST.get('min_safety_score', 0))
+            critical_issue_filters = json.loads(request.POST.get('critical_issue_filters', '{}'))
+            
+            # Create the filter URL with parameters
+            filter_params = {
+                'mhi_weight': int(weight_profile.get('mhi', 0.25) * 100),
+                'acr_weight': int(weight_profile.get('acr', 0.35) * 100),
+                'vhd_weight': int(weight_profile.get('vhd', 0.30) * 100),
+                'ics_weight': int(weight_profile.get('ics', 0.10) * 100),
+            }
+            
+            # Add child age range if provided
+            min_age = request.POST.get('min_age')
+            max_age = request.POST.get('max_age')
+            if min_age and max_age:
+                filter_params['child_min_age'] = min_age
+                filter_params['child_max_age'] = max_age
+            
+            # Build the redirect URL
+            base_url = reverse('home')
+            redirect_url = f"{base_url}?{'&'.join([f'{k}={v}' for k, v in filter_params.items()])}"
+            
+            return JsonResponse({
+                'success': True,
+                'redirect_url': redirect_url
+            })
+            
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'error': str(e)
+            })
+    
+    return JsonResponse({
+        'success': False,
+        'error': 'Invalid request method'
+    })
     
 # 购物车页面视图
 class CartView(ListView):
