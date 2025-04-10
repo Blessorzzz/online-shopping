@@ -11,9 +11,37 @@ class ProductPhotoInline(admin.TabularInline):
 
 class ProductAdmin(admin.ModelAdmin):
     inlines = [ProductPhotoInline]
-    list_display = ('product_name', 'product_type', 'price', 'vendor')  # 显示产品名称、类型、价格和供应商
+    list_display = (
+        'product_name',
+        'product_type',
+        'price',
+        'vendor'
+        )  # 显示产品名称、类型、价格和供应商
     list_filter = ('product_type', 'vendor')  # 添加过滤器
     search_fields = ('product_name', 'vendor__username')  # 添加搜索字段
+    readonly_fields = (
+        'get_mhi_score',
+        'get_acr_score',
+        'get_vhd_score',
+        'get_ics_score',
+        'safety_score',
+    )
+
+    def get_mhi_score(self, obj):
+        return obj.get_mhi_score()
+    get_mhi_score.short_description = "MHI Score"
+
+    def get_acr_score(self, obj):
+        return obj.get_acr_score()
+    get_acr_score.short_description = "ACR Score"
+
+    def get_vhd_score(self, obj):
+        return obj.get_vhd_score()
+    get_vhd_score.short_description = "VHD Score"
+
+    def get_ics_score(self, obj):
+        return obj.get_ics_score()
+    get_ics_score.short_description = "ICS Score"
 
 class OrderItemInline(admin.TabularInline):
     model = OrderItem

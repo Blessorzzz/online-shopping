@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "vendor",
     'review',
     "forums",
+    'web',
 ]
 
 MIDDLEWARE = [

@@ -88,7 +88,7 @@ def vote_comment(request):
         vote_type = request.POST.get('vote_type') == 'true' 
 
         try:
-            comment = get_object_or_404(Comment, id=comment_id)
+            comment = get_object_or_404(id=comment_id)
             vote, created = Vote.objects.update_or_create(
                 user=request.user,
                 comment=comment,

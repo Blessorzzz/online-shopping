@@ -19,15 +19,7 @@ class Comment(models.Model):
     forum_post = models.ForeignKey('ForumPost', related_name='comments', on_delete=models.CASCADE)
     parent_comment = models.ForeignKey('self', null=True, blank=True, related_name='replies', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
-    likes = models.ManyToManyField(User, related_name='comment_likes', blank=True)
-    dislikes = models.ManyToManyField(User, related_name='comment_dislikes', blank=True)
     reports = models.JSONField(default=list, blank=True)
-
-    def like_count(self):
-        return self.likes.count()
-
-    def dislike_count(self):
-        return self.dislikes.count()
 
     def liked_users_ids(self):
         return list(self.votes.filter(vote_type=True).values_list('user__id', flat=True))

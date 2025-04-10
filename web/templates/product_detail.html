@@ -92,6 +92,32 @@
         </div>
     </section>
 
+    <!-- Radar Chart for Safety Factors -->
+    <section class="safety-section" aria-label="{% trans 'Product Safety' %}">
+        <h2>
+            {% trans "Safety Level" %}
+            <button id="toggle-safety-btn" class="toggle-btn" onclick="toggleSafetySection()">
+                {% trans "Collapse" %}
+            </button>
+            <span class="info-tooltip">
+                <span class="tooltip-icon">?</span>
+                <div class="tooltip-content">
+                    <p><strong>{% trans "Material Hazard Index (MHI)" %}:</strong> {% trans "Calculated based on the safety of materials used in the product." %}</p>
+                    <p><strong>{% trans "Age Compatibility Risk (ACR)" %}:</strong> {% trans "Assesses the risk for the target age range." %}</p>
+                    <p><strong>{% trans "Visual Hazard Detection (VHD)" %}:</strong> {% trans "Evaluates potential visual hazards like sharp edges or small parts." %}</p>
+                    <p><strong>{% trans "Information Completeness Score (ICS)" %}:</strong> {% trans "Measures the completeness of safety-related product information." %}</p>
+                    <p><strong>{% trans "Overall Safety Score" %}:</strong> {% trans "Calculated as a weighted average of the four safety factors." %}</p>
+                </div>
+            </span>
+        </h2>
+        <div id="safety-content" class="radar-chart-container">
+            <img src="data:image/png;base64,{{ radar_chart }}" alt="{% trans 'Safety radar chart for' %} {{ product.product_name }}">
+            <div class="safety-score-container">
+                <strong>{% trans "Safety Score:" %}</strong> <span class="safety-score">{{ safety_score }}</span>
+            </div>
+        </div>
+    </section>
+
 <!-- Customer Reviews Section -->
 <div id="customer-reviews" class="reviews-section">
     <div class="reviews-header">
@@ -221,6 +247,19 @@
 
 <!-- JS: 图片切换 + 星级渲染 -->
 <script>
+    function toggleSafetySection() {
+        const safetyContent = document.getElementById('safety-content');
+        const toggleButton = document.getElementById('toggle-safety-btn');
+
+        if (safetyContent.style.display === 'none') {
+            safetyContent.style.display = 'flex'; // Show the section
+            toggleButton.textContent = '{% trans "Collapse" %}';
+        } else {
+            safetyContent.style.display = 'none'; // Hide the section
+            toggleButton.textContent = '{% trans "Expand" %}';
+        }
+    }
+
     function switchImage(newSrc, element) {
         document.querySelector('.main-image').src = newSrc;
         document.querySelectorAll('.thumbnail-item').forEach(item => {
@@ -777,6 +816,99 @@
         background-color: #0056b3;
         box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
         transform: translateY(-2px);
+    }
 
+    .radar-chart-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+    .toggle-btn-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+    }
+    
+    /* Style the toggle button */
+    .toggle-btn {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 5px 10px; /* Reduced padding for a smaller width */
+        font-size: 0.8rem; /* Smaller font size */
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    
+    .toggle-btn:hover {
+        background-color: #0056b3;
+    }
+
+    .info-tooltip {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        margin-left: 10px;
+    }
+    
+    /* Tooltip icon */
+    .tooltip-icon {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background-color: #007bff;
+        color: white;
+        font-size: 14px;
+        font-weight: bold;
+        text-align: center;
+        line-height: 20px;
+        border-radius: 50%;
+        transition: background-color 0.3s ease;
+    }
+    
+    .tooltip-icon:hover {
+        background-color: #0056b3;
+    }
+    
+    /* Tooltip content */
+    .tooltip-content {
+        display: none;
+        position: absolute;
+        top: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: white;
+        color: #333;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 250px;
+        z-index: 10;
+        font-size: 0.9rem;
+        text-align: left;
+    }
+    
+    /* Show tooltip on hover */
+    .info-tooltip:hover .tooltip-content {
+        display: block;
+    }
+
+    .safety-score-container {
+        text-align: center;
+        margin-top: 15px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #333;
+    }
+    
+    .safety-score {
+        color: #007bff;
+        font-size: 1.5rem;
+    }
+
+    
 </style>
 {% endblock %}

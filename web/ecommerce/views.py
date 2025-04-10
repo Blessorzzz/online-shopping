@@ -1,16 +1,34 @@
 # ecommerce/views.py
-from glob import escape
-from itertools import product
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views.generic import ListView, DetailView, UpdateView
 from django.db.models import Q, Avg, Count
-import requests
-from .models import KeywordSearchHistory, Product, SynonymCache
-from shoppingcart.models import ShoppingCart  # 引用购物车模型
+from django.template.loader import render_to_string
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
+
+from .models import KeywordSearchHistory, Product, SynonymCache, calculate_material_risk, calculate_age_risk, calculate_info_score
+from shoppingcart.models import ShoppingCart
 from review.models import Review
 from forums.models import ForumPost
+
+import requests
+import json
+import re
+import jieba
+import jieba.analyse
+import jieba.posseg as pseg
+from bs4 import BeautifulSoup
+from glob import escape
+
+from itertools import product
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import io
+import base64
+
 
 # 首页视图，显示商品列表
 class HomePageView(ListView):
@@ -21,9 +39,49 @@ class HomePageView(ListView):
 
     def get_queryset(self):
         queryset = Product.objects.filter(is_active=True)
+
+        # Retrieve search query
         query = self.request.GET.get('q')
         if query:
             queryset = queryset.filter(product_name__icontains=query)
+
+        # Retrieve weights for the four metrics
+        mhi_weight = self.request.GET.get('mhi_weight')
+        acr_weight = self.request.GET.get('acr_weight')
+        vhd_weight = self.request.GET.get('vhd_weight')
+        ics_weight = self.request.GET.get('ics_weight')
+
+        # Retrieve the child's age range
+        child_min_age = self.request.GET.get('child_min_age')
+        child_max_age = self.request.GET.get('child_max_age')
+
+        # Filter based on child's age range if both are provided
+        if child_min_age and child_max_age:
+            queryset = queryset.filter(
+                min_age__lte=child_max_age, 
+                max_age__gte=child_min_age
+            )
+
+        # If weights are provided, perform a safety score search
+        if mhi_weight and acr_weight and vhd_weight and ics_weight:
+            try:
+                mhi_weight = int(mhi_weight)
+                acr_weight = int(acr_weight)
+                vhd_weight = int(vhd_weight)
+                ics_weight = int(ics_weight)
+
+                # Calculate weighted safety score dynamically
+                queryset = sorted(queryset, key=lambda product: (
+                    product.get_mhi_score() * mhi_weight / 100 +
+                    product.get_acr_score() * acr_weight / 100 +
+                    product.get_vhd_score() * vhd_weight / 100 +
+                    product.get_ics_score() * ics_weight / 100
+                ), reverse=True)
+
+            except ValueError:
+                # If weights are invalid, return an empty queryset
+                queryset = Product.objects.none()
+
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -34,16 +92,97 @@ class HomePageView(ListView):
         for product in products:
             # Get reviews for the product
             reviews = Review.objects.filter(product=product, is_approved=True)
+            
             # Calculate the average rating for the product
             if reviews.exists():
                 average_rating = reviews.aggregate(Avg('rating'))['rating__avg']
             else:
                 average_rating = None
+            
             # Add the average rating to the product object for template use
             product.average_rating = average_rating
-        
+
         context['products'] = products
+
+        # Pass the weights to the template for reuse
+        context['mhi_weight'] = self.request.GET.get('mhi_weight', '')
+        context['acr_weight'] = self.request.GET.get('acr_weight', '')
+        context['vhd_weight'] = self.request.GET.get('vhd_weight', '')
+        context['ics_weight'] = self.request.GET.get('ics_weight', '')
+
+        # Pass the child's age range values to the template
+        context['child_min_age'] = self.request.GET.get('child_min_age', '')
+        context['child_max_age'] = self.request.GET.get('child_max_age', '')
+
         return context
+    
+# Function to generate radar chart from safety factors
+def generate_radar_chart(safety_data):
+    import numpy as np
+    from matplotlib.lines import Line2D
+
+    # Safety categories (short forms for chart labels)
+    categories = list(safety_data.keys())  # Ensure all keys are included
+    values = list(safety_data.values())
+
+    # Full forms for the legend
+    full_forms = {
+        'MHI': 'Material Hazard Index (MHI)',
+        'ACR': 'Age Compatibility Risk (ACR)',
+        'VHD': 'Visual Hazard Detection (VHD)',
+        'ICS': 'Information Completeness Score (ICS)'
+    }
+
+    # Colors for each safety factor
+    colors = {
+        'MHI': 'blue',
+        'ACR': 'green',
+        'VHD': 'red',
+        'ICS': 'orange'
+    }
+
+    print("Safety Data:", safety_data)
+    print("Categories:", categories)
+    print("Full Forms:", full_forms)
+
+    # Create radar chart
+    fig, ax = plt.subplots(figsize=(6, 6), subplot_kw=dict(polar=True))
+    angles = np.linspace(0, 2 * np.pi, len(categories), endpoint=False).tolist()
+    values += values[:1]  # To close the radar chart
+    angles += angles[:1]  # To close the radar chart
+
+    # Plot the filled area for all safety factors
+    ax.fill(angles, values, color='blue', alpha=0.25, label='Safety Factors')
+    ax.plot(angles, values, color='blue', linewidth=2)
+
+    # Set the labels (short forms)
+    ax.set_xticks(angles[:-1])
+    ax.set_xticklabels(categories, fontsize=12)
+
+    # Add radial tick labels (score indicators)
+    ax.set_yticks([20, 40, 60, 80, 100])  # Example tick values
+    ax.set_yticklabels(['20', '40', '60', '80', '100'], fontsize=10, color='gray')
+
+    # Manually create legend handles
+    legend_handles = [
+        Line2D([0], [0], color='blue', lw=2, label='Material Hazard Index (MHI)'),
+        Line2D([0], [0], color='blue', lw=2, label='Age Compatibility Risk (ACR)'),
+        Line2D([0], [0], color='blue', lw=2, label='Visual Hazard Detection (VHD)'),
+        Line2D([0], [0], color='blue', lw=2, label='Information Completeness Score (ICS)')
+    ]
+
+    # Add the custom legend
+    ax.legend(handles=legend_handles, loc='upper right', bbox_to_anchor=(1.5, 1.1), fontsize=10)
+
+    # Save the plot to a BytesIO object and convert to base64
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png', bbox_inches='tight')  # Use bbox_inches to avoid clipping
+    buf.seek(0)
+    img_str = base64.b64encode(buf.read()).decode('utf-8')
+    buf.close()
+    plt.close(fig)  # Close the figure to free memory
+
+    return img_str
 
 
 # 商品详情页视图
@@ -82,11 +221,76 @@ class ProductDetailView(DetailView):
             comment_count=Count('comments')
         ).order_by('-comment_count')[:2]
 
+        # Use the Product model's methods to get safety factors and safety score
+        safety_factors = {
+            'MHI': product.get_mhi_score(),
+            'ACR': product.get_acr_score(),
+            'VHD': product.get_vhd_score(),
+            'ICS': product.get_ics_score(),
+        }
+
+        # Use the Product model's safety score
+        safety_score = product.safety_score
+
+        # Generate the radar chart using the safety factors
+        radar_chart = generate_radar_chart(safety_factors)
+
+        # Pass data to the template
         context['reviews'] = reviews
         context['current_sort'] = sort_by
-        context['highlighted_review'] = highlighted_review  # Pass the highlighted review to the template
-        context['featured_forums'] = featured_forums  # Pass featured forums to the template
+        context['highlighted_review'] = highlighted_review
+        context['featured_forums'] = featured_forums
+        context['safety_factors'] = safety_factors
+        context['safety_score'] = round(safety_score, 2)
+        context['radar_chart'] = radar_chart
         return context
+    
+@require_http_methods(["POST"])
+def apply_custom_safety_filters(request):
+    """Handle the custom safety filter requests"""
+    if request.method == 'POST' and request.is_ajax():
+        try:
+            # Extract the weight profile from the form data
+            weight_profile = json.loads(request.POST.get('weight_profile', '{}'))
+            min_safety_score = float(request.POST.get('min_safety_score', 0))
+            critical_issue_filters = json.loads(request.POST.get('critical_issue_filters', '{}'))
+            
+            # Create the filter URL with parameters
+            filter_params = {
+                'mhi_weight': int(weight_profile.get('mhi', 0.25) * 100),
+                'acr_weight': int(weight_profile.get('acr', 0.35) * 100),
+                'vhd_weight': int(weight_profile.get('vhd', 0.30) * 100),
+                'ics_weight': int(weight_profile.get('ics', 0.10) * 100),
+            }
+            
+            # Add child age range if provided
+            min_age = request.POST.get('min_age')
+            max_age = request.POST.get('max_age')
+            if min_age and max_age:
+                filter_params['child_min_age'] = min_age
+                filter_params['child_max_age'] = max_age
+            
+            # Build the redirect URL
+            base_url = reverse('home')
+            redirect_url = f"{base_url}?{'&'.join([f'{k}={v}' for k, v in filter_params.items()])}"
+            
+            return JsonResponse({
+                'success': True,
+                'redirect_url': redirect_url
+            })
+            
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'error': str(e)
+            })
+    
+    return JsonResponse({
+        'success': False,
+        'error': 'Invalid request method'
+    })
+    
+
     
 # 购物车页面视图
 class CartView(ListView):
