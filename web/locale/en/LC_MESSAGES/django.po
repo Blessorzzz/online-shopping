@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-27 22:26+0800\n"
+"POT-Creation-Date: 2025-04-10 11:37+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,14 +18,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: .\ecommerce\models.py:10 .\templates\product_detail.html:53
-#: .\templates\vendor\vendor_product_detail.html:16
+#: .\ecommerce\models.py:10 .\templates\product_detail.html:54
 msgid "Stock"
 msgstr ""
 
 #: .\ecommerce\models.py:11 .\ecommerce\models.py:37
-#: .\templates\product_detail.html:60 .\templates\product_detail.html:65
-#: .\templates\vendor\vendor_product_detail.html:18
+#: .\templates\product_detail.html:61 .\templates\product_detail.html:66
 msgid "Out of Stock"
 msgstr ""
 
@@ -63,7 +61,7 @@ msgstr ""
 msgid "Product Type"
 msgstr ""
 
-#: .\ecommerce\models.py:37 .\templates\vendor\vendor_product_detail.html:16
+#: .\ecommerce\models.py:37
 msgid "Available"
 msgstr ""
 
@@ -124,379 +122,408 @@ msgstr ""
 msgid "Toggle Reading Mode"
 msgstr ""
 
-#: .\templates\accessibility_info.html:81 .\templates\base.html:78
-#: .\templates\base.html:79
+#: .\templates\accessibility_info.html:81
+msgid "Toggle Speech Speed"
+msgstr ""
+
+#: .\templates\accessibility_info.html:82 .\templates\base.html:239
+#: .\templates\base.html:240
 msgid "Zoom In"
 msgstr ""
 
-#: .\templates\accessibility_info.html:82 .\templates\base.html:81
-#: .\templates\base.html:82
+#: .\templates\accessibility_info.html:83 .\templates\base.html:242
+#: .\templates\base.html:243
 msgid "Zoom Out"
 msgstr ""
 
-#: .\templates\accessibility_info.html:83 .\templates\base.html:84
+#: .\templates\accessibility_info.html:84 .\templates\base.html:245
 msgid "Toggle Cursor Mode"
 msgstr ""
 
-#: .\templates\accessibility_info.html:84 .\templates\base.html:87
+#: .\templates\accessibility_info.html:85 .\templates\base.html:248
 msgid "Toggle Crosshair Mode"
 msgstr ""
 
-#: .\templates\accessibility_info.html:85 .\templates\base.html:90
+#: .\templates\accessibility_info.html:86 .\templates\base.html:251
 msgid "Toggle Large Captions"
 msgstr ""
 
-#: .\templates\accessibility_info.html:86 .\templates\base.html:93
+#: .\templates\accessibility_info.html:87 .\templates\base.html:254
 msgid "Change Color Scheme"
 msgstr ""
 
-#: .\templates\accessibility_info.html:87 .\templates\base.html:99
+#: .\templates\accessibility_info.html:88 .\templates\base.html:260
 msgid "Toggle Sticky Mode"
 msgstr ""
 
-#: .\templates\accessibility_info.html:88 .\templates\base.html:96
+#: .\templates\accessibility_info.html:89 .\templates\base.html:257
 msgid "Reset Accessibility Settings"
 msgstr ""
 
-#: .\templates\accessibility_info.html:89 .\templates\base.html:109
-#: .\templates\base.html:110
+#: .\templates\accessibility_info.html:90 .\templates\base.html:271
+#: .\templates\base.html:272
 msgid "Exit Service"
 msgstr ""
 
-#: .\templates\accessibility_info.html:90
+#: .\templates\accessibility_info.html:91
 msgid "Show this Help Page"
 msgstr ""
 
-#: .\templates\accessibility_info.html:93
+#: .\templates\accessibility_info.html:94
 msgid "Back to Home"
 msgstr ""
 
-#: .\templates\base.html:7 .\templates\vendor\vendor_base.html:7
+#: .\templates\base.html:9 .\templates\vendor\vendor_base.html:7
 msgid "My Online Shop"
 msgstr ""
 
-#: .\templates\base.html:74
+#: .\templates\base.html:232
 msgid "Accessibility Toolbar"
 msgstr ""
 
-#: .\templates\base.html:75
+#: .\templates\base.html:233
 msgid "Toggle screen reader mode"
 msgstr ""
 
-#: .\templates\base.html:76
+#: .\templates\base.html:234
 msgid "Reading Mode"
 msgstr ""
 
-#: .\templates\base.html:84 .\templates\base.html:85
+#: .\templates\base.html:236
+msgid "Toggle Speech Rate"
+msgstr ""
+
+#: .\templates\base.html:237
+msgid "Speech Speed"
+msgstr ""
+
+#: .\templates\base.html:245 .\templates\base.html:246
 msgid "Cursor Mode"
 msgstr ""
 
-#: .\templates\base.html:87 .\templates\base.html:88
+#: .\templates\base.html:248 .\templates\base.html:249
 msgid "Crosshair Mode"
 msgstr ""
 
-#: .\templates\base.html:90 .\templates\base.html:91
+#: .\templates\base.html:251 .\templates\base.html:252
 msgid "Large Captions"
 msgstr ""
 
-#: .\templates\base.html:93 .\templates\base.html:94
+#: .\templates\base.html:254 .\templates\base.html:255
 msgid "Color Settings"
 msgstr ""
 
-#: .\templates\base.html:96 .\templates\base.html:97
+#: .\templates\base.html:257 .\templates\base.html:258
 #: .\templates\vendor\vendor_base.html:24
 msgid "Reset"
 msgstr ""
 
-#: .\templates\base.html:99 .\templates\base.html:100
+#: .\templates\base.html:260 .\templates\base.html:261
 msgid "Sticky Mode"
 msgstr ""
 
-#: .\templates\base.html:105
+#: .\templates\base.html:267
 msgid "Accessibility Info Page"
 msgstr ""
 
-#: .\templates\base.html:106
+#: .\templates\base.html:268
 msgid "Keyboard Shortcuts"
 msgstr ""
 
-#: .\templates\base.html:107
+#: .\templates\base.html:269
 msgid "Info"
 msgstr ""
 
-#: .\templates\base.html:109
+#: .\templates\base.html:271
 msgid "Exit Accessibility Service"
 msgstr ""
 
-#: .\templates\base.html:115
+#: .\templates\base.html:277
 msgid "Main Navigation"
 msgstr ""
 
-#: .\templates\base.html:117
+#: .\templates\base.html:279
 msgid "Home"
 msgstr ""
 
-#: .\templates\base.html:119 .\templates\base.html:124
+#: .\templates\base.html:281 .\templates\base.html:288
 msgid "Cart"
 msgstr ""
 
-#: .\templates\base.html:120 .\templates\base.html:125
+#: .\templates\base.html:282 .\templates\base.html:289
 msgid "Orders"
 msgstr ""
 
-#: .\templates\base.html:121 .\templates\review\my_reviews.html:6
-msgid "My Reviews"
+#: .\templates\base.html:283 .\templates\vendor\vendor_product_detail.html:9
+msgid "Reviews"
 msgstr ""
 
-#: .\templates\base.html:122 .\templates\base.html:127
-#: .\templates\register.html:12
+#: .\templates\base.html:284
+msgid "Forums"
+msgstr ""
+
+#: .\templates\base.html:285 .\templates\base.html:292
+msgid "Accessibility"
+msgstr ""
+
+#: .\templates\base.html:286 .\templates\base.html:291
+#: .\templates\register.html:13
 msgid "Register"
 msgstr ""
 
-#: .\templates\base.html:126 .\templates\registration\login.html:7
+#: .\templates\base.html:290 .\templates\registration\login.html:7
 #: .\templates\registration\login.html:28
 msgid "Login"
 msgstr ""
 
-#: .\templates\base.html:129
-msgid "Open Web Accessibility Toolbar"
+#: .\templates\base.html:298
+msgid "Font Size Controls"
 msgstr ""
 
-#: .\templates\base.html:129
-msgid "Web Accessibility"
+#: .\templates\base.html:299
+msgid "Increase font size"
 msgstr ""
 
-#: .\templates\base.html:133
-msgid "Search Products"
+#: .\templates\base.html:300
+msgid "Decrease font size"
 msgstr ""
 
-#: .\templates\base.html:134 .\templates\vendor\vendor_base.html:20
-msgid "Search product"
+#: .\templates\base.html:303
+msgid "Choose Accessibility Mode"
 msgstr ""
 
-#: .\templates\base.html:135
-msgid "Submit search"
+#: .\templates\base.html:304
+msgid "👤 User Mode"
 msgstr ""
 
-#: .\templates\base.html:135 .\templates\vendor\vendor_base.html:21
-msgid "Search"
+#: .\templates\base.html:305
+msgid "Elder Mode"
 msgstr ""
 
-#: .\templates\base.html:138
-msgid "Language Selector"
+#: .\templates\base.html:306
+msgid "Mobility Mode"
 msgstr ""
 
-#: .\templates\base.html:140
-msgid "Select Language"
+#: .\templates\base.html:307
+msgid "Default Mode"
 msgstr ""
 
-#: .\templates\base.html:141
+#: .\templates\base.html:312
 msgid "Language selection"
 msgstr ""
 
-#: .\templates\base.html:149 .\templates\vendor\vendor_base.html:30
+#: .\templates\base.html:320 .\templates\vendor\vendor_base.html:30
 msgid "Hi"
 msgstr ""
 
-#: .\templates\base.html:152 .\templates\vendor\vendor_base.html:33
+#: .\templates\base.html:323 .\templates\vendor\vendor_base.html:33
 msgid "Logout"
 msgstr ""
 
-#: .\templates\base.html:158
+#: .\templates\base.html:332
+msgid "Search Products"
+msgstr ""
+
+#: .\templates\base.html:333 .\templates\vendor\vendor_base.html:20
+msgid "Search product"
+msgstr ""
+
+#: .\templates\base.html:334
+msgid "Submit search"
+msgstr ""
+
+#: .\templates\base.html:334 .\templates\vendor\vendor_base.html:21
+msgid "Search"
+msgstr ""
+
+#: .\templates\base.html:335
+msgid "Voice Search"
+msgstr ""
+
+#: .\templates\base.html:344
 msgid "Page Content"
 msgstr ""
 
-#: .\templates\base.html:161
+#: .\templates\base.html:347
 msgid "Log in as Vendor"
 msgstr ""
 
-#: .\templates\home.html:4
+#: .\templates\home.html:39
 msgid "Product List"
 msgstr ""
 
-#: .\templates\home.html:9
+#: .\templates\home.html:43
 msgid "View details for"
 msgstr ""
 
-#: .\templates\home.html:11 .\templates\product_detail.html:22
+#: .\templates\home.html:45 .\templates\product_detail.html:23
 msgid "Thumbnail image of"
 msgstr ""
 
-#: .\templates\home.html:14
+#: .\templates\home.html:48
 msgid "Sold Out"
 msgstr ""
 
-#: .\templates\home.html:14
+#: .\templates\home.html:48
 msgid "SOLD OUT"
 msgstr ""
 
-#: .\templates\home.html:23 .\templates\product_detail.html:41
+#: .\templates\home.html:58 .\templates\product_detail.html:42
 #: .\templates\vendor\dashboard.html:11
-#: .\templates\vendor\vendor_order_detail.html:25
-#: .\templates\vendor\vendor_product_detail.html:14
-#: .\templates\view_cart.html:52
+#: .\templates\vendor\vendor_order_detail.html:25 .\templates\view_cart.html:53
 msgid "Price"
 msgstr ""
 
-#: .\templates\home.html:25
+#: .\templates\home.html:62
 msgid "Sales and stock information"
 msgstr ""
 
-#: .\templates\home.html:26
+#: .\templates\home.html:63
 msgid "Sales"
 msgstr ""
 
-#: .\templates\home.html:28
+#: .\templates\home.html:65
 msgid "Left"
 msgstr ""
 
-#: .\templates\home.html:33
+#: .\templates\home.html:70
 #, python-format
 msgid "Rated %(product.average_rating|floatformat:1)s out of 5"
 msgstr ""
 
-#: .\templates\home.html:36
+#: .\templates\home.html:73 .\templates\product_list_partial.html:37
 msgid "No reviews yet"
 msgstr ""
 
-#: .\templates\home.html:44
+#: .\templates\home.html:81
 msgid "Pagination"
 msgstr ""
 
-#: .\templates\home.html:47
+#: .\templates\home.html:84
 msgid "First"
 msgstr ""
 
-#: .\templates\home.html:48
+#: .\templates\home.html:85
 msgid "Previous"
 msgstr ""
 
-#: .\templates\home.html:58
+#: .\templates\home.html:95
 msgid "Next"
 msgstr ""
 
-#: .\templates\home.html:59
+#: .\templates\home.html:96
 msgid "Last"
 msgstr ""
 
-#: .\templates\order_detail.html:5 .\templates\order_detail.html:16
+#: .\templates\order_detail.html:6 .\templates\order_detail.html:17
 msgid "Order Details"
 msgstr ""
 
-#: .\templates\order_detail.html:12
+#: .\templates\order_detail.html:13
 msgid "Order Detail Page"
 msgstr ""
 
-#: .\templates\order_detail.html:19
+#: .\templates\order_detail.html:20
 msgid "Order Information Section"
 msgstr ""
 
-#: .\templates\order_detail.html:20
+#: .\templates\order_detail.html:21
 msgid "P.O. Number:"
 msgstr ""
 
-#: .\templates\order_detail.html:21
+#: .\templates\order_detail.html:22
 #: .\templates\vendor\vendor_order_detail.html:7
 msgid "Purchase Date:"
 msgstr ""
 
-#: .\templates\order_detail.html:22
+#: .\templates\order_detail.html:23
 msgid "Shipping Address:"
 msgstr ""
 
-#: .\templates\order_detail.html:24
+#: .\templates\order_detail.html:25
 #: .\templates\vendor\vendor_order_detail.html:8
 msgid "Total Amount:"
 msgstr ""
 
-#: .\templates\order_detail.html:25
+#: .\templates\order_detail.html:26
 msgid "Total amount"
 msgstr ""
 
-#: .\templates\order_detail.html:28
+#: .\templates\order_detail.html:31
 #: .\templates\vendor\vendor_order_detail.html:9
 msgid "Status:"
 msgstr ""
 
-#: .\templates\order_detail.html:29
+#: .\templates\order_detail.html:32
 msgid "Current order status is"
 msgstr ""
 
-#: .\templates\order_detail.html:30 .\templates\order_list.html:84
-#: .\templates\order_list.html:119
+#: .\templates\order_detail.html:33 .\templates\order_list.html:85
+#: .\templates\order_list.html:118
 msgid "Pending"
 msgstr ""
 
-#: .\templates\order_detail.html:31 .\templates\order_list.html:85
-#: .\templates\order_list.html:120
+#: .\templates\order_detail.html:34 .\templates\order_list.html:86
+#: .\templates\order_list.html:119
 msgid "Shipped"
 msgstr ""
 
-#: .\templates\order_detail.html:32 .\templates\order_list.html:86
-#: .\templates\order_list.html:121
+#: .\templates\order_detail.html:35 .\templates\order_list.html:87
+#: .\templates\order_list.html:120
 msgid "Cancelled"
 msgstr ""
 
-#: .\templates\order_detail.html:33 .\templates\order_list.html:87
-#: .\templates\order_list.html:122
+#: .\templates\order_detail.html:36 .\templates\order_list.html:88
+#: .\templates\order_list.html:121
 msgid "Hold"
 msgstr ""
 
-#: .\templates\order_detail.html:34 .\templates\order_list.html:88
-#: .\templates\order_list.html:123
+#: .\templates\order_detail.html:37 .\templates\order_list.html:89
+#: .\templates\order_list.html:122
 msgid "Ticket Issued"
 msgstr ""
 
-#: .\templates\order_detail.html:35 .\templates\order_list.html:89
-#: .\templates\order_list.html:124
+#: .\templates\order_detail.html:38 .\templates\order_list.html:90
+#: .\templates\order_list.html:123
 msgid "Complete"
 msgstr ""
 
-#: .\templates\order_detail.html:36 .\templates\order_list.html:90
-#: .\templates\order_list.html:125
+#: .\templates\order_detail.html:39 .\templates\order_list.html:91
+#: .\templates\order_list.html:124
 msgid "Refunded"
 msgstr ""
 
-#: .\templates\order_detail.html:37 .\templates\order_list.html:91
-#: .\templates\order_list.html:126
+#: .\templates\order_detail.html:40 .\templates\order_list.html:92
+#: .\templates\order_list.html:125
 msgid "Delivered"
 msgstr ""
 
-#: .\templates\order_detail.html:44
+#: .\templates\order_detail.html:47
 msgid "Order Status Timeline"
 msgstr ""
 
-#: .\templates\order_detail.html:45
+#: .\templates\order_detail.html:48
 #: .\templates\vendor\vendor_order_detail.html:65
 msgid "Status History"
 msgstr ""
 
-#: .\templates\order_detail.html:58
+#: .\templates\order_detail.html:61
 #: .\templates\vendor\vendor_order_detail.html:78
 msgid "No status history available"
 msgstr ""
 
-#: .\templates\order_detail.html:64
-msgid "Items in This Order"
-msgstr ""
-
-#: .\templates\order_detail.html:65
+#: .\templates\order_detail.html:66
 msgid "Items in this order:"
 msgstr ""
 
-#: .\templates\order_detail.html:70 .\templates\order_list.html:106
-#: .\templates\vendor\dashboard.html:13
-#: .\templates\vendor\vendor_orders.html:15 .\templates\view_cart.html:55
-msgid "Actions"
-msgstr ""
-
-#: .\templates\order_detail.html:71 .\templates\view_cart.html:51
+#: .\templates\order_detail.html:71 .\templates\review\my_reviews.html:24
+#: .\templates\review\my_reviews.html:60 .\templates\view_cart.html:52
 msgid "Product"
 msgstr ""
 
 #: .\templates\order_detail.html:72
-#: .\templates\vendor\vendor_order_detail.html:24 .\templates\view_cart.html:53
-#: .\templates\view_cart.html:72
+#: .\templates\vendor\vendor_order_detail.html:24 .\templates\view_cart.html:54
+#: .\templates\view_cart.html:73
 msgid "Quantity"
 msgstr ""
 
@@ -505,159 +532,117 @@ msgid "Unit Price"
 msgstr ""
 
 #: .\templates\order_detail.html:74
-#: .\templates\vendor\vendor_order_detail.html:26 .\templates\view_cart.html:87
+#: .\templates\vendor\vendor_order_detail.html:26 .\templates\view_cart.html:88
 msgid "Subtotal"
 msgstr ""
 
-#: .\templates\order_detail.html:85
-msgid "Edit your review for"
-msgstr ""
-
-#: .\templates\order_detail.html:86 .\templates\review\edit_review.html:7
-msgid "Edit Review"
-msgstr ""
-
-#: .\templates\order_detail.html:90
-msgid "Add a review for"
-msgstr ""
-
-#: .\templates\order_detail.html:91
-msgid "Add Review"
-msgstr ""
-
-#: .\templates\order_detail.html:98
-msgid "View product detail for"
-msgstr ""
-
-#: .\templates\order_detail.html:113
-msgid "Back to order list"
-msgstr ""
-
-#: .\templates\order_detail.html:114
+#: .\templates\order_detail.html:93
 #: .\templates\vendor\vendor_order_detail.html:85
 msgid "Back to Orders"
 msgstr ""
 
-#: .\templates\order_list.html:5 .\templates\order_list.html:77
+#: .\templates\order_list.html:6 .\templates\order_list.html:78
 msgid "My Orders"
 msgstr ""
 
-#: .\templates\order_list.html:75
+#: .\templates\order_list.html:76
 msgid "Order List Page"
 msgstr ""
 
-#: .\templates\order_list.html:80
+#: .\templates\order_list.html:81
 msgid "Filter Orders By Status"
 msgstr ""
 
-#: .\templates\order_list.html:81
+#: .\templates\order_list.html:82
 msgid "Filter by status:"
 msgstr ""
 
-#: .\templates\order_list.html:82
+#: .\templates\order_list.html:83
 msgid "Order Status"
 msgstr ""
 
-#: .\templates\order_list.html:83
+#: .\templates\order_list.html:84
 msgid "All"
 msgstr ""
 
-#: .\templates\order_list.html:93
+#: .\templates\order_list.html:94
 msgid "Filter Orders"
 msgstr ""
 
-#: .\templates\order_list.html:93
+#: .\templates\order_list.html:94
 msgid "Filter"
 msgstr ""
 
-#: .\templates\order_list.html:97
+#: .\templates\order_list.html:98
 msgid "Order Table"
 msgstr ""
 
-#: .\templates\order_list.html:101 .\templates\vendor\vendor_orders.html:10
+#: .\templates\order_list.html:102 .\templates\vendor\vendor_orders.html:10
 msgid "P.O. Number"
 msgstr ""
 
-#: .\templates\order_list.html:102 .\templates\vendor\vendor_orders.html:11
+#: .\templates\order_list.html:103 .\templates\vendor\vendor_orders.html:11
 msgid "Purchase Date"
 msgstr ""
 
-#: .\templates\order_list.html:103 .\templates\vendor\vendor_orders.html:13
+#: .\templates\order_list.html:104 .\templates\vendor\vendor_orders.html:13
 msgid "Total Amount"
 msgstr ""
 
-#: .\templates\order_list.html:104 .\templates\vendor\vendor_orders.html:14
-#: .\templates\vendor\vendor_product_detail.html:18
+#: .\templates\order_list.html:105 .\templates\vendor\vendor_orders.html:14
 msgid "Status"
 msgstr ""
 
-#: .\templates\order_list.html:105 .\templates\order_list.html:133
-#: .\templates\product_detail.html:121
+#: .\templates\order_list.html:106 .\templates\order_list.html:132
+#: .\templates\product_detail.html:131
 msgid "Verified Purchase"
 msgstr ""
 
-#: .\templates\order_list.html:107
-msgid "Reviews"
-msgstr ""
-
-#: .\templates\order_list.html:113
+#: .\templates\order_list.html:112
 msgid "View details for order"
 msgstr ""
 
-#: .\templates\order_list.html:135
+#: .\templates\order_list.html:134
 msgid "Not Verified"
 msgstr ""
 
-#: .\templates\order_list.html:144
-msgid "Cancel order"
-msgstr ""
-
-#: .\templates\order_list.html:145
+#: .\templates\order_list.html:142
 msgid "Cancel"
 msgstr ""
 
-#: .\templates\order_list.html:154
-msgid "Add a review for order"
-msgstr ""
-
-#: .\templates\order_list.html:155
-msgid "Add a Review"
-msgstr ""
-
-#: .\templates\product_detail.html:5
+#: .\templates\product_detail.html:6
 msgid "Product Detail Page"
 msgstr ""
 
-#: .\templates\product_detail.html:11
+#: .\templates\product_detail.html:12
 msgid "Product Images"
 msgstr ""
 
-#: .\templates\product_detail.html:15
+#: .\templates\product_detail.html:16
 msgid "Main image of"
 msgstr ""
 
-#: .\templates\product_detail.html:18
+#: .\templates\product_detail.html:19
 msgid "Additional Product Images"
 msgstr ""
 
-#: .\templates\product_detail.html:28
+#: .\templates\product_detail.html:29
 msgid "Extra image of"
 msgstr ""
 
-#: .\templates\product_detail.html:37
+#: .\templates\product_detail.html:38
 msgid "Product Information"
 msgstr ""
 
-#: .\templates\product_detail.html:43
+#: .\templates\product_detail.html:44
 msgid "Product price"
 msgstr ""
 
-#: .\templates\product_detail.html:49
-#: .\templates\vendor\vendor_product_detail.html:11
+#: .\templates\product_detail.html:50
 msgid "Age Range"
 msgstr ""
 
-#: .\templates\product_detail.html:56
+#: .\templates\product_detail.html:57
 #, python-format
 msgid ""
 "\n"
@@ -665,72 +650,73 @@ msgid ""
 "                                        "
 msgstr ""
 
-#: .\templates\product_detail.html:63
+#: .\templates\product_detail.html:64
 #, python-format
 msgid "In Stock (%(qty)s Available)"
 msgstr ""
 
-#: .\templates\product_detail.html:76
+#: .\templates\product_detail.html:77
 msgid "Add to cart"
 msgstr ""
 
-#: .\templates\product_detail.html:78
+#: .\templates\product_detail.html:79
 msgid "Add to Cart"
 msgstr ""
 
-#: .\templates\product_detail.html:86
+#: .\templates\product_detail.html:87
 msgid "Product Description"
 msgstr ""
 
-#: .\templates\product_detail.html:87
+#: .\templates\product_detail.html:88
 msgid "Product Details"
 msgstr ""
 
-#: .\templates\product_detail.html:96
-msgid "Customer Reviews Section"
-msgstr ""
-
-#: .\templates\product_detail.html:97
+#: .\templates\product_detail.html:99
 msgid "Customer Reviews"
 msgstr ""
 
-#: .\templates\product_detail.html:102
-msgid "User Review by"
+#: .\templates\product_detail.html:105
+msgid "Most Recent"
 msgstr ""
 
-#: .\templates\product_detail.html:104
-msgid "rated this"
+#: .\templates\product_detail.html:108
+msgid "Most Helpful"
 msgstr ""
 
-#: .\templates\product_detail.html:109
-msgid "User review image"
-msgstr ""
-
-#: .\templates\product_detail.html:114
-msgid "Your browser does not support the video tag."
-msgstr ""
-
-#: .\templates\product_detail.html:117
+#: .\templates\product_detail.html:125
 msgid "Reviewed on"
 msgstr ""
 
-#: .\templates\product_detail.html:128
+#: .\templates\product_detail.html:173
+#: .\templates\vendor\vendor_product_detail.html:17
+msgid "Vendor Response"
+msgstr ""
+
+#: .\templates\product_detail.html:181
 msgid "No reviews yet. Be the first to review this product!"
 msgstr ""
 
-#: .\templates\register.html:8
+#: .\templates\product_detail.html:261
+msgid "Failed to submit vote. Please try again."
+msgstr ""
+
+#: .\templates\product_list_partial.html:43
+msgid "No products found matching your query."
+msgstr ""
+
+#: .\templates\register.html:9
 msgid "User Registration Page"
 msgstr ""
 
-#: .\templates\register.html:15
+#: .\templates\register.html:16
 msgid "Registration Form"
 msgstr ""
 
-#: .\templates\register.html:95
+#: .\templates\register.html:96
 msgid "Submit registration form"
 msgstr ""
 
-#: .\templates\register.html:96
+#: .\templates\register.html:97
 msgid "Sign up"
 msgstr ""
 
@@ -782,6 +768,10 @@ msgstr ""
 msgid "Submit Review"
 msgstr ""
 
+#: .\templates\review\edit_review.html:7 .\templates\review\my_reviews.html:85
+msgid "Edit Review"
+msgstr ""
+
 #: .\templates\review\edit_review.html:11
 msgid "Order ID:"
 msgstr ""
@@ -790,32 +780,48 @@ msgstr ""
 msgid "Update Review"
 msgstr ""
 
+#: .\templates\review\my_reviews.html:8
+msgid "My Reviews"
+msgstr ""
+
+#: .\templates\review\my_reviews.html:12
+msgid "⏳ Pending Reviews"
+msgstr ""
+
 #: .\templates\review\my_reviews.html:13
+msgid "✔️ Reviews Done"
+msgstr ""
+
+#: .\templates\review\my_reviews.html:23 .\templates\review\my_reviews.html:59
 msgid "Order ID"
 msgstr ""
 
-#: .\templates\review\my_reviews.html:14
-msgid "Products"
+#: .\templates\review\my_reviews.html:25 .\templates\review\my_reviews.html:63
+msgid "Action"
 msgstr ""
 
-#: .\templates\review\my_reviews.html:15
+#: .\templates\review\my_reviews.html:40
+msgid "Add Review"
+msgstr ""
+
+#: .\templates\review\my_reviews.html:49
+msgid "No pending reviews available."
+msgstr ""
+
+#: .\templates\review\my_reviews.html:61
 msgid "Rating"
 msgstr ""
 
-#: .\templates\review\my_reviews.html:16
+#: .\templates\review\my_reviews.html:62
 msgid "Comment"
 msgstr ""
 
-#: .\templates\review\my_reviews.html:17
-msgid "Created At"
-msgstr ""
-
-#: .\templates\review\my_reviews.html:54
-msgid "You have no reviews yet."
+#: .\templates\review\my_reviews.html:94
+msgid "No completed reviews available."
 msgstr ""
 
 #: .\templates\vendor\add_product.html:5
-#: .\templates\vendor\add_product.html:226 .\templates\vendor\dashboard.html:45
+#: .\templates\vendor\add_product.html:250 .\templates\vendor\dashboard.html:45
 msgid "Add Product"
 msgstr ""
 
@@ -824,31 +830,31 @@ msgstr ""
 msgid "Add Additional Images"
 msgstr ""
 
-#: .\templates\vendor\add_product.html:219
+#: .\templates\vendor\add_product.html:243
 #: .\templates\vendor\edit_product.html:270
 msgid "All fields must be filled out."
 msgstr ""
 
-#: .\templates\vendor\add_product.html:220
+#: .\templates\vendor\add_product.html:244
 #: .\templates\vendor\edit_product.html:271
 msgid "Price must be greater than zero."
 msgstr ""
 
-#: .\templates\vendor\add_product.html:221
+#: .\templates\vendor\add_product.html:245
 #: .\templates\vendor\edit_product.html:272
 msgid "Stock quantity cannot be negative."
 msgstr ""
 
-#: .\templates\vendor\add_product.html:222
+#: .\templates\vendor\add_product.html:246
 msgid "A thumbnail image must be selected."
 msgstr ""
 
-#: .\templates\vendor\add_product.html:223
+#: .\templates\vendor\add_product.html:247
 #: .\templates\vendor\edit_product.html:273
 msgid "Minimum age cannot be greater than maximum age."
 msgstr ""
 
-#: .\templates\vendor\add_product.html:230
+#: .\templates\vendor\add_product.html:254
 #: .\templates\vendor\edit_product.html:280
 #: .\templates\vendor\vendor_orders.html:56
 msgid "Back to Dashboard"
@@ -872,6 +878,11 @@ msgstr ""
 
 #: .\templates\vendor\dashboard.html:12
 msgid "Stock Quantity"
+msgstr ""
+
+#: .\templates\vendor\dashboard.html:13
+#: .\templates\vendor\vendor_orders.html:15 .\templates\view_cart.html:56
+msgid "Actions"
 msgstr ""
 
 #: .\templates\vendor\dashboard.html:30
@@ -988,43 +999,55 @@ msgstr ""
 msgid "No purchase orders available."
 msgstr ""
 
-#: .\templates\view_cart.html:34
+#: .\templates\vendor\vendor_product_detail.html:23
+msgid "Enter your response..."
+msgstr ""
+
+#: .\templates\vendor\vendor_product_detail.html:24
+msgid "Submit Response"
+msgstr ""
+
+#: .\templates\vendor\vendor_product_detail.html:30
+msgid "No reviews yet."
+msgstr ""
+
+#: .\templates\view_cart.html:35
 msgid "Shopping Cart Page"
 msgstr ""
 
-#: .\templates\view_cart.html:36
+#: .\templates\view_cart.html:37
 msgid "Your Shopping Cart"
 msgstr ""
 
-#: .\templates\view_cart.html:47
+#: .\templates\view_cart.html:48
 msgid "Cart Items Table"
 msgstr ""
 
-#: .\templates\view_cart.html:54 .\templates\view_cart.html:107
+#: .\templates\view_cart.html:55 .\templates\view_cart.html:107
 msgid "Total"
 msgstr ""
 
-#: .\templates\view_cart.html:63
+#: .\templates\view_cart.html:64
 msgid "View product details"
 msgstr ""
 
-#: .\templates\view_cart.html:68
+#: .\templates\view_cart.html:69
 msgid "Price per item"
 msgstr ""
 
-#: .\templates\view_cart.html:76
+#: .\templates\view_cart.html:77
 msgid "Update quantity for"
 msgstr ""
 
-#: .\templates\view_cart.html:79
+#: .\templates\view_cart.html:80
 msgid "Decrease quantity of"
 msgstr ""
 
-#: .\templates\view_cart.html:81
+#: .\templates\view_cart.html:82
 msgid "Current quantity"
 msgstr ""
 
-#: .\templates\view_cart.html:83
+#: .\templates\view_cart.html:84
 msgid "Increase quantity of"
 msgstr ""
 
@@ -1076,20 +1099,12 @@ msgstr ""
 msgid "Please enter your shipping address."
 msgstr ""
 
-#: .\web\settings.py:121
+#: .\web\settings.py:123
 msgid "English"
 msgstr ""
 
-#: .\web\settings.py:122
-msgid "Spanish"
-msgstr ""
-
-#: .\web\settings.py:123
-msgid "Japanese"
-msgstr ""
-
 #: .\web\settings.py:124
-msgid "Korean"
+msgid "Japanese"
 msgstr ""
 
 #: .\web\settings.py:125
