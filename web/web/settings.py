@@ -178,3 +178,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 CSRF_TRUSTED_ORIGINS = [
     'https://*.ngrok-free.app',
 ]
+
+# Default weights for safety score calculation
+MHI_WEIGHT = 25  # Material Hazard Index weight (%)
+ACR_WEIGHT = 35  # Age Compliance Risk weight (%)
+VHD_WEIGHT = 30  # Visual Hazard Detection weight (%)
+ICS_WEIGHT = 10  # Information Completeness Score weight (%)

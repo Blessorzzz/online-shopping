@@ -8,7 +8,7 @@ from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 
-from .models import KeywordSearchHistory, Product, SynonymCache, calculate_material_risk, calculate_age_risk, calculate_info_score
+from .models import KeywordSearchHistory, Product, SynonymCache
 from shoppingcart.models import ShoppingCart
 from review.models import Review
 from forums.models import ForumPost
@@ -231,6 +231,12 @@ class ProductDetailView(DetailView):
 
         # Use the Product model's safety score
         safety_score = product.safety_score
+
+        # Ensure safety_score is not None before rounding
+        if safety_score is not None:
+            safety_score = round(safety_score, 2)
+        else:
+            safety_score = 0  # Default value if safety_score is None
 
         # Generate the radar chart using the safety factors
         radar_chart = generate_radar_chart(safety_factors)

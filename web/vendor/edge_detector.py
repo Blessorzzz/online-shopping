@@ -58,20 +58,48 @@ class EdgeSharpnessAnalyzer:
         if product_id and safety_warning:
             try:
                 product = Product.objects.get(product_id=product_id)
-                
-                # Append the new warning to the existing safety_issues
-                if product.safety_issues:
-                    existing_issues = product.safety_issues.split(", ")  # Assuming issues are stored as a comma-separated string
-                else:
-                    existing_issues = []
+                print(f"Found product: {product.product_name}")
+                print(f"Current safety issues (before): {product.safety_issues}")
+                print(f"Type of safety_issues: {type(product.safety_issues)}")
 
-                if safety_warning not in existing_issues:
-                    existing_issues.append(safety_warning)
-                    product.safety_issues = ", ".join(existing_issues)  # Save back as a comma-separated string
-                    product.save()
-                    print(f"Updated safety warning for product {product.product_name}: {product.safety_issues}")
+                # Force initialize as a Python list
+                safety_issues = []
+                if product.safety_issues:
+                    # Try to handle various possible states
+                    if isinstance(product.safety_issues, list):
+                        safety_issues = product.safety_issues
+                    elif isinstance(product.safety_issues, str):
+                        # Handle case where it might be a JSON string
+                        try:
+                            import json
+                            safety_issues = json.loads(product.safety_issues)
+                            if not isinstance(safety_issues, list):
+                                safety_issues = []
+                        except:
+                            safety_issues = []
+                
+                # Add the new warning if not already present
+                if safety_warning not in safety_issues:
+                    safety_issues.append(safety_warning)
+                    
+                    # Explicitly set the field
+                    product.safety_issues = safety_issues
+                    
+                    # Force save and commit
+                    product.save(update_fields=['safety_issues'])
+                    
+                    # Verify the save worked by re-querying from DB
+                    refreshed_product = Product.objects.get(product_id=product_id)
+                    print(f"Updated safety issues (after save): {refreshed_product.safety_issues}")
+                    print(f"Type after save: {type(refreshed_product.safety_issues)}")
+                else:
+                    print(f"Safety warning '{safety_warning}' already exists in product safety issues.")
             except Product.DoesNotExist:
                 print(f"Product with ID {product_id} not found.")
+            except Exception as e:
+                print(f"Error updating safety issues: {str(e)}")
+                import traceback
+                traceback.print_exc()
 
         # Visualization
         if visualize:
