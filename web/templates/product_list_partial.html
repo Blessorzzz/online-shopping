@@ -1,5 +1,7 @@
 <!-- templates/product_list_partial.html -->
 {% load i18n %}
+{% load i18n currency_filters %}
+
 {% for product in products %}
 <div class="product-card">
     <div class="image-wrapper">
@@ -19,7 +21,7 @@
             </a>
         </h3>
         <div class="price-section">
-            <span class="current-price">¥{{ product.price }}</span>
+            <span class="current-price">{{ currency_symbol }}{{ product.price|mul:currency_rate }}</span>
         </div>
         <div class="sales-info">
             <span class="sales-count">Sales: 999+</span>

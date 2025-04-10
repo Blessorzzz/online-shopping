@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% load i18n %}
+{% load i18n currency_filters %}
+
 {% block content %}
     <!-- 新增：语音识别详细过程展示区域 -->
     {% comment %} <div id="voice-recognition-details" class="recognition-details" style="display: none;">
@@ -52,7 +54,9 @@
                     <a href="{% url 'product_detail' product.product_id %}">{{ product.product_name }}</a>
                 </h3>
                 <div class="price-section">
-                    <span class="current-price" aria-label="{% trans 'Price' %} ¥{{ product.price }}">¥{{ product.price }}</span>
+                    <span class="current-price" aria-label="{% trans 'Price' %} {{ currency_symbol }}{{ product.price|mul:currency_rate }}">
+                        {{ currency_symbol }}{{ product.price|mul:currency_rate }}
+                    </span>
                 </div>
                 <div class="sales-info" aria-label="{% trans 'Sales and stock information' %}">
                     <span class="sales-count">{% trans 'Sales' %}: 999+</span>

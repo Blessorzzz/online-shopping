@@ -2,6 +2,8 @@
 <html lang="{{ LANGUAGE_CODE }}">
 <head>
     {% load static i18n %}
+    {% load i18n currency_filters %}
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% trans "My Online Shop" %}{% endblock %}</title>

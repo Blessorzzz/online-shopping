@@ -74,6 +74,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 'django.template.context_processors.i18n',
+                "ecommerce.context_processors.currency_context",  # ✅ 加在这里
             ],
         },
     },
@@ -120,11 +121,17 @@ USE_L10N = True
 
 LANGUAGES = [
     ('en', _('English')),
-    ('es', _('Spanish')),
     ('ja', _('Japanese')),
-    ('ko', _('Korean')),
     ('zh-hans', _('Simplified Chinese')),  # ✅ 确保 Django 识别 `zh-hans`
 ]
+
+# 语言对应的货币符号与汇率（汇率以人民币为基准）
+LANGUAGE_CURRENCY_MAP = {
+    'en': {'symbol': '$', 'rate': 0.14},     # 美元
+    'ja': {'symbol': '¥', 'rate': 20.0},     # 日元
+    'zh-hans': {'symbol': '¥', 'rate': 1.0}, # 人民币
+}
+
 
 LANGUAGE_COOKIE_NAME = 'django_language'  
 LANGUAGE_COOKIE_AGE = 86400

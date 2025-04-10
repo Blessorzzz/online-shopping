@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load i18n %}
+{% load i18n currency_filters %}
 
 {% block content %}
 <main class="product-detail-container" role="main" aria-label="{% trans 'Product Detail Page' %}">
@@ -40,8 +41,8 @@
             <div class="price-section">
                 <span class="price-label">{% trans "Price" %}</span>
                 <span class="price"
-                      aria-label="{% trans 'Product price' %} ¥{{ product.price }}"
-                      tabindex="0">¥{{ product.price }}</span>
+                      aria-label="{% trans 'Product price' %} {{ currency_symbol }}{{ product.price|mul:currency_rate }}"
+                      tabindex="0">{{ currency_symbol }}{{ product.price|mul:currency_rate }}</span>
             </div>
 
             <div class="specs">

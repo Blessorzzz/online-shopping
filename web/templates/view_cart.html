@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static i18n %}
+{% load i18n currency_filters %}
 
 {% block head %}
     <link rel="stylesheet" href="{% static 'css/shoppingcart.css' %}">
@@ -65,8 +66,8 @@
                         </a>
                     </td>
 
-                    <td aria-label="{% trans 'Price per item' %} ${{ item.product.price }}" tabindex="0">
-                        ${{ item.product.price }}
+                    <td aria-label="{% trans 'Price per item' %} {{ currency_symbol }}{{ item.product.price|mul:currency_rate }}" tabindex="0">
+                        {{ currency_symbol }}{{ item.product.price|mul:currency_rate }}
                     </td>
 
                     <td aria-label="{% trans 'Quantity' %}: {{ item.quantity }}" tabindex="0">
@@ -84,10 +85,9 @@
                         </form>
                     </td>
 
-                    <td aria-label="{% trans 'Subtotal' %}: ${{ item.total_price }}" tabindex="0">
-                        ${{ item.total_price }}
+                    <td aria-label="{% trans 'Subtotal' %}: {{ currency_symbol }}{{ item.total_price|mul:currency_rate }}" tabindex="0">
+                        {{ currency_symbol }}{{ item.total_price|mul:currency_rate }}
                     </td>
-
                     <td>
                         <form method="POST" action="{% url 'remove_from_cart' item.id %}">
                             {% csrf_token %}
@@ -104,12 +104,12 @@
     </section>
 
     <section aria-label="{% trans 'Cart Summary and Checkout' %}">
-        <h3 aria-label="{% trans 'Cart Total Amount' %}">{% trans "Total" %}: ${{ total_amount }}</h3>
+        <h3 aria-label="{% trans 'Cart Total Amount' %}">{% trans "Total" %}: {{ currency_symbol }}{{ total_amount|mul:currency_rate }}</h3>
 
         <form action="{% url 'checkout' %}" method="post">
             {% csrf_token %}
             <button type="submit" class="btn btn-success mobility-btn"
-                    aria-label="{% trans 'Proceed to checkout, total amount' %} ${{ total_amount }}">
+                    aria-label="{% trans 'Proceed to checkout, total amount' %} {{ currency_symbol }}{{ total_amount|mul:currency_rate }}">
                 {% trans "Checkout" %}
             </button>
         </form>

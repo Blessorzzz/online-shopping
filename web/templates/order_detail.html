@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static i18n %}
+{% load i18n currency_filters %}
 
 {% block head %}
     <title>{% trans "Order Details" %}</title>
@@ -22,7 +23,9 @@
         <p><strong>{% trans "Shipping Address:" %}</strong> {{ order.shipping_address }}</p>
         <p>
             <strong>{% trans "Total Amount:" %}</strong>
-            <span class="total-amount" aria-label="{% trans 'Total amount' %}">${{ order.total_amount }}</span>
+            <span class="total-amount" aria-label="{% trans 'Total amount' %}">
+                {{ currency_symbol }}{{ order.total_amount|mul:currency_rate }}
+            </span>
         </p>
         <p>
             <strong>{% trans "Status:" %}</strong>
@@ -80,8 +83,8 @@
                     </a>
                 </td>
                 <td>{{ item.quantity }}</td>
-                <td>${{ item.price }}</td>
-                <td>${{ item.subtotal }}</td>
+                <td>{{ currency_symbol }}{{ item.price|mul:currency_rate }}</td>
+                <td>{{ currency_symbol }}{{ item.subtotal|mul:currency_rate }}</td>
             </tr>
             {% endfor %}
         </tbody>

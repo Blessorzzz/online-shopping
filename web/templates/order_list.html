@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static i18n %}
+{% load i18n currency_filters %}
 
 {% block head %}
     <title>{% trans "My Orders" %}</title>
@@ -110,7 +111,7 @@
                     role="button" aria-label="{% trans 'View details for order' %} {{ order.po_number }}">
                     <td>{{ order.po_number }}</td>
                     <td>{{ order.purchase_date|date:"DATETIME_FORMAT" }}</td>
-                    <td>${{ order.total_amount }}</td>
+                    <td>{{ currency_symbol }}{{ order.total_amount|mul:currency_rate }}</td>
                     <td class="status">
                         <span class="status-label status-{{ order.status }}" aria-label="{{ order.status|capfirst }}">
                             {% if order.status == 'pending' %}⏳ {% trans "Pending" %}
