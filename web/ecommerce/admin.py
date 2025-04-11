@@ -51,8 +51,8 @@ class ProductAdmin(admin.ModelAdmin):
             'classes': ('wide',),
         }),
         ('Hazard Detection', {
-            'fields': ('safety_issues',),
-            'description': 'Safety issues are used to calculate the Visual Hazard Detection (VHD) score and Age Compliance Risk (ACR) score.',
+            'fields': ('common_safety_issues', 'safety_issues'),
+            'description': 'Select common safety issues using checkboxes. Add any custom safety issues in JSON format below.',
             'classes': ('wide',),
         }),
         ('Safety Analysis', {
@@ -61,7 +61,6 @@ class ProductAdmin(admin.ModelAdmin):
             'description': 'Comprehensive safety analysis results. These fields are read-only and calculated automatically based on product information.'
         }),
     )
-
 
     def get_mhi_score(self, obj):
         """Display the Material Hazard Index (MHI) score with a progress bar."""

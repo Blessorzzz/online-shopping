@@ -79,7 +79,11 @@ class Product(models.Model):
                 self.safety_issues = detected_hazards
             else:
                 # Avoid duplicates
-                self.safety_issues = list(set(self.safety_issues + detected_hazards))
+                combined_issues = self.safety_issues.copy()
+                for hazard in detected_hazards:
+                    if hazard not in combined_issues:
+                        combined_issues.append(hazard)
+                self.safety_issues = combined_issues
 
             # Calculate the impact of safety issues on the safety score
             hazard_penalty = len(self.safety_issues) * 10  # Deduct 10 points per hazard
@@ -225,8 +229,15 @@ def calculate_age_risk(detected_hazards: list, labeled_age_range: tuple) -> floa
     min_age = labeled_age_range[0]
     risk_score = 0
 
+    # We need to handle both string hazards and dictionary hazards
     for hazard in detected_hazards:
-        cfg = AGE_HAZARD_MATRIX.get(hazard, {})
+        # Extract hazard key - may be a string or a dict with 'type'
+        hazard_key = hazard
+        if isinstance(hazard, dict) and 'type' in hazard:
+            hazard_key = hazard['type']
+            
+        # Now use the extracted key to look up in the matrix
+        cfg = AGE_HAZARD_MATRIX.get(hazard_key, {})
         if cfg and min_age < cfg['threshold_age']:
             age_gap = cfg['threshold_age'] - min_age
             risk_score += age_gap * cfg['weight'] * 15  # Amplification factor
