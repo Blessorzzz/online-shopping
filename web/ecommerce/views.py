@@ -88,13 +88,29 @@ class HomePageView(ListView):
             normalized_vhd_weight = default_vhd_weight
             normalized_ics_weight = default_ics_weight
 
-        # Sort products by the weighted safety score using the model's scoring methods
-        queryset = sorted(queryset, key=lambda product: (
-            product.get_mhi_score() * normalized_mhi_weight / 100 +
-            product.get_acr_score() * normalized_acr_weight / 100 +
-            product.get_vhd_score() * normalized_vhd_weight / 100 +
-            product.get_ics_score() * normalized_ics_weight / 100
-        ), reverse=True)
+        # Define a safe sorting function that handles None values
+        def calculate_safety_score(product):
+            # For virtual products, return a very low score or handle differently
+            if product.product_type != 'tangible':
+                # Return a value that will put virtual products at the end of the list
+                # when sorting in reverse=True order
+                return -1
+            
+            # For tangible products, safely calculate the weighted score
+            mhi_score = product.get_mhi_score() or 0
+            acr_score = product.get_acr_score() or 0
+            vhd_score = product.get_vhd_score() or 0
+            ics_score = product.get_ics_score() or 0
+            
+            return (
+                mhi_score * normalized_mhi_weight / 100 +
+                acr_score * normalized_acr_weight / 100 +
+                vhd_score * normalized_vhd_weight / 100 +
+                ics_score * normalized_ics_weight / 100
+            )
+
+        # Sort products using the safe calculation function
+        queryset = sorted(queryset, key=calculate_safety_score, reverse=True)
 
         return queryset
 
