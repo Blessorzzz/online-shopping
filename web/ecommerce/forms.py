@@ -1,6 +1,6 @@
 from django import forms
 from .models import Product
-from .mhi import get_material_options  # Import the function from your mhi module
+from .safety.mhi import get_material_options  # Import the function from your mhi module
 from django.contrib.admin.widgets import FilteredSelectMultiple
 import json
 

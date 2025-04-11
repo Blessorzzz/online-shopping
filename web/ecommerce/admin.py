@@ -3,7 +3,7 @@ from django.utils.html import format_html
 from .models import Product, ProductPhoto, ProductVideo
 from shoppingcart.models import Order, OrderItem
 from .forms import ProductForm
-from .mhi import get_material_risk_class, convert_mhi_to_score
+from .safety.mhi import get_material_risk_class, convert_mhi_to_score
 from django.utils.safestring import SafeString
 
 class ProductPhotoInline(admin.TabularInline):

@@ -5,8 +5,11 @@ from django.utils.translation import gettext_lazy as _
 from deep_translator import GoogleTranslator
 from django.conf import settings
 
-# Import the MHI module
-from .mhi import calculate_material_risk, get_material_summary_for_product, convert_mhi_to_score
+# Import the safety modules
+from .safety.mhi import calculate_material_risk, get_material_summary_for_product, convert_mhi_to_score
+from .safety.acr import calculate_age_risk, AGE_HAZARD_MATRIX
+from .safety.vhd import VisualSafetyInspector
+from .safety.ics import calculate_info_score
 
 class Product(models.Model):
     STATUS_CHOICES = [
@@ -69,7 +72,7 @@ class Product(models.Model):
             materials = [material.strip() for material in self.materials.split(',')] if self.materials else []
             mhi = calculate_material_risk(materials)
 
-            # Visual Hazard Detection (placeholder)
+            # Visual Hazard Detection
             visual_inspector = VisualSafetyInspector()
             visual_results = visual_inspector.analyze_image(self.thumbnail_image.path)
             detected_hazards = visual_results['hazards']
@@ -212,66 +215,3 @@ class KeywordSearchHistory(models.Model):
     
     def __str__(self):
         return self.original_text[:50]
-    
-
-# Age Hazard Matrix: hazard type and threshold based on age
-AGE_HAZARD_MATRIX = {
-    'small_parts': {'threshold_age': 3, 'weight': 0.8},
-    'sharp_edges': {'threshold_age': 4, 'weight': 0.9},
-    'long_cords': {'threshold_age': 6, 'weight': 0.6},
-    'toxic_paint': {'threshold_age': 8, 'weight': 0.7}
-}
-
-def calculate_age_risk(detected_hazards: list, labeled_age_range: tuple) -> float:
-    if not detected_hazards:
-        detected_hazards = []
-        
-    min_age = labeled_age_range[0]
-    risk_score = 0
-
-    # We need to handle both string hazards and dictionary hazards
-    for hazard in detected_hazards:
-        # Extract hazard key - may be a string or a dict with 'type'
-        hazard_key = hazard
-        if isinstance(hazard, dict) and 'type' in hazard:
-            hazard_key = hazard['type']
-            
-        # Now use the extracted key to look up in the matrix
-        cfg = AGE_HAZARD_MATRIX.get(hazard_key, {})
-        if cfg and min_age < cfg['threshold_age']:
-            age_gap = cfg['threshold_age'] - min_age
-            risk_score += age_gap * cfg['weight'] * 15  # Amplification factor
-
-    # Special rule for children under 3 years
-    if min_age < 3:
-        risk_score += (3 - min_age) * 25
-
-    return min(max(100 - risk_score, 0), 100)  # Scale: 0-100
-
-
-class VisualSafetyInspector:
-    def __init__(self):
-        self.hazard_rules = {
-            'small_part': {'max_size': 3.5, 'min_confidence': 0.7},
-            'sharp_edge': {'min_angle': 60, 'edge_length': 2.0},
-            'toxic_material': {'color_range': [(0, 50, 50), (70, 255, 255)]}
-        }
-
-    def analyze_image(self, img_path: str) -> dict:
-        results = {'hazards': [], 'measurements': {}}
-        # Placeholder for actual image analysis using OpenCV, etc.
-        return results
-
-
-SAFETY_INFO_REQUIREMENTS = {
-    'mandatory': ['materials', 'age_range', 'warnings', 'certification'],
-    'recommended': ['country_origin', 'wash_instructions', 'test_standards']
-}
-
-def calculate_info_score(product_data: dict) -> float:
-    mandatory_missing = [f for f in SAFETY_INFO_REQUIREMENTS['mandatory'] if not product_data.get(f)]
-    completeness = (
-        0.7 * (1 - len(mandatory_missing) / 4) +
-        0.3 * (sum(1 for f in SAFETY_INFO_REQUIREMENTS['recommended'] if product_data.get(f)) / 3)
-    )
-    return round(completeness * 100, 1)  # Scale from 0 to 100
