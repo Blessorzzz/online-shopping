@@ -118,32 +118,6 @@
         </div>
     </section>
 
-    <!-- Radar Chart for Safety Factors -->
-    <section class="safety-section" aria-label="{% trans 'Product Safety' %}">
-        <h2>
-            {% trans "Safety Level" %}
-            <button id="toggle-safety-btn" class="toggle-btn" onclick="toggleSafetySection()">
-                {% trans "Collapse" %}
-            </button>
-            <span class="info-tooltip">
-                <span class="tooltip-icon">?</span>
-                <div class="tooltip-content">
-                    <p><strong>{% trans "Material Hazard Index (MHI)" %}:</strong> {% trans "Calculated based on the safety of materials used in the product." %}</p>
-                    <p><strong>{% trans "Age Compatibility Risk (ACR)" %}:</strong> {% trans "Assesses the risk for the target age range." %}</p>
-                    <p><strong>{% trans "Visual Hazard Detection (VHD)" %}:</strong> {% trans "Evaluates potential visual hazards like sharp edges or small parts." %}</p>
-                    <p><strong>{% trans "Information Completeness Score (ICS)" %}:</strong> {% trans "Measures the completeness of safety-related product information." %}</p>
-                    <p><strong>{% trans "Overall Safety Score" %}:</strong> {% trans "Calculated as a weighted average of the four safety factors." %}</p>
-                </div>
-            </span>
-        </h2>
-        <div id="safety-content" class="radar-chart-container">
-            <img src="data:image/png;base64,{{ radar_chart }}" alt="{% trans 'Safety radar chart for' %} {{ product.product_name }}">
-            <div class="safety-score-container">
-                <strong>{% trans "Safety Score:" %}</strong> <span class="safety-score">{{ safety_score }}</span>
-            </div>
-        </div>
-    </section>
-
 <!-- Customer Reviews Section -->
 <div id="customer-reviews" class="reviews-section">
     <div class="reviews-header">
