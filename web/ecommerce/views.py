@@ -3,10 +3,11 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views.generic import ListView, DetailView, UpdateView
-from django.db.models import Q, Avg, Count
+from django.db.models import Q, Avg, Count, F, ExpressionWrapper, FloatField
 from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
+from django.conf import settings
 
 from .models import KeywordSearchHistory, Product, SynonymCache
 from shoppingcart.models import ShoppingCart
@@ -22,20 +23,22 @@ import jieba.posseg as pseg
 from bs4 import BeautifulSoup
 from glob import escape
 
+from matplotlib.lines import Line2D
 from itertools import product
 import matplotlib
-matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import io
 import base64
+import numpy as np
 
+matplotlib.use('Agg')
 
 # 首页视图，显示商品列表
 class HomePageView(ListView):
     model = Product
     template_name = 'home.html'
     context_object_name = 'products'
-    paginate_by = 8  # 每页显示的商品数
+    paginate_by = 8  # Number of products per page
 
     def get_queryset(self):
         queryset = Product.objects.filter(is_active=True)
@@ -45,11 +48,17 @@ class HomePageView(ListView):
         if query:
             queryset = queryset.filter(product_name__icontains=query)
 
-        # Retrieve weights for the four metrics
-        mhi_weight = self.request.GET.get('mhi_weight')
-        acr_weight = self.request.GET.get('acr_weight')
-        vhd_weight = self.request.GET.get('vhd_weight')
-        ics_weight = self.request.GET.get('ics_weight')
+        # Retrieve weights for the four metrics (using defaults from settings if not provided)
+        default_mhi_weight = getattr(settings, 'MHI_WEIGHT', 25)
+        default_acr_weight = getattr(settings, 'ACR_WEIGHT', 35)
+        default_vhd_weight = getattr(settings, 'VHD_WEIGHT', 30)
+        default_ics_weight = getattr(settings, 'ICS_WEIGHT', 10)
+        
+        # Get user-selected weights from request, or use defaults if not provided
+        mhi_weight = int(self.request.GET.get('mhi_weight', default_mhi_weight))
+        acr_weight = int(self.request.GET.get('acr_weight', default_acr_weight))
+        vhd_weight = int(self.request.GET.get('vhd_weight', default_vhd_weight))
+        ics_weight = int(self.request.GET.get('ics_weight', default_ics_weight))
 
         # Retrieve the child's age range
         child_min_age = self.request.GET.get('child_min_age')
@@ -58,57 +67,73 @@ class HomePageView(ListView):
         # Filter based on child's age range if both are provided
         if child_min_age and child_max_age:
             queryset = queryset.filter(
-                min_age__lte=child_max_age, 
+                min_age__lte=child_max_age,
                 max_age__gte=child_min_age
             )
 
-        # If weights are provided, perform a safety score search
-        if mhi_weight and acr_weight and vhd_weight and ics_weight:
-            try:
-                mhi_weight = int(mhi_weight)
-                acr_weight = int(acr_weight)
-                vhd_weight = int(vhd_weight)
-                ics_weight = int(ics_weight)
+        # Normalize weights to sum to 100%
+        total_weight = mhi_weight + acr_weight + vhd_weight + ics_weight
+        if total_weight > 0:
+            # Calculate normalized weights (each as a percentage of the total)
+            # Note: If all weights are already equal (e.g., all set to 25%), 
+            # they will remain the same after normalization
+            normalized_mhi_weight = (mhi_weight / total_weight) * 100
+            normalized_acr_weight = (acr_weight / total_weight) * 100
+            normalized_vhd_weight = (vhd_weight / total_weight) * 100
+            normalized_ics_weight = (ics_weight / total_weight) * 100
+        else:
+            # Use the default weights from settings if total_weight is 0
+            normalized_mhi_weight = default_mhi_weight
+            normalized_acr_weight = default_acr_weight
+            normalized_vhd_weight = default_vhd_weight
+            normalized_ics_weight = default_ics_weight
 
-                # Calculate weighted safety score dynamically
-                queryset = sorted(queryset, key=lambda product: (
-                    product.get_mhi_score() * mhi_weight / 100 +
-                    product.get_acr_score() * acr_weight / 100 +
-                    product.get_vhd_score() * vhd_weight / 100 +
-                    product.get_ics_score() * ics_weight / 100
-                ), reverse=True)
+        # Define a safe sorting function that handles None values
+        def calculate_safety_score(product):
+            # For virtual products, return a very low score or handle differently
+            if product.product_type != 'tangible':
+                # Return a value that will put virtual products at the end of the list
+                # when sorting in reverse=True order
+                return -1
+            
+            # For tangible products, safely calculate the weighted score
+            mhi_score = product.get_mhi_score() or 0
+            acr_score = product.get_acr_score() or 0
+            vhd_score = product.get_vhd_score() or 0
+            ics_score = product.get_ics_score() or 0
+            
+            return (
+                mhi_score * normalized_mhi_weight / 100 +
+                acr_score * normalized_acr_weight / 100 +
+                vhd_score * normalized_vhd_weight / 100 +
+                ics_score * normalized_ics_weight / 100
+            )
 
-            except ValueError:
-                # If weights are invalid, return an empty queryset
-                queryset = Product.objects.none()
+        # Sort products using the safe calculation function
+        queryset = sorted(queryset, key=calculate_safety_score, reverse=True)
 
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         products = context['products']
-        
+
         # Calculate average rating for each product
         for product in products:
-            # Get reviews for the product
             reviews = Review.objects.filter(product=product, is_approved=True)
-            
-            # Calculate the average rating for the product
             if reviews.exists():
                 average_rating = reviews.aggregate(Avg('rating'))['rating__avg']
             else:
                 average_rating = None
-            
-            # Add the average rating to the product object for template use
             product.average_rating = average_rating
 
         context['products'] = products
 
-        # Pass the weights to the template for reuse
-        context['mhi_weight'] = self.request.GET.get('mhi_weight', '')
-        context['acr_weight'] = self.request.GET.get('acr_weight', '')
-        context['vhd_weight'] = self.request.GET.get('vhd_weight', '')
-        context['ics_weight'] = self.request.GET.get('ics_weight', '')
+        # Pass the weights to the template, using default values if not provided in the request
+        context['mhi_weight'] = self.request.GET.get('mhi_weight', 25)
+        context['acr_weight'] = self.request.GET.get('acr_weight', 35)
+        context['vhd_weight'] = self.request.GET.get('vhd_weight', 30)
+        context['ics_weight'] = self.request.GET.get('ics_weight', 10)
 
         # Pass the child's age range values to the template
         context['child_min_age'] = self.request.GET.get('child_min_age', '')
@@ -241,20 +266,20 @@ class ProductDetailView(DetailView):
         # Generate the radar chart using the safety factors
         radar_chart = generate_radar_chart(safety_factors)
 
-        # Pass data to the template
+ 
         context['reviews'] = reviews
         context['current_sort'] = sort_by
-        context['highlighted_review'] = highlighted_review
-        context['featured_forums'] = featured_forums
+        context['highlighted_review'] = highlighted_review  # Pass the highlighted review to the template
+        context['featured_forums'] = featured_forums  # Pass featured forums to the template
         context['safety_factors'] = safety_factors
         context['safety_score'] = round(safety_score, 2)
         context['radar_chart'] = radar_chart
         return context
-    
+
 @require_http_methods(["POST"])
 def apply_custom_safety_filters(request):
     """Handle the custom safety filter requests"""
-    if request.method == 'POST' and request.is_ajax():
+    if request.method == 'POST' and request.content_type == 'application/json':
         try:
             # Extract the weight profile from the form data
             weight_profile = json.loads(request.POST.get('weight_profile', '{}'))
@@ -295,9 +320,73 @@ def apply_custom_safety_filters(request):
         'success': False,
         'error': 'Invalid request method'
     })
-    
 
-    
+# Function to generate radar chart from safety factors
+def generate_radar_chart(safety_data):
+
+    # Safety categories (short forms for chart labels)
+    categories = list(safety_data.keys())  # Ensure all keys are included
+    values = list(safety_data.values())
+
+    # Full forms for the legend
+    full_forms = {
+        'MHI': 'Material Hazard Index (MHI)',
+        'ACR': 'Age Compatibility Risk (ACR)',
+        'VHD': 'Visual Hazard Detection (VHD)',
+        'ICS': 'Information Completeness Score (ICS)'
+    }
+
+    # Colors for each safety factor
+    colors = {
+        'MHI': 'blue',
+        'ACR': 'green',
+        'VHD': 'red',
+        'ICS': 'orange'
+    }
+
+    print("Safety Data:", safety_data)
+    print("Categories:", categories)
+    print("Full Forms:", full_forms)
+
+    # Create radar chart
+    fig, ax = plt.subplots(figsize=(6, 6), subplot_kw=dict(polar=True))
+    angles = np.linspace(0, 2 * np.pi, len(categories), endpoint=False).tolist()
+    values += values[:1]  # To close the radar chart
+    angles += angles[:1]  # To close the radar chart
+
+    # Plot the filled area for all safety factors
+    ax.fill(angles, values, color='blue', alpha=0.25, label='Safety Factors')
+    ax.plot(angles, values, color='blue', linewidth=2)
+
+    # Set the labels (short forms)
+    ax.set_xticks(angles[:-1])
+    ax.set_xticklabels(categories, fontsize=12)
+
+    # Add radial tick labels (score indicators)
+    ax.set_yticks([20, 40, 60, 80, 100])  # Example tick values
+    ax.set_yticklabels(['20', '40', '60', '80', '100'], fontsize=10, color='gray')
+
+    # Manually create legend handles
+    legend_handles = [
+        Line2D([0], [0], color='blue', lw=2, label='Material Hazard Index (MHI)'),
+        Line2D([0], [0], color='blue', lw=2, label='Age Compatibility Risk (ACR)'),
+        Line2D([0], [0], color='blue', lw=2, label='Visual Hazard Detection (VHD)'),
+        Line2D([0], [0], color='blue', lw=2, label='Information Completeness Score (ICS)')
+    ]
+
+    # Add the custom legend
+    ax.legend(handles=legend_handles, loc='upper right', bbox_to_anchor=(1.5, 1.1), fontsize=10)
+
+    # Save the plot to a BytesIO object and convert to base64
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png', bbox_inches='tight')  # Use bbox_inches to avoid clipping
+    buf.seek(0)
+    img_str = base64.b64encode(buf.read()).decode('utf-8')
+    buf.close()
+    plt.close(fig)  # Close the figure to free memory
+
+    return img_str
+
 # 购物车页面视图
 class CartView(ListView):
     model = ShoppingCart
@@ -398,17 +487,6 @@ def search_products(request):
                 print(f"序列搜索处理错误: {e}")
     
     return render(request, 'search_results.html', search_context)
-
-import requests
-from bs4 import BeautifulSoup
-import json
-import re
-import jieba
-import jieba.analyse
-import jieba.posseg as pseg  # 导入词性标注模块
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_http_methods
 
 # 确保jieba加载完成
 jieba.initialize()
@@ -607,10 +685,6 @@ def extract_keywords(request):
             'error': str(e)
         })
 
-from django.http import JsonResponse
-from django.template.loader import render_to_string
-from django.db.models import Q
-from .models import Product  
 def ajax_search_products(request):
     query = request.GET.get('q', '')
     products = Product.objects.filter(is_active=True)

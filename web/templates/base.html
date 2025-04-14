@@ -259,7 +259,7 @@
         
         /* Calculation Info on the Right Side */
         .calculation-info {
-            max-width: 30%; /* Adjust the width to take less space */
+            max-width: 100%; /* Adjust the width to take less space */
             padding: 15px;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -722,111 +722,58 @@
     <!-- Enhanced Safety Filter Pop-Up -->
     <div id="safety-filter-popup" class="filter-popup hidden">
         <h3>{% trans "Custom Safety Search Filter" %}</h3>
-        
+
         <div class="weight-slider-container">
             <!-- MHI Weight Slider -->
             <div class="weight-category">
                 <label for="mhi-weight">{% trans "Material Hazard Index (MHI)" %}</label>
                 <div class="slider-container">
                     <input type="range" min="0" max="100" value="25" class="weight-slider" id="mhi-weight" 
-                           oninput="updateWeightDisplay('mhi-weight', 'mhi-value')">
+                        oninput="updateWeightDisplay('mhi-weight', 'mhi-value')">
                     <span id="mhi-value" class="weight-value">25%</span>
                 </div>
                 <p class="description">{% trans "Risk based on material composition (ISO 8124 standards)" %}</p>
             </div>
-            
+
             <!-- ACR Weight Slider -->
             <div class="weight-category">
                 <label for="acr-weight">{% trans "Age Compliance Risk (ACR)" %}</label>
                 <div class="slider-container">
                     <input type="range" min="0" max="100" value="35" class="weight-slider" id="acr-weight"
-                           oninput="updateWeightDisplay('acr-weight', 'acr-value')">
+                        oninput="updateWeightDisplay('acr-weight', 'acr-value')">
                     <span id="acr-value" class="weight-value">35%</span>
                 </div>
                 <p class="description">{% trans "Age-specific risk assessment for identified hazards" %}</p>
             </div>
-            
+
             <!-- VHD Weight Slider -->
             <div class="weight-category">
                 <label for="vhd-weight">{% trans "Visual Hazard Detection (VHD)" %}</label>
                 <div class="slider-container">
                     <input type="range" min="0" max="100" value="30" class="weight-slider" id="vhd-weight"
-                           oninput="updateWeightDisplay('vhd-weight', 'vhd-value')">
+                        oninput="updateWeightDisplay('vhd-weight', 'vhd-value')">
                     <span id="vhd-value" class="weight-value">30%</span>
                 </div>
                 <p class="description">{% trans "Physical dangers detected through visual inspection" %}</p>
             </div>
-            
+
             <!-- ICS Weight Slider -->
             <div class="weight-category">
                 <label for="ics-weight">{% trans "Information Completeness Score (ICS)" %}</label>
                 <div class="slider-container">
                     <input type="range" min="0" max="100" value="10" class="weight-slider" id="ics-weight"
-                           oninput="updateWeightDisplay('ics-weight', 'ics-value')">
+                        oninput="updateWeightDisplay('ics-weight', 'ics-value')">
                     <span id="ics-value" class="weight-value">10%</span>
                 </div>
                 <p class="description">{% trans "Quality of safety information disclosure" %}</p>
             </div>
         </div>
-        
-        <!-- Total Weight Display with Warning -->
-        <div class="total-weight-container">
-            <span>{% trans "Total Weight:" %} </span>
-            <span id="total-weight">100%</span>
-            <div id="weight-warning" class="weight-warning hidden">{% trans "Total weight must equal 100%" %}</div>
-        </div>
-        
-        <!-- Additional Filters Section -->
-        <div class="additional-filters">
-            <h4>{% trans "Additional Safety Filters" %}</h4>
-            
-            <!-- Minimum Safety Score -->
-            <div class="filter-row">
-                <label for="min-safety-score">{% trans "Minimum Safety Score:" %}</label>
-                <input type="number" id="min-safety-score" min="0" max="100" value="70">
-                <div class="safety-meter">
-                    <div class="safety-meter-fill" style="width: 70%"></div>
-                </div>
-            </div>
-            
-            <!-- Critical Issues Checkboxes -->
-            <div class="filter-row">
-                <label>{% trans "Critical Issues:" %}</label>
-                <div class="checkbox-group">
-                    <div>
-                        <input type="checkbox" id="filter-small-parts" class="hazard-filter" checked>
-                        <label for="filter-small-parts">{% trans "Small Parts" %}</label>
-                    </div>
-                    
-                    <div>
-                        <input type="checkbox" id="filter-sharp-edges" class="hazard-filter" checked>
-                        <label for="filter-sharp-edges">{% trans "Sharp Edges" %}</label>
-                    </div>
-                    
-                    <div>
-                        <input type="checkbox" id="filter-toxic-materials" class="hazard-filter" checked>
-                        <label for="filter-toxic-materials">{% trans "Toxic Materials" %}</label>
-                    </div>
-                    
-                    <div>
-                        <input type="checkbox" id="filter-long-cords" class="hazard-filter" checked>
-                        <label for="filter-long-cords">{% trans "Long Cords" %}</label>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Age Range Filter -->
-            <div class="filter-row">
-                <label for="age-range">{% trans "Child Age Range:" %}</label>
-                <div style="display: flex; gap: 10px; align-items: center;">
-                    <input type="number" id="min-age" min="0" max="18" value="0" style="width: 60px;">
-                    <span>-</span>
-                    <input type="number" id="max-age" min="0" max="18" value="12" style="width: 60px;">
-                    <span>{% trans "years" %}</span>
-                </div>
-            </div>
-        </div>
-        
+
+        <!-- Explanation of Weight Normalization -->
+        <p class="description">
+            {% trans "The weights you set will be automatically normalized to sum to 100%, maintaining their relative importance." %}
+        </p>
+
         <!-- Control Buttons -->
         <div class="filter-buttons">
             <button id="reset-filters" onclick="resetFilters()" class="close-filter-btn">
@@ -836,79 +783,24 @@
                 {% trans "Apply Filters" %}
             </button>
         </div>
-        
-        <!-- Info Section: Calculation Method -->
+
+        <!-- Update the explanation in the filter popup -->
         <div class="calculation-info" style="margin-top: 15px;">
             <h5>{% trans "How Safety Scores Are Calculated" %}</h5>
-            <p>{% trans "The weighted metrics are combined using the following formula:" %}</p>
-            <pre style="background: #f5f5f5; padding: 8px; border-radius: 4px; font-size: 0.9em;">Safety Score = (MHI × 0.25) + (ACR × 0.35) + (VHD × 0.30) + (ICS × 0.10)</pre>
-            <p>{% trans "Adjust the sliders to prioritize specific safety aspects based on your needs." %}</p>
+            <p>{% trans "The weighted metrics are normalized to always total 100% and combined using the following formula:" %}</p>
+            <pre style="background: #f5f5f5; padding: 8px; border-radius: 4px; font-size: 0.9em;">
+        Safety Score = (MHI × W₁) + (ACR × W₂) + (VHD × W₃) + (ICS × W₄)
+
+        Where: W₁ + W₂ + W₃ + W₄ = 100%
+            </pre>
+            <p>{% trans "The weights you set will be automatically normalized to sum to 100%, maintaining their relative importance." %}</p>
+            <p class="weight-note" style="font-size: 0.85em; color: #666;">{% trans "Example: Setting weights to 10, 20, 30, 40 will be normalized to 10%, 20%, 30%, 40%." %}</p>
+            <p class="weight-note" style="font-size: 0.85em; color: #666;">{% trans "Example: Setting weights to 70, 40, 80, 30 will be normalized to 31.8%, 18.2%, 36.4%, 13.6%." %}</p>
         </div>
-        
+
         <!-- Close Button (X) -->
         <button class="close-filter-btn" style="position: absolute; top: 10px; right: 10px; padding: 5px 10px; background: none; color: #333;">×</button>
     </div>
-    
-    <!-- Legacy Filter Pop-Up (keep for backward compatibility, can be removed later) -->
-    <div id="filter-popup" class="filter-popup hidden">
-        <h3>{% trans "Search by Safety Metrics" %}</h3>
-        <form id="filter-form" method="get" action="{% url 'home' %}">
-            <!-- Filter Options and Sliders Section -->
-            <div class="filter-options">
-                <!-- Sliders for MHI, ACR, VHD, ICS -->
-                <div class="weight-inputs">
-                    <label for="mhi-weight-old">{% trans "Material Hazard Index (MHI)" %}</label>
-                    <input type="range" id="mhi-weight-old" name="mhi_weight" min="0" max="100" value="{{ mhi_weight|default:25 }}" oninput="updateWeightValue('mhi-weight-old', 'mhi-value-old')">
-                    <span id="mhi-value-old">{{ mhi_weight|default:25 }}</span>%
-        
-                    <label for="acr-weight-old">{% trans "Age Compliance Risk (ACR)" %}</label>
-                    <input type="range" id="acr-weight-old" name="acr_weight" min="0" max="100" value="{{ acr_weight|default:35 }}" oninput="updateWeightValue('acr-weight-old', 'acr-value-old')">
-                    <span id="acr-value-old">{{ acr_weight|default:35 }}</span>%
-        
-                    <label for="vhd-weight-old">{% trans "Visual Hazard Detection (VHD)" %}</label>
-                    <input type="range" id="vhd-weight-old" name="vhd_weight" min="0" max="100" value="{{ vhd_weight|default:30 }}" oninput="updateWeightValue('vhd-weight-old', 'vhd-value-old')">
-                    <span id="vhd-value-old">{{ vhd_weight|default:30 }}</span>%
-        
-                    <label for="ics-weight-old">{% trans "Information Completeness Score (ICS)" %}</label>
-                    <input type="range" id="ics-weight-old" name="ics_weight" min="0" max="100" value="{{ ics_weight|default:10 }}" oninput="updateWeightValue('ics-weight-old', 'ics-value-old')">
-                    <span id="ics-value-old">{{ ics_weight|default:10 }}</span>%
-                </div>
-    
-                <!-- Calculation Info Positioned on the Right -->
-                <div class="calculation-info">
-                    <h5>{% trans 'How Search Results are Calculated' %}</h5>
-                    <p>{% trans 'The search results are calculated based on the following weighted metrics:' %}</p>
-                    <ul>
-                        <li>{% trans 'Material Hazard Index (MHI)' %}: <span id="calculated-mhi">{{ mhi_weight }}%</span></li>
-                        <li>{% trans 'Age Compliance Risk (ACR)' %}: <span id="calculated-acr">{{ acr_weight }}%</span></li>
-                        <li>{% trans 'Visual Hazard Detection (VHD)' %}: <span id="calculated-vhd">{{ vhd_weight }}%</span></li>
-                        <li>{% trans 'Information Completeness Score (ICS)' %}: <span id="calculated-ics">{{ ics_weight }}%</span></li>
-                    </ul>
-                </div>
-            </div>
-    
-            <!-- Child Age Inputs -->
-            <div class="child-age-inputs">
-                <label for="child_min_age">{% trans 'Child Min Age' %}</label>
-                <input type="number" id="child_min_age" name="child_min_age" min="0" max="100" placeholder="{% trans 'Enter Min Age' %}">
-                <label for="child_max_age">{% trans 'Child Max Age' %}</label>
-                <input type="number" id="child_max_age" name="child_max_age" min="0" max="100" placeholder="{% trans 'Enter Max Age' %}">
-            </div>
-        
-            <!-- Special Needs Input -->
-            <div class="special-needs-input">
-                <label for="special_needs">{% trans 'Special Needs' %}</label>
-                <textarea id="special_needs" name="special_needs" rows="3" placeholder="{% trans 'Specify any special needs' %}"></textarea>
-            </div>
-        
-            <!-- Submit Filter Button -->
-            <button type="submit" class="apply-filter-btn">{% trans "Search" %}</button>
-        
-            <!-- Close Filter Button -->
-            <button type="button" id="close-filter-button" class="close-filter-btn">{% trans "Close" %}</button>
-        </form>
-    </div>
-    
     
     <main id="content-wrapper" role="main" aria-label="{% trans 'Page Content' %}">
         {% block content %}{% endblock content %}
@@ -919,6 +811,13 @@
         {% endif %}
     </main>
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Restore saved filter settings when page loads
+            restoreFilterSettings();
+            
+            // ... other existing DOMContentLoaded code ...
+        });
+
         // Real-time update of weight sliders (for old filter)
         function updateWeightValue(sliderId, displayId) {
             const slider = document.getElementById(sliderId);
@@ -1000,6 +899,112 @@
                 }
             });
         }
+
+        function saveFilterSettings() {
+            const filterSettings = {
+                weights: {
+                    mhi: document.getElementById('mhi-weight')?.value || 25,
+                    acr: document.getElementById('acr-weight')?.value || 35,
+                    vhd: document.getElementById('vhd-weight')?.value || 30,
+                    ics: document.getElementById('ics-weight')?.value || 10
+                },
+                minSafetyScore: document.getElementById('min-safety-score')?.value || 70,
+                hazardFilters: {}
+            };
+            
+            // Save hazard filter states
+            document.querySelectorAll('.hazard-filter').forEach(checkbox => {
+                if (checkbox.id) {
+                    filterSettings.hazardFilters[checkbox.id] = checkbox.checked;
+                }
+            });
+            
+            // Save age range if present
+            if (document.getElementById('min-age')) {
+                filterSettings.minAge = document.getElementById('min-age').value;
+            }
+            if (document.getElementById('max-age')) {
+                filterSettings.maxAge = document.getElementById('max-age').value;
+            }
+            
+            // Save to localStorage for persistence
+            localStorage.setItem('safetyFilterSettings', JSON.stringify(filterSettings));
+        }
+
+        function restoreFilterSettings() {
+            const savedSettings = localStorage.getItem('safetyFilterSettings');
+            if (!savedSettings) return;
+            
+            try {
+                const filterSettings = JSON.parse(savedSettings);
+                
+                // Restore weight sliders
+                if (filterSettings.weights) {
+                    if (document.getElementById('mhi-weight')) {
+                        document.getElementById('mhi-weight').value = filterSettings.weights.mhi;
+                        updateWeightDisplay('mhi-weight', 'mhi-value');
+                    }
+                    if (document.getElementById('acr-weight')) {
+                        document.getElementById('acr-weight').value = filterSettings.weights.acr;
+                        updateWeightDisplay('acr-weight', 'acr-value');
+                    }
+                    if (document.getElementById('vhd-weight')) {
+                        document.getElementById('vhd-weight').value = filterSettings.weights.vhd;
+                        updateWeightDisplay('vhd-weight', 'vhd-value');
+                    }
+                    if (document.getElementById('ics-weight')) {
+                        document.getElementById('ics-weight').value = filterSettings.weights.ics;
+                        updateWeightDisplay('ics-weight', 'ics-value');
+                    }
+                }
+                
+                // Restore safety score
+                if (filterSettings.minSafetyScore && document.getElementById('min-safety-score')) {
+                    const safetyScore = document.getElementById('min-safety-score');
+                    safetyScore.value = filterSettings.minSafetyScore;
+                    
+                    // Update safety meter visual
+                    const safetyMeterFill = document.querySelector('.safety-meter-fill');
+                    if (safetyMeterFill) {
+                        safetyMeterFill.style.width = filterSettings.minSafetyScore + '%';
+                        
+                        // Set color based on value
+                        if (filterSettings.minSafetyScore < 50) {
+                            safetyMeterFill.style.backgroundColor = '#ff4d4d'; // Red
+                        } else if (filterSettings.minSafetyScore < 80) {
+                            safetyMeterFill.style.backgroundColor = '#ffae42'; // Orange
+                        } else {
+                            safetyMeterFill.style.backgroundColor = '#28a745'; // Green
+                        }
+                    }
+                }
+                
+                // Restore hazard filters
+                if (filterSettings.hazardFilters) {
+                    Object.keys(filterSettings.hazardFilters).forEach(id => {
+                        const checkbox = document.getElementById(id);
+                        if (checkbox) {
+                            checkbox.checked = filterSettings.hazardFilters[id];
+                        }
+                    });
+                }
+                
+                // Restore age range
+                if (filterSettings.minAge && document.getElementById('min-age')) {
+                    document.getElementById('min-age').value = filterSettings.minAge;
+                }
+                if (filterSettings.maxAge && document.getElementById('max-age')) {
+                    document.getElementById('max-age').value = filterSettings.maxAge;
+                }
+                
+                // Update total weight display
+                updateTotalWeight();
+                
+            } catch (error) {
+                console.error('Error restoring filter settings:', error);
+            }
+        }
+
         function applyCustomFilters() {
             // Get CSRF token for Django
             function getCookie(name) {
@@ -1017,13 +1022,11 @@
                 return cookieValue;
             }
             
-            // Collect all filter values
-            const weightProfile = {
-                mhi: parseInt(document.getElementById('mhi-weight').value) / 100,
-                acr: parseInt(document.getElementById('acr-weight').value) / 100,
-                vhd: parseInt(document.getElementById('vhd-weight').value) / 100,
-                ics: parseInt(document.getElementById('ics-weight').value) / 100
-            };
+            // Collect raw weight values (no need to divide by 100 anymore)
+            const mhi_weight = parseInt(document.getElementById('mhi-weight').value);
+            const acr_weight = parseInt(document.getElementById('acr-weight').value);
+            const vhd_weight = parseInt(document.getElementById('vhd-weight').value);
+            const ics_weight = parseInt(document.getElementById('ics-weight').value);
             
             const minSafetyScore = document.getElementById('min-safety-score')?.value || 0;
             
@@ -1039,11 +1042,13 @@
             const minAge = document.getElementById('min-age')?.value;
             const maxAge = document.getElementById('max-age')?.value;
             
+            // Save the current filter settings
+            saveFilterSettings();
+            
             // Create form data for submission
             const formData = new FormData();
-            formData.append('weight_profile', JSON.stringify(weightProfile));
-            formData.append('min_safety_score', minSafetyScore);
             formData.append('critical_issue_filters', JSON.stringify(criticalIssueFilters));
+            formData.append('min_safety_score', minSafetyScore);
             
             if (minAge) formData.append('min_age', minAge);
             if (maxAge) formData.append('max_age', maxAge);
@@ -1051,76 +1056,30 @@
             // Get the CSRF token
             const csrftoken = getCookie('csrftoken');
             
-            // Create a simple URL with the weight parameters (as a fallback)
+            // Create a URL with the weight parameters (weights are passed directly now)
             let fallbackUrl = '/?';
-            fallbackUrl += `mhi_weight=${parseInt(weightProfile.mhi * 100)}`;
-            fallbackUrl += `&acr_weight=${parseInt(weightProfile.acr * 100)}`;
-            fallbackUrl += `&vhd_weight=${parseInt(weightProfile.vhd * 100)}`;
-            fallbackUrl += `&ics_weight=${parseInt(weightProfile.ics * 100)}`;
+            fallbackUrl += `mhi_weight=${mhi_weight}`;
+            fallbackUrl += `&acr_weight=${acr_weight}`;
+            fallbackUrl += `&vhd_weight=${vhd_weight}`;
+            fallbackUrl += `&ics_weight=${ics_weight}`;
             fallbackUrl += `&min_safety_score=${minSafetyScore}`;
             
             if (minAge && maxAge) {
                 fallbackUrl += `&child_min_age=${minAge}&child_max_age=${maxAge}`;
             }
             
-            // Object to store filter data for redirection
-            const filterData = {
-                weightProfile: weightProfile,
-                minSafetyScore: minSafetyScore,
-                criticalIssueFilters: criticalIssueFilters,
-                minAge: minAge,
-                maxAge: maxAge
-            };
-            
-            // Store filter data in sessionStorage for preservation between page loads
-            sessionStorage.setItem('safetyFilterData', JSON.stringify(filterData));
-            
-            // Show loading indicator or message (optional)
+            // Show loading indicator
             const applyButton = document.getElementById('apply-filter-btn');
             if (applyButton) {
                 applyButton.textContent = "Applying...";
                 applyButton.disabled = true;
             }
             
-            // Ajax request to apply filters
-            fetch('/apply-custom-safety-filters/', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    // This header will be used instead of is_ajax() in Django
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRFToken': csrftoken,
-                    'Accept': 'application/json' // Explicitly ask for JSON response
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Don't close the popup until we're ready to navigate
-                if (data.success) {
-                    // Navigate to the new URL
-                    if (data.redirect_url) {
-                        window.location.href = data.redirect_url;
-                    } else {
-                        window.location.href = fallbackUrl;
-                    }
-                } else {
-                    console.error('Error from server:', data.error || 'Unknown error');
-                    // Use fallback URL on server error
-                    window.location.href = fallbackUrl;
-                }
-            })
-            .catch(error => {
-                console.error('Error applying filters:', error);
-                // Use fallback URL on fetch error
-                window.location.href = fallbackUrl;
-            });
+            // Close the popup
+            document.getElementById('safety-filter-popup').classList.add('hidden');
             
-            // The filter popup will be automatically closed when the page unloads for navigation
+            // Use the fallback URL directly now, since the backend handles the normalization
+            window.location.href = fallbackUrl;
         }
         
         // Reset filters to default values
@@ -1174,7 +1133,7 @@
             }
         }
         
-        // Function to update total weight
+        // Function to update total weight - removing the 100% requirement
         function updateTotalWeight() {
             const mhiWeight = parseInt(document.getElementById('mhi-weight')?.value || 0);
             const acrWeight = parseInt(document.getElementById('acr-weight')?.value || 0);
@@ -1189,14 +1148,21 @@
             
             if (totalElement) totalElement.textContent = total + "%";
             
-            if (warningElement && applyButton) {
-                if (total !== 100) {
-                    warningElement.classList.remove('hidden');
+            if (warningElement) {
+                warningElement.classList.add('hidden'); // Always hide warning
+            }
+            
+            if (applyButton) {
+                // Only disable if all weights are zero
+                if (total === 0) {
                     applyButton.disabled = true;
                     applyButton.style.opacity = '0.6';
                     applyButton.style.cursor = 'not-allowed';
+                    if (warningElement) {
+                        warningElement.textContent = "{% trans 'At least one weight must be greater than zero' %}";
+                        warningElement.classList.remove('hidden');
+                    }
                 } else {
-                    warningElement.classList.add('hidden');
                     applyButton.disabled = false;
                     applyButton.style.opacity = '1';
                     applyButton.style.cursor = 'pointer';
