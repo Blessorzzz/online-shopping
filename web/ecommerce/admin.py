@@ -26,6 +26,7 @@ class ProductAdmin(admin.ModelAdmin):
         'get_ics_score',
         'safety_score',
     )
+    exclude = ('sharpness_category_score',)
 
     def get_mhi_score(self, obj):
         return obj.get_mhi_score()

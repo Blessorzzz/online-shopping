@@ -16,7 +16,7 @@ class Product(models.Model):
         ('virtual', _('Virtual')),
     ]
 
-    product_id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text=_('Unique ID for this product across whole shopping mall'))
+    product_id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text=_('Unique ID for this product across the whole shopping mall'))
     product_name = models.CharField(max_length=300, default="", verbose_name=_("Product Name"))
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
     is_active = models.BooleanField(default=True)
@@ -31,6 +31,8 @@ class Product(models.Model):
     materials = models.CharField(max_length=255, blank=True, default="", help_text=_("Comma-separated list of materials"))
     safety_score = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     safety_issues = models.JSONField(default=list)  # Store issues like 'small_parts', 'sharp_edges', etc.
+    sharpness_category_score = models.PositiveIntegerField(default=0, help_text=_("Sharpness category score (1=Dull, 3=Medium, 5=Sharp)"))
+    vhd_score = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, help_text=_("Visual Hazard Detection score"))
 
     def save(self, *args, **kwargs):
         # Translation logic for the product name and description
@@ -64,7 +66,7 @@ class Product(models.Model):
         materials = [material.strip() for material in self.materials.split(',')] if self.materials else []
         mhi = calculate_material_risk(materials)
 
-        # Visual Hazard Detection (placeholder)
+        # Visual Hazard Detection (VHD) score calculation
         visual_inspector = VisualSafetyInspector()
         visual_results = visual_inspector.analyze_image(self.thumbnail_image.path)
         detected_hazards = visual_results['hazards']
@@ -78,6 +80,13 @@ class Product(models.Model):
 
         # Calculate the impact of safety issues on the safety score
         hazard_penalty = len(self.safety_issues) * 10  # Deduct 10 points per hazard
+
+        # Incorporate the sharpness category score into the VHD score
+        if self.sharpness_category_score:
+            vhd_score = (100 - hazard_penalty) * 0.7 + (self.sharpness_category_score * 20 * 0.3)
+        else:
+            vhd_score = 100 - hazard_penalty
+        self.vhd_score = round(max(vhd_score, 0), 2)  # Ensure the score is not negative
 
         # Age Compliance Risk
         acr = calculate_age_risk(self.safety_issues, (self.min_age, self.max_age))
@@ -93,7 +102,7 @@ class Product(models.Model):
         self.safety_score = (
             0.25 * (100 - (mhi - 1) * 16.67) +  # Convert MHI to 0-100
             0.35 * acr +
-            0.30 * (100 - hazard_penalty) +  # Deduct points based on hazards
+            0.30 * self.vhd_score +  # Use the updated VHD score
             0.10 * ics
         )
 
@@ -121,7 +130,11 @@ class Product(models.Model):
     def get_vhd_score(self):
         """Calculate and return the Visual Hazard Detection (VHD) score."""
         hazard_penalty = len(self.safety_issues) * 10  # Deduct 10 points per hazard
-        return max(100 - hazard_penalty, 0)  # Ensure the score is not negative
+        if self.sharpness_category_score:
+            vhd_score = (100 - hazard_penalty) * 0.7 + (self.sharpness_category_score * 20 * 0.3)
+        else:
+            vhd_score = 100 - hazard_penalty
+        return round(max(vhd_score, 0), 2)  # Ensure the score is not negative
 
     def get_ics_score(self):
         """Calculate and return the Information Completeness Score (ICS)."""
@@ -135,6 +148,7 @@ class Product(models.Model):
     def __str__(self):
         return self.product_name
 
+
 class ProductPhoto(models.Model):
     photo_id = models.AutoField(primary_key=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='photos')
@@ -143,6 +157,7 @@ class ProductPhoto(models.Model):
     def __str__(self):
         return f"Photo for {self.product.product_name}"
 
+
 class ProductVideo(models.Model):
     video_id = models.AutoField(primary_key=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='videos')
@@ -150,30 +165,30 @@ class ProductVideo(models.Model):
 
     def __str__(self):
         return f"Video for {self.product.product_name}"
-    
 
-from django.db import models
 
 class SynonymCache(models.Model):
     word = models.CharField(max_length=100, unique=True)
-    synonyms = models.TextField()  # 存储JSON字符串
+    synonyms = models.TextField()  # Store JSON string
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
         return self.word
 
+
 class KeywordSearchHistory(models.Model):
-    """记录用户搜索历史，用于分析和优化关键词提取"""
+    """Record user search history for analysis and keyword optimization."""
     original_text = models.TextField()
-    extracted_keywords = models.TextField()  # 存储JSON字符串
-    expanded_keywords = models.TextField()  # 存储JSON字符串
-    successful_search = models.BooleanField(default=False)  # 搜索是否返回结果
+    extracted_keywords = models.TextField()  # Store JSON string
+    expanded_keywords = models.TextField()  # Store JSON string
+    successful_search = models.BooleanField(default=False)  # Whether the search returned results
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
         return self.original_text[:50]
-    
+
+
 # Material Hazard Index Mapping
 MATERIAL_RISK = {
     "cotton": 1,      # Class A - Low risk
