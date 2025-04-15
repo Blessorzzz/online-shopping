@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from ecommerce.models import Product  # Import Product model
 from django.db.models import Q
 from django.http import JsonResponse
+from shoppingcart.models import Order
 
 @login_required
 def forum_list(request, product_id):
