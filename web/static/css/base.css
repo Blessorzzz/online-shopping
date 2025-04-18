@@ -2138,3 +2138,67 @@ body.mobility-mode nav.pagination a {
     border-radius: 5px;
 }
 
+/* ✅ 注册页面背景样式，仅限注册页面使用 */
+body.register-page {
+    background-size: cover;
+    backdrop-filter: blur(5px);
+    margin: 0;
+    padding: 0;
+}
+
+/* ✅ 注册盒子整体样式 */
+.register-box {
+    max-width: 400px;
+    margin: 100px auto;
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    font-size: 1em; /* 相对单位，支持全局字体缩放 */
+    color: #333;
+}
+
+/* ✅ 标题样式 */
+.register-box h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 1.6em;
+}
+
+/* ✅ 输入框样式 */
+.register-box input,
+.register-box select,
+.register-box textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1em; /* 避免写死 px */
+    box-sizing: border-box;
+}
+
+/* ✅ 提交按钮样式 */
+.register-box button {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--button-bg);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+.register-box button:hover {
+    background-color: var(--hover-bg);
+}
+
+/* ✅ 响应式优化（可选） */
+@media screen and (max-width: 480px) {
+    .register-box {
+        margin: 50px 20px;
+        padding: 20px;
+    }
+}
