@@ -1,25 +1,467 @@
 {% extends "base.html" %}
-{% load i18n%}
+{% load i18n %}
 {% block content %}
-<h2>{{ post.title }}</h2>
-<p>Posted on {{ post.created_at|date:"Y-m-d" }} by {{ post.author.username }}</p>
+<div class="forum-container">
+    <!-- Forum Post Details -->
+    <div class="forum-post">
+        <h2>{{ post.title }}</h2>
+        <p class="post-meta">Posted on {{ post.created_at|date:"Y-m-d" }} by {{ post.author.username }}</p>
+    </div>
 
-<h3>Comments</h3>
-<ul>
-    {% for comment in comments %}
-        <li>{{ comment.author.username }}: {{ comment.content }} ({{ comment.created_at|date:"Y-m-d" }})</li>
-    {% empty %}
-        <li>No comments yet.</li>
-    {% endfor %}
-</ul>
+    <!-- Comments Section -->
+    <div class="comments-section">
+        <h3>Comments</h3>
+        
+        <!-- Display Comments -->
+        {% if comments %}
+        <ul class="comment-list">
+            {% for comment in comments %}
+            <li class="comment-item">
+                <div class="comment-box">
+                    <p class="comment-author">{{ comment.author.username }} <span class="comment-date">{{ comment.created_at|date:"Y-m-d" }}</span></p>
+                    <p class="comment-content">{{ comment.content }}</p>
+                    <div class="vote-section">
+                        <button class="vote-btn like-btn {% if request.user.id in comment.liked_users_ids %}active{% endif %}" 
+                                data-review-id="{{ comment.id }}"
+                                data-vote-type="true">
+                            👍 <span class="like-count">{{ comment.like_count }}</span>
+                        </button>
+    
+                        <button class="vote-btn dislike-btn {% if request.user.id in comment.disliked_users_ids %}active{% endif %}" 
+                                data-review-id="{{ comment.id }}"
+                                data-vote-type="false">
+                            👎 <span class="dislike-count">{{ comment.dislike_count }}</span>
+                        </button>
+                    </div>
+                    <button class="report-btn" data-id="{{ comment.id }}">Report</button>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No comments yet. Be the first to share your thoughts!</p>
+        {% endif %}
+    </div>
 
-{% if user.is_authenticated %}
-<form method="POST" action="{% url 'add_comment' post.id %}">
-    {% csrf_token %}
-    {{ comment_form.as_p }}
-    <button type="submit">Post Comment</button>
-</form>
-{% else %}
-<p><a href="{% url 'login' %}">Log in</a> to leave a comment.</p>
-{% endif %}
+    <!-- Comment Form -->
+    {% if user.is_authenticated %}
+        {% if user_has_purchased %}
+            <div class="comment-form">
+                <h4>Add Your Comment</h4>
+                <form method="POST" action="{% url 'add_comment' product.product_id post.id %}">
+                    {% csrf_token %}
+                    {{ comment_form.as_p }}
+                    <button type="submit" class="btn-submit">Post Comment</button>
+                </form>
+            </div>
+        {% else %}
+            <p>You must purchase this product to leave a comment.</p>
+        {% endif %}
+    {% else %}
+        <p>Please <a href="{% url 'login' %}">log in</a> to leave a comment.</p>
+    {% endif %}
+
+</div>
+
+<!-- Popup Modal -->
+<div id="report-modal">
+    <h3>Report Comment</h3>
+    <p>Please select the reason(s) for reporting this comment:</p>
+    <form id="report-form">
+        <div class="report-options">
+            <label>
+                Misinformation
+                <input type="checkbox" name="reasons" value="misinformation">
+            </label>
+            <label>
+                Sexual Content
+                <input type="checkbox" name="reasons" value="sexual content">
+            </label>
+            <label>
+                Harassment or Bullying
+                <input type="checkbox" name="reasons" value="harassment or bullying">
+            </label>
+        </div>
+        <div class="modal-buttons">
+            <button type="button" id="submit-report" class="btn-primary">Submit</button>
+            <button type="button" id="close-modal" class="btn-secondary">Cancel</button>
+        </div>
+    </form>
+</div>
+
+<div id="modal-overlay"></div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Voting functionality for comments
+        document.querySelectorAll('.vote-btn').forEach(button => {
+            button.addEventListener('click', async (e) => {
+                e.preventDefault();
+
+                {% if not request.user.is_authenticated %}
+                    window.location.href = "{% url 'login' %}?next={{ request.path }}";
+                    return;
+                {% endif %}
+
+                const commentId = button.dataset.commentId;
+                const voteType = button.dataset.voteType === 'true'; // True for like, false for dislike
+                const commentItem = button.closest('.comment-item'); // Get parent comment item
+                
+                try {
+                    const response = await fetch('{% url "vote_comment" %}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        body: new URLSearchParams({
+                            'comment_id': commentId,
+                            'vote_type': voteType
+                        })
+                    });
+
+                    const data = await response.json();
+                    
+                    if (data.status === 'success') {
+                        // Update counts for this specific comment only
+                        commentItem.querySelector('.like-count').textContent = data.like_count;
+                        commentItem.querySelector('.dislike-count').textContent = data.dislike_count;
+                        
+                        // Update active states
+                        commentItem.querySelectorAll('.vote-btn').forEach(btn => {
+                            btn.classList.remove('active');
+                        });
+                        button.classList.add('active');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('{% trans "Failed to submit vote. Please try again." %}');
+                }
+            });
+        });
+
+        // Report functionality
+        document.querySelectorAll('.report-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const commentId = button.getAttribute('data-id');
+                const modal = document.getElementById('report-modal');
+                const overlay = document.getElementById('modal-overlay');
+                modal.style.display = 'block';
+                overlay.style.display = 'block';
+                modal.setAttribute('data-comment-id', commentId);
+            });
+        });
+
+        document.getElementById('close-modal').addEventListener('click', () => {
+            const modal = document.getElementById('report-modal');
+            const overlay = document.getElementById('modal-overlay');
+            modal.style.display = 'none';
+            overlay.style.display = 'none';
+        });
+
+        document.getElementById('submit-report').addEventListener('click', () => {
+            const modal = document.getElementById('report-modal');
+            const overlay = document.getElementById('modal-overlay');
+            const commentId = modal.getAttribute('data-comment-id');
+            const form = document.getElementById('report-form');
+            const formData = new FormData(form);
+        
+            // Add CSRF token to the request
+            formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+        
+            fetch(`/forums/report_comment/${commentId}/`, {
+                method: 'POST',
+                body: formData,
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message); // Show success message
+                        modal.style.display = 'none'; // Close the modal
+                        overlay.style.display = 'none';
+                    } else {
+                        alert(data.message); // Show error message
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('{% trans "An error occurred while submitting the report." %}');
+                });
+        });
+    });
+</script>
+
+<style>
+    /* General Layout and Container */
+    .forum-container {
+        width: 80%;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    /* Forum Post Section */
+    .forum-post {
+        margin-bottom: 30px;
+    }
+    
+    .forum-post h2 {
+        color: #1e3d58;
+        font-size: 2rem;
+        margin-bottom: 10px;
+    }
+
+    .post-meta {
+        font-size: 0.9rem;
+        color: #6c757d;
+    }
+
+    /* Comments Section */
+    .comments-section h3 {
+        font-size: 1.6rem;
+        color: #1e3d58;
+        margin-bottom: 20px;
+    }
+
+    .comment-list {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .comment-item {
+        margin-bottom: 20px;
+    }
+
+    .comment-box {
+        padding: 15px;
+        border: 1px solid #dcdcdc;
+        border-radius: 8px;
+        background-color: #f8f9fa;
+    }
+
+    .comment-author {
+        font-weight: bold;
+        color: #007bff;
+        margin-bottom: 5px;
+    }
+
+    .comment-date {
+        font-size: 0.9rem;
+        color: #6c757d;
+        margin-left: 10px;
+    }
+
+    .comment-content {
+        margin-top: 10px;
+        font-size: 1rem;
+        color: #333;
+    }
+
+    /* Comment Form */
+    .comment-form {
+        background-color: #f1f1f1;
+        padding: 20px;
+        border-radius: 8px;
+        margin-top: 30px;
+    }
+
+    .comment-form h4 {
+        font-size: 1.4rem;
+        color: #1e3d58;
+        margin-bottom: 15px;
+    }
+
+    .comment-form form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .btn-submit {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .btn-submit:hover {
+        background-color: #0056b3;
+    }
+
+    /* Modal Styling */
+    #report-modal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        width: 350px;
+        font-family: Arial, sans-serif;
+    }
+
+    #report-modal h3 {
+        margin-top: 0;
+        font-size: 20px;
+        color: #333;
+        text-align: center;
+    }
+
+    #report-modal p {
+        font-size: 14px;
+        color: #555;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .report-options {
+        display: flex; 
+        flex-direction: column; 
+        gap: 10px; 
+        margin-bottom: 20px;
+    }
+
+    .report-options label {
+        display: flex; 
+        justify-content: space-between;
+        align-items: center;
+        font-size: 14px;
+        color: #333;
+        cursor: pointer;
+        white-space: nowrap; 
+    }
+
+    .report-options input[type="checkbox"] {
+        margin-left: auto; 
+    }
+    
+    .modal-buttons {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+
+    /* Page Background Overlay */
+    #modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+    }
+
+    .toast {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #4caf50; /* Green for success */
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        font-size: 14px;
+        z-index: 1000;
+        animation: fadeInOut 3.5s ease-in-out;
+    }
+
+    .toast.error {
+        background-color: #f44336; /* Red for error */
+    }
+
+    @keyframes fadeInOut {
+        0% {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        10% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        90% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        100% {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+    }
+
+    /* Voting Section Styles */
+    .vote-section {
+        margin-top: 15px;
+        display: flex;
+        gap: 10px;
+    }
+
+    .vote-btn {
+        padding: 5px 12px;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        background: white;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .vote-btn:hover {
+        background: #f8f9fa;
+    }
+
+    .like-btn.active {
+        background: #e8f5e9;
+        border-color: #28a745;
+    }
+
+    .dislike-btn.active {
+        background: #ffeef0;
+        border-color: #dc3545;
+    }
+
+    .like-count, .dislike-count {
+        font-size: 0.9em;
+        color: #666;
+    }
+</style>
+
 {% endblock %}

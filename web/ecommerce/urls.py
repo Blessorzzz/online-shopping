@@ -9,6 +9,7 @@ urlpatterns = [
     path('products/<uuid:pk>/', ProductDetailView.as_view(), name='product_detail'),
     path('api/extract-keywords/', views.extract_keywords, name='extract_keywords'),
     path('api/ajax-search-products/', ajax_search_products, name='ajax_search_products'),
+    path('apply-custom-safety-filters/', views.apply_custom_safety_filters, name='apply_custom_safety_filters'),
 ]
 
 if settings.DEBUG:

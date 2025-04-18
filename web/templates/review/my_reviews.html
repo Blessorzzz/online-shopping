@@ -29,7 +29,12 @@
                         {% for order_id, data in pending_reviews.items %}
                             {% for product in data.products %}
                                 <tr>
-                                    <td>{{ data.order.po_number }}</td>
+                                    <!-- Make Order ID clickable while keeping bold styling -->
+                                    <td>
+                                        <a href="{% url 'order_detail' data.order.id %}" class="order-link">
+                                            <strong>{{ data.order.po_number }}</strong>
+                                        </a>
+                                    </td>
                                     <td>
                                         <a href="{% url 'product_detail' product.product_id %}" class="product-link">
                                             {{ product.product_name }}
@@ -67,19 +72,29 @@
                         {% for order_id, data in done_reviews.items %}
                             {% for product_review in data.reviews %}
                                 <tr>
-                                    <td>{{ data.order.po_number }}</td>
+                                    <!-- Make Order ID clickable while keeping bold styling -->
+                                    <td>
+                                        <a href="{% url 'order_detail' data.order.id %}" class="order-link">
+                                            <strong>{{ data.order.po_number }}</strong>
+                                        </a>
+                                    </td>
                                     <td>
                                         <a href="{% url 'product_detail' product_review.product.product_id %}" class="product-link">
                                             {{ product_review.product.product_name }}
                                         </a>
                                     </td>
                                     <td>
-                                        {% for product_review in data.reviews %}
-                                            <div class="star-rating" data-rating="{{ product_review.review.rating }}"></div>
-                                            <span class="average-rating-text">({{ product_review.review.rating|floatformat:1 }} / 5)</span>
-                                        {% endfor %}
+                                        <div class="star-rating" data-rating="{{ product_review.review.rating }}"></div>
+                                        <span class="average-rating-text">({{ product_review.review.rating|floatformat:1 }} / 5)</span>
                                     </td>
-                                    <td>{{ product_review.review.comment }}</td>
+                                    <td>
+                                        <a href="{% url 'product_detail' product_review.product.product_id %}?review_id={{ product_review.review.pk }}#customer-reviews" class="comment-link">
+                                            {{ product_review.review.comment }}
+                                        </a>
+                                        {% if product_review.review.last_edited %}
+                                            <span class="text-muted">({% trans "Edited" %})</span>
+                                        {% endif %}
+                                    </td>
                                     <td>
                                         <a href="{% url 'edit_review' product_review.review.pk %}" class="btn btn-secondary">
                                             {% trans "Edit Review" %}
@@ -430,6 +445,35 @@
     box-shadow: 0 0 0 3px rgba(72, 186, 72, 0.6); /* Green outline when focused */
 }
 
+.text-muted {
+    color: #6c757d;
+    font-style: italic;
+    font-size: 0.9em;
+}
+
+/* Styling for Order ID link */
+.order-link {
+    text-decoration: none;
+    color: var(--link-color); /* Use your theme's link color */
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.order-link:hover {
+    color: var(--hover-bg); /* Use your theme's hover color */
+    text-decoration: underline;
+}
+
+.comment-link {
+    text-decoration: none;
+    color: var(--link-color); /* Use your theme's link color */
+    transition: color 0.2s ease;
+}
+
+.comment-link:hover {
+    color: var(--hover-bg); /* Use your theme's hover color */
+    text-decoration: underline;
+}
 </style>
 
 <!-- Include FontAwesome for icons -->

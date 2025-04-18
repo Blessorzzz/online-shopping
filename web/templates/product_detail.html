@@ -48,7 +48,7 @@
             <div class="specs">
                 <div class="spec-item">
                     <span class="spec-label">{% trans "Age Range" %}:</span>
-                    <span class="spec-value">{{ product.age_range }}</span>
+                    <span class="spec-value">{{ product.min_age }}-{{ product.max_age }}</span>
                 </div>
                 <div class="spec-item">
                     <span class="spec-label">{% trans "Stock" %}:</span>
@@ -67,7 +67,7 @@
                         {% endif %}
                     </span>
                 </div>
-            </div>
+            </div>            
 
             <div class="action-buttons">
                 <form method="POST" action="{% url 'add_to_cart' product.product_id %}">
@@ -93,8 +93,34 @@
         </div>
     </section>
 
+    <!-- Radar Chart for Safety Factors -->
+    <section class="safety-section" aria-label="{% trans 'Product Safety' %}">
+        <h2>
+            {% trans "Safety Level" %}
+            <button id="toggle-safety-btn" class="toggle-btn" onclick="toggleSafetySection()">
+                {% trans "Collapse" %}
+            </button>
+            <span class="info-tooltip">
+                <span class="tooltip-icon">?</span>
+                <div class="tooltip-content">
+                    <p><strong>{% trans "Material Hazard Index (MHI)" %}:</strong> {% trans "Calculated based on the safety of materials used in the product." %}</p>
+                    <p><strong>{% trans "Age Compatibility Risk (ACR)" %}:</strong> {% trans "Assesses the risk for the target age range." %}</p>
+                    <p><strong>{% trans "Visual Hazard Detection (VHD)" %}:</strong> {% trans "Evaluates potential visual hazards like sharp edges or small parts." %}</p>
+                    <p><strong>{% trans "Information Completeness Score (ICS)" %}:</strong> {% trans "Measures the completeness of safety-related product information." %}</p>
+                    <p><strong>{% trans "Overall Safety Score" %}:</strong> {% trans "Calculated as a weighted average of the four safety factors." %}</p>
+                </div>
+            </span>
+        </h2>
+        <div id="safety-content" class="radar-chart-container">
+            <img src="data:image/png;base64,{{ radar_chart }}" alt="{% trans 'Safety radar chart for' %} {{ product.product_name }}">
+            <div class="safety-score-container">
+                <strong>{% trans "Safety Score:" %}</strong> <span class="safety-score">{{ safety_score }}</span>
+            </div>
+        </div>
+    </section>
+
 <!-- Customer Reviews Section -->
-<div class="reviews-section">
+<div id="customer-reviews" class="reviews-section">
     <div class="reviews-header">
         <h3>{% trans "Customer Reviews" %}</h3>
         <div class="sort-controls">
@@ -117,7 +143,7 @@
     {% if reviews %}
         <ul class="reviews-list">
             {% for review in reviews %}
-                <li class="review-item">
+                <li id="review-{{ review.id }}" class="review-item {% if review == highlighted_review %}highlighted-review{% endif %}">
                     <!-- Review Header -->
                     <div class="review-header">
                         <strong>{{ review.user.username }}</strong>
@@ -182,12 +208,59 @@
     {% endif %}
 </div>
 
+<!-- Forums Section -->
+<div id="featured-forums" class="forums-section">
+    <div class="forums-header">
+        <h3>{% trans "Featured Forum Discussions" %}</h3>
+    </div>
+
+    {% if featured_forums %}
+        <ul class="forums-list">
+            {% for forum in featured_forums %}
+                <li class="forum-item">
+                    <div class="forum-header">
+                        <h5 class="forum-title">
+                            <a href="{% url 'forum_detail' product.product_id forum.id %}">{{ forum.title }}</a>
+                        </h5>
+                        <p class="forum-meta">
+                            {% trans "By" %} {{ forum.author.username }} | 
+                            {{ forum.created_at|date:"Y-m-d H:i" }} | 
+                            {{ forum.comments.count }} {% trans "comments" %}
+                        </p>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="no-forums-message">{% trans "No featured discussions available." %}</p>
+    {% endif %}
+
+    <div class="join-discussion">
+        <a href="{% url 'forum_list' product.product_id %}" class="btn btn-prominent">
+            {% trans "Join the Discussion" %}
+        </a>
+    </div>
+</div>
+
     </section>
 
 </main>
 
 <!-- JS: 图片切换 + 星级渲染 -->
 <script>
+    function toggleSafetySection() {
+        const safetyContent = document.getElementById('safety-content');
+        const toggleButton = document.getElementById('toggle-safety-btn');
+
+        if (safetyContent.style.display === 'none') {
+            safetyContent.style.display = 'flex'; // Show the section
+            toggleButton.textContent = '{% trans "Collapse" %}';
+        } else {
+            safetyContent.style.display = 'none'; // Hide the section
+            toggleButton.textContent = '{% trans "Expand" %}';
+        }
+    }
+
     function switchImage(newSrc, element) {
         document.querySelector('.main-image').src = newSrc;
         document.querySelectorAll('.thumbnail-item').forEach(item => {
@@ -211,6 +284,19 @@
             starHtml += '<i class="far fa-star custom-star"></i>';
         }
         return starHtml;
+    }
+
+    function toggleSafetySection() {
+        const safetyContent = document.getElementById('safety-content');
+        const toggleButton = document.getElementById('toggle-safety-btn');
+
+        if (safetyContent.style.display === 'none') {
+            safetyContent.style.display = 'flex'; // Show the section
+            toggleButton.textContent = '{% trans "Collapse" %}';
+        } else {
+            safetyContent.style.display = 'none'; // Hide the section
+            toggleButton.textContent = '{% trans "Expand" %}';
+        }
     }
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -629,6 +715,208 @@
         .select-wrapper {
             width: 100%;
         }
+    }
+
+    .highlighted-review {
+        background-color: #e3f2fd; /* Light blue background */
+        border: 1px solid #90caf9; /* Blue border */
+        padding: 10px;
+        border-radius: 5px;
+        animation: highlight 2s ease-in-out;
+    }
+    
+    @keyframes highlight {
+        0% {
+            background-color: #bbdefb;
+        }
+        100% {
+            background-color: #e3f2fd;
+        }
+    }
+
+    /* Forums Section Styling */
+    .forums-section {
+        margin-top: 40px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto; /* Center the section */
+    }
+
+    .forums-header h3 {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .forums-list {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .forum-item {
+        border-bottom: 1px solid #ddd;
+        padding: 20px 0;
+        margin-bottom: 15px;
+    }
+
+    .forum-item:last-child {
+        border-bottom: none;
+    }
+
+    .forum-header {
+        margin-bottom: 10px;
+    }
+
+    .forum-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .forum-title a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    .forum-title a:hover {
+        text-decoration: underline;
+    }
+
+    .forum-meta {
+        font-size: 0.9rem;
+        color: #888;
+    }
+
+    .no-forums-message {
+        text-align: center;
+        color: #666;
+        font-size: 1.1rem;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+    }
+
+    .join-discussion {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .btn-prominent {
+        background-color: #007bff;
+        color: white;
+        font-size: 1rem;
+        font-weight: bold;
+        padding: 10px 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        text-decoration: none;
+    }
+
+    .btn-prominent:hover {
+        background-color: #0056b3;
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px);
+    }
+
+    /* Safety Radar */
+    .radar-chart-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+    .toggle-btn-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+    }
+    
+    /* Style the toggle button */
+    .toggle-btn {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 5px 10px; /* Reduced padding for a smaller width */
+        font-size: 0.8rem; /* Smaller font size */
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    
+    .toggle-btn:hover {
+        background-color: #0056b3;
+    }
+
+    .info-tooltip {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        margin-left: 10px;
+    }
+    
+    /* Tooltip icon */
+    .tooltip-icon {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background-color: #007bff;
+        color: white;
+        font-size: 14px;
+        font-weight: bold;
+        text-align: center;
+        line-height: 20px;
+        border-radius: 50%;
+        transition: background-color 0.3s ease;
+    }
+    
+    .tooltip-icon:hover {
+        background-color: #0056b3;
+    }
+    
+    /* Tooltip content */
+    .tooltip-content {
+        display: none;
+        position: absolute;
+        top: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: white;
+        color: #333;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 250px;
+        z-index: 10;
+        font-size: 0.9rem;
+        text-align: left;
+    }
+    
+    /* Show tooltip on hover */
+    .info-tooltip:hover .tooltip-content {
+        display: block;
+    }
+
+    .safety-score-container {
+        text-align: center;
+        margin-top: 15px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #333;
+    }
+    
+    .safety-score {
+        color: #007bff;
+        font-size: 1.5rem;
     }
 
 </style>

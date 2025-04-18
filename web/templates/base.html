@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="{{ LANGUAGE_CODE }}">
 <head>
     {% load static i18n %}
@@ -225,8 +225,390 @@
             background-color: #ede7f6;
             color: #5e35b1;
           }
+        
+        /* Filter Pop-Up */
+        .filter-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            width: 650px; /* Expanded width for better layout */
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        /* Flex container for sliders and calculation info */
+        .filter-options {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            align-items: flex-start;
+        }
+        
+        /* Weight Inputs Section */
+        .weight-inputs {
+            flex: 1;
+            max-width: 70%; /* Adjust as necessary */
+        }
+        
+        /* Calculation Info on the Right Side */
+        .calculation-info {
+            max-width: 100%; /* Adjust the width to take less space */
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .calculation-info h5 {
+            margin-top: 0;
+        }
+        
+        .calculation-info ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .calculation-info li {
+            margin-bottom: 8px;
+        }
+        
+        /* Filter Button */
+        .filter-btn {
+            padding: 8px 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        
+        .filter-btn:hover {
+            background-color: #0056b3;
+        }
+        
+        /* Apply Filter Button */
+        .apply-filter-btn {
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .apply-filter-btn:hover {
+            background-color: #218838;
+        }
+        
+        /* Close Filter Button */
+        .close-filter-btn {
+            padding: 10px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .close-filter-btn:hover {
+            background-color: #c82333;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        /* Safety Metric Weight Sliders */
+        .weight-slider-container {
+            margin: 20px 0;
+        }
+        
+        .weight-category {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .weight-category:last-child {
+            border-bottom: none;
+        }
+        
+        .weight-category label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 8px;
+        }
+        
+        .weight-slider {
+            flex-grow: 1;
+            height: 8px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: #eee;
+            border-radius: 4px;
+            outline: none;
+        }
+        
+        .weight-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #2c7be5;
+            cursor: pointer;
+        }
+        
+        .weight-value {
+            min-width: 48px;
+            text-align: center;
+            font-weight: bold;
+            color: #2c7be5;
+        }
+        
+        .description {
+            color: #666;
+            font-size: 0.85em;
+            margin-top: 5px;
+        }
+        
+        .total-weight-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            margin: 15px 0;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        .weight-warning {
+            color: #d9534f;
+            font-weight: normal;
+            margin-left: auto;
+        }
+        
+        .filter-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .additional-filters {
+            margin-top: 15px;
+            padding: 15px;
+            border: 1px solid #eee;
+            border-radius: 5px;
+            background-color: #fcfcfc;
+        }
+        
+        .filter-row {
+            margin: 12px 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .filter-row label {
+            min-width: 180px;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        /* Safety score meter styles */
+        .safety-meter {
+            height: 10px;
+            width: 100%;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+            margin-top: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .safety-meter-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff4d4d 0%, #ffae42 50%, #28a745 100%);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
     </style>
-    {% block head %}{% endblock %}
+    
+    <!-- Custom Safety Filter Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize safety filter UI interactions
+            setupSafetyFilterUI();
+        });
+        
+        function setupSafetyFilterUI() {
+            // Show filter popup when clicking filter button
+            const filterBtn = document.getElementById('safety-filter-btn');
+            const filterPopup = document.getElementById('safety-filter-popup');
+            const closeBtn = document.querySelector('.close-filter-btn');
+            
+            if (filterBtn && filterPopup) {
+                filterBtn.addEventListener('click', function() {
+                    filterPopup.classList.remove('hidden');
+                });
+            }
+            
+            if (closeBtn && filterPopup) {
+                closeBtn.addEventListener('click', function() {
+                    filterPopup.classList.add('hidden');
+                });
+            }
+            
+            // Update weight displays as sliders change
+            const weightSliders = document.querySelectorAll('.weight-slider');
+            weightSliders.forEach(slider => {
+                slider.addEventListener('input', function() {
+                    updateWeightDisplay(this.id, this.value);
+                    updateTotalWeight();
+                });
+            });
+            
+            // Initialize weight displays
+            updateTotalWeight();
+        }
+        
+        function updateWeightDisplay(sliderId, value) {
+            const valueElement = document.getElementById(sliderId + '-value');
+            if (valueElement) {
+                valueElement.textContent = value + '%';
+            }
+        }
+        
+        function updateTotalWeight() {
+            const mhiWeight = parseInt(document.getElementById('mhi-weight').value || 0);
+            const acrWeight = parseInt(document.getElementById('acr-weight').value || 0);
+            const vhdWeight = parseInt(document.getElementById('vhd-weight').value || 0);
+            const icsWeight = parseInt(document.getElementById('ics-weight').value || 0);
+            
+            const total = mhiWeight + acrWeight + vhdWeight + icsWeight;
+            document.getElementById('total-weight').textContent = total + '%';
+            
+            const warningElement = document.getElementById('weight-warning');
+            const applyButton = document.getElementById('apply-filter-btn');
+            
+            if (total !== 100) {
+                warningElement.classList.remove('hidden');
+                applyButton.disabled = true;
+                applyButton.style.opacity = '0.6';
+            } else {
+                warningElement.classList.add('hidden');
+                applyButton.disabled = false;
+                applyButton.style.opacity = '1';
+            }
+        }
+        
+        function resetFilters() {
+            // Reset to default weights
+            document.getElementById('mhi-weight').value = 25;
+            document.getElementById('acr-weight').value = 35;
+            document.getElementById('vhd-weight').value = 30;
+            document.getElementById('ics-weight').value = 10;
+            
+            // Update displayed values
+            updateWeightDisplay('mhi-weight', 25);
+            updateWeightDisplay('acr-weight', 35);
+            updateWeightDisplay('vhd-weight', 30);
+            updateWeightDisplay('ics-weight', 10);
+            
+            // Reset other filters
+            const minScoreInput = document.getElementById('min-safety-score');
+            if (minScoreInput) minScoreInput.value = 70;
+            
+            // Reset checkboxes
+            const checkboxes = document.querySelectorAll('.additional-filters input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = true;
+            });
+            
+            updateTotalWeight();
+        }
+        
+        function applyCustomFilters() {
+            // Collect all filter values
+            const weightProfile = {
+                mhi: parseInt(document.getElementById('mhi-weight').value) / 100,
+                acr: parseInt(document.getElementById('acr-weight').value) / 100,
+                vhd: parseInt(document.getElementById('vhd-weight').value) / 100,
+                ics: parseInt(document.getElementById('ics-weight').value) / 100
+            };
+            
+            const minSafetyScore = document.getElementById('min-safety-score')?.value || 0;
+            
+            // Get hazard filter values if they exist
+            const criticalIssueFilters = {};
+            document.querySelectorAll('.hazard-filter').forEach(checkbox => {
+                criticalIssueFilters[checkbox.id.replace('filter-', '')] = checkbox.checked;
+            });
+            
+            // Get CSRF token for Django
+            const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]')?.value;
+            
+            // Create form data for submission
+            const formData = new FormData();
+            formData.append('weight_profile', JSON.stringify(weightProfile));
+            formData.append('min_safety_score', minSafetyScore);
+            formData.append('critical_issue_filters', JSON.stringify(criticalIssueFilters));
+            
+            // Ajax request to apply filters
+            fetch('/apply-custom-safety-filters/', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': csrfToken
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Close the popup
+                    document.getElementById('safety-filter-popup').classList.add('hidden');
+                    
+                    // Either reload with new filtered results or redirect
+                    if (data.redirect_url) {
+                        window.location.href = data.redirect_url;
+                    } else {
+                        window.location.reload();
+                    }
+                } else {
+                    alert('There was an error applying the filters: ' + (data.error || 'Unknown error'));
+                }
+            })
+            .catch(error => {
+                console.error('Error applying filters:', error);
+                alert('Failed to apply filters. Please try again.');
+            });
+        }
+    </script>
 </head>
 <body>
     <div id="accessibility-toolbar" role="region" aria-label="{% trans 'Accessibility Toolbar' %}" style="display: none;">
@@ -330,27 +712,494 @@
     {% if request.path == '/' %}
     <div class="search-bar-wrapper">
         <form method="get" action="{% url 'home' %}" id="search-form" class="search-form" role="search" aria-label="{% trans 'Search Products' %}">
+            <!-- Product Search Input -->
             <input type="text" name="q" id="search-input" placeholder="{% trans 'Search product' %}" aria-label="{% trans 'Search product' %}">
             <button type="submit" class="mobility-btn" aria-label="{% trans 'Submit search' %}">{% trans 'Search' %}</button>
             <button type="button" class="mobility-btn" id="voice-search-button" class="voice-search-btn" aria-label="{% trans 'Voice Search' %}">
                 <i class="fas fa-microphone"></i>
             </button>
+        
+            <!-- Safety Filter Button -->
+            <button type="button" id="safety-filter-btn" class="filter-btn" aria-label="{% trans 'Safety Filter' %}">
+                <i class="fas fa-shield-alt"></i> {% trans 'Safety Filter' %}
+            </button>
         </form>
+        <!-- Voice Status Display -->
         <div id="voice-status" class="voice-status"></div>
+    </div>
+    
+    <!-- Enhanced Safety Filter Pop-Up -->
+    <div id="safety-filter-popup" class="filter-popup hidden">
+        <h3>{% trans "Custom Safety Search Filter" %}</h3>
+
+        <div class="weight-slider-container">
+            <!-- MHI Weight Slider -->
+            <div class="weight-category">
+                <label for="mhi-weight">{% trans "Material Hazard Index (MHI)" %}</label>
+                <div class="slider-container">
+                    <input type="range" min="0" max="100" value="25" class="weight-slider" id="mhi-weight" 
+                        oninput="updateWeightDisplay('mhi-weight', 'mhi-value')">
+                    <span id="mhi-value" class="weight-value">25%</span>
+                </div>
+                <p class="description">{% trans "Risk based on material composition (ISO 8124 standards)" %}</p>
+            </div>
+
+            <!-- ACR Weight Slider -->
+            <div class="weight-category">
+                <label for="acr-weight">{% trans "Age Compliance Risk (ACR)" %}</label>
+                <div class="slider-container">
+                    <input type="range" min="0" max="100" value="35" class="weight-slider" id="acr-weight"
+                        oninput="updateWeightDisplay('acr-weight', 'acr-value')">
+                    <span id="acr-value" class="weight-value">35%</span>
+                </div>
+                <p class="description">{% trans "Age-specific risk assessment for identified hazards" %}</p>
+            </div>
+
+            <!-- VHD Weight Slider -->
+            <div class="weight-category">
+                <label for="vhd-weight">{% trans "Visual Hazard Detection (VHD)" %}</label>
+                <div class="slider-container">
+                    <input type="range" min="0" max="100" value="30" class="weight-slider" id="vhd-weight"
+                        oninput="updateWeightDisplay('vhd-weight', 'vhd-value')">
+                    <span id="vhd-value" class="weight-value">30%</span>
+                </div>
+                <p class="description">{% trans "Physical dangers detected through visual inspection" %}</p>
+            </div>
+
+            <!-- ICS Weight Slider -->
+            <div class="weight-category">
+                <label for="ics-weight">{% trans "Information Completeness Score (ICS)" %}</label>
+                <div class="slider-container">
+                    <input type="range" min="0" max="100" value="10" class="weight-slider" id="ics-weight"
+                        oninput="updateWeightDisplay('ics-weight', 'ics-value')">
+                    <span id="ics-value" class="weight-value">10%</span>
+                </div>
+                <p class="description">{% trans "Quality of safety information disclosure" %}</p>
+            </div>
+        </div>
+
+        <!-- Explanation of Weight Normalization -->
+        <p class="description">
+            {% trans "The weights you set will be automatically normalized to sum to 100%, maintaining their relative importance." %}
+        </p>
+
+        <!-- Control Buttons -->
+        <div class="filter-buttons">
+            <button id="reset-filters" onclick="resetFilters()" class="close-filter-btn">
+                {% trans "Reset to Default" %}
+            </button>
+            <button id="apply-filter-btn" onclick="applyCustomFilters()" class="apply-filter-btn">
+                {% trans "Apply Filters" %}
+            </button>
+        </div>
+
+        <!-- Update the explanation in the filter popup -->
+        <div class="calculation-info" style="margin-top: 15px;">
+            <h5>{% trans "How Safety Scores Are Calculated" %}</h5>
+            <p>{% trans "The weighted metrics are normalized to always total 100% and combined using the following formula:" %}</p>
+            <pre style="background: #f5f5f5; padding: 8px; border-radius: 4px; font-size: 0.9em;">
+        Safety Score = (MHI × W₁) + (ACR × W₂) + (VHD × W₃) + (ICS × W₄)
+
+        Where: W₁ + W₂ + W₃ + W₄ = 100%
+            </pre>
+            <p>{% trans "The weights you set will be automatically normalized to sum to 100%, maintaining their relative importance." %}</p>
+            <p class="weight-note" style="font-size: 0.85em; color: #666;">{% trans "Example: Setting weights to 10, 20, 30, 40 will be normalized to 10%, 20%, 30%, 40%." %}</p>
+            <p class="weight-note" style="font-size: 0.85em; color: #666;">{% trans "Example: Setting weights to 70, 40, 80, 30 will be normalized to 31.8%, 18.2%, 36.4%, 13.6%." %}</p>
+        </div>
+
+        <!-- Close Button (X) -->
+        <button class="close-filter-btn" style="position: absolute; top: 10px; right: 10px; padding: 5px 10px; background: none; color: #333;">×</button>
     </div>
     {% endif %}
     
     
     <main id="content-wrapper" role="main" aria-label="{% trans 'Page Content' %}">
         {% block content %}{% endblock content %}
+    
+        <!-- Vendor Login Button if not authenticated -->
         {% if not request.user.is_authenticated and request.path == '/' %}
             <a href="{% url 'vendor_login' %}" class="vendor-login-button" aria-label="{% trans 'Log in as Vendor' %}">{% trans "Log in as Vendor" %}</a>
         {% endif %}
     </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Restore saved filter settings when page loads
+            restoreFilterSettings();
+            
+            // ... other existing DOMContentLoaded code ...
+        });
+
+        // Real-time update of weight sliders (for old filter)
+        function updateWeightValue(sliderId, displayId) {
+            const slider = document.getElementById(sliderId);
+            const display = document.getElementById(displayId);
+            if (slider && display) {
+                display.textContent = slider.value; // Update the value in real-time
+                updateCalculation(); // Update the displayed calculation
+            }
+        }
     
+        // Update the calculation display dynamically (for old filter)
+        function updateCalculation() {
+            const mhi = document.getElementById('mhi-weight-old')?.value || 25;
+            const acr = document.getElementById('acr-weight-old')?.value || 35;
+            const vhd = document.getElementById('vhd-weight-old')?.value || 30;
+            const ics = document.getElementById('ics-weight-old')?.value || 10;
+    
+            const mhiElement = document.getElementById('calculated-mhi');
+            const acrElement = document.getElementById('calculated-acr');
+            const vhdElement = document.getElementById('calculated-vhd');
+            const icsElement = document.getElementById('calculated-ics');
+    
+            if (mhiElement) mhiElement.textContent = mhi + '%';
+            if (acrElement) acrElement.textContent = acr + '%';
+            if (vhdElement) vhdElement.textContent = vhd + '%';
+            if (icsElement) icsElement.textContent = ics + '%';
+        }
+    
+        // Show old filter popup when the user clicks the old filter button
+        const oldFilterButton = document.getElementById("open-filter-button");
+        if (oldFilterButton) {
+            oldFilterButton.addEventListener("click", function() {
+                document.getElementById("filter-popup").classList.remove("hidden");
+            });
+        }
+    
+        // Close the old filter popup
+        const oldCloseButton = document.getElementById("close-filter-button");
+        if (oldCloseButton) {
+            oldCloseButton.addEventListener("click", function() {
+                document.getElementById("filter-popup").classList.add("hidden");
+            });
+        }
+    
+        // New Safety Filter Functionality
+        const safetyFilterBtn = document.getElementById('safety-filter-btn');
+        const safetyFilterPopup = document.getElementById('safety-filter-popup');
+        
+        if (safetyFilterBtn && safetyFilterPopup) {
+            // Open safety filter popup
+            safetyFilterBtn.addEventListener('click', function() {
+                safetyFilterPopup.classList.remove('hidden');
+            });
+            
+            // Close safety filter popup when clicking the X button
+            const closeButtons = safetyFilterPopup.querySelectorAll('.close-filter-btn');
+            closeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    safetyFilterPopup.classList.add('hidden');
+                });
+            });
+        }
+        
+        // Update safety meter as min score changes
+        const minSafetyScore = document.getElementById('min-safety-score');
+        const safetyMeterFill = document.querySelector('.safety-meter-fill');
+        
+        if (minSafetyScore && safetyMeterFill) {
+            minSafetyScore.addEventListener('input', function() {
+                safetyMeterFill.style.width = this.value + '%';
+                
+                // Change color based on value
+                if (this.value < 50) {
+                    safetyMeterFill.style.backgroundColor = '#ff4d4d'; // Red for low safety
+                } else if (this.value < 80) {
+                    safetyMeterFill.style.backgroundColor = '#ffae42'; // Orange/yellow for medium
+                } else {
+                    safetyMeterFill.style.backgroundColor = '#28a745'; // Green for high safety
+                }
+            });
+        }
+
+        function saveFilterSettings() {
+            const filterSettings = {
+                weights: {
+                    mhi: document.getElementById('mhi-weight')?.value || 25,
+                    acr: document.getElementById('acr-weight')?.value || 35,
+                    vhd: document.getElementById('vhd-weight')?.value || 30,
+                    ics: document.getElementById('ics-weight')?.value || 10
+                },
+                minSafetyScore: document.getElementById('min-safety-score')?.value || 70,
+                hazardFilters: {}
+            };
+            
+            // Save hazard filter states
+            document.querySelectorAll('.hazard-filter').forEach(checkbox => {
+                if (checkbox.id) {
+                    filterSettings.hazardFilters[checkbox.id] = checkbox.checked;
+                }
+            });
+            
+            // Save age range if present
+            if (document.getElementById('min-age')) {
+                filterSettings.minAge = document.getElementById('min-age').value;
+            }
+            if (document.getElementById('max-age')) {
+                filterSettings.maxAge = document.getElementById('max-age').value;
+            }
+            
+            // Save to localStorage for persistence
+            localStorage.setItem('safetyFilterSettings', JSON.stringify(filterSettings));
+        }
+
+        function restoreFilterSettings() {
+            const savedSettings = localStorage.getItem('safetyFilterSettings');
+            if (!savedSettings) return;
+            
+            try {
+                const filterSettings = JSON.parse(savedSettings);
+                
+                // Restore weight sliders
+                if (filterSettings.weights) {
+                    if (document.getElementById('mhi-weight')) {
+                        document.getElementById('mhi-weight').value = filterSettings.weights.mhi;
+                        updateWeightDisplay('mhi-weight', 'mhi-value');
+                    }
+                    if (document.getElementById('acr-weight')) {
+                        document.getElementById('acr-weight').value = filterSettings.weights.acr;
+                        updateWeightDisplay('acr-weight', 'acr-value');
+                    }
+                    if (document.getElementById('vhd-weight')) {
+                        document.getElementById('vhd-weight').value = filterSettings.weights.vhd;
+                        updateWeightDisplay('vhd-weight', 'vhd-value');
+                    }
+                    if (document.getElementById('ics-weight')) {
+                        document.getElementById('ics-weight').value = filterSettings.weights.ics;
+                        updateWeightDisplay('ics-weight', 'ics-value');
+                    }
+                }
+                
+                // Restore safety score
+                if (filterSettings.minSafetyScore && document.getElementById('min-safety-score')) {
+                    const safetyScore = document.getElementById('min-safety-score');
+                    safetyScore.value = filterSettings.minSafetyScore;
+                    
+                    // Update safety meter visual
+                    const safetyMeterFill = document.querySelector('.safety-meter-fill');
+                    if (safetyMeterFill) {
+                        safetyMeterFill.style.width = filterSettings.minSafetyScore + '%';
+                        
+                        // Set color based on value
+                        if (filterSettings.minSafetyScore < 50) {
+                            safetyMeterFill.style.backgroundColor = '#ff4d4d'; // Red
+                        } else if (filterSettings.minSafetyScore < 80) {
+                            safetyMeterFill.style.backgroundColor = '#ffae42'; // Orange
+                        } else {
+                            safetyMeterFill.style.backgroundColor = '#28a745'; // Green
+                        }
+                    }
+                }
+                
+                // Restore hazard filters
+                if (filterSettings.hazardFilters) {
+                    Object.keys(filterSettings.hazardFilters).forEach(id => {
+                        const checkbox = document.getElementById(id);
+                        if (checkbox) {
+                            checkbox.checked = filterSettings.hazardFilters[id];
+                        }
+                    });
+                }
+                
+                // Restore age range
+                if (filterSettings.minAge && document.getElementById('min-age')) {
+                    document.getElementById('min-age').value = filterSettings.minAge;
+                }
+                if (filterSettings.maxAge && document.getElementById('max-age')) {
+                    document.getElementById('max-age').value = filterSettings.maxAge;
+                }
+                
+                // Update total weight display
+                updateTotalWeight();
+                
+            } catch (error) {
+                console.error('Error restoring filter settings:', error);
+            }
+        }
+
+        function applyCustomFilters() {
+            // Get CSRF token for Django
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            
+            // Collect raw weight values (no need to divide by 100 anymore)
+            const mhi_weight = parseInt(document.getElementById('mhi-weight').value);
+            const acr_weight = parseInt(document.getElementById('acr-weight').value);
+            const vhd_weight = parseInt(document.getElementById('vhd-weight').value);
+            const ics_weight = parseInt(document.getElementById('ics-weight').value);
+            
+            const minSafetyScore = document.getElementById('min-safety-score')?.value || 0;
+            
+            // Get hazard filter values
+            const criticalIssueFilters = {};
+            document.querySelectorAll('.hazard-filter').forEach(checkbox => {
+                if (checkbox.id) {
+                    criticalIssueFilters[checkbox.id.replace('filter-', '')] = checkbox.checked;
+                }
+            });
+            
+            // Get age range values
+            const minAge = document.getElementById('min-age')?.value;
+            const maxAge = document.getElementById('max-age')?.value;
+            
+            // Save the current filter settings
+            saveFilterSettings();
+            
+            // Create form data for submission
+            const formData = new FormData();
+            formData.append('critical_issue_filters', JSON.stringify(criticalIssueFilters));
+            formData.append('min_safety_score', minSafetyScore);
+            
+            if (minAge) formData.append('min_age', minAge);
+            if (maxAge) formData.append('max_age', maxAge);
+            
+            // Get the CSRF token
+            const csrftoken = getCookie('csrftoken');
+            
+            // Create a URL with the weight parameters (weights are passed directly now)
+            let fallbackUrl = '/?';
+            fallbackUrl += `mhi_weight=${mhi_weight}`;
+            fallbackUrl += `&acr_weight=${acr_weight}`;
+            fallbackUrl += `&vhd_weight=${vhd_weight}`;
+            fallbackUrl += `&ics_weight=${ics_weight}`;
+            fallbackUrl += `&min_safety_score=${minSafetyScore}`;
+            
+            if (minAge && maxAge) {
+                fallbackUrl += `&child_min_age=${minAge}&child_max_age=${maxAge}`;
+            }
+            
+            // Show loading indicator
+            const applyButton = document.getElementById('apply-filter-btn');
+            if (applyButton) {
+                applyButton.textContent = "Applying...";
+                applyButton.disabled = true;
+            }
+            
+            // Close the popup
+            document.getElementById('safety-filter-popup').classList.add('hidden');
+            
+            // Use the fallback URL directly now, since the backend handles the normalization
+            window.location.href = fallbackUrl;
+        }
+        
+        // Reset filters to default values
+        function resetFilters() {
+            // Reset to default weights
+            document.getElementById('mhi-weight').value = 25;
+            document.getElementById('acr-weight').value = 35;
+            document.getElementById('vhd-weight').value = 30;
+            document.getElementById('ics-weight').value = 10;
+            
+            // Update displayed values
+            document.getElementById('mhi-value').textContent = "25%";
+            document.getElementById('acr-value').textContent = "35%";
+            document.getElementById('vhd-value').textContent = "30%";
+            document.getElementById('ics-value').textContent = "10%";
+            
+            // Reset other filters
+            const minScoreInput = document.getElementById('min-safety-score');
+            if (minScoreInput) {
+                minScoreInput.value = 70;
+                // Update the safety meter
+                const safetyMeterFill = document.querySelector('.safety-meter-fill');
+                if (safetyMeterFill) {
+                    safetyMeterFill.style.width = "70%";
+                    safetyMeterFill.style.backgroundColor = "#ffae42";
+                }
+            }
+            
+            // Reset checkboxes
+            const checkboxes = document.querySelectorAll('.hazard-filter');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = true;
+            });
+            
+            // Reset age range
+            document.getElementById('min-age').value = 0;
+            document.getElementById('max-age').value = 12;
+            
+            // Update total weight
+            updateTotalWeight();
+        }
+        
+        // Function to update weight display
+        function updateWeightDisplay(sliderId, valueId) {
+            const slider = document.getElementById(sliderId);
+            const valueElement = document.getElementById(valueId);
+            
+            if (slider && valueElement) {
+                valueElement.textContent = slider.value + "%";
+                updateTotalWeight();
+            }
+        }
+        
+        // Function to update total weight - removing the 100% requirement
+        function updateTotalWeight() {
+            const mhiWeight = parseInt(document.getElementById('mhi-weight')?.value || 0);
+            const acrWeight = parseInt(document.getElementById('acr-weight')?.value || 0);
+            const vhdWeight = parseInt(document.getElementById('vhd-weight')?.value || 0);
+            const icsWeight = parseInt(document.getElementById('ics-weight')?.value || 0);
+            
+            const total = mhiWeight + acrWeight + vhdWeight + icsWeight;
+            
+            const totalElement = document.getElementById('total-weight');
+            const warningElement = document.getElementById('weight-warning');
+            const applyButton = document.getElementById('apply-filter-btn');
+            
+            if (totalElement) totalElement.textContent = total + "%";
+            
+            if (warningElement) {
+                warningElement.classList.add('hidden'); // Always hide warning
+            }
+            
+            if (applyButton) {
+                // Only disable if all weights are zero
+                if (total === 0) {
+                    applyButton.disabled = true;
+                    applyButton.style.opacity = '0.6';
+                    applyButton.style.cursor = 'not-allowed';
+                    if (warningElement) {
+                        warningElement.textContent = "{% trans 'At least one weight must be greater than zero' %}";
+                        warningElement.classList.remove('hidden');
+                    }
+                } else {
+                    applyButton.disabled = false;
+                    applyButton.style.opacity = '1';
+                    applyButton.style.cursor = 'pointer';
+                }
+            }
+        }
+    
+        // Call updateCalculation on page load to initialize the values for old filter
+        document.addEventListener("DOMContentLoaded", function() {
+            // Initialize old filter values
+            updateCalculation();
+            
+            // Initialize sliders
+            const weightSliders = document.querySelectorAll('.weight-slider');
+            weightSliders.forEach(slider => {
+                slider.addEventListener('input', function() {
+                    updateWeightDisplay(this.id, this.id.replace('-weight', '-value'));
+                });
+            });
+            
+            // Initialize total weight
+            updateTotalWeight();
+        });
+    </script>
     <script src="{% static 'js/accessibility.js' %}"></script>
     <script src="{% static 'js/font-size-control.js' %}"></script>
     <div id="large-caption" role="status" aria-live="polite"></div>
     
 </body>
-</html>

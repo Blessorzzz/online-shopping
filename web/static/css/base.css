@@ -960,10 +960,10 @@ a:hover {
     filter: grayscale(100%);
 }
 
-/* Ensure menu colors follow the theme */
-[data-theme] #menu, .product-info, button, body {
-    background-color: var(--bg-color) !important;
-    color: var(--text-color) !important;
+/* 应用无障碍颜色变量 */
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
 }
 
 button, input, select {
