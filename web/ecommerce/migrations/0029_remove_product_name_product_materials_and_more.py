@@ -16,11 +16,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='product',
-            name='materials',
-            field=models.CharField(blank=True, default='', help_text='Comma-separated list of materials', max_length=255),
-        ),
-        migrations.AddField(
-            model_name='product',
             name='safety_issues',
             field=models.JSONField(blank=True, null=True),
         ),
@@ -29,9 +24,5 @@ class Migration(migrations.Migration):
             name='safety_score',
             field=models.DecimalField(blank=True, decimal_places=2, max_digits=5, null=True),
         ),
-        migrations.AddField(
-            model_name='product',
-            name='warnings',
-            field=models.TextField(blank=True, default='', help_text='Warnings or safety notes related to the product'),
-        ),
+
     ]
