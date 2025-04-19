@@ -120,7 +120,7 @@ class HomePageView(ListView):
 
         # Calculate average rating for each product
         for product in products:
-            reviews = Review.objects.filter(product=product, is_approved=True)
+            reviews = Review.objects.filter(product=product)
             if reviews.exists():
                 average_rating = reviews.aggregate(Avg('rating'))['rating__avg']
             else:
@@ -223,7 +223,7 @@ class ProductDetailView(DetailView):
         review_id = self.request.GET.get('review_id')  # Retrieve the review_id from query parameters
 
         # Always annotate with vote counts
-        reviews = Review.objects.filter(product=product, is_approved=True).annotate(
+        reviews = Review.objects.filter(product=product).annotate(
             like_count=Count('votes', filter=Q(votes__vote_type=True)),
             dislike_count=Count('votes', filter=Q(votes__vote_type=False))
         )
