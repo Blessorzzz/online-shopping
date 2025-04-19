@@ -65,11 +65,17 @@ def add_product(request):
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             product = form.save(commit=False)
+            product.vendor = request.user.vendor
             # Save materials as a comma-separated string
             product.materials = ",".join(form.cleaned_data['materials'])
             # Save warnings
             product.warnings = form.cleaned_data.get('warnings', '')
             product.save()
+
+            # Handle additional images
+            for file in request.FILES.getlist('additional_images'):
+                ProductPhoto.objects.create(product=product, photo=file)
+                
             return redirect("vendor_dashboard")  # Redirect to the vendor dashboard
     else:
         form = ProductForm()
