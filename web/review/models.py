@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from ecommerce.models import Product
 from shoppingcart.models import Order
 from better_profanity import profanity  # Import the better_profanity library
+from django.utils import timezone
 
 class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -37,6 +38,9 @@ class Review(models.Model):
             self.comment = profanity.censor(self.comment)  # Automatically censor offensive language in the comment
         if self.vendor_response:
             self.vendor_response = profanity.censor(self.vendor_response)  # Automatically censor offensive language in the vendor response
+        if self.pk:
+            self.last_edited = timezone.now()
+            
         super().save(*args, **kwargs)  # Call the original save method
 
 class Vote(models.Model):
