@@ -12,6 +12,10 @@
             {{ form.description.label_tag }} {{ form.description }}
             {{ form.thumbnail_image.label_tag }} {{ form.thumbnail_image }}
         </div>
+
+        <div style="width: 100%; text-align: left;">
+            {{ form.product_type.label_tag }} {{ form.product_type }}
+        </div>
         
         <div class="thumbnail-container">
             <img src="{{ product.thumbnail_image.url }}" onclick="openModal(this)">
