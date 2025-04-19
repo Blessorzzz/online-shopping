@@ -20,6 +20,17 @@
             {{ form.min_age.label_tag }} {{ form.min_age }}
             {{ form.max_age.label_tag }} {{ form.max_age }}
         </div>
+        <div style="width: 100%; text-align: left; margin-top: 20px;">
+            <label for="id_materials" style="font-weight: bold; font-size: 16px; margin-bottom: 10px; display: block;">{{ form.materials.label }}</label>
+            <div id="id_materials" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+                {% for checkbox in form.materials %}
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px; border: 1px solid #ccc; border-radius: 5px; background-color: #f9f9f9;">
+                    <label for="{{ checkbox.id_for_label }}" style="margin: 0; font-size: 14px; color: #333;">{{ checkbox.choice_label }}</label>
+                    {{ checkbox.tag }}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
         <div style="width: 100%; text-align: left;">
             <label for="additional_images">{% trans "Add Additional Images" %}</label>
             <input type="file" id="additional_images" name="additional_images" multiple onchange="previewImages()">
