@@ -37,6 +37,10 @@
                 {% endfor %}
             </div>
         </div>
+        <div style="width: 100%; text-align: left; margin-top: 20px;">
+            {{ form.warnings.label_tag }}
+            {{ form.warnings }}
+        </div>
         <div style="width: 100%; text-align: left;">
             <label for="additional_images">{% trans "Add Additional Images" %}</label>
             <input type="file" id="additional_images" name="additional_images" multiple onchange="previewImages()">

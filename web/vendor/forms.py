@@ -10,12 +10,18 @@ class ProductForm(forms.ModelForm):
         label="Materials",
         help_text="Select all materials used for this product."
     )
+    warnings = forms.CharField(
+        required=False,  # Make the field optional
+        widget=forms.Textarea(attrs={'rows': 3, 'placeholder': 'Enter any warnings or safety notes for this product'}),
+        label="Warnings",
+        help_text="Optional: Add warnings or safety notes for this product."
+    )
 
     class Meta:
         model = Product
         fields = [
             'product_name', 'price', 'description', 'thumbnail_image', 
-            'stock_quantity', 'min_age', 'max_age', 'product_type', 'materials'
+            'stock_quantity', 'min_age', 'max_age', 'product_type', 'materials', 'warnings'
         ]
 
     def clean(self):
