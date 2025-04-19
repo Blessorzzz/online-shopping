@@ -8,7 +8,6 @@ from shoppingcart.models import Order
 from .forms import ReviewForm
 from django.http import JsonResponse
 from review.models import Vote
-from better_profanity import profanity  # Import the better_profanity library
 import uuid
 
 @login_required
@@ -28,13 +27,7 @@ def add_review(request, order_id, product_id):
             review.user = request.user
             review.product = product
             review.order = order
-
-            # Check for offensive language in the comment
-            if review.comment and profanity.contains_profanity(review.comment):
-                messages.warning(request, "Your review contains offensive language. Please revise it.")
-                return render(request, "review/add_review.html", {"form": form, "product": product, "order": order})
-
-            review.save()
+            review.save()  # Offensive language will be censored automatically in the save method.
             messages.success(request, "Review submitted successfully!")
             return redirect("my_reviews")
     else:
@@ -98,12 +91,7 @@ def edit_review(request, review_id):
         form = ReviewForm(request.POST, request.FILES, instance=review)
         if form.is_valid():
             updated_review = form.save(commit=False)
-
-            # Censor profanity in the updated comment
-            if updated_review.comment:
-                updated_review.comment = profanity.censor(updated_review.comment)
-
-            updated_review.save()
+            updated_review.save()  # Offensive language will be censored automatically in the save method.
             messages.success(request, "Review updated successfully!")
             return redirect("my_reviews")
     else:

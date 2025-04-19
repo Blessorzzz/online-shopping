@@ -2,10 +2,63 @@
 {% load i18n %}
 
 {% block content %}
+<style>
+    .add-review-container {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+    }
+
+    .add-review-container h2 {
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .add-review-container label {
+        font-weight: bold;
+        color: #555;
+    }
+
+    .add-review-container .form-control {
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        padding: 10px;
+        width: 100%; /* Ensure all fields have the same width */
+    }
+
+    .add-review-container .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        padding: 10px 20px;
+        font-size: 1rem;
+        font-weight: bold;
+        border-radius: 5px;
+    }
+
+    .add-review-container .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+
+    .add-review-container .fw-bold {
+        font-size: 1.1rem;
+        color: #333;
+    }
+
+    .add-review-container .form-label {
+        margin-bottom: 5px;
+        display: block;
+    }
+</style>
+
 <div class="container mt-5">
-    <h2 class="text-center mb-4">{% trans "Add a Review for Your Order" %}</h2>
-    
-    <div class="card p-4 shadow-sm">
+    <div class="add-review-container">
+        <h2 class="text-center mb-4">{% trans "Add a Review for Your Order" %}</h2>
+        
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             
@@ -21,20 +74,23 @@
             
             <div class="mb-3">
                 <label class="form-label">{% trans "Comment:" %}</label>
-                {{ form.comment }}
+                <textarea name="comment" class="form-control" placeholder="{% trans 'Write your review here...' %}">{{ form.comment.value|default_if_none:'' }}</textarea>
             </div>
 
             <div class="mb-3">
                 <label class="form-label">{% trans "Upload Image:" %}</label>
-                {{ form.image }}
+                <input type="file" name="image" class="form-control">
             </div>
 
             <div class="mb-3">
                 <label class="form-label">{% trans "Upload Video:" %}</label>
-                {{ form.video }}
+                <input type="file" name="video" class="form-control">
             </div>
 
-            <button type="submit" class="btn btn-primary w-100 mobility-btn">{% trans "Submit Review" %}</button>
+            <!-- Centered button -->
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary w-50">{% trans "Submit Review" %}</button>
+            </div>
         </form>
     </div>
 </div>

@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from ecommerce.models import Product
 from shoppingcart.models import Order
-from decimal import Decimal
 from better_profanity import profanity  # Import the better_profanity library
 
 class Review(models.Model):
@@ -12,15 +11,10 @@ class Review(models.Model):
     rating = models.DecimalField(max_digits=3, decimal_places=1)
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    is_approved = models.BooleanField(default=False)
     image = models.ImageField(upload_to='review_images/', blank=True, null=True)
     video = models.FileField(upload_to='review_videos/', blank=True, null=True)
     last_edited = models.DateTimeField(null=True, blank=True)
 
-    # New field to track edits
-    def is_edited(self):
-        return self.last_edited is not None
-    
     # Vendor response field
     vendor_response = models.TextField(blank=True, null=True)
 
@@ -38,11 +32,11 @@ class Review(models.Model):
         return list(self.votes.filter(vote_type=False).values_list('user__id', flat=True))
 
     def save(self, *args, **kwargs):
-        """Override save method to filter profanity in comment and vendor_response."""
+        """Override save method to censor offensive language in comment and vendor_response."""
         if self.comment:
-            self.comment = profanity.censor(self.comment)  # Censor profanity in the comment
+            self.comment = profanity.censor(self.comment)  # Automatically censor offensive language in the comment
         if self.vendor_response:
-            self.vendor_response = profanity.censor(self.vendor_response)  # Censor profanity in the vendor response
+            self.vendor_response = profanity.censor(self.vendor_response)  # Automatically censor offensive language in the vendor response
         super().save(*args, **kwargs)  # Call the original save method
 
 class Vote(models.Model):

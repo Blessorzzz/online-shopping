@@ -2,17 +2,100 @@
 {% load i18n %}
 
 {% block content %}
+<style>
+    .edit-review-container {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+    }
+
+    .edit-review-container h2 {
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .edit-review-container label {
+        font-weight: bold;
+        color: #555;
+    }
+
+    .edit-review-container .form-control {
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        padding: 10px;
+        width: 100%; /* Ensure all fields have the same width */
+    }
+
+    .edit-review-container .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        padding: 10px 20px;
+        font-size: 1rem;
+        font-weight: bold;
+        border-radius: 5px;
+    }
+
+    .edit-review-container .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+
+    .edit-review-container .fw-bold {
+        font-size: 1.1rem;
+        color: #333;
+    }
+
+    .edit-review-container .form-label {
+        margin-bottom: 5px;
+        display: block;
+    }
+</style>
+
 <div class="container mt-5">
-    <h2 class="text-center mb-4">{% trans "Edit Review" %}</h2>
-
-    <div class="card p-4 shadow-sm">
-        <h4>{% trans "Product:" %} {{ product.product_name }}</h4>
-        <p>{% trans "Order ID:" %} {{ order.po_number }}</p>
-
+    <div class="edit-review-container">
+        <h2 class="text-center mb-4">{% trans "Edit Your Review" %}</h2>
+        
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary mobility-btn">{% trans "Update Review" %}</button>
+            
+            <div class="mb-3">
+                <label class="form-label">{% trans "Product:" %}</label>
+                <p class="fw-bold">{{ product.product_name }}</p>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">{% trans "Order ID:" %}</label>
+                <p class="fw-bold">{{ order.po_number }}</p>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">{% trans "Rating (1-5):" %}</label>
+                <input type="number" step="0.1" name="rating" min="1" max="5" class="form-control" value="{{ form.rating.value|default:1 }}">
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">{% trans "Comment:" %}</label>
+                <textarea name="comment" class="form-control" placeholder="{% trans 'Write your review here...' %}">{{ form.comment.value|default_if_none:'' }}</textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">{% trans "Upload Image:" %}</label>
+                <input type="file" name="image" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">{% trans "Upload Video:" %}</label>
+                <input type="file" name="video" class="form-control">
+            </div>
+
+            <!-- Centered button -->
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary w-50">{% trans "Update Review" %}</button>
+            </div>
         </form>
     </div>
 </div>
