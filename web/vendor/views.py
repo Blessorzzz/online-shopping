@@ -13,6 +13,7 @@ from review.models import Review
 from math import floor
 from decimal import Decimal
 
+# Vendor login view
 def vendor_login(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
@@ -45,6 +46,7 @@ def vendor_dashboard(request):
 
     return render(request, 'vendor/dashboard.html', {'vendor': vendor, 'products': products, 'query': query})
 
+# Vendor orders view
 @login_required
 def vendor_orders(request):
     if not hasattr(request.user, 'vendor'):
@@ -56,43 +58,39 @@ def vendor_orders(request):
     
     return render(request, 'vendor/vendor_orders.html', {'orders': orders})
 
+# Add product view
 @login_required
 def add_product(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             product = form.save(commit=False)
-            product.vendor = request.user.vendor
+            # Convert the list of materials into a comma-separated string
+            product.materials = ",".join(form.cleaned_data['materials'])
             product.save()
-            
-            # Handle additional images
-            for file in request.FILES.getlist('additional_images'):
-                ProductPhoto.objects.create(product=product, photo=file)
-            
-            return redirect('vendor_dashboard')
+            return redirect("vendor_dashboard")  # Redirect to the vendor dashboard
     else:
         form = ProductForm()
-    return render(request, 'vendor/add_product.html', {'form': form})
+    return render(request, "vendor/add_product.html", {"form": form})
 
+# Edit product view
 @login_required
 def edit_product(request, product_id):
-    product = get_object_or_404(Product, product_id=product_id)
-
-    if request.method == 'POST':
+    product = get_object_or_404(Product, pk=product_id)
+    if request.method == "POST":
         form = ProductForm(request.POST, request.FILES, instance=product)
-
         if form.is_valid():
-            product = form.save()
-
-            for file in request.FILES.getlist('additional_images'):
-                ProductPhoto.objects.create(product=product, photo=file)
-
-            return redirect('vendor_dashboard')
+            updated_product = form.save(commit=False)
+            # Convert the list of materials into a comma-separated string
+            updated_product.materials = ",".join(form.cleaned_data['materials'])
+            updated_product.save()
+            return redirect("vendor_dashboard")  # Redirect to the vendor dashboard
     else:
+        # Prepopulate the form with the current product data
         form = ProductForm(instance=product)
+    return render(request, "vendor/edit_product.html", {"form": form, "product": product})
 
-    return render(request, 'vendor/edit_product.html', {'form': form, 'product': product})
-
+# Delete product photo view
 @login_required
 def delete_product_photo(request, photo_id):
     if request.method == 'POST':
@@ -101,7 +99,7 @@ def delete_product_photo(request, photo_id):
         return JsonResponse({'success': True})
     return JsonResponse({'success': False})
 
-# Toggle the status of a product between active and inactive
+# Toggle product status view
 @login_required
 def toggle_product_status(request, product_id):
     product = get_object_or_404(Product, product_id=product_id)
@@ -109,7 +107,7 @@ def toggle_product_status(request, product_id):
     product.save()
     return redirect('vendor_dashboard')
 
-# Display the details of an order
+# Vendor order detail view
 @login_required
 def vendor_order_detail(request, order_id):
     if not hasattr(request.user, 'vendor'):
@@ -183,6 +181,7 @@ def vendor_order_detail(request, order_id):
         'sorted_status_dates': sorted_status_dates
     })
 
+# Vendor product detail view
 @login_required
 def vendor_product_detail(request, product_id):
     if not hasattr(request.user, 'vendor'):
@@ -214,6 +213,8 @@ def vendor_product_detail(request, product_id):
         'current_sort': sort,  # Pass the current sort option to the template
     })
 
+# Vendor respond to review view
+@login_required
 def vendor_respond_review(request, review_id):
     review = get_object_or_404(Review, id=review_id)
 

@@ -490,6 +490,10 @@ MATERIAL_RISK_CATEGORIES = {
     }
 }
 
+def get_material_options():
+    """Extract material names from MATERIAL_RISK for dropdown options."""
+    from .mhi import MATERIAL_RISK
+    return [(key, key.replace("_", " ").title()) for key in MATERIAL_RISK.keys() if key != "unknown"]
 
 def calculate_material_risk(materials: list) -> float:
     """Calculate weighted average risk for multi-material products"""
