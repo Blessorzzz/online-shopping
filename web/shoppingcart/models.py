@@ -84,7 +84,7 @@ class Order(models.Model):
     @property
     def verified_purchase(self):
         """Return True if the order is eligible for verified purchase."""
-        return self.status in ['complete', 'refunded', 'delivered']
+        return self.status in ['complete', 'delivered']
 
     @property
     def products(self):

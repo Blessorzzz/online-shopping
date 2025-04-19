@@ -65,8 +65,10 @@ def add_product(request):
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             product = form.save(commit=False)
-            # Convert the list of materials into a comma-separated string
+            # Save materials as a comma-separated string
             product.materials = ",".join(form.cleaned_data['materials'])
+            # Save warnings
+            product.warnings = form.cleaned_data.get('warnings', '')
             product.save()
             return redirect("vendor_dashboard")  # Redirect to the vendor dashboard
     else:
@@ -92,8 +94,10 @@ def edit_product(request, product_id):
             for file in request.FILES.getlist('additional_images'):
                 ProductPhoto.objects.create(product=product, photo=file)
 
-            # Convert the list of materials into a comma-separated string
+            # Save materials as a comma-separated string
             updated_product.materials = ",".join(form.cleaned_data['materials'])
+            # Save warnings
+            updated_product.warnings = form.cleaned_data.get('warnings', '')
             updated_product.save()
             
             return redirect("vendor_dashboard")  # Redirect to the vendor dashboard

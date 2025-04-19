@@ -9,6 +9,7 @@
     <title>{% block title %}{% trans "My Online Shop" %}{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <script src="{% url 'javascript-catalog' %}"></script> <!-- 加载 Django 语言翻译 -->
+    {% block head %}{% endblock %}
     
     <!-- Include Font Awesome for icons (such as stars) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
