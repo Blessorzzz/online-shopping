@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-10 11:37+0800\n"
+"POT-Creation-Date: 2025-04-22 22:14+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,56 +17,63 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: .\ecommerce\models.py:10 .\templates\product_detail.html:54
+#: .\ecommerce\models.py:16 .\templates\product_detail.html:54
 msgid "Stock"
 msgstr "库存"
 
-#: .\ecommerce\models.py:11 .\ecommerce\models.py:37
-#: .\templates\product_detail.html:61 .\templates\product_detail.html:66
+#: .\ecommerce\models.py:17 .\templates\product_detail.html:61
+#: .\templates\product_detail.html:66
 msgid "Out of Stock"
 msgstr "缺货"
 
-#: .\ecommerce\models.py:15
+#: .\ecommerce\models.py:21
 msgid "Tangible"
 msgstr "实体商品"
 
-#: .\ecommerce\models.py:16
+#: .\ecommerce\models.py:22
 msgid "Virtual"
 msgstr "虚拟商品"
 
-#: .\ecommerce\models.py:20
+#: .\ecommerce\models.py:25
 msgid "Unique ID for this product across whole shopping mall"
 msgstr "该商品在整个商场的唯一ID"
 
-#: .\ecommerce\models.py:21 .\ecommerce\models.py:31
-#: .\templates\vendor\dashboard.html:10
+#: .\ecommerce\models.py:26 .\templates\vendor\dashboard.html:10
 #: .\templates\vendor\vendor_order_detail.html:23
 msgid "Product Name"
 msgstr "商品名称"
 
-#: .\ecommerce\models.py:24
+#: .\ecommerce\models.py:29
 msgid "Description"
 msgstr "描述"
 
-#: .\ecommerce\models.py:28
+#: .\ecommerce\models.py:33
 msgid "Minimum age suitable for the product"
 msgstr "该商品适用的最小年龄"
 
-#: .\ecommerce\models.py:29
+#: .\ecommerce\models.py:34
 msgid "Maximum age suitable for the product"
 msgstr "该商品适用的最大年龄"
 
-#: .\ecommerce\models.py:30 .\templates\vendor\add_product.html:10
+#: .\ecommerce\models.py:35 .\templates\vendor\add_product.html:10
 msgid "Product Type"
 msgstr "商品类型"
 
+#: .\ecommerce\models.py:36
+msgid "Warnings or safety notes related to the product"
+msgstr "与产品相关的警告或安全说明"
+
 #: .\ecommerce\models.py:37
-msgid "Available"
-msgstr "可购买"
+msgid "Comma-separated list of materials"
+msgstr "以逗号分隔的材料列表"
 
 #: .\ecommerce\models.py:40
-msgid "years old"
-msgstr "岁"
+msgid "Sharpness category score (1=Dull, 3=Medium, 5=Sharp)"
+msgstr "锋利度类别得分（1=钝，3=中等，5=锋利）"
+
+#: .\ecommerce\models.py:41
+msgid "Visual Hazard Detection score"
+msgstr "视觉危险检测分数"
 
 #: .\templates\accessibility_info.html:4
 msgid "Accessibility Keyboard Shortcuts"
@@ -135,42 +142,42 @@ msgstr "切换阅读模式"
 msgid "Toggle Speech Speed"
 msgstr "切换语速"
 
-#: .\templates\accessibility_info.html:82 .\templates\base.html:239
-#: .\templates\base.html:240
+#: .\templates\accessibility_info.html:82 .\templates\base.html:622
+#: .\templates\base.html:623
 msgid "Zoom In"
 msgstr "放大"
 
-#: .\templates\accessibility_info.html:83 .\templates\base.html:242
-#: .\templates\base.html:243
+#: .\templates\accessibility_info.html:83 .\templates\base.html:625
+#: .\templates\base.html:626
 msgid "Zoom Out"
 msgstr "缩小"
 
-#: .\templates\accessibility_info.html:84 .\templates\base.html:245
+#: .\templates\accessibility_info.html:84 .\templates\base.html:628
 msgid "Toggle Cursor Mode"
 msgstr "切换光标模式"
 
-#: .\templates\accessibility_info.html:85 .\templates\base.html:248
+#: .\templates\accessibility_info.html:85 .\templates\base.html:631
 msgid "Toggle Crosshair Mode"
 msgstr "切换十字线模式"
 
-#: .\templates\accessibility_info.html:86 .\templates\base.html:251
+#: .\templates\accessibility_info.html:86 .\templates\base.html:634
 msgid "Toggle Large Captions"
 msgstr "切换大字幕"
 
-#: .\templates\accessibility_info.html:87 .\templates\base.html:254
+#: .\templates\accessibility_info.html:87 .\templates\base.html:637
 msgid "Change Color Scheme"
 msgstr "更改配色方案"
 
-#: .\templates\accessibility_info.html:88 .\templates\base.html:260
+#: .\templates\accessibility_info.html:88 .\templates\base.html:643
 msgid "Toggle Sticky Mode"
 msgstr "切换固定模式"
 
-#: .\templates\accessibility_info.html:89 .\templates\base.html:257
+#: .\templates\accessibility_info.html:89 .\templates\base.html:640
 msgid "Reset Accessibility Settings"
 msgstr "重置无障碍设置"
 
-#: .\templates\accessibility_info.html:90 .\templates\base.html:271
-#: .\templates\base.html:272
+#: .\templates\accessibility_info.html:90 .\templates\base.html:654
+#: .\templates\base.html:655
 msgid "Exit Service"
 msgstr "退出服务"
 
@@ -186,176 +193,319 @@ msgstr "返回首页"
 msgid "My Online Shop"
 msgstr "我的在线商店"
 
-#: .\templates\base.html:232
+#: .\templates\base.html:615
 msgid "Accessibility Toolbar"
 msgstr "无障碍工具栏"
 
-#: .\templates\base.html:233
+#: .\templates\base.html:616
 msgid "Toggle screen reader mode"
 msgstr "切换屏幕阅读器模式"
 
-#: .\templates\base.html:234
+#: .\templates\base.html:617
 msgid "Reading Mode"
 msgstr "阅读模式"
 
-#: .\templates\base.html:236
+#: .\templates\base.html:619
 msgid "Toggle Speech Rate"
 msgstr "切换语速"
 
-#: .\templates\base.html:237
+#: .\templates\base.html:620
 msgid "Speech Speed"
 msgstr "语速"
 
-#: .\templates\base.html:245 .\templates\base.html:246
+#: .\templates\base.html:628 .\templates\base.html:629
 msgid "Cursor Mode"
 msgstr "光标模式"
 
-#: .\templates\base.html:248 .\templates\base.html:249
+#: .\templates\base.html:631 .\templates\base.html:632
 msgid "Crosshair Mode"
 msgstr "十字线模式"
 
-#: .\templates\base.html:251 .\templates\base.html:252
+#: .\templates\base.html:634 .\templates\base.html:635
 msgid "Large Captions"
 msgstr "大字幕"
 
-#: .\templates\base.html:254 .\templates\base.html:255
+#: .\templates\base.html:637 .\templates\base.html:638
 msgid "Color Settings"
 msgstr "配色设置"
 
-#: .\templates\base.html:257 .\templates\base.html:258
+#: .\templates\base.html:640 .\templates\base.html:641
 #: .\templates\vendor\vendor_base.html:24
 msgid "Reset"
 msgstr "重置"
 
-#: .\templates\base.html:260 .\templates\base.html:261
+#: .\templates\base.html:643 .\templates\base.html:644
 msgid "Sticky Mode"
 msgstr "固定模式"
 
-#: .\templates\base.html:267
+#: .\templates\base.html:650
 msgid "Accessibility Info Page"
 msgstr "无障碍信息页面"
 
-#: .\templates\base.html:268
+#: .\templates\base.html:651
 msgid "Keyboard Shortcuts"
 msgstr "键盘快捷键"
 
-#: .\templates\base.html:269
+#: .\templates\base.html:652
 msgid "Info"
 msgstr "信息"
 
-#: .\templates\base.html:271
+#: .\templates\base.html:654
 msgid "Exit Accessibility Service"
 msgstr "退出无障碍服务"
 
-#: .\templates\base.html:277
+#: .\templates\base.html:660
 msgid "Main Navigation"
 msgstr "主导航"
 
-#: .\templates\base.html:279
+#: .\templates\base.html:662
 msgid "Home"
 msgstr "首页"
 
-#: .\templates\base.html:281 .\templates\base.html:288
+#: .\templates\base.html:664 .\templates\base.html:670
 msgid "Cart"
 msgstr "购物车"
 
-#: .\templates\base.html:282 .\templates\base.html:289
+#: .\templates\base.html:665 .\templates\base.html:671
 msgid "Orders"
 msgstr "订单"
 
-#: .\templates\base.html:283 .\templates\vendor\vendor_product_detail.html:9
+#: .\templates\base.html:666
 msgid "Reviews"
 msgstr "评价"
 
-#: .\templates\base.html:284
-msgid "Forums"
-msgstr "论坛"
-
-#: .\templates\base.html:285 .\templates\base.html:292
+#: .\templates\base.html:667 .\templates\base.html:674
 msgid "Accessibility"
 msgstr "网页无障碍"
 
-#: .\templates\base.html:286 .\templates\base.html:291
+#: .\templates\base.html:668 .\templates\base.html:673
 #: .\templates\register.html:13
 msgid "Register"
 msgstr "注册"
 
-#: .\templates\base.html:290 .\templates\registration\login.html:7
+#: .\templates\base.html:672 .\templates\registration\login.html:7
 #: .\templates\registration\login.html:28
 msgid "Login"
 msgstr "登录"
 
-#: .\templates\base.html:298
+#: .\templates\base.html:680
 msgid "Font Size Controls"
 msgstr "字体大小控制"
 
-#: .\templates\base.html:299
+#: .\templates\base.html:681
 msgid "Increase font size"
 msgstr "增加字体大小"
 
-#: .\templates\base.html:300
+#: .\templates\base.html:682
 msgid "Decrease font size"
 msgstr "减小字体大小"
 
-#: .\templates\base.html:303
+#: .\templates\base.html:685
 msgid "Choose Accessibility Mode"
 msgstr "选择辅助功能模式"
 
-#: .\templates\base.html:304
+#: .\templates\base.html:686
 msgid "👤 User Mode"
 msgstr "👤 用户模式"
 
-#: .\templates\base.html:305
+#: .\templates\base.html:687
 msgid "Elder Mode"
 msgstr "老年人模式"
 
-#: .\templates\base.html:306
+#: .\templates\base.html:688
 msgid "Mobility Mode"
 msgstr "手部障碍模式"
 
-#: .\templates\base.html:307
+#: .\templates\base.html:689
 msgid "Default Mode"
 msgstr "默认模式"
 
-#: .\templates\base.html:312
+#: .\templates\base.html:694
 msgid "Language selection"
 msgstr "语言选择"
 
-#: .\templates\base.html:320 .\templates\vendor\vendor_base.html:30
+#: .\templates\base.html:702 .\templates\vendor\vendor_base.html:30
 msgid "Hi"
 msgstr "你好"
 
-#: .\templates\base.html:323 .\templates\vendor\vendor_base.html:33
+#: .\templates\base.html:705 .\templates\vendor\vendor_base.html:33
 msgid "Logout"
 msgstr "退出登录"
 
-#: .\templates\base.html:332
+#: .\templates\base.html:714
 msgid "Search Products"
 msgstr "搜索商品"
 
-#: .\templates\base.html:333 .\templates\vendor\vendor_base.html:20
+#: .\templates\base.html:716 .\templates\vendor\vendor_base.html:20
 msgid "Search product"
 msgstr "搜索商品"
 
-#: .\templates\base.html:334
+#: .\templates\base.html:717
 msgid "Submit search"
 msgstr "提交搜索"
 
-#: .\templates\base.html:334 .\templates\vendor\vendor_base.html:21
+#: .\templates\base.html:717 .\templates\forums\forum_list.html:25
+#: .\templates\vendor\vendor_base.html:21
 msgid "Search"
 msgstr "搜索"
 
-#: .\templates\base.html:335
+#: .\templates\base.html:718
 msgid "Voice Search"
 msgstr "语音搜索"
 
-#: .\templates\base.html:344
+#: .\templates\base.html:723 .\templates\base.html:724
+msgid "Safety Filter"
+msgstr "安全筛选"
+
+#: .\templates\base.html:733
+msgid "Custom Safety Search Filter"
+msgstr "自定义安全搜索过滤器"
+
+#: .\templates\base.html:738 .\templates\product_detail.html:106
+msgid "Material Hazard Index (MHI)"
+msgstr "材料危害指数（MHI）"
+
+#: .\templates\base.html:744
+msgid "Risk based on material composition (ISO 8124 standards)"
+msgstr "基于材料成分的风险（ISO 8124 标准）"
+
+#: .\templates\base.html:749
+msgid "Age Compliance Risk (ACR)"
+msgstr "年龄合规风险 (ACR)"
+
+#: .\templates\base.html:755
+msgid "Age-specific risk assessment for identified hazards"
+msgstr "针对已识别的危害进行年龄特异性风险评估"
+
+#: .\templates\base.html:760 .\templates\product_detail.html:108
+msgid "Visual Hazard Detection (VHD)"
+msgstr "视觉危险检测 (VHD)"
+
+#: .\templates\base.html:766
+msgid "Physical dangers detected through visual inspection"
+msgstr "通过目视检查发现的物理危险"
+
+#: .\templates\base.html:771 .\templates\product_detail.html:109
+msgid "Information Completeness Score (ICS)"
+msgstr "信息完整性评分（ICS）"
+
+#: .\templates\base.html:777
+msgid "Quality of safety information disclosure"
+msgstr "安全信息披露质量"
+
+#: .\templates\base.html:783 .\templates\base.html:805
+#, python-format
+msgid ""
+"The weights you set will be automatically normalized to sum to 100%%, "
+"maintaining their relative importance."
+msgstr "您设置的权重将自动标准化为 100%%，保持其相对重要性。"
+
+#: .\templates\base.html:789
+msgid "Reset to Default"
+msgstr "重置为默认值"
+
+#: .\templates\base.html:792
+msgid "Apply Filters"
+msgstr "应用过滤器"
+
+#: .\templates\base.html:798
+msgid "How Safety Scores Are Calculated"
+msgstr "如何计算安全分数"
+
+#: .\templates\base.html:799
+#, python-format
+msgid ""
+"The weighted metrics are normalized to always total 100%% and combined using "
+"the following formula:"
+msgstr "加权指标被标准化为始终总计 100%% 并使用，公式如下："
+
+#: .\templates\base.html:806
+#, python-format
+msgid ""
+"Example: Setting weights to 10, 20, 30, 40 will be normalized to 10%%, 20%%, "
+"30%%, 40%%."
+msgstr "例如：将权重设置为 10、20、30、40 将标准化为 10%%、20%%、30%%、40%%"
+
+#: .\templates\base.html:807
+#, python-format
+msgid ""
+"Example: Setting weights to 70, 40, 80, 30 will be normalized to 31.8%%, "
+"18.2%%, 36.4%%, 13.6%%."
+msgstr "例如：将权重设置为 70、40、80、30 将标准化为 31.8%%，18.2%%, 36.4%%, 13.6%%."
+
+#: .\templates\base.html:816
 msgid "Page Content"
 msgstr "页面内容"
 
-#: .\templates\base.html:347
+#: .\templates\base.html:821
 msgid "Log in as Vendor"
 msgstr "以商家身份登录"
+
+#: .\templates\base.html:1173
+#, fuzzy
+#| msgid "Price must be greater than zero."
+msgid "At least one weight must be greater than zero"
+msgstr "价格必须大于零。"
+
+#: .\templates\forums\create_forum_post.html:8
+msgid "Create a Forum Post for"
+msgstr "创建论坛帖子"
+
+#: .\templates\forums\create_forum_post.html:25
+msgid "Create Post"
+msgstr "创建帖子"
+
+#: .\templates\forums\forum_detail.html:138 .\templates\product_detail.html:347
+msgid "Failed to submit vote. Please try again."
+msgstr "提交投票失败。请重试。"
+
+#: .\templates\forums\forum_detail.html:188
+msgid "An error occurred while submitting the report."
+msgstr "提交报告时发生错误。"
+
+#: .\templates\forums\forum_list.html:9
+msgid "Forums"
+msgstr "论坛"
+
+#: .\templates\forums\forum_list.html:12 .\templates\forums\forum_list.html:16
+msgid "Start a New Discussion"
+msgstr "开始新讨论"
+
+#: .\templates\forums\forum_list.html:24
+msgid "Search threads by title or author..."
+msgstr "按标题或作者搜索主题..."
+
+#: .\templates\forums\forum_list.html:40 .\templates\product_detail.html:226
+msgid "By"
+msgstr "经过"
+
+#: .\templates\forums\forum_list.html:55
+msgid "No discussions yet. Be the first to start one!"
+msgstr "尚无讨论。抢先发起讨论！"
+
+#: .\templates\forums\forum_list.html:61 .\templates\home.html:84
+msgid "First"
+msgstr "首页"
+
+#: .\templates\forums\forum_list.html:62 .\templates\home.html:85
+msgid "Previous"
+msgstr "上一页"
+
+#: .\templates\forums\forum_list.html:66
+msgid "Page"
+msgstr ""
+
+#: .\templates\forums\forum_list.html:66
+msgid "of"
+msgstr "的"
+
+#: .\templates\forums\forum_list.html:70 .\templates\home.html:95
+msgid "Next"
+msgstr "下一页"
+
+#: .\templates\forums\forum_list.html:71 .\templates\home.html:96
+msgid "Last"
+msgstr "末页"
 
 #: .\templates\home.html:39
 msgid "Product List"
@@ -407,22 +557,6 @@ msgstr "暂无评价"
 #: .\templates\home.html:81
 msgid "Pagination"
 msgstr "分页"
-
-#: .\templates\home.html:84
-msgid "First"
-msgstr "首页"
-
-#: .\templates\home.html:85
-msgid "Previous"
-msgstr "上一页"
-
-#: .\templates\home.html:95
-msgid "Next"
-msgstr "下一页"
-
-#: .\templates\home.html:96
-msgid "Last"
-msgstr "末页"
 
 #: .\templates\order_detail.html:6 .\templates\order_detail.html:17
 msgid "Order Details"
@@ -525,8 +659,8 @@ msgstr "无状态历史记录"
 msgid "Items in this order:"
 msgstr "订单中的商品："
 
-#: .\templates\order_detail.html:71 .\templates\review\my_reviews.html:24
-#: .\templates\review\my_reviews.html:60 .\templates\view_cart.html:52
+#: .\templates\order_detail.html:71 .\templates\review\my_reviews.html:35
+#: .\templates\review\my_reviews.html:75 .\templates\view_cart.html:52
 msgid "Product"
 msgstr "商品"
 
@@ -603,7 +737,7 @@ msgid "Status"
 msgstr "状态"
 
 #: .\templates\order_list.html:106 .\templates\order_list.html:132
-#: .\templates\product_detail.html:131
+#: .\templates\product_detail.html:157
 msgid "Verified Purchase"
 msgstr "已验证购买"
 
@@ -680,34 +814,102 @@ msgstr "商品描述"
 msgid "Product Details"
 msgstr "商品详情"
 
+#: .\templates\product_detail.html:97
+msgid "Product Safety"
+msgstr "产品安全"
+
 #: .\templates\product_detail.html:99
+msgid "Safety Level"
+msgstr "安全级别"
+
+#: .\templates\product_detail.html:101 .\templates\product_detail.html:257
+#: .\templates\product_detail.html:295
+msgid "Collapse"
+msgstr "坍塌"
+
+#: .\templates\product_detail.html:106
+msgid "Calculated based on the safety of materials used in the product."
+msgstr "根据产品所用材料的安全性计算。"
+
+#: .\templates\product_detail.html:107
+msgid "Age Compatibility Risk (ACR)"
+msgstr "年龄相容风险（ACR）"
+
+#: .\templates\product_detail.html:107
+msgid "Assesses the risk for the target age range."
+msgstr "评估目标年龄范围的风险。"
+
+#: .\templates\product_detail.html:108
+msgid "Evaluates potential visual hazards like sharp edges or small parts."
+msgstr "评估潜在的视觉危险，例如锋利的边缘或小部件。"
+
+#: .\templates\product_detail.html:109
+msgid "Measures the completeness of safety-related product information."
+msgstr "衡量与安全相关的产品信息的完整性。"
+
+#: .\templates\product_detail.html:110
+msgid "Overall Safety Score"
+msgstr "总体安全评分"
+
+#: .\templates\product_detail.html:110
+msgid "Calculated as a weighted average of the four safety factors."
+msgstr "按四个安全系数的加权平均值计算。"
+
+#: .\templates\product_detail.html:115
+msgid "Safety radar chart for"
+msgstr "安全雷达图"
+
+#: .\templates\product_detail.html:117
+msgid "Safety Score:"
+msgstr "安全评分："
+
+#: .\templates\product_detail.html:125
+#: .\templates\vendor\vendor_product_detail.html:17
 msgid "Customer Reviews"
 msgstr "客户评价"
 
-#: .\templates\product_detail.html:105
+#: .\templates\product_detail.html:131
 msgid "Most Recent"
 msgstr "最近的"
 
-#: .\templates\product_detail.html:108
+#: .\templates\product_detail.html:134
 msgid "Most Helpful"
 msgstr "最有帮助"
 
-#: .\templates\product_detail.html:125
+#: .\templates\product_detail.html:151
 msgid "Reviewed on"
 msgstr "评价日期"
 
-#: .\templates\product_detail.html:173
-#: .\templates\vendor\vendor_product_detail.html:17
+#: .\templates\product_detail.html:199
+#: .\templates\vendor\vendor_product_detail.html:71
 msgid "Vendor Response"
 msgstr "供应商回应"
 
-#: .\templates\product_detail.html:181
+#: .\templates\product_detail.html:207
 msgid "No reviews yet. Be the first to review this product!"
 msgstr "暂无评价。成为第一个评价此商品的人！"
 
-#: .\templates\product_detail.html:261
-msgid "Failed to submit vote. Please try again."
-msgstr "提交投票失败。请重试。"
+#: .\templates\product_detail.html:214
+msgid "Featured Forum Discussions"
+msgstr "精选论坛讨论"
+
+#: .\templates\product_detail.html:228
+msgid "comments"
+msgstr "评论"
+
+#: .\templates\product_detail.html:235
+#, fuzzy
+#| msgid "No status history available"
+msgid "No featured discussions available."
+msgstr "无状态历史记录"
+
+#: .\templates\product_detail.html:240
+msgid "Join the Discussion"
+msgstr "参与讨论"
+
+#: .\templates\product_detail.html:260 .\templates\product_detail.html:298
+msgid "Expand"
+msgstr "扩张"
 
 #: .\templates\product_list_partial.html:43
 msgid "No products found matching your query."
@@ -749,123 +951,136 @@ msgstr "前往注册页面"
 msgid "Sign Up here."
 msgstr "请在此注册。"
 
-#: .\templates\review\add_review.html:6
+#: .\templates\review\add_review.html:60
 msgid "Add a Review for Your Order"
 msgstr "为您的订单添加评价"
 
-#: .\templates\review\add_review.html:13 .\templates\review\edit_review.html:10
+#: .\templates\review\add_review.html:66 .\templates\review\edit_review.html:66
 msgid "Product:"
 msgstr "商品："
 
-#: .\templates\review\add_review.html:18
+#: .\templates\review\add_review.html:71 .\templates\review\edit_review.html:76
 msgid "Rating (1-5):"
 msgstr "评分 (1-5)："
 
-#: .\templates\review\add_review.html:23
+#: .\templates\review\add_review.html:76 .\templates\review\edit_review.html:81
 msgid "Comment:"
 msgstr "评论："
 
-#: .\templates\review\add_review.html:28
+#: .\templates\review\add_review.html:77 .\templates\review\edit_review.html:82
+msgid "Write your review here..."
+msgstr "在这里写下您的评论..."
+
+#: .\templates\review\add_review.html:81 .\templates\review\edit_review.html:86
 msgid "Upload Image:"
 msgstr "上传图片："
 
-#: .\templates\review\add_review.html:33
+#: .\templates\review\add_review.html:86 .\templates\review\edit_review.html:91
 msgid "Upload Video:"
 msgstr "上传视频："
 
-#: .\templates\review\add_review.html:37
+#: .\templates\review\add_review.html:92
 msgid "Submit Review"
 msgstr "提交评价"
 
-#: .\templates\review\edit_review.html:7 .\templates\review\my_reviews.html:85
-msgid "Edit Review"
-msgstr "编辑评价"
+#: .\templates\review\edit_review.html:60
+msgid "Edit Your Review"
+msgstr "编辑您的评价"
 
-#: .\templates\review\edit_review.html:11
+#: .\templates\review\edit_review.html:71
 msgid "Order ID:"
 msgstr "订单ID："
 
-#: .\templates\review\edit_review.html:16
+#: .\templates\review\edit_review.html:97
 msgid "Update Review"
 msgstr "更新评价"
 
-#: .\templates\review\my_reviews.html:8
+#: .\templates\review\my_reviews.html:19
 msgid "My Reviews"
 msgstr "我的评价"
 
-#: .\templates\review\my_reviews.html:12
+#: .\templates\review\my_reviews.html:23
 msgid "⏳ Pending Reviews"
 msgstr "⏳ 待审核"
 
-#: .\templates\review\my_reviews.html:13
+#: .\templates\review\my_reviews.html:24
 msgid "✔️ Reviews Done"
 msgstr "✔️ 已完成评论"
 
-#: .\templates\review\my_reviews.html:23 .\templates\review\my_reviews.html:59
+#: .\templates\review\my_reviews.html:34 .\templates\review\my_reviews.html:74
 msgid "Order ID"
 msgstr "订单ID"
 
-#: .\templates\review\my_reviews.html:25 .\templates\review\my_reviews.html:63
+#: .\templates\review\my_reviews.html:36 .\templates\review\my_reviews.html:78
 msgid "Action"
 msgstr "操作"
 
-#: .\templates\review\my_reviews.html:40
+#: .\templates\review\my_reviews.html:55
 msgid "Add Review"
 msgstr "添加评价"
 
-#: .\templates\review\my_reviews.html:49
+#: .\templates\review\my_reviews.html:64
 msgid "No pending reviews available."
 msgstr "没有待定的评论。"
 
-#: .\templates\review\my_reviews.html:61
+#: .\templates\review\my_reviews.html:76
 msgid "Rating"
 msgstr "评分"
 
-#: .\templates\review\my_reviews.html:62
+#: .\templates\review\my_reviews.html:77
 msgid "Comment"
 msgstr "评论"
 
-#: .\templates\review\my_reviews.html:94
+#: .\templates\review\my_reviews.html:104
+msgid "Edited"
+msgstr "已编辑"
+
+#: .\templates\review\my_reviews.html:109
+msgid "Edit Review"
+msgstr "编辑评价"
+
+#: .\templates\review\my_reviews.html:118
 msgid "No completed reviews available."
 msgstr "没有已完成的评论。"
 
 #: .\templates\vendor\add_product.html:5
-#: .\templates\vendor\add_product.html:250 .\templates\vendor\dashboard.html:45
+#: .\templates\vendor\add_product.html:265 .\templates\vendor\dashboard.html:45
 msgid "Add Product"
 msgstr "添加商品"
 
-#: .\templates\vendor\add_product.html:28
-#: .\templates\vendor\edit_product.html:24
+#: .\templates\vendor\add_product.html:43
+#: .\templates\vendor\edit_product.html:45
 msgid "Add Additional Images"
 msgstr "添加附加图片"
 
-#: .\templates\vendor\add_product.html:243
-#: .\templates\vendor\edit_product.html:270
+#: .\templates\vendor\add_product.html:258
+#: .\templates\vendor\edit_product.html:291
 msgid "All fields must be filled out."
 msgstr "所有字段必须填写。"
 
-#: .\templates\vendor\add_product.html:244
-#: .\templates\vendor\edit_product.html:271
+#: .\templates\vendor\add_product.html:259
+#: .\templates\vendor\edit_product.html:292
 msgid "Price must be greater than zero."
 msgstr "价格必须大于零。"
 
-#: .\templates\vendor\add_product.html:245
-#: .\templates\vendor\edit_product.html:272
+#: .\templates\vendor\add_product.html:260
+#: .\templates\vendor\edit_product.html:293
 msgid "Stock quantity cannot be negative."
 msgstr "库存数量不能为负数。"
 
-#: .\templates\vendor\add_product.html:246
+#: .\templates\vendor\add_product.html:261
 msgid "A thumbnail image must be selected."
 msgstr "必须选择缩略图。"
 
-#: .\templates\vendor\add_product.html:247
-#: .\templates\vendor\edit_product.html:273
+#: .\templates\vendor\add_product.html:262
+#: .\templates\vendor\edit_product.html:294
 msgid "Minimum age cannot be greater than maximum age."
 msgstr "最小年龄不能大于最大年龄。"
 
-#: .\templates\vendor\add_product.html:254
-#: .\templates\vendor\edit_product.html:280
+#: .\templates\vendor\add_product.html:269
+#: .\templates\vendor\edit_product.html:301
 #: .\templates\vendor\vendor_orders.html:56
+#: .\templates\vendor\vendor_product_detail.html:93
 msgid "Back to Dashboard"
 msgstr "返回仪表盘"
 
@@ -910,44 +1125,44 @@ msgstr "启用"
 msgid "No products found."
 msgstr "未找到商品。"
 
-#: .\templates\vendor\edit_product.html:36
+#: .\templates\vendor\edit_product.html:57
 msgid "Delete Selected Images"
 msgstr "删除选中图片"
 
-#: .\templates\vendor\edit_product.html:39
+#: .\templates\vendor\edit_product.html:60
 msgid "Discard Adding Photos"
 msgstr "放弃添加照片"
 
-#: .\templates\vendor\edit_product.html:222
+#: .\templates\vendor\edit_product.html:243
 msgid "Please select at least one image to delete."
 msgstr "请选择至少一张要删除的图片。"
 
-#: .\templates\vendor\edit_product.html:226
+#: .\templates\vendor\edit_product.html:247
 msgid "Are you sure you want to delete the selected images?"
 msgstr "您确定要删除选中的图片吗？"
 
-#: .\templates\vendor\edit_product.html:242
+#: .\templates\vendor\edit_product.html:263
 msgid "You do not have permission to delete this image."
 msgstr "您没有权限删除此图片。"
 
-#: .\templates\vendor\edit_product.html:244
+#: .\templates\vendor\edit_product.html:265
 msgid "Image not found."
 msgstr "图片未找到。"
 
-#: .\templates\vendor\edit_product.html:246
-#: .\templates\vendor\edit_product.html:255
+#: .\templates\vendor\edit_product.html:267
+#: .\templates\vendor\edit_product.html:276
 msgid "Failed to delete the image."
 msgstr "删除图片失败。"
 
-#: .\templates\vendor\edit_product.html:259
+#: .\templates\vendor\edit_product.html:280
 msgid "An error occurred while deleting the image."
 msgstr "删除图片时发生错误。"
 
-#: .\templates\vendor\edit_product.html:267
+#: .\templates\vendor\edit_product.html:288
 msgid "At least one product photo is required."
 msgstr "至少需要一张商品照片。"
 
-#: .\templates\vendor\edit_product.html:276
+#: .\templates\vendor\edit_product.html:297
 msgid "Save Changes"
 msgstr "保存更改"
 
@@ -1008,15 +1223,23 @@ msgstr "查看详情"
 msgid "No purchase orders available."
 msgstr "没有可用的采购订单。"
 
-#: .\templates\vendor\vendor_product_detail.html:23
+#: .\templates\vendor\vendor_product_detail.html:25
+msgid "Highest Rating"
+msgstr "最高评分"
+
+#: .\templates\vendor\vendor_product_detail.html:28
+msgid "Lowest Rating"
+msgstr "最低评分"
+
+#: .\templates\vendor\vendor_product_detail.html:79
 msgid "Enter your response..."
 msgstr "输入您的回复..."
 
-#: .\templates\vendor\vendor_product_detail.html:24
+#: .\templates\vendor\vendor_product_detail.html:80
 msgid "Submit Response"
 msgstr "提交回复"
 
-#: .\templates\vendor\vendor_product_detail.html:30
+#: .\templates\vendor\vendor_product_detail.html:86
 msgid "No reviews yet."
 msgstr "暂无评价"
 
@@ -1108,17 +1331,23 @@ msgstr "配送地址"
 msgid "Please enter your shipping address."
 msgstr "请输入您的配送地址。"
 
-#: .\web\settings.py:123
+#: .\web\settings.py:124
 msgid "English"
 msgstr "英语"
 
-#: .\web\settings.py:124
+#: .\web\settings.py:125
 msgid "Japanese"
 msgstr "日语"
 
-#: .\web\settings.py:125
+#: .\web\settings.py:126
 msgid "Simplified Chinese"
 msgstr "简体中文"
+
+#~ msgid "Available"
+#~ msgstr "可购买"
+
+#~ msgid "years old"
+#~ msgstr "岁"
 
 #~ msgid "Open Web Accessibility Toolbar"
 #~ msgstr "打开网页无障碍工具栏"
@@ -1131,9 +1360,6 @@ msgstr "简体中文"
 
 #~ msgid "Items in This Order"
 #~ msgstr "本订单商品"
-
-#~ msgid "Edit your review for"
-#~ msgstr "编辑您的评价"
 
 #~ msgid "Add a review for"
 #~ msgstr "添加评价"
@@ -1170,9 +1396,6 @@ msgstr "简体中文"
 
 #~ msgid "Products"
 #~ msgstr "商品"
-
-#~ msgid "Created At"
-#~ msgstr "创建时间"
 
 #~ msgid "You have no reviews yet."
 #~ msgstr "您还没有任何评价。"

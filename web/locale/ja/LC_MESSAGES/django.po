@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-10 11:37+0800\n"
+"POT-Creation-Date: 2025-04-22 22:14+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,56 +17,63 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: .\ecommerce\models.py:10 .\templates\product_detail.html:54
+#: .\ecommerce\models.py:16 .\templates\product_detail.html:54
 msgid "Stock"
 msgstr "在庫"
 
-#: .\ecommerce\models.py:11 .\ecommerce\models.py:37
-#: .\templates\product_detail.html:61 .\templates\product_detail.html:66
+#: .\ecommerce\models.py:17 .\templates\product_detail.html:61
+#: .\templates\product_detail.html:66
 msgid "Out of Stock"
 msgstr "在庫切れ"
 
-#: .\ecommerce\models.py:15
+#: .\ecommerce\models.py:21
 msgid "Tangible"
 msgstr "実体商品"
 
-#: .\ecommerce\models.py:16
+#: .\ecommerce\models.py:22
 msgid "Virtual"
 msgstr "バーチャル商品"
 
-#: .\ecommerce\models.py:20
+#: .\ecommerce\models.py:25
 msgid "Unique ID for this product across whole shopping mall"
 msgstr "ショッピングモール全体でこの製品の一意のID"
 
-#: .\ecommerce\models.py:21 .\ecommerce\models.py:31
-#: .\templates\vendor\dashboard.html:10
+#: .\ecommerce\models.py:26 .\templates\vendor\dashboard.html:10
 #: .\templates\vendor\vendor_order_detail.html:23
 msgid "Product Name"
 msgstr "商品名"
 
-#: .\ecommerce\models.py:24
+#: .\ecommerce\models.py:29
 msgid "Description"
 msgstr "商品説明"
 
-#: .\ecommerce\models.py:28
+#: .\ecommerce\models.py:33
 msgid "Minimum age suitable for the product"
 msgstr "製品に適した最低年齢"
 
-#: .\ecommerce\models.py:29
+#: .\ecommerce\models.py:34
 msgid "Maximum age suitable for the product"
 msgstr "製品に適した最大年齢"
 
-#: .\ecommerce\models.py:30 .\templates\vendor\add_product.html:10
+#: .\ecommerce\models.py:35 .\templates\vendor\add_product.html:10
 msgid "Product Type"
 msgstr "商品タイプ"
 
+#: .\ecommerce\models.py:36
+msgid "Warnings or safety notes related to the product"
+msgstr "製品に関する警告または安全上の注意事項"
+
 #: .\ecommerce\models.py:37
-msgid "Available"
-msgstr "在庫あり"
+msgid "Comma-separated list of materials"
+msgstr "カンマ区切りの材料リスト"
 
 #: .\ecommerce\models.py:40
-msgid "years old"
-msgstr "歳"
+msgid "Sharpness category score (1=Dull, 3=Medium, 5=Sharp)"
+msgstr "シャープネスカテゴリースコア（1=鈍い、3=中程度、5=鋭い）"
+
+#: .\ecommerce\models.py:41
+msgid "Visual Hazard Detection score"
+msgstr "視覚的危険検出スコア"
 
 #: .\templates\accessibility_info.html:4
 msgid "Accessibility Keyboard Shortcuts"
@@ -141,42 +148,42 @@ msgstr "読み上げモードの切り替え"
 msgid "Toggle Speech Speed"
 msgstr "音声速度を切り替える"
 
-#: .\templates\accessibility_info.html:82 .\templates\base.html:239
-#: .\templates\base.html:240
+#: .\templates\accessibility_info.html:82 .\templates\base.html:622
+#: .\templates\base.html:623
 msgid "Zoom In"
 msgstr "拡大"
 
-#: .\templates\accessibility_info.html:83 .\templates\base.html:242
-#: .\templates\base.html:243
+#: .\templates\accessibility_info.html:83 .\templates\base.html:625
+#: .\templates\base.html:626
 msgid "Zoom Out"
 msgstr "縮小"
 
-#: .\templates\accessibility_info.html:84 .\templates\base.html:245
+#: .\templates\accessibility_info.html:84 .\templates\base.html:628
 msgid "Toggle Cursor Mode"
 msgstr "カーソルモードの切り替え"
 
-#: .\templates\accessibility_info.html:85 .\templates\base.html:248
+#: .\templates\accessibility_info.html:85 .\templates\base.html:631
 msgid "Toggle Crosshair Mode"
 msgstr "十字線モードの切り替え"
 
-#: .\templates\accessibility_info.html:86 .\templates\base.html:251
+#: .\templates\accessibility_info.html:86 .\templates\base.html:634
 msgid "Toggle Large Captions"
 msgstr "大きな字幕の切り替え"
 
-#: .\templates\accessibility_info.html:87 .\templates\base.html:254
+#: .\templates\accessibility_info.html:87 .\templates\base.html:637
 msgid "Change Color Scheme"
 msgstr "カラースキームの変更"
 
-#: .\templates\accessibility_info.html:88 .\templates\base.html:260
+#: .\templates\accessibility_info.html:88 .\templates\base.html:643
 msgid "Toggle Sticky Mode"
 msgstr "固定モードの切り替え"
 
-#: .\templates\accessibility_info.html:89 .\templates\base.html:257
+#: .\templates\accessibility_info.html:89 .\templates\base.html:640
 msgid "Reset Accessibility Settings"
 msgstr "アクセシビリティ設定のリセット"
 
-#: .\templates\accessibility_info.html:90 .\templates\base.html:271
-#: .\templates\base.html:272
+#: .\templates\accessibility_info.html:90 .\templates\base.html:654
+#: .\templates\base.html:655
 msgid "Exit Service"
 msgstr "サービス終了"
 
@@ -192,176 +199,317 @@ msgstr "ホームに戻る"
 msgid "My Online Shop"
 msgstr "マイオンラインショップ"
 
-#: .\templates\base.html:232
+#: .\templates\base.html:615
 msgid "Accessibility Toolbar"
 msgstr "アクセシビリティツールバー"
 
-#: .\templates\base.html:233
+#: .\templates\base.html:616
 msgid "Toggle screen reader mode"
 msgstr "スクリーンリーダーモードの切り替え"
 
-#: .\templates\base.html:234
+#: .\templates\base.html:617
 msgid "Reading Mode"
 msgstr "読み上げモード"
 
-#: .\templates\base.html:236
+#: .\templates\base.html:619
 msgid "Toggle Speech Rate"
 msgstr "音声速度を切り替える"
 
-#: .\templates\base.html:237
+#: .\templates\base.html:620
 msgid "Speech Speed"
 msgstr "音声速度"
 
-#: .\templates\base.html:245 .\templates\base.html:246
+#: .\templates\base.html:628 .\templates\base.html:629
 msgid "Cursor Mode"
 msgstr "カーソルモード"
 
-#: .\templates\base.html:248 .\templates\base.html:249
+#: .\templates\base.html:631 .\templates\base.html:632
 msgid "Crosshair Mode"
 msgstr "十字線モード"
 
-#: .\templates\base.html:251 .\templates\base.html:252
+#: .\templates\base.html:634 .\templates\base.html:635
 msgid "Large Captions"
 msgstr "大きな字幕"
 
-#: .\templates\base.html:254 .\templates\base.html:255
+#: .\templates\base.html:637 .\templates\base.html:638
 msgid "Color Settings"
 msgstr "カラー設定"
 
-#: .\templates\base.html:257 .\templates\base.html:258
+#: .\templates\base.html:640 .\templates\base.html:641
 #: .\templates\vendor\vendor_base.html:24
 msgid "Reset"
 msgstr "リセット"
 
-#: .\templates\base.html:260 .\templates\base.html:261
+#: .\templates\base.html:643 .\templates\base.html:644
 msgid "Sticky Mode"
 msgstr "固定モード"
 
-#: .\templates\base.html:267
+#: .\templates\base.html:650
 msgid "Accessibility Info Page"
 msgstr "アクセシビリティ情報ページ"
 
-#: .\templates\base.html:268
+#: .\templates\base.html:651
 msgid "Keyboard Shortcuts"
 msgstr "キーボードショートカット"
 
-#: .\templates\base.html:269
+#: .\templates\base.html:652
 msgid "Info"
 msgstr "情報"
 
-#: .\templates\base.html:271
+#: .\templates\base.html:654
 msgid "Exit Accessibility Service"
 msgstr "アクセシビリティサービスを終了"
 
-#: .\templates\base.html:277
+#: .\templates\base.html:660
 msgid "Main Navigation"
 msgstr "メインナビゲーション"
 
-#: .\templates\base.html:279
+#: .\templates\base.html:662
 msgid "Home"
 msgstr "ホーム"
 
-#: .\templates\base.html:281 .\templates\base.html:288
+#: .\templates\base.html:664 .\templates\base.html:670
 msgid "Cart"
 msgstr "カート"
 
-#: .\templates\base.html:282 .\templates\base.html:289
+#: .\templates\base.html:665 .\templates\base.html:671
 msgid "Orders"
 msgstr "注文"
 
-#: .\templates\base.html:283 .\templates\vendor\vendor_product_detail.html:9
+#: .\templates\base.html:666
 msgid "Reviews"
 msgstr "レビュー"
 
-#: .\templates\base.html:284
-msgid "Forums"
-msgstr ""
-
-#: .\templates\base.html:285 .\templates\base.html:292
+#: .\templates\base.html:667 .\templates\base.html:674
 msgid "Accessibility"
 msgstr "ウェブアクセシビリティ"
 
-#: .\templates\base.html:286 .\templates\base.html:291
+#: .\templates\base.html:668 .\templates\base.html:673
 #: .\templates\register.html:13
 msgid "Register"
 msgstr "登録"
 
-#: .\templates\base.html:290 .\templates\registration\login.html:7
+#: .\templates\base.html:672 .\templates\registration\login.html:7
 #: .\templates\registration\login.html:28
 msgid "Login"
 msgstr "ログイン"
 
-#: .\templates\base.html:298
+#: .\templates\base.html:680
 msgid "Font Size Controls"
 msgstr "フォントサイズのコントロール"
 
-#: .\templates\base.html:299
+#: .\templates\base.html:681
 msgid "Increase font size"
 msgstr "フォントサイズを大きくする"
 
-#: .\templates\base.html:300
+#: .\templates\base.html:682
 msgid "Decrease font size"
 msgstr "フォントサイズを小さくする"
 
-#: .\templates\base.html:303
+#: .\templates\base.html:685
 msgid "Choose Accessibility Mode"
 msgstr "アクセシビリティモードを選択"
 
-#: .\templates\base.html:304
+#: .\templates\base.html:686
 msgid "👤 User Mode"
 msgstr "👤 ユーザーモード"
 
-#: .\templates\base.html:305
+#: .\templates\base.html:687
 msgid "Elder Mode"
 msgstr "エルダーモード"
 
-#: .\templates\base.html:306
+#: .\templates\base.html:688
 msgid "Mobility Mode"
 msgstr "モビリティモード"
 
-#: .\templates\base.html:307
+#: .\templates\base.html:689
 msgid "Default Mode"
 msgstr "デフォルトモード"
 
-#: .\templates\base.html:312
+#: .\templates\base.html:694
 msgid "Language selection"
 msgstr "言語選択"
 
-#: .\templates\base.html:320 .\templates\vendor\vendor_base.html:30
+#: .\templates\base.html:702 .\templates\vendor\vendor_base.html:30
 msgid "Hi"
 msgstr "こんにちは"
 
-#: .\templates\base.html:323 .\templates\vendor\vendor_base.html:33
+#: .\templates\base.html:705 .\templates\vendor\vendor_base.html:33
 msgid "Logout"
 msgstr "ログアウト"
 
-#: .\templates\base.html:332
+#: .\templates\base.html:714
 msgid "Search Products"
 msgstr "商品を検索"
 
-#: .\templates\base.html:333 .\templates\vendor\vendor_base.html:20
+#: .\templates\base.html:716 .\templates\vendor\vendor_base.html:20
 msgid "Search product"
 msgstr "商品を検索"
 
-#: .\templates\base.html:334
+#: .\templates\base.html:717
 msgid "Submit search"
 msgstr "検索を実行"
 
-#: .\templates\base.html:334 .\templates\vendor\vendor_base.html:21
+#: .\templates\base.html:717 .\templates\forums\forum_list.html:25
+#: .\templates\vendor\vendor_base.html:21
 msgid "Search"
 msgstr "検索"
 
-#: .\templates\base.html:335
+#: .\templates\base.html:718
 msgid "Voice Search"
 msgstr "音声検索"
 
-#: .\templates\base.html:344
+#: .\templates\base.html:723 .\templates\base.html:724
+msgid "Safety Filter"
+msgstr "安全フィルター"
+
+#: .\templates\base.html:733
+msgid "Custom Safety Search Filter"
+msgstr "カスタム安全検索フィルター"
+
+#: .\templates\base.html:738 .\templates\product_detail.html:106
+msgid "Material Hazard Index (MHI)"
+msgstr "物質ハザード指数（MHI）"
+
+#: .\templates\base.html:744
+msgid "Risk based on material composition (ISO 8124 standards)"
+msgstr "材料組成に基づくリスク（​​ISO 8124規格）"
+
+#: .\templates\base.html:749
+msgid "Age Compliance Risk (ACR)"
+msgstr "年齢コンプライアンスリスク（ACR）"
+
+#: .\templates\base.html:755
+msgid "Age-specific risk assessment for identified hazards"
+msgstr "特定された危険に対する年齢別のリスク評価"
+
+#: .\templates\base.html:760 .\templates\product_detail.html:108
+msgid "Visual Hazard Detection (VHD)"
+msgstr "視覚的危険検知（VHD）"
+
+#: .\templates\base.html:766
+msgid "Physical dangers detected through visual inspection"
+msgstr "目視検査で検出された物理的な危険"
+
+#: .\templates\base.html:771 .\templates\product_detail.html:109
+msgid "Information Completeness Score (ICS)"
+msgstr "情報完全性スコア（ICS）"
+
+#: .\templates\base.html:777
+msgid "Quality of safety information disclosure"
+msgstr "安全情報開示の質"
+
+#: .\templates\base.html:783 .\templates\base.html:805
+#, python-format
+msgid ""
+"The weights you set will be automatically normalized to sum to 100%%, "
+"maintaining their relative importance."
+msgstr "設定した重みは合計が100%になるように自動的に正規化されます，相対的な重要性を維持します。"
+
+#: .\templates\base.html:789
+msgid "Reset to Default"
+msgstr "デフォルトにリセット"
+
+#: .\templates\base.html:792
+msgid "Apply Filters"
+msgstr "フィルターを適用する"
+
+#: .\templates\base.html:798
+msgid "How Safety Scores Are Calculated"
+msgstr "安全スコアの計算方法"
+
+#: .\templates\base.html:799
+#, python-format
+msgid ""
+"The weighted metrics are normalized to always total 100%% and combined using "
+"the following formula:"
+msgstr "加重メトリックは常に合計が 100% になるように正規化され、次の式を使用して結合されます。"
+
+#: .\templates\base.html:806
+#, python-format
+msgid ""
+"Example: Setting weights to 10, 20, 30, 40 will be normalized to 10%%, 20%%, "
+"30%%, 40%%."
+msgstr "例: 重みを 10、20、30、40 に設定すると、10%%、20%%、30%%、40%% に正規化されます。"
+
+#: .\templates\base.html:807
+#, python-format
+msgid ""
+"Example: Setting weights to 70, 40, 80, 30 will be normalized to 31.8%%, "
+"18.2%%, 36.4%%, 13.6%%."
+msgstr "例: 重みを 70、40、80、30 に設定すると、それぞれ 31.8%%、18.2%%、36.4%%、13.6%% に正規化されます。"
+
+#: .\templates\base.html:816
 msgid "Page Content"
 msgstr "ページ内容"
 
-#: .\templates\base.html:347
+#: .\templates\base.html:821
 msgid "Log in as Vendor"
 msgstr "販売者としてログイン"
+
+#: .\templates\base.html:1173
+msgid "At least one weight must be greater than zero"
+msgstr "少なくとも1つの重みは0より大きくなければなりません"
+
+#: .\templates\forums\create_forum_post.html:8
+msgid "Create a Forum Post for"
+msgstr "フォーラム投稿を作成する"
+
+#: .\templates\forums\create_forum_post.html:25
+msgid "Create Post"
+msgstr "投稿を作成"
+
+#: .\templates\forums\forum_detail.html:138 .\templates\product_detail.html:347
+msgid "Failed to submit vote. Please try again."
+msgstr "投票を送信できませんでした。もう一度お試しください。"
+
+#: .\templates\forums\forum_detail.html:188
+msgid "An error occurred while submitting the report."
+msgstr "レポートの送信中にエラーが発生しました。"
+
+#: .\templates\forums\forum_list.html:9
+msgid "Forums"
+msgstr "フォーラム"
+
+#: .\templates\forums\forum_list.html:12 .\templates\forums\forum_list.html:16
+msgid "Start a New Discussion"
+msgstr "新しいディスカッションを始める"
+
+#: .\templates\forums\forum_list.html:24
+msgid "Search threads by title or author..."
+msgstr "タイトルまたは著者でスレッドを検索..."
+
+#: .\templates\forums\forum_list.html:40 .\templates\product_detail.html:226
+msgid "By"
+msgstr "による"
+
+#: .\templates\forums\forum_list.html:55
+msgid "No discussions yet. Be the first to start one!"
+msgstr "まだディスカッションはありません。最初にディスカッションを始めてください。"
+
+#: .\templates\forums\forum_list.html:61 .\templates\home.html:84
+msgid "First"
+msgstr "最初"
+
+#: .\templates\forums\forum_list.html:62 .\templates\home.html:85
+msgid "Previous"
+msgstr "前へ"
+
+#: .\templates\forums\forum_list.html:66
+msgid "Page"
+msgstr "ページ"
+
+#: .\templates\forums\forum_list.html:66
+msgid "of"
+msgstr "の"
+
+#: .\templates\forums\forum_list.html:70 .\templates\home.html:95
+msgid "Next"
+msgstr "次へ"
+
+#: .\templates\forums\forum_list.html:71 .\templates\home.html:96
+msgid "Last"
+msgstr "最後"
 
 #: .\templates\home.html:39
 msgid "Product List"
@@ -413,22 +561,6 @@ msgstr "まだレビューがありません"
 #: .\templates\home.html:81
 msgid "Pagination"
 msgstr "ページネーション"
-
-#: .\templates\home.html:84
-msgid "First"
-msgstr "最初"
-
-#: .\templates\home.html:85
-msgid "Previous"
-msgstr "前へ"
-
-#: .\templates\home.html:95
-msgid "Next"
-msgstr "次へ"
-
-#: .\templates\home.html:96
-msgid "Last"
-msgstr "最後"
 
 #: .\templates\order_detail.html:6 .\templates\order_detail.html:17
 msgid "Order Details"
@@ -531,8 +663,8 @@ msgstr "ステータス履歴がありません"
 msgid "Items in this order:"
 msgstr "この注文の商品:"
 
-#: .\templates\order_detail.html:71 .\templates\review\my_reviews.html:24
-#: .\templates\review\my_reviews.html:60 .\templates\view_cart.html:52
+#: .\templates\order_detail.html:71 .\templates\review\my_reviews.html:35
+#: .\templates\review\my_reviews.html:75 .\templates\view_cart.html:52
 msgid "Product"
 msgstr "商品"
 
@@ -609,7 +741,7 @@ msgid "Status"
 msgstr "ステータス"
 
 #: .\templates\order_list.html:106 .\templates\order_list.html:132
-#: .\templates\product_detail.html:131
+#: .\templates\product_detail.html:157
 msgid "Verified Purchase"
 msgstr "確認済み購入"
 
@@ -689,34 +821,104 @@ msgstr "商品説明"
 msgid "Product Details"
 msgstr "商品詳細"
 
+#: .\templates\product_detail.html:97
+#, fuzzy
+#| msgid "Product Name"
+msgid "Product Safety"
+msgstr "商品名"
+
 #: .\templates\product_detail.html:99
+msgid "Safety Level"
+msgstr "安全レベル"
+
+#: .\templates\product_detail.html:101 .\templates\product_detail.html:257
+#: .\templates\product_detail.html:295
+msgid "Collapse"
+msgstr "崩壊"
+
+#: .\templates\product_detail.html:106
+msgid "Calculated based on the safety of materials used in the product."
+msgstr "製品に使用されている材料の安全性に基づいて算出されています。"
+
+#: .\templates\product_detail.html:107
+msgid "Age Compatibility Risk (ACR)"
+msgstr "「年齢適合性リスク（ACR）」"
+
+#: .\templates\product_detail.html:107
+msgid "Assesses the risk for the target age range."
+msgstr "対象年齢範囲のリスクを評価します。"
+
+#: .\templates\product_detail.html:108
+msgid "Evaluates potential visual hazards like sharp edges or small parts."
+msgstr "鋭いエッジや小さな部品などの潜在的な視覚的危険性を評価します。"
+
+#: .\templates\product_detail.html:109
+msgid "Measures the completeness of safety-related product information."
+msgstr "安全関連の製品情報の完全性を測定します。"
+
+#: .\templates\product_detail.html:110
+msgid "Overall Safety Score"
+msgstr "総合安全スコア"
+
+#: .\templates\product_detail.html:110
+msgid "Calculated as a weighted average of the four safety factors."
+msgstr "4 つの安全係数の加重平均として計算されます。"
+
+#: .\templates\product_detail.html:115
+msgid "Safety radar chart for"
+msgstr "安全レーダーチャート"
+
+#: .\templates\product_detail.html:117
+msgid "Safety Score:"
+msgstr "安全スコア:"
+
+#: .\templates\product_detail.html:125
+#: .\templates\vendor\vendor_product_detail.html:17
 msgid "Customer Reviews"
 msgstr "カスタマーレビュー"
 
-#: .\templates\product_detail.html:105
+#: .\templates\product_detail.html:131
 msgid "Most Recent"
 msgstr "最新"
 
-#: .\templates\product_detail.html:108
+#: .\templates\product_detail.html:134
 msgid "Most Helpful"
 msgstr "最も役立つ"
 
-#: .\templates\product_detail.html:125
+#: .\templates\product_detail.html:151
 msgid "Reviewed on"
 msgstr "レビュー日:"
 
-#: .\templates\product_detail.html:173
-#: .\templates\vendor\vendor_product_detail.html:17
+#: .\templates\product_detail.html:199
+#: .\templates\vendor\vendor_product_detail.html:71
 msgid "Vendor Response"
 msgstr "ベンダーの回答"
 
-#: .\templates\product_detail.html:181
+#: .\templates\product_detail.html:207
 msgid "No reviews yet. Be the first to review this product!"
 msgstr "まだレビューがありません。最初のレビューを書いてみませんか？"
 
-#: .\templates\product_detail.html:261
-msgid "Failed to submit vote. Please try again."
-msgstr "投票を送信できませんでした。もう一度お試しください。"
+#: .\templates\product_detail.html:214
+msgid "Featured Forum Discussions"
+msgstr "注目のフォーラムディスカッション"
+
+#: .\templates\product_detail.html:228
+msgid "comments"
+msgstr "コメント"
+
+#: .\templates\product_detail.html:235
+#, fuzzy
+#| msgid "No status history available"
+msgid "No featured discussions available."
+msgstr "ステータス履歴がありません"
+
+#: .\templates\product_detail.html:240
+msgid "Join the Discussion"
+msgstr "ディスカッションに参加する"
+
+#: .\templates\product_detail.html:260 .\templates\product_detail.html:298
+msgid "Expand"
+msgstr "拡大する"
 
 #: .\templates\product_list_partial.html:43
 msgid "No products found matching your query."
@@ -758,123 +960,140 @@ msgstr "登録ページへ移動"
 msgid "Sign Up here."
 msgstr "こちらからサインアップ"
 
-#: .\templates\review\add_review.html:6
+#: .\templates\review\add_review.html:60
 msgid "Add a Review for Your Order"
 msgstr "注文にレビューを追加"
 
-#: .\templates\review\add_review.html:13 .\templates\review\edit_review.html:10
+#: .\templates\review\add_review.html:66 .\templates\review\edit_review.html:66
 msgid "Product:"
 msgstr "商品:"
 
-#: .\templates\review\add_review.html:18
+#: .\templates\review\add_review.html:71 .\templates\review\edit_review.html:76
 msgid "Rating (1-5):"
 msgstr "評価 (1-5):"
 
-#: .\templates\review\add_review.html:23
+#: .\templates\review\add_review.html:76 .\templates\review\edit_review.html:81
 msgid "Comment:"
 msgstr "コメント:"
 
-#: .\templates\review\add_review.html:28
+#: .\templates\review\add_review.html:77 .\templates\review\edit_review.html:82
+#, fuzzy
+#| msgid "Edit your review for"
+msgid "Write your review here..."
+msgstr "レビューを編集:"
+
+#: .\templates\review\add_review.html:81 .\templates\review\edit_review.html:86
 msgid "Upload Image:"
 msgstr "画像をアップロード:"
 
-#: .\templates\review\add_review.html:33
+#: .\templates\review\add_review.html:86 .\templates\review\edit_review.html:91
 msgid "Upload Video:"
 msgstr "動画をアップロード:"
 
-#: .\templates\review\add_review.html:37
+#: .\templates\review\add_review.html:92
 msgid "Submit Review"
 msgstr "レビューを投稿"
 
-#: .\templates\review\edit_review.html:7 .\templates\review\my_reviews.html:85
-msgid "Edit Review"
+#: .\templates\review\edit_review.html:60
+#, fuzzy
+#| msgid "Edit Review"
+msgid "Edit Your Review"
 msgstr "レビュー編集"
 
-#: .\templates\review\edit_review.html:11
+#: .\templates\review\edit_review.html:71
 msgid "Order ID:"
 msgstr "注文ID:"
 
-#: .\templates\review\edit_review.html:16
+#: .\templates\review\edit_review.html:97
 msgid "Update Review"
 msgstr "レビューを更新"
 
-#: .\templates\review\my_reviews.html:8
+#: .\templates\review\my_reviews.html:19
 msgid "My Reviews"
 msgstr "マイレビュー"
 
-#: .\templates\review\my_reviews.html:12
+#: .\templates\review\my_reviews.html:23
 msgid "⏳ Pending Reviews"
 msgstr "⏳ 保留中のレビュー"
 
-#: .\templates\review\my_reviews.html:13
+#: .\templates\review\my_reviews.html:24
 msgid "✔️ Reviews Done"
 msgstr "レ✔️ レビュー完了ビュー日:"
 
-#: .\templates\review\my_reviews.html:23 .\templates\review\my_reviews.html:59
+#: .\templates\review\my_reviews.html:34 .\templates\review\my_reviews.html:74
 msgid "Order ID"
 msgstr "注文ID"
 
-#: .\templates\review\my_reviews.html:25 .\templates\review\my_reviews.html:63
+#: .\templates\review\my_reviews.html:36 .\templates\review\my_reviews.html:78
 msgid "Action"
 msgstr "操作"
 
-#: .\templates\review\my_reviews.html:40
+#: .\templates\review\my_reviews.html:55
 msgid "Add Review"
 msgstr "レビュー追加"
 
-#: .\templates\review\my_reviews.html:49
+#: .\templates\review\my_reviews.html:64
 msgid "No pending reviews available."
 msgstr "保留中のレビューはありません。"
 
-#: .\templates\review\my_reviews.html:61
+#: .\templates\review\my_reviews.html:76
 msgid "Rating"
 msgstr "評価"
 
-#: .\templates\review\my_reviews.html:62
+#: .\templates\review\my_reviews.html:77
 msgid "Comment"
 msgstr "コメント"
 
-#: .\templates\review\my_reviews.html:94
+#: .\templates\review\my_reviews.html:104
+msgid "Edited"
+msgstr "編集済み"
+
+#: .\templates\review\my_reviews.html:109
+msgid "Edit Review"
+msgstr "レビュー編集"
+
+#: .\templates\review\my_reviews.html:118
 msgid "No completed reviews available."
 msgstr "完了したレビューはありません。"
 
 #: .\templates\vendor\add_product.html:5
-#: .\templates\vendor\add_product.html:250 .\templates\vendor\dashboard.html:45
+#: .\templates\vendor\add_product.html:265 .\templates\vendor\dashboard.html:45
 msgid "Add Product"
 msgstr "商品を追加"
 
-#: .\templates\vendor\add_product.html:28
-#: .\templates\vendor\edit_product.html:24
+#: .\templates\vendor\add_product.html:43
+#: .\templates\vendor\edit_product.html:45
 msgid "Add Additional Images"
 msgstr "追加画像を追加"
 
-#: .\templates\vendor\add_product.html:243
-#: .\templates\vendor\edit_product.html:270
+#: .\templates\vendor\add_product.html:258
+#: .\templates\vendor\edit_product.html:291
 msgid "All fields must be filled out."
 msgstr "すべてのフィールドに入力してください。"
 
-#: .\templates\vendor\add_product.html:244
-#: .\templates\vendor\edit_product.html:271
+#: .\templates\vendor\add_product.html:259
+#: .\templates\vendor\edit_product.html:292
 msgid "Price must be greater than zero."
 msgstr "価格は0より大きい値にしてください。"
 
-#: .\templates\vendor\add_product.html:245
-#: .\templates\vendor\edit_product.html:272
+#: .\templates\vendor\add_product.html:260
+#: .\templates\vendor\edit_product.html:293
 msgid "Stock quantity cannot be negative."
 msgstr "在庫数量は負の値にできません。"
 
-#: .\templates\vendor\add_product.html:246
+#: .\templates\vendor\add_product.html:261
 msgid "A thumbnail image must be selected."
 msgstr "サムネイル画像を選択してください。"
 
-#: .\templates\vendor\add_product.html:247
-#: .\templates\vendor\edit_product.html:273
+#: .\templates\vendor\add_product.html:262
+#: .\templates\vendor\edit_product.html:294
 msgid "Minimum age cannot be greater than maximum age."
 msgstr "最低年齢は最高年齢を超えることはできません。"
 
-#: .\templates\vendor\add_product.html:254
-#: .\templates\vendor\edit_product.html:280
+#: .\templates\vendor\add_product.html:269
+#: .\templates\vendor\edit_product.html:301
 #: .\templates\vendor\vendor_orders.html:56
+#: .\templates\vendor\vendor_product_detail.html:93
 msgid "Back to Dashboard"
 msgstr "ダッシュボードに戻る"
 
@@ -919,44 +1138,44 @@ msgstr "有効化"
 msgid "No products found."
 msgstr "商品が見つかりませんでした。"
 
-#: .\templates\vendor\edit_product.html:36
+#: .\templates\vendor\edit_product.html:57
 msgid "Delete Selected Images"
 msgstr "選択した画像を削除"
 
-#: .\templates\vendor\edit_product.html:39
+#: .\templates\vendor\edit_product.html:60
 msgid "Discard Adding Photos"
 msgstr "写真追加をキャンセル"
 
-#: .\templates\vendor\edit_product.html:222
+#: .\templates\vendor\edit_product.html:243
 msgid "Please select at least one image to delete."
 msgstr "削除する画像を少なくとも1つ選択してください。"
 
-#: .\templates\vendor\edit_product.html:226
+#: .\templates\vendor\edit_product.html:247
 msgid "Are you sure you want to delete the selected images?"
 msgstr "選択した画像を削除してもよろしいですか？"
 
-#: .\templates\vendor\edit_product.html:242
+#: .\templates\vendor\edit_product.html:263
 msgid "You do not have permission to delete this image."
 msgstr "この画像を削除する権限がありません。"
 
-#: .\templates\vendor\edit_product.html:244
+#: .\templates\vendor\edit_product.html:265
 msgid "Image not found."
 msgstr "画像が見つかりません。"
 
-#: .\templates\vendor\edit_product.html:246
-#: .\templates\vendor\edit_product.html:255
+#: .\templates\vendor\edit_product.html:267
+#: .\templates\vendor\edit_product.html:276
 msgid "Failed to delete the image."
 msgstr "画像の削除に失敗しました。"
 
-#: .\templates\vendor\edit_product.html:259
+#: .\templates\vendor\edit_product.html:280
 msgid "An error occurred while deleting the image."
 msgstr "画像の削除中にエラーが発生しました。"
 
-#: .\templates\vendor\edit_product.html:267
+#: .\templates\vendor\edit_product.html:288
 msgid "At least one product photo is required."
 msgstr "少なくとも 1 つの製品写真が必要です。"
 
-#: .\templates\vendor\edit_product.html:276
+#: .\templates\vendor\edit_product.html:297
 msgid "Save Changes"
 msgstr "変更を保存"
 
@@ -1017,15 +1236,23 @@ msgstr "詳細を見る"
 msgid "No purchase orders available."
 msgstr "購入注文はありません。"
 
-#: .\templates\vendor\vendor_product_detail.html:23
+#: .\templates\vendor\vendor_product_detail.html:25
+msgid "Highest Rating"
+msgstr "最高評価"
+
+#: .\templates\vendor\vendor_product_detail.html:28
+msgid "Lowest Rating"
+msgstr "最低評価"
+
+#: .\templates\vendor\vendor_product_detail.html:79
 msgid "Enter your response..."
 msgstr "応答を入力してください..."
 
-#: .\templates\vendor\vendor_product_detail.html:24
+#: .\templates\vendor\vendor_product_detail.html:80
 msgid "Submit Response"
 msgstr "回答を送信"
 
-#: .\templates\vendor\vendor_product_detail.html:30
+#: .\templates\vendor\vendor_product_detail.html:86
 msgid "No reviews yet."
 msgstr "まだレビューはありません。"
 
@@ -1117,17 +1344,23 @@ msgstr "配送先住所:"
 msgid "Please enter your shipping address."
 msgstr "配送先住所を入力してください。"
 
-#: .\web\settings.py:123
+#: .\web\settings.py:124
 msgid "English"
 msgstr "英語"
 
-#: .\web\settings.py:124
+#: .\web\settings.py:125
 msgid "Japanese"
 msgstr "日本語"
 
-#: .\web\settings.py:125
+#: .\web\settings.py:126
 msgid "Simplified Chinese"
 msgstr "中国語（簡体字）"
+
+#~ msgid "Available"
+#~ msgstr "在庫あり"
+
+#~ msgid "years old"
+#~ msgstr "歳"
 
 #~ msgid "Open Web Accessibility Toolbar"
 #~ msgstr "ウェブアクセシビリティツールバーを開く"
@@ -1140,9 +1373,6 @@ msgstr "中国語（簡体字）"
 
 #~ msgid "Items in This Order"
 #~ msgstr "この注文の商品"
-
-#~ msgid "Edit your review for"
-#~ msgstr "レビューを編集:"
 
 #~ msgid "Add a review for"
 #~ msgstr "レビューを追加:"
@@ -1179,9 +1409,6 @@ msgstr "中国語（簡体字）"
 
 #~ msgid "Products"
 #~ msgstr "商品"
-
-#~ msgid "Created At"
-#~ msgstr "作成日時"
 
 #~ msgid "You have no reviews yet."
 #~ msgstr "まだレビューがありません。"
