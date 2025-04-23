@@ -65,11 +65,17 @@ def add_product(request):
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             product = form.save(commit=False)
+            product.vendor = request.user.vendor
             # Save materials as a comma-separated string
             product.materials = ",".join(form.cleaned_data['materials'])
             # Save warnings
             product.warnings = form.cleaned_data.get('warnings', '')
             product.save()
+
+            # Handle additional images
+            for file in request.FILES.getlist('additional_images'):
+                ProductPhoto.objects.create(product=product, photo=file)
+                
             return redirect("vendor_dashboard")  # Redirect to the vendor dashboard
     else:
         form = ProductForm()
@@ -81,14 +87,31 @@ def edit_product(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
     if request.method == "POST":
         form = ProductForm(request.POST, request.FILES, instance=product)
+
+        # Debugging: Check if stock_quantity is being received in POST data
+        print("Stock Quantity in POST data:", request.POST.get("stock_quantity"))
+
         if form.is_valid():
             updated_product = form.save(commit=False)
+
+            # Debugging: Check if stock_quantity is saved correctly
+            print("Saved product stock_quantity:", product.stock_quantity)
+
+            for file in request.FILES.getlist('additional_images'):
+                ProductPhoto.objects.create(product=product, photo=file)
+
             # Save materials as a comma-separated string
             updated_product.materials = ",".join(form.cleaned_data['materials'])
             # Save warnings
             updated_product.warnings = form.cleaned_data.get('warnings', '')
             updated_product.save()
+            
             return redirect("vendor_dashboard")  # Redirect to the vendor dashboard
+        else:
+            # Debugging: Print form errors if the form is not valid
+            print("Form errors:", form.errors)
+            print("Form cleaned data:", form.cleaned_data)  # Check what data is being processed
+
     else:
         # Prepopulate the form with the current product data
         form = ProductForm(instance=product)
